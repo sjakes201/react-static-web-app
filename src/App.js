@@ -4,20 +4,30 @@ import React, { useState } from 'react'
 
 function App() {
 
-  const [response, setResponse] = useState("")
-  const [num, setNum] = useState(0)
+  const [response, setResponse] = useState("");
+  const [num, setNum] = useState(0);
 
   let go = async () => {
-    let ressy = await fetch('https://farm-api.azurewebsites.net/api/greetme', {
-      method: 'GET', // or 'POST', 'PUT', etc. depending on your function
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      // If your function needs a request body, include it here
-    }).then((x) => x.text());
-    setResponse(ressy)
-    setNum( (oldNum) => oldNum + 1);
+    try {
+      const res = await fetch('https://farm-api.azurewebsites.net/api/queryTest', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        console.log(data)
+        setResponse(`carrot: ${data.carrot}`);
+      } else {
+        setResponse("Error occurred");
+      }
+      setNum(oldNum => oldNum + 1);
+    } catch (error) {
+      console.log(error);
+      setResponse("Error occurred");
+    }
   }
 
   return (
@@ -39,7 +49,7 @@ function App() {
           Learn React
         </a>
       </header>
-    </div >
+    </div>
   );
 }
 
