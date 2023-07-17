@@ -7,28 +7,56 @@ function App() {
   const [response, setResponse] = useState("");
   const [num, setNum] = useState(0);
 
+  // let go = async () => {
+  //   try {
+  //     const res = await fetch('https://farm-api.azurewebsites.net/api/queryTest', {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Accept': 'application/json'
+  //       },
+  //     });
+  //     if (res.ok) {
+  //       const data = await res.json();
+  //       console.log(data)
+  //       setResponse(`carrot: ${data.carrot}`);
+  //     } else {
+  //       setResponse("Error occurred");
+  //     }
+  //     setNum(oldNum => oldNum + 1);
+  //   } catch (error) {
+  //     console.log(error);
+  //     setResponse("Error occurred");
+  //   }
+  // }
+
   let go = async () => {
-    try {
-      const res = await fetch('https://farm-api.azurewebsites.net/api/queryTest', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-      });
-      if (res.ok) {
-        const data = await res.json();
-        console.log(data)
-        setResponse(`carrot: ${data.carrot}`);
-      } else {
+      try {
+        const res = await fetch('http://localhost:7071/api/userRegister', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            Username: "FIRSTLIVE",
+            Password: "secret88"
+          })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          console.log(data)
+          setResponse(`carrot: ${data.carrot}`);
+        } else {
+          setResponse("Error occurred");
+        }
+        setNum(oldNum => oldNum + 1);
+      } catch (error) {
+        console.log(error);
         setResponse("Error occurred");
       }
-      setNum(oldNum => oldNum + 1);
-    } catch (error) {
-      console.log(error);
-      setResponse("Error occurred");
     }
-  }
+
 
   return (
     <div className="App">
