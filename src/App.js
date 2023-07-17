@@ -7,53 +7,32 @@ function App() {
   const [response, setResponse] = useState("");
   const [num, setNum] = useState(0);
 
-  // let go = async () => {
-  //   try {
-  //     const res = await fetch('https://farm-api.azurewebsites.net/api/queryTest', {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Accept': 'application/json'
-  //       },
-  //     });
-  //     if (res.ok) {
-  //       const data = await res.json();
-  //       console.log(data)
-  //       setResponse(`carrot: ${data.carrot}`);
-  //     } else {
-  //       setResponse("Error occurred");
-  //     }
-  //     setNum(oldNum => oldNum + 1);
-  //   } catch (error) {
-  //     console.log(error);
-  //     setResponse("Error occurred");
-  //   }
-  // }
-
   let go = async () => {
+    let res;
       try {
-        const res = await fetch('https://farm-api.azurewebsites.net/api/userRegister', {
+        res = await fetch('https://farm-api.azurewebsites.net/api/userRegister', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
           body: JSON.stringify({
-            Username: "FIRSTLIVE",
+            Username: "FIRSTLIVE22",
             Password: "secret88"
           })
         });
         if (res.ok) {
           const data = await res.json();
           console.log(data)
-          setResponse(`carrot: ${data.carrot}`);
+          setResponse(`msg: ${data.message}`);
         } else {
-          setResponse("Error occurred");
+          console.log("oops")
+          setResponse("Error occurred: res not .ok");
         }
         setNum(oldNum => oldNum + 1);
       } catch (error) {
         console.log(error);
-        setResponse("Error occurred");
+        setResponse("Error occurred in try catch");
       }
     }
 
