@@ -61,6 +61,7 @@ function Complogin({ }) {
                 break;
             case 400:
                 setLog("Invalid username or password characters");
+                break;
             case 401:
                 setLog("Invalid username and password combination");
                 break;
