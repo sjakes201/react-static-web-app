@@ -10,21 +10,21 @@ function App() {
   let go = async () => {
     let res;
       try {
-        res = await fetch('https://farm-api.azurewebsites.net/api/userLogin', {
+        res = await fetch('https://farm-api.azurewebsites.net/api/allBarn', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
-          body: JSON.stringify({
-            Username: "SECONDLIVE22",
-            Password: "secret88"
-          })
+          // body: JSON.stringify({
+          //   Username: "SECONDLIVE22",
+          //   Password: "secret88"
+          // })
         });
         if (res.ok) {
           const data = await res.json();
           console.log(data)
-          setResponse(`msg: ${data.message}`);
+          setResponse(`data: ${data}`);
         } else {
           console.log("oops")
           setResponse("Error occurred: res not .ok");
