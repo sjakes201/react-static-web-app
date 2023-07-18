@@ -9,7 +9,6 @@ import Complogin from './Components/GUI/CompLogin';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <div>
-
     <React.StrictMode>
       <App />
       <Complogin />
