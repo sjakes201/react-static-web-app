@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-// import Complogin from './Components/GUI/CompLogin';
+import Complogin from './Components/GUI/CompLogin';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -12,7 +12,7 @@ root.render(
 
     <React.StrictMode>
       <App />
-      {/* <Complogin /> */}
+      <Complogin />
     </React.StrictMode>
 
   </div>
