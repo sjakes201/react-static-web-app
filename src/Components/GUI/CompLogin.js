@@ -48,6 +48,7 @@ function Complogin({ }) {
               'Content-Type': 'application/json',
               'Accept': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify(profile)
           });
         switch (response?.status) {
@@ -84,6 +85,7 @@ function Complogin({ }) {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify(profile)
         });
         switch (response?.status) {
