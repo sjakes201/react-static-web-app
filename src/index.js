@@ -12,7 +12,7 @@ root.render(
 
     <React.StrictMode>
       <App />
-      <Complogin />
+      {/* <Complogin /> */}
     </React.StrictMode>
 
   </div>
