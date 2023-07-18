@@ -16,6 +16,7 @@ function App() {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
+          credentials: 'include',
           // body: JSON.stringify({
           //   Username: "SECONDLIVE22",
           //   Password: "secret88"
