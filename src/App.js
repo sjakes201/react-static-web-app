@@ -9,18 +9,17 @@ function App() {
 
   let go = async () => {
     let res;
+
+    const token = localStorage.getItem('token');
+
       try {
         res = await fetch('https://farm-api.azurewebsites.net/api/allBarn', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          credentials: 'include',
-          // body: JSON.stringify({
-          //   Username: "SECONDLIVE22",
-          //   Password: "secret88"
-          // })
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
         });
         if (res.ok) {
           const data = await res.json();

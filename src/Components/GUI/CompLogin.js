@@ -45,12 +45,21 @@ function Complogin({ }) {
         const response = await fetch('https://farm-api.azurewebsites.net/api/userLogin', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
-            credentials: 'include',
             body: JSON.stringify(profile)
-          });
+        });
+
+        const data = await response.json();
+
+        if (data.auth) {
+            localStorage.setItem('token', data.token);
+            console.log("Login success");
+        } else {
+            console.log("Login failed")
+        }
+
         switch (response?.status) {
             case 200:
                 setLog("login successful");
@@ -88,6 +97,17 @@ function Complogin({ }) {
             credentials: 'include',
             body: JSON.stringify(profile)
         });
+
+        const data = await response.json();
+
+        if (data.auth) {
+            localStorage.setItem('token', data.token);
+            console.log("Login success");
+        } else {
+            console.log("Login failed")
+        }
+
+
         switch (response?.status) {
             case 200:
                 setLog("Account creation success");
@@ -249,7 +269,7 @@ function Complogin({ }) {
         return getRegister()
     } else {
         return getLogin()
-       
+
     }
 
 }
