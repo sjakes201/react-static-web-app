@@ -4,11 +4,18 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import Complogin from './Components/GUI/CompLogin';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <div>
+
+    <React.StrictMode>
+      <App />
+      <Complogin />
+    </React.StrictMode>
+
+  </div>
 );
 
 // If you want to start measuring performance in your app, pass a function

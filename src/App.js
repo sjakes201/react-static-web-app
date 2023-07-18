@@ -10,7 +10,7 @@ function App() {
   let go = async () => {
     let res;
       try {
-        res = await fetch('https://farm-api.azurewebsites.net/api/userRegister', {
+        res = await fetch('https://farm-api.azurewebsites.net/api/userLogin', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
