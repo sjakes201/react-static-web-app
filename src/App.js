@@ -13,16 +13,16 @@ function App() {
     const token = localStorage.getItem('token');
 
       try {
-        res = await fetch('https://farm-api.azurewebsites.net/api/buyAnimal', {
+        res = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': `Bearer ${token}`
           }, 
-          body: {
-            type: 'chicken',
-          }
+          body: JSON.stringify({
+            AnimalID: 1,
+          })
         });
         if (res.ok) {
           const data = await res.json();
