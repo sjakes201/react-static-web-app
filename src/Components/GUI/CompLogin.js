@@ -42,24 +42,16 @@ function Complogin({ }) {
     }
 
     const login = async (profile) => {
+        const token = localStorage.getItem('token');
         const response = await fetch('https://farm-api.azurewebsites.net/api/userLogin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(profile)
         });
-
-        const data = await response.json();
-
-        if (data.auth) {
-            localStorage.setItem('token', data.token);
-            console.log("Login success");
-        } else {
-            console.log("Login failed")
-        }
-
         switch (response?.status) {
             case 200:
                 setLog("login successful");
@@ -71,7 +63,6 @@ function Complogin({ }) {
                 break;
             case 400:
                 setLog("Invalid username or password characters");
-                break;
             case 401:
                 setLog("Invalid username and password combination");
                 break;
@@ -88,26 +79,16 @@ function Complogin({ }) {
     }
 
     const createUser = async (profile) => {
-        const response = await fetch('https://farm-api.azurewebsites.net/api/userRegister?', {
+        const token = localStorage.getItem('token');
+        const response = await fetch('https://farm-api.azurewebsites.net/api/userRegister', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
-            credentials: 'include',
             body: JSON.stringify(profile)
         });
-
-        const data = await response.json();
-
-        if (data.auth) {
-            localStorage.setItem('token', data.token);
-            console.log("Login success");
-        } else {
-            console.log("Login failed")
-        }
-
-
         switch (response?.status) {
             case 200:
                 setLog("Account creation success");
@@ -221,7 +202,7 @@ function Complogin({ }) {
                             >
                             </input>
                             <img
-                                src='reveal.png'
+                                src={`${process.env.PUBLIC_URL}/assets/images/reveal.png`}
                                 style={{ width: '32px', height: '32px', position: 'absolute', right: '-32px', borderRadius: '20%' }}
                                 onMouseDown={handleMouseDown}
                                 onMouseUp={handleMouseUp}
@@ -250,7 +231,7 @@ function Complogin({ }) {
                         <hr style={{ width: '35%', height: '3px', marginLeft: '5%' }} />
                         <p>Login</p>
                         <hr style={{ width: '35%', height: '3px', marginRight: '5%' }} /></div>
-                    <div><button onClick={() => { setScreenType('login'); setLog("") }} type="button">Login</button></div>
+                    <div><button onClick={() => { setScreenType('Login'); setLog("") }} type="button">Login</button></div>
                 </div>
             </div>
         )
@@ -269,7 +250,7 @@ function Complogin({ }) {
         return getRegister()
     } else {
         return getLogin()
-
+       
     }
 
 }

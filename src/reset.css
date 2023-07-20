@@ -1,0 +1,79 @@
+/* reset.css */
+
+/* Box sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove margins and paddings */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+dl,
+dd,
+figure,
+figcaption,
+blockquote,
+fieldset,
+legend,
+button,
+input,
+textarea,
+pre {
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove list styles */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Remove default styles for form elements */
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+/* Remove outline on focus */
+button,
+input,
+select,
+textarea {
+  outline: none;
+}
+
+/* Remove border and outline on image */
+img {
+  border-style: none;
+  outline: none;
+}
+
+/* Remove text decoration on links */
+a {
+  text-decoration: none;
+}
+
+/* Set default font styles */
+body {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}

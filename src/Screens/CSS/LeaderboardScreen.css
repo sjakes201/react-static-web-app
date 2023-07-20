@@ -1,0 +1,72 @@
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgb(226, 202, 141);
+    border-radius: 10px;
+    border: 1px solid rgb(66, 48, 10);
+}
+
+
+.type-button {
+    height: 5%;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid gray;
+    padding-top: 1.4%;
+}
+
+.type-button:hover {
+    background: rgba(249, 241, 182, 0.133);
+}
+
+.type-button:hover>h2 {
+    text-shadow: 1px 1px 2px rgba(222, 196, 119, 0.697);
+}
+
+.active {
+    border-bottom: 2px solid rgba(83, 80, 80, 0.0);
+    font-size: 150%;
+}
+
+.type-button>img {
+    width: 7%;
+    object-fit: contain;
+}
+
+.leaderboards {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    padding: 3% 1%;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+}
+
+.leaderboard-container {
+    height: 95%;
+    width: 100%;
+    overflow-y: auto;
+    border: 2px solid navy;
+    border-top: 2px solid rgba(0, 0, 0, 0)
+}

@@ -1,0 +1,83 @@
+.containerTall {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgb(202, 82, 150);
+    border: 5px solid purple;
+    height: 100%;
+    font-size: 2vh;
+    margin-top: 0;
+    margin-bottom: 0;
+
+
+}
+
+.profileXPTall {
+    display: flex;
+    justify-content: center;
+
+}
+
+.pfpTall {
+    display: flex;
+    justify-content: center;
+}
+
+.pfpTall>img {
+    max-width: 64px;
+    max-height: 64px;
+    width: 100%;
+    border: 1px solid blue;
+}
+
+.userTall {
+    display: flex;
+    justify-content: center;
+}
+
+.balanceTall {
+    display: flex;
+    justify-content: center;
+}
+
+
+
+
+
+
+.containerWide {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgb(202, 82, 150);
+    border: 5px solid purple;
+    height: 100%;
+    font-size: 2vh;
+
+}
+
+.infoWide {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid green;
+    width: 60%;
+    height: 100%;
+    padding: 4%
+}
+
+.pfpWide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid red;
+    width: 40%;
+    height: 100%;
+}
+
+.pfpWide>img {
+    max-width: 64px;
+    max-height: 64px;
+    width: 100%;
+    border: 1px solid blue;
+}

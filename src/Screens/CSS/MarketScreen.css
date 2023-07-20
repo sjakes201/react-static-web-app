@@ -1,0 +1,53 @@
+.market-container {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 75% 25%;
+}
+
+#CompMarket-container {
+    width: 95%;
+    height: 85vh;
+    margin-top: 2.5vh;
+}
+
+#market-other-screens {
+    width: 100%;
+    height: 10vh;
+}
+
+.market-left {
+    border: 2px solid blue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: azure;
+    width: 100%;
+    height: 100vh;
+}
+
+.market-right {
+    border: 2px solid red;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.market-profile {
+    background-color: bisque;
+    height: 18%;
+}
+
+.market-select-info {
+    background-color: blueviolet;
+    height: 35%;
+}
+
+.market-inventory {
+    background-color: brown;
+    height: 29%;
+}
+
+.market-other {
+    background-color: coral;
+    height: 18%;
+}

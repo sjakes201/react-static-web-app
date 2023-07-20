@@ -1,0 +1,54 @@
+.app3 {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 80% 20%;
+}
+
+.left-column {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: greenyellow;
+}
+
+.right-column {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: firebrick;
+}
+
+.pens-wrapper {
+    display: flex;
+    height: 90vh;
+    background-color: blueviolet;
+}
+
+.barn-container {
+    flex: 1;
+    background-color: rgb(226, 186, 43);
+}
+
+.coop-container {
+    flex: 1;
+    background-color: rgb(244, 133, 194);
+}
+
+.userProfile {
+    height: 20vh;
+    background-color: black;
+}
+
+.inventory {
+    height: 60vh;
+    border: 1px solid black;
+}
+
+.settings {
+    height: 20vh;
+}
+
+.other-screensAn {
+    height: 10vh;
+}
+    

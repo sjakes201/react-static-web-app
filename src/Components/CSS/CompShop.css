@@ -1,0 +1,95 @@
+.shop {
+    width: 100%;
+    height: 100%;
+    background-color: #d2a427;
+    display: flex;
+    flex-direction: column;
+
+    /* width */
+    ::-webkit-scrollbar {
+        width: 20px;
+        height: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 10px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: rgb(226, 202, 141);
+        border-radius: 10px;
+        border: 1px solid rgb(66, 48, 10);
+    }
+
+}
+
+.profile {
+    width: 30%;
+    border: 5px solid black;
+}
+
+.screenChange {
+    width: 70%;
+    border: 5px solid black;
+}
+
+.shopRow {
+    height: 26vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: lightyellow;
+    overflow-y: hidden;
+    margin: 1vh 1vw;
+    box-sizing: border-box;
+}
+
+.items {
+    height: 100%;
+    overflow-x: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: lightyellow;
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin: 1vh 1vw;
+    box-sizing: border-box;
+
+}
+
+.label {
+    background-color: indianred;
+    min-width: 4vw;
+    width: 4vw;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.label>img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+}
+
+#Seeds {
+    margin-top: 2vh;
+}
+
+#Upgrades {
+    margin-bottom: 2vh;
+}
+
+.shelf {
+    height: 100%;
+    width: 6vw;
+    background-color: brown;
+    margin: 0px 2px;
+}
