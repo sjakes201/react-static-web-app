@@ -31,7 +31,7 @@ function CompLeaderboardSlot({ item, data }) {
                         alignItems: 'center',
                     }}>
                     <img
-                        src={`${process.env.PUBLIC_URL}/assets/images`.concat(item.concat(".png"))}
+                        src={`${process.env.PUBLIC_URL}/assets/images/`.concat(item.concat(".png"))}
                         style={{
                             maxWidth: '100%',
                             maxHeight: '100%',

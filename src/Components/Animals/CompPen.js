@@ -5,7 +5,7 @@ import UPGRADES from '../../UPGRADES';
 
 // Should we stop CompPen from rerendering everything when individual animals update? I think that happens automatically 
 
-function CompPen({ getUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP }) {
+function CompPen({ passedUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP }) {
     let xSlots = 6;
     let ySlots = 9;
     let animalWidth = Math.round(penWidth / xSlots);
@@ -20,19 +20,13 @@ function CompPen({ getUpgrades, penWidth, penHeight, className, isBarn, updateIn
     // coordinates, walking and direction
     const [walking, setWalking] = useState([]);
 
-
-    const curUpgrades = useRef(getUpgrades());
-    // curUpgrades.current has upgrades
-
-
     const [hasExotic, setHasExotic] = useState(false);
     const [xp, setXP] = useState(0);
 
     useEffect(() => {
-        let upgrades = getUpgrades();
-        if (Object.keys(upgrades).length !== 0) {
+        if (Object.keys(passedUpgrades).length !== 0) {
             setXP(getXP())
-            setHasExotic(upgrades.exoticPermit)
+            setHasExotic(passedUpgrades.exoticPermit)
         }
     })
 
@@ -88,12 +82,14 @@ function CompPen({ getUpgrades, penWidth, penHeight, className, isBarn, updateIn
             let quantTableName;
             switch (CONSTANTS.AnimalTypes[type][0]) {
                 case 'barn':
-                    quantTableName = "AnimalProduceMap".concat(curUpgrades.current.barnCollectQuantityUpgrade);
+                    quantTableName = "AnimalProduceMap".concat(passedUpgrades.barnCollectQuantityUpgrade);
                     break;
                 case 'coop':
-                    quantTableName = "AnimalProduceMap".concat(curUpgrades.current.coopCollectQuantityUpgrade);
+                    quantTableName = "AnimalProduceMap".concat(passedUpgrades.coopCollectQuantityUpgrade);
                     break;
             }
+            console.log(`quantTableName: ${quantTableName}`);
+            console.log(`type: ${type}`)
             updateInventory(UPGRADES[quantTableName][type][0], UPGRADES[quantTableName][type][1])
             updateXP(CONSTANTS.XP[UPGRADES[quantTableName][type][0]]);
             const token = localStorage.getItem('token');
@@ -188,7 +184,7 @@ function CompPen({ getUpgrades, penWidth, penHeight, className, isBarn, updateIn
         let curTime = Date.now()
         let secsPassed = ((curTime - Last_produce) / 1000) - 0.2;
 
-        let level = isBarn ? (curUpgrades.current.barnCollectTimeUpgrade) : (curUpgrades.current.coopCollectTimeUpgrade)
+        let level = isBarn ? (passedUpgrades.barnCollectTimeUpgrade) : (passedUpgrades.coopCollectTimeUpgrade)
         let tableName = "AnimalCollectTimes".concat(level)
         if (tableName.includes('undefined')) tableName = 'AnimalCollectTimes0';
         let secsNeeded = UPGRADES[tableName][Animal_type];
@@ -244,7 +240,7 @@ function CompPen({ getUpgrades, penWidth, penHeight, className, isBarn, updateIn
     useEffect(() => {
         let interval;
         if (walking) {
-            interval = isBarn ? setInterval(updateMovement, 3200) : setInterval(updateMovement, 2800);
+            interval = isBarn ? setInterval(updateMovement, 4000) : setInterval(updateMovement, 3000);
 
         }
         return () => {

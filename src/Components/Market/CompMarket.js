@@ -13,6 +13,7 @@ function CompMarket({ marketItems, setSelected }) {
             <div className='market-shelf'>
                 {marketItems.map((item, index) => {
                     return <div
+                        key={index}
                         className='market-item'
                         onClick={() => setSelected(
                             {

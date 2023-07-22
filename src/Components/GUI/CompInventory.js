@@ -29,7 +29,7 @@ function CompInventory({ items, displayOnly, updateInventory }) {
                 name: itemName,
                 quantity: items[itemName],
                 description: CONSTANTS.InventoryDescriptions[itemName],
-                image: `/${itemName}.png`
+                image: `${process.env.PUBLIC_URL}/assets/images/${itemName}.png`
             });
         } else {
             sessionStorage.setItem("equipped", '');
