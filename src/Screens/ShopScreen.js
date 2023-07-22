@@ -10,7 +10,7 @@ import UPGRADES from "../UPGRADES";
 
 
 function ShopScreen({ }) {
-
+    sessionStorage.setItem("equipped", '');
     // Functions
 
     const [items, setItems] = useState({});

@@ -22,11 +22,11 @@ function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell }) {
     }
     return (
         <div style={{ height: "100%" }}>
-            <div style={{ border: '1px solid pink', height: "100%", display: 'flex', flexDirection: 'row' }}>
-                <div style={{ height: '100%', width: '60%', border: '2px dotted navy', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '2px solid brown' }}>
+            <div style={{  height: "100%", display: 'flex', flexDirection: 'row' }}>
+                <div style={{ height: '100%', width: '60%',  display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <img src={`${process.env.PUBLIC_URL}/assets/images/`.concat(imgURL)} style={{ objectFit: 'contain', width: '100%', maxHeight: '100%' }} />
                 </div>
-                <div style={{ height: '100%', width: '40%', border: '2px dotted green', padding: "1.5vh 1vh", border: '1px solid brown', paddingTop: "10%" }}>
+                <div style={{ height: '100%', width: '40%', padding: "1.5vh 1vh",  paddingTop: "10%" }}>
                     <div style={{ textAlign: 'center', textTransform: 'uppercase', textDecoration: 'underline', fontSize: "clamp(12px, 1vw, 80px)", wordBreak:'break-all' }}>{name}</div>
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5%', fontSize: '1.3vw' }}>${newPrice} <small>/each</small> <img src={arrowURL} style={{ width: '12%' }} /></div>
                     <div style={{ fontSize: '0.7vw' }}>${oldPrice} /each yesterday</div>

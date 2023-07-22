@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import '../../CONSTANTS'
 import CONSTANTS from "../../CONSTANTS";
 import '../CSS/CompProfile.css'
+import { Link } from 'react-router-dom';
 
 function CompProfile({ getBal, getUser, getXP, type }) {
 
@@ -17,11 +18,29 @@ function CompProfile({ getBal, getUser, getXP, type }) {
 
     if (type === 'tall') {
         return (
-            <div className="containerTall">
-                <div className='pfpTall' ><img src={`${process.env.PUBLIC_URL}/assets/images/homie.png`} alt='homie' /></div>
-                <div className='userTall'>{user}</div>
-                <div className='profileXPTall'>XP: {xp}</div>
-                <div className='balanceTall'>${bal === 0 ? 0 : Math.round(bal * 100) / 100}</div>
+            <div style={{height: '100%'}}>
+                <div className="containerTall">
+                    <div className='pfpTall' ><img src={`${process.env.PUBLIC_URL}/assets/images/homie.png`} alt='homie' /></div>
+                    <div>
+                        <div className='userTall'>{user}</div>
+                        <div className='profileXPTall'>XP: {xp}</div>
+                        <div className='balanceTall'>${bal === 0 ? 0 : Math.round(bal * 100) / 100}</div>
+                    </div>
+                </div>
+                <div className="profileButtons">
+                    <Link className='profileLink' to={`/leaderboard`}>
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/homie.png`} alt='profile/stats' />
+                    </Link>
+                    <Link className='profileLink' to={`/leaderboard`}>
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/homie.png`} alt='town' />
+                    </Link>
+                    <Link className='profileLink' to={`/leaderboard`}>
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/homie.png`} alt='leaderboard' />
+                    </Link>
+                    <Link className='profileLink' to={`/leaderboard`}>
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/homie.png`} alt='info/how to play' />
+                    </Link>
+                </div>
             </div>
         )
     }

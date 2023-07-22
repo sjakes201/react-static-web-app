@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import '../CSS/CompInventory.css'
 import CONSTANTS from '../../CONSTANTS';
 
-function CompInventory({ items, displayOnly, updateInventory }) {
+function CompInventory({ items, displayOnly, setMarketSelected }) {
     const [selectedItem, setSelectedItem] = useState({
         name: '',
         quantity: 0,
         description: '',
-        image: ''
+        image: `${process.env.PUBLIC_URL}/assets/images/EMPTY.png`
     });
 
     useEffect(() => {
@@ -25,6 +25,7 @@ function CompInventory({ items, displayOnly, updateInventory }) {
     const handleClick = (itemName) => {
         if (items[itemName]) {
             sessionStorage.setItem("equipped", itemName);
+            if(setMarketSelected) setMarketSelected(itemName);
             setSelectedItem({
                 name: itemName,
                 quantity: items[itemName],
@@ -37,7 +38,7 @@ function CompInventory({ items, displayOnly, updateInventory }) {
                 name: '',
                 quantity: 0,
                 description: '',
-                image: ''
+                image: `${process.env.PUBLIC_URL}/assets/images/EMPTY.png`
             });
         }
     }
@@ -69,7 +70,7 @@ function CompInventory({ items, displayOnly, updateInventory }) {
                                 <ins className='count'>1000</ins>
                             </>
                         ) : (
-                            <p>Empty</p>
+                            <img src={`${process.env.PUBLIC_URL}/assets/images/EMPTY.png`} alt={"No item"} />
                         )}
                     </div>
                 )
@@ -83,7 +84,7 @@ function CompInventory({ items, displayOnly, updateInventory }) {
                             <ins className='count'>{itemCount}</ins>
                         </>
                     ) : (
-                        <p>Empty</p>
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/EMPTY.png`} alt={"No item"} />
                     )}
                 </div>
             )
@@ -110,7 +111,10 @@ function CompInventory({ items, displayOnly, updateInventory }) {
                 <div className="inventorySlots">
                     <div className="selected-item-info">
                         <img src={selectedItem.image} alt={selectedItem.name} />
-                        <p>{selectedItem.description}</p>
+                        <summary>
+                            <p>{selectedItem.description[0]}</p>
+                            <small>{selectedItem.description[1]}</small>
+                        </summary>
                     </div>
                     {
                         items && (<div className="items-grid">{toLoad()}</div>)

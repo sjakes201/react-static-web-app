@@ -8,6 +8,8 @@ import CONSTANTS from '../CONSTANTS';
 import UPGRADES from '../UPGRADES';
 
 function AnimalScreen({ }) {
+  sessionStorage.setItem("equipped", '');
+  
   // Get size of component
   const componentRef = useRef(null);
   const [componentWidth, setComponentWidth] = useState(null);
