@@ -15,7 +15,7 @@ root.render(
     <Router>
         <div id='root' style={{height: '100vh', width: '100vw'}}>
             <GameContainer/>
-            {/* <CompLogin /> */}
+            <CompLogin />
         </div>
     </Router>
 );

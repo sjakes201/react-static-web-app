@@ -143,8 +143,8 @@ function MarketScreen({ }) {
         for (let i = 0; i < Object.keys(prices.newPrices).length; ++i) {
             items.push({
                 name: keys[i],
-                newPrice: prices.newPrices[keys[i]][0],
-                oldPrice: prices.oldPrices[keys[i]][0],
+                newPrice: prices.newPrices[keys[i]],
+                oldPrice: prices.oldPrices[keys[i]],
                 imgURL: `${keys[i]}.png`
             })
         }
@@ -158,7 +158,7 @@ function MarketScreen({ }) {
             if (items[itemName] >= quantity) {
                 console.log("CAN SELL");
                 updateInventory(itemName, -1 * quantity, false);
-                updateBalance(prices.newPrices[itemName][0] * quantity);
+                updateBalance(prices.newPrices[itemName] * quantity);
                 const token = localStorage.getItem('token');
                 let result = await fetch('https://farm-api.azurewebsites.net/api/marketSell', {
                     method: "POST",
