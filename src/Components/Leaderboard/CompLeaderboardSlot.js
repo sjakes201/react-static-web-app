@@ -77,7 +77,7 @@ function CompLeaderboardSlot({ item, data }) {
                     <p><position style={{color: '#fec32d', padding:'0 5px'}}>1<sup>st</sup></position> {data.first.Username}: {data.first[item]}</p>
                     <p><position style={{color: 'silver', padding:'0 5px'}}>2<sup>nd</sup></position>{data.second.Username}: {data.second[item]}</p>
                     <p><position style={{color: 'brown', padding:'0 5px'}}>3<sup>rd</sup></position> {data.third.Username}: {data.third[item]}</p>
-                    <div style={{textAlign: 'center', color: 'gray'}}><p>You: {data.you}<sup>{ordinalSuffix(data.you)}</sup></p></div>
+                    <div style={{textAlign: 'center', color: 'gray'}}><p>You: {data.you === -1 ? "" : data.you}<sup>{ordinalSuffix(data.you)}</sup></p></div>
 
                 </div>
             </div>

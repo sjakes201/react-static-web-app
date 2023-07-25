@@ -10,6 +10,18 @@ import CompLogin from './Components/GUI/CompLogin';
 */
 sessionStorage.setItem("equipped", "");
 
+
+const checkAuth = () => {
+    const token = localStorage.getItem('token')
+    if(token === null) {
+        console.log("NO AUTH TOKEN")
+    } else {
+        console.log("LOGGED IN!")
+    }
+}
+
+checkAuth()
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Router>
