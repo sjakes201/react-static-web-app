@@ -50,14 +50,14 @@ module.exports = {
         yam_seeds: 5,
         beet_seeds: 6,
         parsnip_seeds: 7,
-        bamboo_seeds: 9,
-        hops_seeds: 10,
-        corn_seeds: 11,
-        potato_seeds: 12,
-        blueberry_seeds: 13,
-        grape_seeds: 14,
-        oats_seeds: 15,
-        strawberry_seeds: 16
+        bamboo_seeds: 8,
+        hops_seeds: 9,
+        corn_seeds: 10,
+        potato_seeds: 11,
+        blueberry_seeds: 12,
+        grape_seeds: 13,
+        oats_seeds: 14,
+        strawberry_seeds: 15
     },
     // CropNames is the exact inverse of above, to easily get names from id's, first index is null for indexing
     ProduceNameFromID: [null, "carrot_seeds", "melon_seeds", "cauliflower_seeds", "pumpkin_seeds", "yam_seeds",
