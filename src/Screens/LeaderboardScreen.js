@@ -17,6 +17,29 @@ function LeaderboardScreen({ }) {
 
     //ALLTIME, WEEKLY
     const [type, setType] = useState("WEEKLY")
+    const [leadersAll, setLeadersAll] = useState({});
+    const [leadersWeekly, setleadersWeekly] = useState({});
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        try {
+            let data = fetch('https://farm-api.azurewebsites.net/api/leaderboard', {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }).then((res) => res.json()).then((res) => {
+                setLeadersAll(res.allTimeLeaderboard);
+                setleadersWeekly(res.tempLeaderboard);
+            });
+        } catch (error) {
+            console.error("ERROR LOADING LEADERBOARDs", error);
+            // tell user to refresh or something
+        }
+
+    }, [])
 
     return (
         <div id="leaderboards" className="leaderboards" >
@@ -40,10 +63,10 @@ function LeaderboardScreen({ }) {
                 </div>
                 <div className='leaderboard-container' style={{
 
-                }}> < CompLeaderboard type={type} /> </div>
+                }}> < CompLeaderboard type={type} leadersWeekly={leadersWeekly} leadersAll={leadersAll} /> </div>
             </div>
 
-            
+
 
 
         </div>

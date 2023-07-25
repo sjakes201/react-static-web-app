@@ -2,10 +2,29 @@ import React, { useEffect, useState } from 'react'
 import CONSTANTS from '../../CONSTANTS';
 
 function CompLeaderboardSlot({ item, data }) {
-    if(!Array.isArray(data) || data.length < 3) {
-        return null
-    }
-    return (
+
+    // lol
+    function ordinalSuffix(number) {
+        const lastDigit = number % 10;
+        const lastTwoDigits = number % 100;
+    
+        if (lastTwoDigits > 10 && lastTwoDigits < 20) {
+            return "th";
+        }
+        
+        switch (lastDigit) {
+            case 1:
+                return "st";
+            case 2:
+                return "nd";
+            case 3:
+                return "rd";
+            default:
+                return "th";
+        }
+    }    
+
+    return data === undefined ? (<div></div>) : (
         <div id="leaderboard-slot"
             style={{
                 width: '100%',
@@ -55,9 +74,10 @@ function CompLeaderboardSlot({ item, data }) {
 
                     }}>
                     <p style={{ textAlign: 'center', textDecoration: 'underline', textTransform: 'uppercase', fontSize: "2.7vh" }}>{CONSTANTS.InventoryDescriptions[item][0]}</p>
-                    <p>1. {data[0].Username}: {data[0][item]}</p>
-                    <p>2. {data[1].Username}: {data[1][item]}</p>
-                    <p>3. {data[2].Username}: {data[2][item]}</p>
+                    <p><position style={{color: '#fec32d', padding:'0 5px'}}>1<sup>st</sup></position> {data.first.Username}: {data.first[item]}</p>
+                    <p><position style={{color: 'silver', padding:'0 5px'}}>2<sup>nd</sup></position>{data.second.Username}: {data.second[item]}</p>
+                    <p><position style={{color: 'brown', padding:'0 5px'}}>3<sup>rd</sup></position> {data.third.Username}: {data.third[item]}</p>
+                    <div style={{textAlign: 'center', color: 'gray'}}><p>You: {data.you}<sup>{ordinalSuffix(data.you)}</sup></p></div>
 
                 </div>
             </div>
