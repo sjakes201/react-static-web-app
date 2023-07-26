@@ -1,0 +1,63 @@
+.xClose {
+    position: absolute;
+    top: 3%;
+    right: 3%;
+}
+
+.xClose:hover {
+    cursor: pointer;
+}
+
+.login-gui {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    width: 32vw;
+    height: 40vh;
+    font-size: 1.75h;
+    background-color: white;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.deco-bar-top {
+    width: 35%;
+    height: 3px;
+}
+
+.deco-bar-bottom {
+    width: 30%;
+    height: 3px;
+}
+
+.bar-left {
+    margin-left: 5%;
+
+}
+
+.bar-right {
+    margin-right: 5%;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.login-title-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+}
+
+#bottom-title-bar {
+    margin-top: 2%;
+}

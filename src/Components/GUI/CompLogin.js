@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-
+import '../CSS/CompLogin.css'
 
 /*
 A popup that can appear anywhere
@@ -10,7 +10,7 @@ If loginLogged in, contains loginLog out
 */
 
 
-function Complogin({ }) {
+function Complogin({ close }) {
 
     // type is login or register
     const [screenType, setScreenType] = useState('login')
@@ -158,14 +158,15 @@ function Complogin({ }) {
     const getLogin = () => {
         return (
             <div>
-                <div id="login" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', border: '1px solid black', width: '32vw', height: '40vh', fontSize: '1.75vh' }}>
-                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', textAlign: 'center' }}><hr style={{ width: '35%', height: '3px', marginLeft: '5%' }} /><p>Login</p><hr style={{ width: '35%', height: '3px', marginRight: '5%' }} /></div>
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <div className='xClose' onClick={close}>X</div>
+                <div className="login-gui">
+                    <div className='login-title-bar'><hr className='deco-bar-top bar-left' /><p>Login</p><hr className='deco-bar-top bar-right' /></div>
+                    <form onSubmit={handleSubmit} className='login-form'>
 
-                        <div style={{ padding: '2% 0', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-                            <label style={{ textDecoration: 'underline' }}>Username: </label>
+                        <div className="credentials-input">
+                            <label className='underline'>Username: </label>
                             <input name="Username" type="text" pattern="[A-Za-z0-9_.]{4,24}" value={info.Username} title="4 to 24 characters in length: letters, numbers, _ and . allowed" onChange={(e) => handleInputChange(e)} required></input>
-                            <label style={{ textDecoration: 'underline' }}>Password: </label>
+                            <label className='underline'>Password: </label>
                             <input name="Password" type="password" pattern="[A-Za-z0-9!@#$%^&*_\-\.]{4,32}" value={info.Password} title="4 to 16 characters in length: letters, numbers, and special characters allowed" onChange={(e) => handleInputChange(e)} required></input>
                         </div>
 
@@ -176,7 +177,7 @@ function Complogin({ }) {
 
                         <div></div>
                     </form>
-                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', textAlign: 'center', marginTop: '2%' }}><hr style={{ width: '30%', height: '3px', marginLeft: '5%' }} /><p>New User?</p><hr style={{ width: '30%', height: '3px', marginRight: '5%' }} /></div>
+                    <div className='login-title-bar' id='bottom-title-bar'><hr className='deco-bar-bottom bar-left' /><p>New User?</p><hr className='deco-bar-bottom bar-right' /></div>
                     <div><button onClick={() => { setScreenType('Register'); setLog("") }} type="button">Create Account</button></div>
                 </div>
             </div>

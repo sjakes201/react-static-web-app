@@ -18,6 +18,9 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
+    column-gap: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .profileLink {
@@ -28,6 +31,7 @@
     height: 90%;
     width: 90%;
     object-fit: contain;
+    border: 1px solid black;
 }
 
 .profileLink>img {

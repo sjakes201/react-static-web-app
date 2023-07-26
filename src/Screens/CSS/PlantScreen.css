@@ -2,6 +2,13 @@
     height: 100vh;
     display: grid;
     grid-template-columns: 80% 20%;
+    position: relative;
+}
+
+.login-GUI {
+    position: absolute;
+    top: 30vh;
+    left: 34vw;
 }
 
 .left-column {
@@ -42,3 +49,10 @@
     background-color: rgb(209, 174, 70);
 }
 
+.credentials-input {
+    padding: 2% 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}

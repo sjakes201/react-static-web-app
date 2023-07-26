@@ -4,7 +4,7 @@ import CONSTANTS from "../../CONSTANTS";
 import '../CSS/CompProfile.css'
 import { Link } from 'react-router-dom';
 
-function CompProfile({ getBal, getUser, getXP, type }) {
+function CompProfile({ getBal, getUser, getXP, type, setLoginBox }) {
 
     const [bal, setBal] = useState(0);
     const [user, setUser] = useState("");
@@ -26,6 +26,11 @@ function CompProfile({ getBal, getUser, getXP, type }) {
                         <div className='profileXPTall'>XP: {xp}</div>
                         <div className='balanceTall'>${bal === 0 ? 0 : Math.round(bal * 100) / 100}</div>
                     </div>
+                    <div>
+                        <button onClick={ () => setLoginBox(true)}>
+                            Login
+                        </button>
+                    </div>
                 </div>
                 <div className="profileButtons">
                     <Link className='profileLink' to={`/leaderboard`}>
@@ -35,10 +40,10 @@ function CompProfile({ getBal, getUser, getXP, type }) {
                         <img src={`${process.env.PUBLIC_URL}/assets/images/homie.png`} alt='town' />
                     </Link>
                     <Link className='profileLink' to={`/leaderboard`}>
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/homie.png`} alt='leaderboard' />
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/leaderboard.png`} alt='leaderboard' />
                     </Link>
                     <Link className='profileLink' to={`/leaderboard`}>
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/homie.png`} alt='info/how to play' />
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/questionmark.png`} alt='info/how to play' />
                     </Link>
                 </div>
             </div>

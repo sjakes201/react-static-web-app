@@ -4,8 +4,7 @@ import CompPen from '../Components/Animals/CompPen';
 import CompOtherScreens from '../Components/GUI/CompOtherScreens'
 import CompInventory from '../Components/GUI/CompInventory'
 import CompProfile from "../Components/GUI/CompProfile";
-import CONSTANTS from '../CONSTANTS';
-import UPGRADES from '../UPGRADES';
+import Complogin from '../Components/GUI/CompLogin';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -55,6 +54,7 @@ function AnimalScreen({ }) {
   const [exoticPermit, setExoticPermit] = useState(false);
   const [animals, setAnimals] = useState({})
   const [prices, setPrices] = useState([{}, {}])
+  const [loginBox, setLoginBox] = useState(false);
 
   const [upgrades, setUpgrades] = useState({});
 
@@ -201,9 +201,12 @@ function AnimalScreen({ }) {
 
       </div>
       <div className='right-column'>
-        <div className="userProfile"><CompProfile type={'tall'} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
+        <div className="userProfile"><CompProfile type={'tall'} setLoginBox={setLoginBox} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
         <div className="inventory"><CompInventory items={items} updateInventory={updateInventory} /></div>
         <div className="settings">SETTINGS</div>
+      </div>
+      <div className="login-GUI">
+        {loginBox && <Complogin close={() => setLoginBox(false)} />}
       </div>
     </div>
 
