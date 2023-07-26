@@ -16,7 +16,7 @@ function CompInventory({ items, displayOnly, setMarketSelected }) {
                 name: '',
                 quantity: 0,
                 description: '',
-                image: ''
+                image: `${process.env.PUBLIC_URL}/assets/images/EMPTY.png`
             })
             sessionStorage.setItem('equipped', '')
         }

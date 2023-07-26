@@ -7,7 +7,7 @@ import CompProfile from "../Components/GUI/CompProfile";
 import CONSTANTS from "../CONSTANTS";
 import UPGRADES from "../UPGRADES";
 
-function PlantScreen({  }) {
+function PlantScreen({ }) {
 
     const [items, setItems] = useState({});
 
@@ -29,12 +29,12 @@ function PlantScreen({  }) {
             const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
                 method: 'POST',
                 headers: {
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json',
-                  'Authorization': `Bearer ${token}`
-                }, 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({})
-              });
+            });
             let data = await result.json();
             setItems(data);
         }
@@ -44,23 +44,23 @@ function PlantScreen({  }) {
             const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
                 method: 'POST',
                 headers: {
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json',
-                  'Authorization': `Bearer ${token}`
-                }, 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({})
-              });
+            });
             const data = await result.json();
 
             const prices = await fetch('https://farm-api.azurewebsites.net/api/prices', {
                 method: 'POST',
                 headers: {
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json',
-                  'Authorization': `Bearer ${token}`
-                }, 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({})
-              });
+            });
             const pricesData = await prices.json()
 
             setBalance(data.Balance);
@@ -112,7 +112,10 @@ function PlantScreen({  }) {
     }
 
     const getUser = () => {
-        if (Username) return Username
+        if (Username) {
+            if (Username.includes('#')) return "Guest"
+            return Username;
+        }
     }
 
     const getUpgrades = () => {
@@ -197,7 +200,7 @@ function PlantScreen({  }) {
         <div className="app">
             <div className='left-column'>
                 <div className='other-screensPl'><CompOtherScreens switchScreen={switchScreen} current={'plants'} /></div>
-                <div className='plot'><CompPlot getUpgrades={getUpgrades} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP}/></div>
+                <div className='plot'><CompPlot getUpgrades={getUpgrades} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div>
             </div>
             <div className='right-column'>
                 <div className="userProfile"><CompProfile type={'tall'} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>

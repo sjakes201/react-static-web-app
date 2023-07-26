@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import InitLoading from './Screens/InitLoading';
 import AnimalScreen from './Screens/AnimalScreen';
 import PlantScreen from './Screens/PlantScreen';
 import ShopScreen from './Screens/ShopScreen';
@@ -9,7 +10,7 @@ import LeaderboardScreen from './Screens/LeaderboardScreen'
 function GameContainer() {
     return (
         <Routes>
-            <Route path="/" element={<PlantScreen />} />
+            <Route path="/" element={<InitLoading />} />
             <Route path="/plants" element={<PlantScreen />} />
             <Route path="/animals" element={<AnimalScreen />} />
             <Route path="/shop" element={<ShopScreen />} />

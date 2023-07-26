@@ -33,12 +33,12 @@ function ShopScreen({ }) {
             const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
                 method: 'POST',
                 headers: {
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json',
-                  'Authorization': `Bearer ${token}`
-                }, 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({})
-              });
+            });
             let data = await result.json();
             setItems(data);
         }
@@ -48,23 +48,23 @@ function ShopScreen({ }) {
             const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
                 method: 'POST',
                 headers: {
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json',
-                  'Authorization': `Bearer ${token}`
-                }, 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({})
-              });
+            });
             const data = await result.json();
 
             const prices = await fetch('https://farm-api.azurewebsites.net/api/prices', {
                 method: 'POST',
                 headers: {
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json',
-                  'Authorization': `Bearer ${token}`
-                }, 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({})
-              });
+            });
             const pricesData = await prices.json()
 
             setBalance(data.Balance);
@@ -116,7 +116,10 @@ function ShopScreen({ }) {
     }
 
     const getUser = () => {
-        if (Username) return Username
+        if (Username) {
+            if (Username.includes('#')) return "Guest"
+            return Username;
+        }
     }
 
     const getUpgrades = () => {
@@ -217,7 +220,7 @@ function ShopScreen({ }) {
             </div>
             <CompShop getXP={getXP} getAnimals={getAnimals} updateUpgrades={updateUpgrades}
                 getUpgrades={getUpgrades} updateInventory={updateInventory} permits={{ 'deluxePermit': deluxePermit, 'exoticPermit': exoticPermit }}
-                updateBalance={updateBalance} getBal={getBal} updateAnimals={updateAnimals} 
+                updateBalance={updateBalance} getBal={getBal} updateAnimals={updateAnimals}
                 items={items} />
         </div>
     )

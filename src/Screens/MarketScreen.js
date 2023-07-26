@@ -77,7 +77,10 @@ function MarketScreen({ }) {
     }
 
     const getUser = () => {
-        if (Username) return Username
+        if (Username) {
+            if (Username.includes('#')) return "Guest"
+            return Username;
+        }
     }
 
     const updateBalance = (amount) => {
@@ -117,7 +120,7 @@ function MarketScreen({ }) {
     const setMarketSelected = (name) => {
         if (marketItems) {
             let targetItem = marketItems.filter((item) => item.name === name);
-            if(targetItem.length !== 1) {
+            if (targetItem.length !== 1) {
                 return;
             }
             console.log(targetItem[0])

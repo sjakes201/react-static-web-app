@@ -5,29 +5,13 @@ import './reset.css'
 import GameContainer from './GameContainer';
 import CompLogin from './Components/GUI/CompLogin';
 
-/*
- Limited initialization
-*/
-sessionStorage.setItem("equipped", "");
-
-
-const checkAuth = () => {
-    const token = localStorage.getItem('token')
-    if(token === null) {
-        console.log("NO AUTH TOKEN")
-    } else {
-        console.log("LOGGED IN!")
-    }
-}
-
-checkAuth()
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Router>
-        <div id='root' style={{height: '100vh', width: '100vw'}}>
-            <GameContainer/>
-            <CompLogin />
+        <div id='root' style={{ height: '100vh', width: '100vw' }}>
+            <GameContainer />
+            {/* <CompLogin /> */}
         </div>
     </Router>
 );
