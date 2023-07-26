@@ -6,10 +6,19 @@ import CompProfile from '../Components/GUI/CompProfile'
 import CompOtherScreens from '../Components/GUI/CompOtherScreens'
 import CONSTANTS from "../CONSTANTS";
 import UPGRADES from "../UPGRADES";
+import { useNavigate } from 'react-router-dom';
+
 
 
 
 function ShopScreen({ }) {
+
+    const navigate = useNavigate();
+    if (localStorage.getItem('token') === null) {
+        // no auth token present
+        navigate('/');
+    }
+
     sessionStorage.setItem("equipped", '');
     // Functions
 

@@ -6,10 +6,16 @@ import CompOtherScreen from '../Components/GUI/CompOtherScreens'
 import CompInventory from '../Components/GUI/CompInventory';
 import CompMarketSelection from '../Components/Market/CompMarketSelection';
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+
 
 function MarketScreen({ }) {
-    sessionStorage.setItem("equipped", '');
 
+    const navigate = useNavigate();
+    if (localStorage.getItem('token') === null) {
+        // no auth token present
+        navigate('/');
+    }
     // Functions
     const [items, setItems] = useState({});
 

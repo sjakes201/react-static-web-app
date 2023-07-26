@@ -17,7 +17,7 @@ function InitLoading({ }) {
     // Images on the plant screen or that could be used immediately
     const FIRST_IMAGES = ["dirt.png", "homie.png", "oats_seeds.png", "corn_seeds.png", "corn_stage_0.png", "oats_stage_0.png", "corn.png", "oats.png", "chicken_standing_right.png"];
     // Secondary images in menus, all icons, and all stage 0's
-    const ICONS = ["success.gif", "fail.gif", "seeds.png", "scythe.png", "market-down.png",
+    const ICONS = ["success.gif", "fail.gif", "seeds.png", "scythe.gif", "market-down.png",
         "market-up.png", "market-neutral.png"]
     const STAGE0s = ["bamboo_stage_0.png", "beet_stage_0.png",
         "blueberry_stage_0.png", "cauliflower_stage_0.png", "grape_stage_0.png", "hops_stage_0.png",

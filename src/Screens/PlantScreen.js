@@ -6,8 +6,16 @@ import CompOtherScreens from "../Components/GUI/CompOtherScreens";
 import CompProfile from "../Components/GUI/CompProfile";
 import CONSTANTS from "../CONSTANTS";
 import UPGRADES from "../UPGRADES";
+import { useNavigate } from 'react-router-dom';
+
 
 function PlantScreen({ }) {
+
+    const navigate = useNavigate();
+    if (localStorage.getItem('token') === null) {
+        // no auth token present
+        navigate('/');
+    }
 
     const [items, setItems] = useState({});
 
@@ -89,22 +97,8 @@ function PlantScreen({ }) {
 
     }, []);
 
-    // pass each screen this. they will use it and assign it to their building/path buttons
-    const switchScreen = (screenName) => {
-        sessionStorage.setItem("equipped", "");
-        console.log("SWITCH SCREEN CALLED")
-    }
-
-    const getAnimals = () => {
-        if (animals) return animals;
-    }
-
     const getXP = () => {
         return XP;
-    }
-
-    const getPrices = () => {
-        if (prices.newPrices) return prices;
     }
 
     const getBal = () => {
@@ -121,46 +115,6 @@ function PlantScreen({ }) {
     const getUpgrades = () => {
         if (upgrades) return upgrades;
         // for all of these.. else return proper formatted data with default values?
-    }
-
-    const updateAnimals = (animal) => {
-        let location = CONSTANTS.AnimalTypes[animal][0];
-        location = location.concat('Count')
-        setAnimals(prevAnimals => {
-            return {
-                ...prevAnimals,
-                [location]: prevAnimals[location] + 1
-            }
-
-        })
-    }
-
-    const updateUpgrades = (upgradeBought) => {
-        let coopCapacityUpgrades = UPGRADES.CapacityIncreases.Coop;
-        let barnCapacityUpgrades = UPGRADES.CapacityIncreases.Barn;
-
-        setUpgrades(prevUpgrades => {
-            let newUpgrades = {
-                ...prevUpgrades,
-                [upgradeBought]: prevUpgrades[upgradeBought] + 1
-            }
-
-            setAnimals((prevAnimals) => {
-                let newAnimals = { ...prevAnimals }
-                if (upgradeBought === 'barnCapacityUpgrade') {
-                    newAnimals.barnCapacity = newAnimals.barnCapacity + barnCapacityUpgrades[newUpgrades.barnCapacityUpgrade - 1]
-                }
-                if (upgradeBought === 'coopCapacityUpgrade') {
-                    newAnimals.coopCapacity = newAnimals.coopCapacity + coopCapacityUpgrades[newUpgrades.coopCapacityUpgrade - 1]
-
-                }
-                return newAnimals;
-            })
-
-            return newUpgrades;
-        })
-
-
     }
 
     const updateXP = (amount) => {
@@ -199,7 +153,7 @@ function PlantScreen({ }) {
     return (
         <div className="app">
             <div className='left-column'>
-                <div className='other-screensPl'><CompOtherScreens switchScreen={switchScreen} current={'plants'} /></div>
+                <div className='other-screensPl'><CompOtherScreens current={'plants'} /></div>
                 <div className='plot'><CompPlot getUpgrades={getUpgrades} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div>
             </div>
             <div className='right-column'>

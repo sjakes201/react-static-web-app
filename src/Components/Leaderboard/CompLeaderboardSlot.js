@@ -3,7 +3,6 @@ import CONSTANTS from '../../CONSTANTS';
 
 function CompLeaderboardSlot({ item, data }) {
 
-    // lol
     function ordinalSuffix(number) {
         const lastDigit = number % 10;
         const lastTwoDigits = number % 100;

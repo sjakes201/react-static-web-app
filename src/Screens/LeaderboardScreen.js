@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import CompLeaderboard from '../Components/Leaderboard/CompLeaderboard';
 import './CSS/LeaderboardScreen.css'
+import { useNavigate } from 'react-router-dom';
+
 
 /*
 All time contains all time most harvested, and current max balance. So balance is current, can change, but crops are total harvested
@@ -14,6 +16,12 @@ Explain this in text box inside each respective leaderboard
 
 
 function LeaderboardScreen({ }) {
+    
+    const navigate = useNavigate();
+    if (localStorage.getItem('token') === null) {
+        // no auth token present
+        navigate('/');
+    }
 
     //ALLTIME, WEEKLY
     const [type, setType] = useState("WEEKLY")
