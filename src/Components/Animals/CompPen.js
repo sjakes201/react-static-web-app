@@ -179,7 +179,7 @@ function CompPen({ passedUpgrades, penWidth, penHeight, className, isBarn, updat
 
     const isCollectible = (Last_produce, Animal_type) => {
         // TODO: Need to update for upgrade collect times
-        if (Last_produce === null || !(Animal_type in CONSTANTS.AnimalCollectTimes)) { console.log("INVALID isCollectible inputs"); return false; }
+        if (Last_produce === null || !(Animal_type in UPGRADES.AnimalCollectTimes0)) { console.log("INVALID isCollectible inputs"); return false; }
 
         let curTime = Date.now()
         let secsPassed = ((curTime - Last_produce) / 1000) - 0.2;
