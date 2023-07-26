@@ -70,6 +70,7 @@ function AnimalScreen({ }) {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    sessionStorage.setItem('equipped', '')
     async function fetchData() {
       const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
         method: 'POST',

@@ -11,6 +11,7 @@ If loginLogged in, contains loginLog out
 
 
 function Complogin({ }) {
+
     // type is login or register
     const [screenType, setScreenType] = useState('login')
     const [showPassword, setShowPassword] = useState(false);
@@ -88,13 +89,15 @@ function Complogin({ }) {
     }
 
     const createUser = async (profile) => {
-        const response = await fetch('https://farm-api.azurewebsites.net/api/userRegister?', {
+
+        const token = localStorage.getItem('token');
+        const response = await fetch('https://farm-api.azurewebsites.net/api/userRegister', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
-            credentials: 'include',
             body: JSON.stringify(profile)
         });
 
@@ -103,6 +106,7 @@ function Complogin({ }) {
         if (data.auth) {
             localStorage.setItem('token', data.token);
             console.log("Login success");
+
         } else {
             console.log("Login failed")
         }
@@ -160,7 +164,7 @@ function Complogin({ }) {
 
                         <div style={{ padding: '2% 0', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
                             <label style={{ textDecoration: 'underline' }}>Username: </label>
-                            <input name="Username" type="text" pattern="[A-Za-z0-9_.]{4,16}" value={info.Username} title="4 to 16 characters in length: letters, numbers, _ and . allowed" onChange={(e) => handleInputChange(e)} required></input>
+                            <input name="Username" type="text" pattern="[A-Za-z0-9_.]{4,24}" value={info.Username} title="4 to 24 characters in length: letters, numbers, _ and . allowed" onChange={(e) => handleInputChange(e)} required></input>
                             <label style={{ textDecoration: 'underline' }}>Password: </label>
                             <input name="Password" type="password" pattern="[A-Za-z0-9!@#$%^&*_\-\.]{4,32}" value={info.Password} title="4 to 16 characters in length: letters, numbers, and special characters allowed" onChange={(e) => handleInputChange(e)} required></input>
                         </div>
@@ -269,7 +273,7 @@ function Complogin({ }) {
         return getRegister()
     } else {
         return getLogin()
-       
+
     }
 
 }
