@@ -1,46 +1,5 @@
-//TODO: Make something that easily creates this from a much simpler input form
 
 module.exports = {
-    //itemLocater helps you find the table things are in, instead of having to splice string to see if seeds is concated. [column_name, table]
-    // ITEMLOCATER SHOULD BE UNUSED NOW
-    itemLocater: {
-        // SEEDS TABLE
-        carrot_seeds: ["carrot_seeds", "Inventory_SEEDS"],
-        melon_seeds: ["melon_seeds", "Inventory_SEEDS"],
-        cauliflower_seeds: ["cauliflower_seeds", "Inventory_SEEDS"],
-        pumpkin_seeds: ["pumpkin_seeds", "Inventory_SEEDS"],
-        yam_seeds: ["yam_seeds", "Inventory_SEEDS"],
-        beet_seeds: ["beet_seeds", "Inventory_SEEDS"],
-        parsnip_seeds: ["parsnip_seeds", "Inventory_SEEDS"],
-        bamboo_seeds: ["bamboo_seeds", "Inventory_SEEDS"],
-        hops_seeds: ["hops_seeds", "Inventory_SEEDS"],
-        corn_seeds: ["corn_seeds", "Inventory_SEEDS"],
-        potato_seeds: ["potato_seeds", "Inventory_SEEDS"],
-        blueberry_seeds: ["blueberry_seeds", "Inventory_SEEDS"],
-        grape_seeds: ["grape_seeds", "Inventory_SEEDS"],
-        oats_seeds: ["oats_seeds", "Inventory_SEEDS"],
-        strawberry_seeds: ["strawberry_seeds", "Inventory_SEEDS"],
-
-        // PRODUCE TABLE
-        carrot: ["carrot", "Inventory_PRODUCE"],
-        melon: ["melon", "Inventory_PRODUCE"],
-        cauliflower: ["cauliflower", "Inventory_PRODUCE"],
-        pumpkin: ["pumpkin", "Inventory_PRODUCE"],
-        yam: ["yam", "Inventory_PRODUCE"],
-        beet: ["beet", "Inventory_PRODUCE"],
-        parsnip: ["parsnip", "Inventory_PRODUCE"],
-        bamboo: ["bamboo", "Inventory_PRODUCE"],
-        hops: ["hops", "Inventory_PRODUCE"],
-        corn: ["corn", "Inventory_PRODUCE"],
-        potato: ["potato", "Inventory_PRODUCE"],
-        blueberry: ["blueberry", "Inventory_PRODUCE"],
-        grape: ["grape", "Inventory_PRODUCE"],
-        oats: ["oats", "Inventory_PRODUCE"],
-        strawberry: ["strawberry", "Inventory_PRODUCE"],
-        cow_milk: ["cow_milk", "Inventory_PRODUCE"],
-        chicken_egg: ["chicken_egg", "Inventory_PRODUCE"],
-
-    },
     // CropIDS are for the integer ID's for different crops in SQL tile table
     ProduceIDs: {
         carrot_seeds: 1,
@@ -80,27 +39,6 @@ module.exports = {
         grape_seeds: ["grape", 6, 5],
         oats_seeds: ["oats", 4, 4],
         strawberry_seeds: ["strawberry", 3, 4]
-    },
-    // GrowthTimes is an array for how long crops spend at each stage in MINUTES, with the final stage being harvestable. Intermediate
-    // stages are purely cosmetic, the database only stores plant times. It goes to the stage (index + 1) after the time has passed, 
-    // cumulative. So [3, 4, 5] would be stage 0, then stage 1 after 3 minutes, then stage 2 after 7 minutes, then stage 3 (harvestable)
-    // after 12 minutes
-    GrowthTimes: {
-        carrot_seeds: [10, 15, 15],
-        melon_seeds: [0, 0, 5],
-        cauliflower_seeds: [10, 10, 10, 10],
-        pumpkin_seeds: [4, 4, 8, 12],
-        yam_seeds: [5, 5, 5],
-        beet_seeds: [2, 2, 2],
-        parsnip_seeds: [2, 2, 2],
-        bamboo_seeds: [2, 2, 2],
-        hops_seeds: [2, 2, 2],
-        corn_seeds: [10, 10, 10, 10],
-        potato_seeds: [2, 2, 2],
-        blueberry_seeds: [2, 2, 2],
-        grape_seeds: [2, 2, 2],
-        oats_seeds: [4, 5, 6],
-        strawberry_seeds: [2, 2, 2]
     },
     // Fixed prices is for prices of things you buy from the game (seeds, animals)
     Fixed_Prices: {
@@ -159,21 +97,6 @@ module.exports = {
         "llama": ['barn', 170]
     },
     // default time per collect in seconds
-    AnimalCollectTimes: {
-        "cow": [60],
-        "chicken": [4],
-        "duck": [10],
-        "quail": [12],
-        "yak": [20],
-        "sheep": [15],
-        "goat": [16],
-        "ostrich": [40],
-        "llama": [30]
-    },
-    AnimalProduceMap: {
-        "cow": ["cow_milk", 1],
-        "chicken": ["chicken_egg", 1]
-    },
     // [ display name , more details ]
     InventoryDescriptions: {
         carrot_seeds: ["Carrot Seeds", "x Harvests y time intervals"],
