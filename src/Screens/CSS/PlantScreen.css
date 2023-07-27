@@ -22,7 +22,7 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: firebrick;
+    background-color: rgba(180, 149, 89, 0.923);
 }
 
 .userProfile {
@@ -37,6 +37,15 @@
 
 .settings {
     height: 20vh;
+    box-sizing: border-box;
+    margin: 11px;
+    box-shadow:
+        0 0 0 3px var(--black),
+        0 0 0 6px var(--border_orange),
+        0 0 0 8px var(--border_shadow_orange),
+        0 0 0 11px var(--black);
+    position: relative;
+    z-index: 5;
 }
 
 .other-screensPl {
@@ -46,7 +55,7 @@
 
 .plot {
     height: 90vh;
-    background-color: rgb(209, 174, 70);
+    background: var(--dirt);
 }
 
 .credentials-input {

@@ -148,19 +148,25 @@ function CompShop({ updateAnimals, getAnimals, getXP, updateUpgrades, updateBala
     return (
         <div className='shop'>
             <section id='Seeds' className='shopRow'>
-                <div className='label'><img src={`${process.env.PUBLIC_URL}/assets/images/seeds.png`} /></div>
+                <div className='label'>
+                    <h2>SEEDS</h2>
+                </div>
                 <div className='items'>
                     {getSeedItems()}
                 </div>
             </section>
             <section id='Animals' className='shopRow'>
-                <div className='label'><img src={`${process.env.PUBLIC_URL}/assets/images/seeds.png`} /></div>
+                <div className='label'>
+                    <h2>ANIMALS</h2>
+                </div>
                 <div className='items'>
                     {getAnimalItems()}
                 </div>
             </section>
             <section id='Upgrades' className='shopRow'>
-                <div className='label'><img src={`${process.env.PUBLIC_URL}/assets/images/seeds.png`} /></div>
+                <div className='label'>
+                    <h2>UPGRADES</h2>
+                </div>
                 <div className='items'>
                     {getUpgradeItems()}
                 </div>

@@ -25,7 +25,7 @@ function CompInventory({ items, displayOnly, setMarketSelected }) {
     const handleClick = (itemName) => {
         if (items[itemName]) {
             sessionStorage.setItem("equipped", itemName);
-            if(setMarketSelected) setMarketSelected(itemName);
+            if (setMarketSelected) setMarketSelected(itemName);
             setSelectedItem({
                 name: itemName,
                 quantity: items[itemName],
@@ -105,26 +105,22 @@ function CompInventory({ items, displayOnly, setMarketSelected }) {
             </div>
         )
     }
-    if (!displayOnly) {
-        return (
-            <div className='inventory-container'>
-                <div className="inventorySlots">
-                    <div className="selected-item-info">
-                        <img src={selectedItem.image} alt={selectedItem.name} />
-                        <summary>
-                            <p>{selectedItem.description[0]}</p>
-                            <small>{selectedItem.description[1]}</small>
-                        </summary>
-                    </div>
-                    {
-                        items && (<div className="items-grid">{toLoad()}</div>)
-                    }
+    return (
+        <div className='inventory-container'>
+            <div className="inventorySlots">
+                <div className="selected-item-info">
+                    <img src={selectedItem.image} alt={selectedItem.name} />
+                    <summary>
+                        <p>{selectedItem.description[0]}</p>
+                        <small>{selectedItem.description[1]}</small>
+                    </summary>
                 </div>
+                {
+                    items && (<div className="items-grid">{toLoad()}</div>)
+                }
             </div>
-
-        );
-
-    }
+        </div>
+    );
 }
 
 export default CompInventory;

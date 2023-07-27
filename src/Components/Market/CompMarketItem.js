@@ -4,26 +4,30 @@ import React, { useEffect, useState } from "react";
 // priceDirection is change from previous time interval: UP, DOWN, NEUTRAL
 function CompMarketItem({ imgURL, name, newPrice, oldPrice }) {
     let arrowURL = `${process.env.PUBLIC_URL}/assets/images/market_direction_error.png`;
-    if(newPrice >= oldPrice * 1.019) {
+    if (newPrice >= oldPrice * 1.019) {
         arrowURL = `${process.env.PUBLIC_URL}/assets/images/market-up.png`
-    } else if(newPrice <= oldPrice * 0.981) {
+    } else if (newPrice <= oldPrice * 0.981) {
         arrowURL = `${process.env.PUBLIC_URL}/assets/images/market-down.png`
     } else {
         arrowURL = `${process.env.PUBLIC_URL}/assets/images/market-neutral.png`
     }
-    
 
     return (
         <div id="market-item"
             style={{
-                width: "100%",
-            }}>
+                width: "calc(100% - 22px)",
+                margin: '11px',
+                boxSizing: 'border-box',
+                boxShadow: 
+                    '0 0 0 1px rgb(0, 0, 0), 0 0 0 4px rgb(245, 166, 43), 0 0 0 6px rgb(199, 135, 35), 0 0 0 9px rgb(0, 0, 0)',
+
+            }}> 
             <p id="market-item-name"
                 style={{
                     textAlign: 'center',
                     height: '15%',
                     width: '100%',
-                    fontSize:'2vh'
+                    fontSize: '2vh'
                 }}>{name}</p>
             <div
                 id="market-img-container"
@@ -55,10 +59,10 @@ function CompMarketItem({ imgURL, name, newPrice, oldPrice }) {
                     height: '20%',
                     columnGap: '2%'
                 }}>
-                <img style={{ width: '10%'}} src={arrowURL} />
-                <p style={{fontSize:'2vh'}}>${newPrice}</p>
-                <img style={{ width: '10%'}} src={arrowURL} />
-                <small style={{ fontSize: '1.25vh'}} >/each</small>
+                <img style={{ width: '10%' }} src={arrowURL} />
+                <p style={{ fontSize: '2vh' }}>${newPrice}</p>
+                <img style={{ width: '10%' }} src={arrowURL} />
+                <small style={{ fontSize: '1.25vh' }} >/each</small>
                 {/* <img style={{ width: '10%'}} src={arrowURL} /> */}
             </div>
 

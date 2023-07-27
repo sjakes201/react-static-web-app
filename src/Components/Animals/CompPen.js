@@ -367,10 +367,13 @@ function CompPen({ passedUpgrades, penWidth, penHeight, className, isBarn, updat
             display: 'grid',
             gridTemplateColumns: `repeat(${xSlots}, 1fr)`,
             gridTemplateRows: `repeat(${ySlots}, 1fr)`,
-            border: '1px solid blue',
-            backgroundColor: 'bisque',
-            width: `${animalWidth * xSlots}px`,
-            height: `${animalHeight * ySlots}px`,
+            border: '1px solid black',
+
+            backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/grass1.png), url(${process.env.PUBLIC_URL}/assets/images/grass2.png`,
+            backgroundRepeat: 'repeat, repeat',
+
+            width: `40vw`,
+            height: `90vh`,
             WebkitUserSelect: "none",
             MozUserSelect: "none",
             msUserSelect: "none",

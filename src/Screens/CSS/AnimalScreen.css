@@ -15,7 +15,7 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: firebrick;
+    background-color: rgba(180, 149, 89, 0.923);
 }
 
 .pens-wrapper {

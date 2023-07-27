@@ -1,27 +1,27 @@
 .shop {
     width: 100%;
     height: 100%;
-    background-color: #d2a427;
+    background-color: #fbf4b5ee;
     display: flex;
     flex-direction: column;
 
     /* width */
     ::-webkit-scrollbar {
         width: 20px;
-        height: 10px;
+        height: 8px;
     }
 
     /* Track */
     ::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px grey;
+        box-shadow: inset 0 0 3px grey;
         border-radius: 10px;
     }
 
     /* Handle */
     ::-webkit-scrollbar-thumb {
-        background: rgb(226, 202, 141);
+        background: #A67C52;
         border-radius: 10px;
-        border: 1px solid rgb(66, 48, 10);
+        border: 1px solid rgb(0, 0, 0);
     }
 
 }
@@ -42,10 +42,11 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    background-color: lightyellow;
+    background-color: #D2B48C;
     overflow-y: hidden;
     margin: 1vh 1vw;
     box-sizing: border-box;
+    border: 1px solid black;
 }
 
 .items {
@@ -55,7 +56,6 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    background-color: lightyellow;
     overflow-x: auto;
     overflow-y: hidden;
     margin: 1vh 1vw;
@@ -64,20 +64,26 @@
 }
 
 .label {
-    background-color: indianred;
+    background-color: #A67C52;
     min-width: 4vw;
     width: 4vw;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    border-right: 1px solid black;
 }
 
-.label>img {
-    height: 100%;
-    width: auto;
-    object-fit: contain;
+.label>h2 {
+    transform: rotate(270deg);
+    transform-origin: center;
+    color: white;
+    font-size: 4vh;
+    font-family: 'Trebuchet MS', sans-serif;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
 }
+
 
 #Seeds {
     margin-top: 2vh;
@@ -90,6 +96,5 @@
 .shelf {
     height: 100%;
     width: 6vw;
-    background-color: brown;
     margin: 0px 2px;
 }

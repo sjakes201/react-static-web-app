@@ -190,7 +190,7 @@ function Complogin({ close }) {
                 <div id="register" style={{
                     display: 'flex', flexDirection: 'column',
                     justifyContent: 'center', alignItems: 'center', border: '1px solid black',
-                    width: '32vw', height: '40vh', fontSize: '1.75vh', position: 'relative'
+                    width: '32vw', height: '40vh', fontSize: '1.75vh', position: 'relative', backgroundColor: 'white'
                 }}>
                     <div style={{
                         display: 'flex', flexDirection: 'row', alignItems:

@@ -22,7 +22,14 @@ function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell }) {
         setQuantity('')
     }
     return (
-        <div style={{ height: "100%" }}>
+        <div style={{
+            height: '100%',
+            width: 'calc(100% - 22px)',
+            margin: '0 11px',
+            height: '100%',
+            boxSizing: 'border-box',
+            boxShadow: '0 0 0 3px rgb(0, 0, 0), 0 0 0 6px rgb(245, 166, 43), 0 0 0 8px rgb(199, 135, 35), 0 0 0 11px rgb(0, 0, 0)',
+        }}>
             <div style={{ height: "100%", display: 'flex', flexDirection: 'row' }}>
                 <div style={{ height: '100%', width: '60%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <img src={`${process.env.PUBLIC_URL}/assets/images/`.concat(imgURL)} style={{ objectFit: 'contain', width: '100%', maxHeight: '100%' }} />

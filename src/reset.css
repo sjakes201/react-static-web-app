@@ -1,5 +1,18 @@
 /* reset.css */
 
+
+/* Color palette  */
+:root {
+  --border_orange: rgb(245,166,43);
+  --border_shadow_orange: rgb(199, 135, 35);
+  --black: rgb(0, 0, 0);
+  --dirt: rgb(158, 113, 42);
+  --menu_dark: rgb(94,70,40);
+  --menu_light: rgb(212,179,116);
+  --border_yellow: rgb(255,228,82);
+  --border_shadow_yellow: rgb(214,192,69);
+}
+
 /* Box sizing */
 *,
 *::before,

@@ -32,12 +32,11 @@
 }
 
 .market-profile {
-    background-color: bisque;
     height: 18%;
 }
 
 .market-select-info {
-    background-color: blueviolet;
+    background-color: var(--menu_dark);
     height: 35%;
 }
 
@@ -47,6 +46,15 @@
 }
 
 .market-other {
-    background-color: coral;
     height: 18%;
+    background-color: var(--menu_light);
+    box-sizing: border-box;
+    margin: 11px;
+    box-shadow:
+        0 0 0 3px var(--black),
+        0 0 0 6px var(--border_orange),
+        0 0 0 8px var(--border_shadow_orange),
+        0 0 0 11px var(--black);
+    position: relative;
+    z-index: -1;
 }

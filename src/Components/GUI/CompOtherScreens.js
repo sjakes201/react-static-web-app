@@ -9,24 +9,16 @@ function CompOtherScreens({ current }) {
 
   const [otherScreens, setOtherScreens] = useState([]);
 
+  let classes = 'buttons-container ' + (current === 'animals' ? 'top-bar' : 'bottom-bar')
 
   const renderScreenButton = (imageSrc, altText, whereTo) => {
     return (
-      <Link to={`/${whereTo}`} key={altText}
-      style={{
-        width: '90%',
-        height: '70%',
-        padding: 0,
-        border: 'none',
-        background: 'none',
-        cursor: 'pointer',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column'
-      }}>
+      <Link
+        to={`/${whereTo}`}
+        key={altText}
+        className='nav-button'>
         <p style={{ height: '10%' }}>{whereTo}</p>
-        <img key={altText} src={imageSrc} alt={altText} style={{ width: '100%', height: '90%', border: '1px solid black', objectFit: 'contain' }} />
+        <img key={altText} src={imageSrc} alt={altText}  />
       </Link>
 
     );
@@ -53,16 +45,7 @@ function CompOtherScreens({ current }) {
   }, [])
 
   return (
-    <div style={{
-      width: '100%',
-      height: '100%',
-      backgroundColor: 'rgb(120, 218, 81)',
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
-      alignItems: 'center',
-      gap: '10px',
-    }} >
+    <div className={classes}>
       {otherScreens}
     </div>
   )

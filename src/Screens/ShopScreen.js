@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import './CSS/ShopScreen.css'
 import CompShop from '../Components/Shop/CompShop'
 import CompProfile from '../Components/GUI/CompProfile'
 import CompOtherScreens from '../Components/GUI/CompOtherScreens'
@@ -213,7 +212,6 @@ function ShopScreen({ }) {
         <div>
             <div style={{
                 height: '14vh',
-                backgroundColor: 'rgb(188, 147, 255)',
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-evenly',
