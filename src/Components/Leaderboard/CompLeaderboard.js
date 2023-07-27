@@ -6,7 +6,7 @@ function CompLeaderboard({ type, leadersWeekly, leadersAll }) {
         return (<div></div>)
     }
     if (type === 'WEEKLY') {
-        if (Object.keys(leadersAll).length) {
+        if (Object.keys(leadersWeekly).length) {
             return (
                 <div style={{
                     paddingTop: '2%',
@@ -33,7 +33,7 @@ function CompLeaderboard({ type, leadersWeekly, leadersAll }) {
                         gridTemplateColumns: '49% 49%',
                         rowGap: '.4%',
                         columnGap: '1%',
-                        paddingBottom: '3%'
+                        paddingBottom: '5%'
                     }}>
                         {Object.keys(leadersWeekly).map(key => {
                             if (key === "Balance") return null;
