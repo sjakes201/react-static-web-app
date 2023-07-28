@@ -52,26 +52,21 @@ function LeaderboardScreen({ }) {
     return (
         <div id="leaderboards" className="leaderboards" >
             <div
-                style={{
-                    width: '80%',
-                    height: '100%',
-                }}>
+                className='main-board'>
                 <div className='buttons' style={{}}>
-                    <div id="weekly-title" className={type === 'WEEKLY' ? 'type-button active' : 'type-button'} onClick={() => setType("WEEKLY")}>
+                    <div id="weekly-title" className={type === 'WEEKLY' ? 'type-button active' : 'type-button inactive'} onClick={() => setType("WEEKLY")}>
                         <img src={`${process.env.PUBLIC_URL}/assets/images/homie.png`} />
                         <h3>WEEKLY</h3>
                         <img src={`${process.env.PUBLIC_URL}/assets/images/homie.png`} />
                     </div>
 
-                    <div id="alltime-title" className={type === 'ALLTIME' ? 'type-button active' : 'type-button'} onClick={() => setType("ALLTIME")}>
+                    <div id="alltime-title" className={type === 'ALLTIME' ? 'type-button active' : 'type-button inactive'} onClick={() => setType("ALLTIME")}>
                         <img src={`${process.env.PUBLIC_URL}/assets/images/homie.png`} />
                         <h3>ALL TIME</h3>
                         <img src={`${process.env.PUBLIC_URL}/assets/images/homie.png`} />
                     </div>
                 </div>
-                <div className='leaderboard-container' style={{
-
-                }}> < CompLeaderboard type={type} leadersWeekly={leadersWeekly} leadersAll={leadersAll} /> </div>
+                <div className='leaderboard-container'> < CompLeaderboard type={type} leadersWeekly={leadersWeekly} leadersAll={leadersAll} /> </div>
             </div>
 
 

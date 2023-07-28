@@ -152,7 +152,7 @@ module.exports = {
     // For each permit type, what crops and animals it permits
     Permits: {
         "deluxeCrops": ['grape_seeds', 'bamboo_seeds', 'hops_seeds'],
-        "exoticAnimals": ['quail', 'llamas'],
+        "exoticAnimals": ['quail', 'llama'],
     },
 	// Luxury goods have a artifical bonus in market prices of 5% and higher floors, usually from deluxe/exotics or things that need permits / higher costs
 	LuxuryGoods: ['grape','bamboo','hops'],

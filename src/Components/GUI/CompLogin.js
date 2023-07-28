@@ -187,18 +187,15 @@ function Complogin({ close }) {
     const getRegister = () => {
         return (
             <div>
-                <div id="register" style={{
-                    display: 'flex', flexDirection: 'column',
-                    justifyContent: 'center', alignItems: 'center', border: '1px solid black',
-                    width: '32vw', height: '40vh', fontSize: '1.75vh', position: 'relative', backgroundColor: 'white'
-                }}>
+                <div className='xClose' onClick={close}>X</div>
+                <div id="register" className="login-gui">
                     <div style={{
                         display: 'flex', flexDirection: 'row', alignItems:
                             'center', width: '100%', textAlign: 'center'
                     }}>
-                        <hr style={{ width: '25%', height: '3px', marginLeft: '5%' }} />
+                        <hr style={{ width: '25%', height: '3px', marginLeft: '5%', backgroundColor: 'var(--menu_dark)' }} />
                         <p>Create Account</p>
-                        <hr style={{ width: '25%', height: '3px', marginRight: '5%' }} />
+                        <hr style={{ width: '25%', height: '3px', marginRight: '5%', backgroundColor: 'var(--menu_dark)' }} />
                     </div>
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
 
@@ -252,9 +249,9 @@ function Complogin({ close }) {
                         display: 'flex', flexDirection: 'row', alignItems: 'center',
                         width: '100%', textAlign: 'center', marginTop: '2.5%'
                     }}>
-                        <hr style={{ width: '35%', height: '3px', marginLeft: '5%' }} />
+                        <hr style={{ width: '35%', height: '3px', marginLeft: '5%', backgroundColor: 'var(--menu_dark)' }} />
                         <p>Login</p>
-                        <hr style={{ width: '35%', height: '3px', marginRight: '5%' }} /></div>
+                        <hr style={{ width: '35%', height: '3px', marginRight: '5%', backgroundColor: 'var(--menu_dark)' }} /></div>
                     <div><button onClick={() => { setScreenType('Login'); setLog("") }} type="button">Login</button></div>
                 </div>
             </div>

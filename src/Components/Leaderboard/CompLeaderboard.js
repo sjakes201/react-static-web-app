@@ -11,9 +11,9 @@ function CompLeaderboard({ type, leadersWeekly, leadersAll }) {
                 <div style={{
                     paddingTop: '2%',
                     paddingBottom: '2%',
-                    paddingLeft: '1%'
+                    paddingLeft: '1%',
                 }}>
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '20vh', marginBottom: '1%' }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1%' }}>
 
                         <img src={`${process.env.PUBLIC_URL}/assets/images/homie.png`} style={{ height: '20vh' }} />
                         <div style={{ width: '49%', height: '100%', border: '1px solid black', textAlign: 'center', padding: '10px', fontSize:'1.8vh', overflowY: 'auto' }}>

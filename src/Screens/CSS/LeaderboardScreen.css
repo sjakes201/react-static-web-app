@@ -17,17 +17,32 @@
     border: 1px solid rgb(66, 48, 10);
 }
 
+.main-board {
+    width: 80%;
+    height: 100%;
+    background: var(--menu_light);
+
+    box-sizing: border-box;
+    margin: 11px;
+    box-shadow:
+        0 0 0 3px var(--black),
+        0 0 0 6px var(--border_orange),
+        0 0 0 8px var(--border_shadow_orange),
+        0 0 0 11px var(--black);
+    position: relative;
+    z-index: 5;
+}
 
 .type-button {
-    height: 5%;
     width: 100%;
     text-align: center;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    border: 2px solid gray;
     padding-top: 1.4%;
+    height: calc(5% - 22px);
+    margin-bottom: 11px;
 }
 
 .type-button:hover {
@@ -39,8 +54,18 @@
 }
 
 .active {
-    border-bottom: 2px solid rgba(83, 80, 80, 0.0);
     font-size: 150%;
+}
+
+.inactive {
+    box-sizing: border-box;
+    box-shadow:
+        0 0 0 3px var(--black),
+        0 0 0 6px var(--border_orange),
+        0 0 0 8px var(--border_shadow_orange),
+        0 0 0 11px var(--black);
+    position: relative;
+    z-index: 5;
 }
 
 .type-button>img {
@@ -56,6 +81,7 @@
     height: 100vh;
     width: 100vw;
     padding: 3% 1%;
+    background: var(--menu_dark);
 }
 
 .buttons {
@@ -64,9 +90,7 @@
 }
 
 .leaderboard-container {
-    height: 95%;
+    height: calc(94% - 33px);
     width: 100%;
     overflow-y: auto;
-    border: 2px solid navy;
-    border-top: 2px solid rgba(0, 0, 0, 0)
 }
