@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import CompShop from '../Components/Shop/CompShop'
+import Complogin from "../Components/GUI/CompLogin";
 import CompProfile from '../Components/GUI/CompProfile'
 import CompOtherScreens from '../Components/GUI/CompOtherScreens'
 import CONSTANTS from "../CONSTANTS";
@@ -33,6 +34,7 @@ function ShopScreen({ }) {
     const [prices, setPrices] = useState([{}, {}])
 
     const [upgrades, setUpgrades] = useState({});
+    const [loginBox, setLoginBox] = useState(false);
 
 
     useEffect(() => {
@@ -220,7 +222,7 @@ function ShopScreen({ }) {
                     <CompOtherScreens switchScreen={switchScreen} current={'shop'} />
                 </div>
                 <div style={{ width: '30vw' }}>
-                    <CompProfile type={'short'} getBal={getBal} getUser={getUser} getXP={getXP} />
+                    <CompProfile setLoginBox={setLoginBox} type={'short'} getBal={getBal} getUser={getUser} getXP={getXP} />
                 </div>
 
 
@@ -229,6 +231,9 @@ function ShopScreen({ }) {
                 getUpgrades={getUpgrades} updateInventory={updateInventory} permits={{ 'deluxePermit': deluxePermit, 'exoticPermit': exoticPermit }}
                 updateBalance={updateBalance} getBal={getBal} updateAnimals={updateAnimals}
                 items={items} />
+            <div className="login-GUI">
+                {loginBox && <Complogin close={() => setLoginBox(false)} />}
+            </div>
         </div>
     )
 

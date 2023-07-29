@@ -79,7 +79,7 @@ function CompTile({ tile, stage, updateTile }) {
                     objectFit: 'contain',
                 }}
                 src={imgURL}
-                alt={`seed ID: ${tile.CropID}`}
+                alt={`seed ID: ${tile.CropID} tile ID: ${tile.TileID}`}
                 draggable="false"
                 onMouseDown={(e) => {
                     onTileClick(e);

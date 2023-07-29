@@ -5,6 +5,7 @@ import CompMarket from '../Components/Market/CompMarket';
 import CompOtherScreen from '../Components/GUI/CompOtherScreens'
 import CompInventory from '../Components/GUI/CompInventory';
 import CompMarketSelection from '../Components/Market/CompMarketSelection';
+import Complogin from '../Components/GUI/CompLogin';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
@@ -23,6 +24,7 @@ function MarketScreen({ }) {
     const [Balance, setBalance] = useState(0);
     const [XP, setXP] = useState(0);
     const [Username, setUsername] = useState("");
+    const [loginBox, setLoginBox] = useState(false);
 
 
     useEffect(() => {
@@ -204,10 +206,13 @@ function MarketScreen({ }) {
             </div>
 
             <div className='market-right'>
-                <div className='market-profile'><CompProfile type="wide" getBal={getBal} getUser={getUser} getXP={getXP} /></div>
+                <div className='market-profile'><CompProfile setLoginBox={setLoginBox} type="wide" getBal={getBal} getUser={getUser} getXP={getXP} /></div>
                 <div className='market-select-info'><CompMarketSelection onSell={onSell} name={selected.name} newPrice={selected.newPrice} oldPrice={selected.oldPrice} imgURL={selected.imgURL} /></div>
                 <div className='market-inventory'><CompInventory items={items} displayOnly={true} setMarketSelected={setMarketSelected} /></div>
                 <div className='market-other'>AD</div>
+            </div>
+            <div className="login-GUI">
+                {loginBox && <Complogin close={() => setLoginBox(false)} />}
             </div>
 
 
