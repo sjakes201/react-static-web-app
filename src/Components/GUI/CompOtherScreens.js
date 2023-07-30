@@ -18,7 +18,7 @@ function CompOtherScreens({ current }) {
         key={altText}
         className='nav-button'>
         <p style={{ height: '10%' }}>{whereTo}</p>
-        <img key={altText} src={imageSrc} alt={altText}  />
+        {/* <img key={altText} src={imageSrc} alt={altText}  /> */}
       </Link>
 
     );
@@ -26,7 +26,7 @@ function CompOtherScreens({ current }) {
 
   const createButtons = () => {
     const allScreens = ['shop', 'animals', 'plants', 'market']
-    const allImgs = [`${process.env.PUBLIC_URL}/assets/images/homie.png`, `${process.env.PUBLIC_URL}/assets/images/homie.png`, `${process.env.PUBLIC_URL}/assets/images/homie.png`, `${process.env.PUBLIC_URL}/assets/images/homie.png`]
+    const allImgs = [`${process.env.PUBLIC_URL}/assets/images/BLANK.png`, `${process.env.PUBLIC_URL}/assets/images/BLANK.png`, `${process.env.PUBLIC_URL}/assets/images/BLANK.png`, `${process.env.PUBLIC_URL}/assets/images/homie.png`]
     let index = allScreens.indexOf(current);
     if (index !== -1) {
       allScreens.splice(index, 1);

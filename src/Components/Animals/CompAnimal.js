@@ -42,6 +42,10 @@ function CompAnimal({ type, onCollect, sizeWidth, sizeHeight, walkingInfo, colle
             // border: '1px solid red',
             width: `${sizeWidth}`,
             height: `${sizeHeight}`,
+            WebkitUserSelect: "none",
+            MozUserSelect: "none",
+            msUserSelect: "none",
+            userSelect: "none",
         }} onMouseDown={handleClick}
             draggable={false}
         >
@@ -53,7 +57,11 @@ function CompAnimal({ type, onCollect, sizeWidth, sizeHeight, walkingInfo, colle
                     maxWidth: '100%',
                     objectFit: 'contain',
                     // border: '1px dotted purple',
-                    transform: walkingInfo.direction === 'left' ? 'scaleX(-1)' : 'scaleX(1)'
+                    transform: walkingInfo.direction === 'left' ? 'scaleX(-1)' : 'scaleX(1)',
+                    WebkitUserSelect: "none",
+                    MozUserSelect: "none",
+                    msUserSelect: "none",
+                    userSelect: "none",
                 }}
                 draggable={false} />
         </div>

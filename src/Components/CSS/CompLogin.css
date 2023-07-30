@@ -26,6 +26,8 @@
         0 0 0 6px var(--border_orange),
         0 0 0 8px var(--border_shadow_orange),
         0 0 0 11px var(--black);
+
+    z-index: 30;
 }
 
 .login-gui > hr {

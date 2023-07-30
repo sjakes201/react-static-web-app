@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './reset.css'
 import GameContainer from './GameContainer';
-import CompLogin from './Components/GUI/CompLogin';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

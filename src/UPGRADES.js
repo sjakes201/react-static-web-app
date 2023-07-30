@@ -23,7 +23,7 @@ module.exports = {
         coopCollectQuantityUpgrade: ["Coop Quantity", "Increases the yield of coop animals"],
         coopCapacityUpgrade: ["Coop Capacity", "Increases the total coop capacity"],
         plantGrowthTimeUpgrade: ["Crop Growth Time", "Decreases total crop growth time"],
-        plantHarvestQuantityUpgrade: ["Crop Harvest Quantity", "Increases per harvest crop yields"],
+        plantHarvestQuantityUpgrade: ["Crop Quantity", "Increases per harvest crop yields"],
         plantNumHarvestsUpgrade: ["Crop Num Harvests", "Increases total harvests for multi harvest crops"],
 
     },

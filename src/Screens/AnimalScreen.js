@@ -5,6 +5,8 @@ import CompOtherScreens from '../Components/GUI/CompOtherScreens'
 import CompInventory from '../Components/GUI/CompInventory'
 import CompProfile from "../Components/GUI/CompProfile";
 import Complogin from '../Components/GUI/CompLogin';
+import AnimalsTopBar from '../Components/Animals/AnimalsTopBar';
+import AnimalManagement from '../Components/Animals/AnimalManagement';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -50,11 +52,11 @@ function AnimalScreen({ }) {
   const [Balance, setBalance] = useState(0);
   const [XP, setXP] = useState(0);
   const [Username, setUsername] = useState("");
-  const [deluxePermit, setDeluxePermit] = useState(false);
-  const [exoticPermit, setExoticPermit] = useState(false);
-  const [animals, setAnimals] = useState({})
-  const [prices, setPrices] = useState([{}, {}])
   const [loginBox, setLoginBox] = useState(false);
+  const [coop, setCoop] = useState([]);
+  const [barn, setBarn] = useState([]);
+  const [manager, setManager] = useState(false);
+  const [capacities, setCapacities] = useState({ barnCapacity: 0, coopCapacity: 0 });
 
   const [upgrades, setUpgrades] = useState({});
 
@@ -65,7 +67,6 @@ function AnimalScreen({ }) {
     } else {
       console.log("RECEIVED UPGRADES")
     }
-    // console.log(Object.keys(upgrades))
   })
 
   useEffect(() => {
@@ -86,6 +87,36 @@ function AnimalScreen({ }) {
     }
     fetchData();
 
+    const getAnimals = async () => {
+      let coopAnimals;
+      let barnAnimals;
+      try {
+        const token = localStorage.getItem('token');
+        barnAnimals = await fetch('https://farm-api.azurewebsites.net/api/allBarn', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({})
+        }).then((x) => x.json())
+        coopAnimals = await fetch('https://farm-api.azurewebsites.net/api/allCoop', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({})
+        }).then((x) => x.json())
+      } catch (error) {
+        console.log(error);
+      }
+      setCoop(coopAnimals);
+      setBarn(barnAnimals);
+    }
+
     async function fetchProfile() {
       const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
         method: 'POST',
@@ -98,30 +129,10 @@ function AnimalScreen({ }) {
       });
       const data = await result.json();
 
-      const prices = await fetch('https://farm-api.azurewebsites.net/api/prices', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({})
-      });
-      const pricesData = await prices.json()
-
+      setCapacities({ barnCapacity: data.BarnCapacity, coopCapacity: data.CoopCapacity })
       setBalance(data.Balance);
       setXP(data.XP);
       setUsername(data.Username);
-      setDeluxePermit(data.deluxePermit);
-      setExoticPermit(data.exoticPermit);
-      setAnimals({
-        coopCount: data.CoopAnimals,
-        coopCapacity: data.CoopCapacity,
-        barnCount: data.BarnAnimals,
-        barnCapacity: data.BarnCapacity
-      });
-      setPrices(pricesData);
-
 
       let upgrades = {};
       for (const column in data) {
@@ -132,6 +143,7 @@ function AnimalScreen({ }) {
       setUpgrades(upgrades);
     }
     fetchProfile();
+    getAnimals();
 
   }, []);
 
@@ -192,10 +204,12 @@ function AnimalScreen({ }) {
 
   return (
     <div className='app3'>
+      {manager && <div className='manage-animals'> <AnimalManagement capacities={capacities} coop={coop} setCoop={setCoop} barn={barn} setBarn={setBarn} setManager={setManager} /></div>}
       <div className='left-column'>
+        <div className='pen-management'> <AnimalsTopBar setManager={setManager} /> </div>
         <div className="pens-wrapper" ref={componentRef}>
-          {renderPens && (<><div className="barn-container"><CompPen passedUpgrades={upgrades} getUpgrades={getUpgrades} className='barnPen' isBarn={true} key={1} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
-          {renderPens && (<><div className="coop-container"><CompPen passedUpgrades={upgrades} getUpgrades={getUpgrades} className='coopPen' isBarn={false} key={2} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
+          {renderPens && (<><div className="barn-container"><CompPen passedUpgrades={upgrades} getUpgrades={getUpgrades} className='barnPen' importedAnimals={barn} setBarn={setBarn} isBarn={true} key={1} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
+          {renderPens && (<><div className="coop-container"><CompPen passedUpgrades={upgrades} getUpgrades={getUpgrades} className='coopPen' importedAnimals={coop} setCoop={setCoop} isBarn={false} key={2} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
         </div>
         <div className='other-screensAn'><CompOtherScreens current={'animals'} /></div>
 

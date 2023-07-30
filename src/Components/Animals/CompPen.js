@@ -5,7 +5,7 @@ import UPGRADES from '../../UPGRADES';
 
 // Should we stop CompPen from rerendering everything when individual animals update? I think that happens automatically 
 
-function CompPen({ passedUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP }) {
+function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP }) {
     let xSlots = 6;
     let ySlots = 9;
     let animalWidth = Math.round(penWidth / xSlots);
@@ -32,7 +32,7 @@ function CompPen({ passedUpgrades, penWidth, penHeight, className, isBarn, updat
 
     useEffect(() => {
         createAnimals();
-    }, [])
+    }, [importedAnimals])
 
     // can you collect on this animal?
     const isUnlocked = (name) => {
@@ -112,34 +112,14 @@ function CompPen({ passedUpgrades, penWidth, penHeight, className, isBarn, updat
 
     // fetch all animals and initialize
     const createAnimals = async () => {
-        let dbAnimals;
-        try {
-            const token = localStorage.getItem('token');
-            if (isBarn) {
-                dbAnimals = await fetch('https://farm-api.azurewebsites.net/api/allBarn', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({})
-                }).then((x) => x.json())
-            } else {
-                dbAnimals = await fetch('https://farm-api.azurewebsites.net/api/allCoop', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({})
-                }).then((x) => x.json())
-            }
-        } catch (error) {
-            console.log(error);
-            return { message: 'ERROR loading animals' }
+        if (importedAnimals.length === 0) {
+            console.log("Waiting to receive animals");
+            return;
+        } else {
+            console.log("received!");
+            console.log(importedAnimals)
         }
+        let dbAnimals = importedAnimals;
 
         // init animals state array to objects with ID, type, last collect
         let animalsState = [];
@@ -249,6 +229,9 @@ function CompPen({ passedUpgrades, penWidth, penHeight, className, isBarn, updat
     }, [walking]);
 
     const updateMovement = () => {
+        if(importedAnimals.length === 0) {
+            return
+        }
         let random = Math.random();
         if (random < 0.75) {
             let updatedGraphicInfo;
@@ -341,24 +324,7 @@ function CompPen({ passedUpgrades, penWidth, penHeight, className, isBarn, updat
                 // walking state has updated coordinates, graphicInfo has the info about what was just changed (ID, new direction, walking = true)
                 return [newWalkingStates, graphicInfo];
             }
-        } else {
-            // NO LONGER USING
-
-            // do a random eating
-            graphicInfo = {
-                Animal_ID: chosenAnimal.Animal_ID,
-                direction: 'left',
-                walking: false,
-                eating: false
-            };
-            // can only eat if not walking, in case overlap
-            chosenAnimal.eating = !chosenAnimal.walking;
-            graphicInfo.eating = chosenAnimal.eating;
-
-
-            return [newWalkingStates, graphicInfo];
         }
-
     }
 
     return (
@@ -373,7 +339,7 @@ function CompPen({ passedUpgrades, penWidth, penHeight, className, isBarn, updat
             backgroundRepeat: 'repeat, repeat',
 
             width: `40vw`,
-            height: `90vh`,
+            height: `80vh`,
             WebkitUserSelect: "none",
             MozUserSelect: "none",
             msUserSelect: "none",
