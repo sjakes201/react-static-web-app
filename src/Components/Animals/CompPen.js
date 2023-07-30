@@ -11,18 +11,16 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
     let animalWidth = Math.round(penWidth / xSlots);
     let animalHeight = Math.round(penHeight / ySlots);
 
-    // basic animal info (id, type, lastCollect from database fetch)
-    const [animals, setAnimals] = useState([]);
-
-    // whether it's collectible or not
-    const [collectible, setCollectible] = useState([]);
-
-    // coordinates, walking and direction
-    const [walking, setWalking] = useState([]);
-
+    // Profile info
     const [hasExotic, setHasExotic] = useState(false);
     const [xp, setXP] = useState(0);
 
+    // The three animal state arrays: for their info, whether they are collectible, and whether they are walking
+    const [animals, setAnimals] = useState([]);
+    const [collectible, setCollectible] = useState([]);
+    const [walking, setWalking] = useState([]);
+
+    // Load in profile info
     useEffect(() => {
         if (Object.keys(passedUpgrades).length !== 0) {
             setXP(getXP())
@@ -30,11 +28,34 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
         }
     })
 
+    /*
+        On mount, generate random animal starting positions. If the animals change (deleted) only remove that animal, instead of recreating
+        them all and generating new positions. Main effect is that animals do not generate new random positions when one is deleted from management screen
+    */
+    const firstRender = useRef(true)
     useEffect(() => {
-        createAnimals();
+        if (firstRender.current && importedAnimals.length > 0) {
+            // First render and animals exist, generate random positionds
+            console.log("in here")
+            createAnimals();
+            firstRender.current = false;
+        } else if (importedAnimals.length > 0) {
+            // Not the first render, if anything was removed, remove it from all states
+
+            // Filter animals in current states for only ones present in importedAnimals
+            let currentIDs = [];
+            for (let i = 0; i < importedAnimals.length; ++i) {
+                currentIDs.push(importedAnimals[i].Animal_ID);
+            }
+            setWalking((old) => old.filter((a) => currentIDs.includes(a.Animal_ID)))
+            setCollectible((old) => old.filter((a) => currentIDs.includes(a.Animal_ID)))
+            setAnimals((old) => old.filter((a) => currentIDs.includes(a.Animal_ID)))
+
+        }
     }, [importedAnimals])
 
-    // can you collect on this animal?
+
+    // Can you collect on this animal?
     const isUnlocked = (name) => {
         let xpNeeded = Object.keys(CONSTANTS.Levels).filter((threshold) => CONSTANTS.Levels[threshold].includes(name) ? true : false)
         let permitNeeded = CONSTANTS.Permits.exoticAnimals.includes(name);
@@ -48,7 +69,7 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
 
     }
 
-
+    // Collect produce function
     const handleCollect = async (Animal_ID, type) => {
         let animal = animals.filter((a) => a.Animal_ID === Animal_ID)[0];
         if (!isUnlocked(animal.Animal_type)) {
@@ -88,8 +109,6 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
                     quantTableName = "AnimalProduceMap".concat(passedUpgrades.coopCollectQuantityUpgrade);
                     break;
             }
-            console.log(`quantTableName: ${quantTableName}`);
-            console.log(`type: ${type}`)
             updateInventory(UPGRADES[quantTableName][type][0], UPGRADES[quantTableName][type][1])
             updateXP(CONSTANTS.XP[UPGRADES[quantTableName][type][0]]);
             const token = localStorage.getItem('token');
@@ -110,7 +129,7 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
     }
 
 
-    // fetch all animals and initialize
+    // Initialize all animals, with random positions
     const createAnimals = async () => {
         if (importedAnimals.length === 0) {
             console.log("Waiting to receive animals");
@@ -148,7 +167,10 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
             })
 
         }
-        walkingState = randomStarting(walkingState);;
+
+        // randomize the walking state
+        walkingState = randomStarting(walkingState);
+
 
         setAnimals(animalsState);
         setWalking(walkingState);
@@ -157,6 +179,7 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
         // init walking state array to objects random starting coords, random direction, walking false
     }
 
+    // Is this animal collectibel and ready to be collected?
     const isCollectible = (Last_produce, Animal_type) => {
         // TODO: Need to update for upgrade collect times
         if (Last_produce === null || !(Animal_type in UPGRADES.AnimalCollectTimes0)) { console.log("INVALID isCollectible inputs"); return false; }
@@ -171,6 +194,7 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
         return secsPassed >= secsNeeded
     }
 
+    // Generate random starting coords, takes array of animal objects
     const randomStarting = (walkingState) => {
         if (animals?.message === "No auth token present") return {};
         let newCoords = [...walkingState];
@@ -229,7 +253,7 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
     }, [walking]);
 
     const updateMovement = () => {
-        if(importedAnimals.length === 0) {
+        if (importedAnimals.length === 0) {
             return
         }
         let random = Math.random();
@@ -262,7 +286,6 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
         }
     }
 
-
     const moveRandomAnimal = (curWalkingStates) => {
         if (curWalkingStates.length > 0) {
             let newWalkingStates = [...curWalkingStates];
@@ -274,57 +297,55 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
         }
     }
 
-    // 50% random walking, 50% random eating
     const randomAdjacentCoords = (walkingStates, index) => {
         const newWalkingStates = [...walkingStates];
         let graphicInfo = {};
         let chosenAnimal = newWalkingStates[index];
-        if (true) {
-            // NO LONGER DOING EATING
-            // do a random movement
-            const takenCoords = [];
-            newWalkingStates.forEach((a) => {
-                if (a?.coordinates) {
-                    takenCoords.push(a.coordinates);
-                }
-            })
-            graphicInfo = {
-                Animal_ID: chosenAnimal.Animal_ID,
-                direction: 'left',
-                walking: false,
-                eating: false
-            };
-            if (chosenAnimal?.coordinates) {
-                let [x, y] = chosenAnimal.coordinates;
-                const newOptions = [];
-                if (x >= animalWidth) { newOptions.push([x - animalWidth, y]); }
-                if (x < animalWidth * (xSlots - 1)) { newOptions.push([x + animalWidth, y]); }
-                if (y >= animalHeight) { newOptions.push([x, y - animalHeight]); }
-                if (y < animalHeight * (ySlots - 1)) { newOptions.push([x, y + animalHeight]); }
-                while (newOptions.length > 0) {
-                    let index = Math.floor(Math.random() * (newOptions.length))
-                    let pos = newOptions[index];
-                    if (!(takenCoords.some((c) => c.toString() === pos.toString()))) {
-                        if (pos[0] > x) graphicInfo.direction = 'right';
-                        if (pos[0] < x) graphicInfo.direction = 'left';
-                        if (pos[1] > y) graphicInfo.direction = 'down';
-                        if (pos[1] < y) graphicInfo.direction = 'up';
-                        graphicInfo.walking = true;
-                        graphicInfo.eating = false;
 
-                        chosenAnimal.coordinates = pos;
-                        chosenAnimal.walking = true;
-                        chosenAnimal.direction = graphicInfo.direction;
-                        chosenAnimal.eating = false;
-                        break;
-                    }
-                    newOptions.splice(index, 1);
-                }
-
-                // walking state has updated coordinates, graphicInfo has the info about what was just changed (ID, new direction, walking = true)
-                return [newWalkingStates, graphicInfo];
+        // do a random movement
+        const takenCoords = [];
+        newWalkingStates.forEach((a) => {
+            if (a?.coordinates) {
+                takenCoords.push(a.coordinates);
             }
+        })
+        graphicInfo = {
+            Animal_ID: chosenAnimal.Animal_ID,
+            direction: 'left',
+            walking: false,
+            eating: false
+        };
+        if (chosenAnimal?.coordinates) {
+            let [x, y] = chosenAnimal.coordinates;
+            const newOptions = [];
+            if (x >= animalWidth) { newOptions.push([x - animalWidth, y]); }
+            if (x < animalWidth * (xSlots - 1)) { newOptions.push([x + animalWidth, y]); }
+            if (y >= animalHeight) { newOptions.push([x, y - animalHeight]); }
+            if (y < animalHeight * (ySlots - 1)) { newOptions.push([x, y + animalHeight]); }
+            while (newOptions.length > 0) {
+                let index = Math.floor(Math.random() * (newOptions.length))
+                let pos = newOptions[index];
+                if (!(takenCoords.some((c) => c.toString() === pos.toString()))) {
+                    if (pos[0] > x) graphicInfo.direction = 'right';
+                    if (pos[0] < x) graphicInfo.direction = 'left';
+                    if (pos[1] > y) graphicInfo.direction = 'down';
+                    if (pos[1] < y) graphicInfo.direction = 'up';
+                    graphicInfo.walking = true;
+                    graphicInfo.eating = false;
+
+                    chosenAnimal.coordinates = pos;
+                    chosenAnimal.walking = true;
+                    chosenAnimal.direction = graphicInfo.direction;
+                    chosenAnimal.eating = false;
+                    break;
+                }
+                newOptions.splice(index, 1);
+            }
+
+            // walking state has updated coordinates, graphicInfo has the info about what specifically was just changed (ID, new direction, walking = true)
+            return [newWalkingStates, graphicInfo];
         }
+
     }
 
     return (
