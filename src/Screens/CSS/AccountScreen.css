@@ -1,0 +1,281 @@
+.acc-screen {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--menu_light);
+}
+
+.acc-container {
+    height: 90vh;
+    width: 80vw;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--menu_lighter);
+    box-shadow:
+        0 0 0 3px var(--black),
+        0 0 0 6px var(--border_orange),
+        0 0 0 8px var(--border_shadow_orange),
+        0 0 0 11px var(--black);
+}
+
+.acc-row {
+    display: flex;
+    flex-direction: row;
+}
+
+/*
+    Top row (profile)
+
+    [ (25pfp) ]  [ (25 user info) ]  [ (7.5 margin) (35 permits) (7.5 margin) ]
+*/
+
+#acc-profile {
+    height: 25%;
+}
+
+
+#acc-pfp {
+    width: 25%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.acc-user-info {
+    width: 25%;
+    padding: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+}
+
+#acc-username {
+    text-decoration: underline;
+}
+
+#acc-permit-holder {
+    width: 35%;
+    margin-left: 7.5%;
+    margin-right: 7.5%;
+    display: flex;
+    flex-direction: column;
+    padding: 1%
+}
+
+#acc-permits-status {
+    height: calc(100% - 12px);
+    border: 1px solid black;
+    box-sizing: border-box;
+    margin: 6px;
+    box-shadow:
+        0 0 0 1px var(--black),
+        0 0 0 3px var(--border_yellow),
+        0 0 0 5px var(--border_shadow_yellow),
+        0 0 0 6px var(--black);
+}
+
+#acc-permits-label {
+    text-decoration: underline;
+    text-align: center;
+}
+
+/*
+    Second row (stats)
+*/
+
+#acc-stats {
+    height: 50%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+}
+
+.acc-collect-totals {
+    height: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.acc-collect-grids {
+    height: calc(85% - 22px);
+    width: calc(75% - 22px);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    overflow-y: auto;
+    row-gap: 5%;
+    padding: 1%;
+    border: 1px solid black;
+    box-sizing: border-box;
+    margin: 11px;
+    box-shadow:
+        0 0 0 3px var(--black),
+        0 0 0 6px var(--border_yellow),
+        0 0 0 8px var(--border_shadow_yellow),
+        0 0 0 11px var(--black);
+}
+
+.acc-goods-slot {
+    place-self: center;
+    border: 1px solid black;
+    border-radius: 5%;
+    padding: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+}
+
+.acc-goods-slot > img {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+}
+
+/*
+    Third row (contact, policy, ads)
+*/
+
+#acc-other {
+    height: 25%;
+    padding-top:1%;
+    display: flex;
+    flex-direction: column;
+}
+
+.acc-line-decor {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+}
+
+.acc-bottom {
+    height: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: .9vw;
+}
+
+#acc-contact-info{
+    width: 25%;
+    text-align: center;
+}
+
+#acc-bottom-ad {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+}
+
+#acc-privacy-policy {
+    width: 25%;
+    text-align: center;
+    text-decoration: underline;
+}
+
+#acc-privacy-policy:hover {
+    color: blue;
+    cursor: pointer
+}
+
+/*
+    Corn decor line rotation
+*/
+.acc-line-decor > img:nth-child(2) {
+    transform: rotate(18deg);
+}
+
+.acc-line-decor > img:nth-child(3) {
+    transform: rotate(36deg);
+}
+
+.acc-line-decor > img:nth-child(4) {
+    transform: rotate(54deg);
+}
+
+.acc-line-decor > img:nth-child(5) {
+    transform: rotate(72deg);
+}
+
+.acc-line-decor > img:nth-child(6) {
+    transform: rotate(90deg);
+}
+
+.acc-line-decor > img:nth-child(7) {
+    transform: rotate(108deg);
+}
+
+.acc-line-decor > img:nth-child(8) {
+    transform: rotate(126deg);
+}
+
+.acc-line-decor > img:nth-child(9) {
+    transform: rotate(144deg);
+}
+
+.acc-line-decor > img:nth-child(10) {
+    transform: rotate(162deg);
+}
+
+.acc-line-decor > img:nth-child(11) {
+    transform: rotate(180deg);
+}
+
+.acc-line-decor > img:nth-child(12) {
+    transform: rotate(198deg);
+}
+
+.acc-line-decor > img:nth-child(13) {
+    transform: rotate(216deg);
+}
+
+.acc-line-decor > img:nth-child(14) {
+    transform: rotate(234deg);
+}
+
+.acc-line-decor > img:nth-child(15) {
+    transform: rotate(252deg);
+}
+
+.acc-line-decor > img:nth-child(16) {
+    transform: rotate(270deg);
+}
+
+.acc-line-decor > img:nth-child(17) {
+    transform: rotate(288deg);
+}
+
+.acc-line-decor > img:nth-child(18) {
+    transform: rotate(306deg);
+}
+
+.acc-line-decor > img:nth-child(19) {
+    transform: rotate(324deg);
+}
+
+.acc-line-decor > img:nth-child(20) {
+    transform: rotate(342deg);
+}
+
+.acc-line-decor > img:nth-child(21) {
+    transform: rotate(360deg);
+}
+

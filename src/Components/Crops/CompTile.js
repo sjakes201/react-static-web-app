@@ -77,6 +77,7 @@ function CompTile({ tile, stage, updateTile }) {
                     width: '100%',
                     height: '100%',
                     objectFit: 'contain',
+                    cursor: (UPGRADES.GrowthTimes0[CONSTANTS.ProduceNameFromID[tile?.CropID]]?.length === stage) ? 'grab' : 'default'
                 }}
                 src={imgURL}
                 alt={`seed ID: ${tile.CropID} tile ID: ${tile.TileID}`}

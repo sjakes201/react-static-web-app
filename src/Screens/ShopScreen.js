@@ -26,7 +26,7 @@ function ShopScreen({ }) {
 
     // profile info
     const [Balance, setBalance] = useState(0);
-    const [XP, setXP] = useState(0);
+    const [XP, setXP] = useState(-1);
     const [Username, setUsername] = useState("");
     const [deluxePermit, setDeluxePermit] = useState(false);
     const [exoticPermit, setExoticPermit] = useState(false);
@@ -175,13 +175,6 @@ function ShopScreen({ }) {
         })
 
 
-    }
-
-    const updateXP = (amount) => {
-        setXP(prevXP => {
-            const newXP = prevXP + amount;
-            return newXP;
-        });
     }
 
     const updateBalance = (amount) => {

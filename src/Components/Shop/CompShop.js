@@ -10,8 +10,6 @@ function CompShop({ updateAnimals, getAnimals, getXP, updateUpgrades, updateBala
     const upgrades = getUpgrades();
     const animals = getAnimals();
 
-
-
     let totalXP = getXP();
     let unlocked = [];
     for (let threshold in CONSTANTS.Levels) {
@@ -108,7 +106,7 @@ function CompShop({ updateAnimals, getAnimals, getXP, updateUpgrades, updateBala
             let tier = upgrades[allKeys[i]];
             if (tier === false) tier = 0;
             if (tier === true) tier = 1;
-            let unlocked = true;
+            let unlocked;
             let cost = -1;
             if (tier >= UPGRADES.UpgradeCosts[allKeys[i]].length) {
                 unlocked = false;
@@ -152,7 +150,7 @@ function CompShop({ updateAnimals, getAnimals, getXP, updateUpgrades, updateBala
                     <h2>SEEDS</h2>
                 </div>
                 <div className='items'>
-                    {getSeedItems()}
+                    {(totalXP !== -1) && getSeedItems()}
                 </div>
             </section>
             <section id='Animals' className='shopRow'>
@@ -160,7 +158,7 @@ function CompShop({ updateAnimals, getAnimals, getXP, updateUpgrades, updateBala
                     <h2>ANIMALS</h2>
                 </div>
                 <div className='items'>
-                    {getAnimalItems()}
+                    {(Object.keys(animals).length !== 0) && getAnimalItems()}
                 </div>
             </section>
             <section id='Upgrades' className='shopRow'>
@@ -168,7 +166,7 @@ function CompShop({ updateAnimals, getAnimals, getXP, updateUpgrades, updateBala
                     <h2>UPGRADES</h2>
                 </div>
                 <div className='items'>
-                    {getUpgradeItems()}
+                    {(Object.keys(upgrades).length !== 0) && getUpgradeItems()}
                 </div>
             </section>
         </div>

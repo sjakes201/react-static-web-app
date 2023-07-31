@@ -34,7 +34,7 @@ function CompProfile({ getBal, getUser, getXP, type, setLoginBox }) {
 
             {type === 'tall' &&
                 <div className="profileButtons">
-                    <Link className='profileLink' to={`/leaderboard`}>
+                    <Link className='profileLink' to={`/account`}>
                         <img src={`${process.env.PUBLIC_URL}/assets/images/accounticon.png`} alt='profile/stats' />
                     </Link>
                     <Link className='profileLink' to={`/leaderboard`}>

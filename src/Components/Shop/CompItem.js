@@ -6,6 +6,7 @@ import UPGRADES from "../../UPGRADES";
 const SEED_LIMIT = 100;
 
 function CompItem({ updateAnimals, itemName, cost, unlocked, info, updateBalance, getBal, updateInventory, tier, updateUpgrades, items, hasSpace }) {
+
     const [gif, setGif] = useState({ 1: null, 5: null, 25: null });
     const [gifKey, setGifKey] = useState(0);
 
@@ -102,7 +103,6 @@ function CompItem({ updateAnimals, itemName, cost, unlocked, info, updateBalance
             }
         }
         if (itemName in UPGRADES.UpgradeCosts) {
-            console.log(itemName)
             if (getBal() >= cost) {
                 updateBalance(-1 * cost);
                 updateUpgrades(itemName);
@@ -126,7 +126,6 @@ function CompItem({ updateAnimals, itemName, cost, unlocked, info, updateBalance
                     upgrade: itemName
                 })
             })
-            console.log(res);
             if (res.message !== 'SUCCESS') {
                 // out of sync
                 // todo: throw up 'server out of sync' splash

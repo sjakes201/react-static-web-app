@@ -6,6 +6,7 @@ import PlantScreen from './Screens/PlantScreen';
 import ShopScreen from './Screens/ShopScreen';
 import MarketScreen from './Screens/MarketScreen';
 import LeaderboardScreen from './Screens/LeaderboardScreen'
+import AccountScreen from './Screens/AccountScreen';
 
 function GameContainer() {
     return (
@@ -16,6 +17,7 @@ function GameContainer() {
             <Route path="/shop" element={<ShopScreen />} />
             <Route path="/market" element={<MarketScreen />} />
             <Route path="/leaderboard" element={<LeaderboardScreen />} />
+            <Route path="/account" element={<AccountScreen />} />
         </Routes>
     )
 }

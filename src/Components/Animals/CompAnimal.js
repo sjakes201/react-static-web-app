@@ -62,6 +62,7 @@ function CompAnimal({ type, onCollect, sizeWidth, sizeHeight, walkingInfo, colle
                     MozUserSelect: "none",
                     msUserSelect: "none",
                     userSelect: "none",
+                    cursor: collectible ? 'grab' : 'default'
                 }}
                 draggable={false} />
         </div>
