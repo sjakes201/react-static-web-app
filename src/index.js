@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './reset.css'
 import GameContainer from './GameContainer';
+import PasswordReset from './Screens/PasswordReset';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -10,6 +11,7 @@ root.render(
     <Router>
         <div id='root' style={{ height: '100vh', width: '100vw' }}>
             <GameContainer />
+            {/* <PasswordReset /> */}
         </div>
     </Router>
 );

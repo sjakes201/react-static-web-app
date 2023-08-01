@@ -167,7 +167,7 @@ function Complogin({ close }) {
                             <label className='underline'>Username: </label>
                             <input name="Username" type="text" pattern="[A-Za-z0-9_.]{4,24}" value={info.Username} title="4 to 24 characters in length: letters, numbers, _ and . allowed" onChange={(e) => handleInputChange(e)} required></input>
                             <label className='underline'>Password: </label>
-                            <input name="Password" type="password" pattern="[A-Za-z0-9!@#$%^&*_\-\.]{4,32}" value={info.Password} title="4 to 16 characters in length: letters, numbers, and special characters allowed" onChange={(e) => handleInputChange(e)} required></input>
+                            <input name="Password" type="password" pattern="[A-Za-z0-9!@#$%^&*_\-\.]{4,32}" value={info.Password} title="4 to 32 characters in length: letters, numbers, and special characters allowed" onChange={(e) => handleInputChange(e)} required></input>
                         </div>
 
                         <div style={{ textAlign: 'center' }}>

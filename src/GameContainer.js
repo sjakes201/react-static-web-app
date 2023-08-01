@@ -7,6 +7,7 @@ import ShopScreen from './Screens/ShopScreen';
 import MarketScreen from './Screens/MarketScreen';
 import LeaderboardScreen from './Screens/LeaderboardScreen'
 import AccountScreen from './Screens/AccountScreen';
+import PasswordReset from './Screens/PasswordReset';
 
 function GameContainer() {
     return (
@@ -18,6 +19,7 @@ function GameContainer() {
             <Route path="/market" element={<MarketScreen />} />
             <Route path="/leaderboard" element={<LeaderboardScreen />} />
             <Route path="/account" element={<AccountScreen />} />
+            <Route path="/passwordReset" element={<PasswordReset />} />
         </Routes>
     )
 }
