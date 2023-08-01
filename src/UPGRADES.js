@@ -23,7 +23,7 @@ module.exports = {
         coopCollectQuantityUpgrade: ["Coop Quantity", "Increases the yield of coop animals"],
         coopCapacityUpgrade: ["Coop Capacity", "Increases the total coop capacity"],
         plantGrowthTimeUpgrade: ["Crop Growth Time", "Decreases total crop growth time"],
-        plantHarvestQuantityUpgrade: ["Crop Quantity", "Increases per harvest crop yields"],
+        plantHarvestQuantityUpgrade: ["Crop Harvest Quantity", "Increases per harvest crop yields"],
         plantNumHarvestsUpgrade: ["Crop Num Harvests", "Increases total harvests for multi harvest crops"],
 
     },
@@ -198,7 +198,8 @@ module.exports = {
         "sheep": [15],
         "goat": [16],
         "ostrich": [40],
-        "llama": [30]
+        "llama": [30],
+        "kiwi": [20]
     },
     AnimalProduceMap0: {
         "cow": ["cow_milk", 1],
@@ -209,7 +210,8 @@ module.exports = {
         "sheep": ["sheep_wool", 2],
         "goat": ["goat_milk", 1],
         "ostrich": ["ostrich_egg", 1],
-        "llama": ["llama_wool", 1]
+        "llama": ["llama_wool", 1],
+        "kiwi": ["kiwi_egg", 1]
     },
     AnimalCollectTimes1: {
         "cow": [50],
@@ -220,7 +222,8 @@ module.exports = {
         "sheep": [10],
         "goat": [12],
         "ostrich": [30],
-        "llama": [25]
+        "llama": [25],
+        "kiwi": [20]
     },
     AnimalProduceMap1: {
         "cow": ["cow_milk", 1],
@@ -231,7 +234,8 @@ module.exports = {
         "sheep": ["sheep_wool", 2],
         "goat": ["goat_milk", 1],
         "ostrich": ["ostrich_egg", 1],
-        "llama": ["llama_wool", 2]
+        "llama": ["llama_wool", 2],
+        "kiwi": ["kiwi_egg", 1]
     },
     AnimalCollectTimes2: {
         "cow": [50],
@@ -242,7 +246,8 @@ module.exports = {
         "sheep": [10],
         "goat": [12],
         "ostrich": [30],
-        "llama": [25]
+        "llama": [25],
+        "kiwi": [20]
     },
     AnimalProduceMap2: {
         "cow": ["cow_milk", 2],
@@ -253,7 +258,8 @@ module.exports = {
         "sheep": ["sheep_wool", 3],
         "goat": ["goat_milk", 1],
         "ostrich": ["ostrich_egg", 1],
-        "llama": ["llama_wool", 2]
+        "llama": ["llama_wool", 2],
+        "kiwi": ["kiwi_egg", 1]
     },
     AnimalCollectTimes3: {
         "cow": [20],
@@ -264,7 +270,8 @@ module.exports = {
         "sheep": [6],
         "goat": [6],
         "ostrich": [10],
-        "llama": [12]
+        "llama": [12],
+        "kiwi": [20]
     },
     AnimalProduceMap3: {
         "cow": ["cow_milk", 3],
@@ -275,7 +282,9 @@ module.exports = {
         "sheep": ["sheep_wool", 3],
         "goat": ["goat_milk", 2],
         "ostrich": ["ostrich_egg", 1],
-        "llama": ["llama_wool", 3]
+        "llama": ["llama_wool", 3],
+        "kiwi": ["kiwi_egg", 1]
     },
-    
+
+
 }

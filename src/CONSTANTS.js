@@ -82,7 +82,8 @@ module.exports = {
         sheep_wool: 8,
         goat_milk: 10,
         ostrich_egg: 100,
-        llama_wool: 10
+        llama_wool: 10,
+        kiwi_egg: 50,
     },
     // key: type, array is [building, cost]
     AnimalTypes: {
@@ -94,7 +95,8 @@ module.exports = {
         "sheep": ['barn', 120],
         "goat": ['barn', 180],
         "ostrich": ['coop', 150],
-        "llama": ['barn', 170]
+        "llama": ['barn', 170],
+        "kiwi": ['coop', 300],
     },
     // default time per collect in seconds
     // [ display name , more details ]
@@ -123,6 +125,7 @@ module.exports = {
         goat: ["Goat", "Produces goat milk"],
         ostrich: ["Ostrich", "Produces ostrich eggs"],
         llama: ["Llama", "Produces llama wool"],
+        kiwi: ["Kiwi", "Produces kiwi egg"],
         carrot: ["Carrot", "Flora"],
         melon: ["Melon", "Flora"],
         cauliflower: ["Cauliflower", "Flora"],
@@ -152,14 +155,14 @@ module.exports = {
     // For each permit type, what crops and animals it permits
     Permits: {
         "deluxeCrops": ['grape_seeds', 'bamboo_seeds', 'hops_seeds'],
-        "exoticAnimals": ['quail', 'llama'],
+        "exoticAnimals": ['quail', 'llama', 'kiwi'],
     },
-	// Luxury goods have a artifical bonus in market prices of 5% and higher floors, usually from deluxe/exotics or things that need permits / higher costs
-	LuxuryGoods: ['grape','bamboo','hops'],
+    // Luxury goods have a artifical bonus in market prices of 5% and higher floors, usually from deluxe/exotics or things that need permits / higher costs
+    LuxuryGoods: ['grape', 'bamboo', 'hops'],
     // What crops are unlocked at each XP threshold
     Levels: {
-        0: ['carrot_seeds', 'oats_seeds', 'cauliflower_seeds', 'corn_seeds', 'potato_seeds', 'parsnip_seeds', 'cow', 'chicken', 'grape_seeds', 'bamboo_seeds', 'hops_seeds', 'quail', 'llamas'],
-        200: ['pumpkin_seeds', 'yam_seeds','beet_seeds', 'duck', 'sheep', 'goat'],
+        0: ['carrot_seeds', 'oats_seeds', 'cauliflower_seeds', 'corn_seeds', 'potato_seeds', 'parsnip_seeds', 'cow', 'chicken', 'grape_seeds', 'bamboo_seeds', 'hops_seeds', 'quail', 'kiwi'],
+        200: ['pumpkin_seeds', 'yam_seeds', 'beet_seeds', 'duck', 'sheep', 'goat'],
         500: ['melon_seeds', 'llama', 'yak'],
         1000: ['blueberry_seeds', 'ostrich', 'quail'],
         2000: ['strawberry_seeds']
@@ -189,6 +192,7 @@ module.exports = {
         sheep_wool: 6,
         goat_milk: 5,
         ostrich_egg: 10,
-        llama_wool: 6
+        llama_wool: 6,
+        kiwi_egg: 15
     }
 }
