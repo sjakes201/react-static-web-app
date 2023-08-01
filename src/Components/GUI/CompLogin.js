@@ -13,7 +13,7 @@ If loginLogged in, contains loginLog out
 function Complogin({ close }) {
 
     // type is login or register
-    const [screenType, setScreenType] = useState('login')
+    const [screenType, setScreenType] = useState('Login')
     const [showPassword, setShowPassword] = useState(false);
 
     const handleMouseDown = () => {
@@ -40,6 +40,23 @@ function Complogin({ close }) {
             ...info,
             [e.target.name]: e.target.value
         })
+    }
+
+    const [resetEmail, setResetEmail] = useState('');
+
+    const forgotLogin = async () => {
+        const response = await fetch('https://farm-api.azurewebsites.net/api/forgotPassEmail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                email: resetEmail
+            })
+        });
+        const data = await response.json()
+        setLog(data.message)
     }
 
     const login = async (profile) => {
@@ -139,17 +156,19 @@ function Complogin({ close }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         // pass 'loginInfo' from state to server. It will check if valid account creation (Username unique)
-        if (screenType === 'login') {
+        if (screenType === 'Login') {
             let success = await login({
                 'Username': info.Username,
                 'Password': info.Password
             });
-        } else {
+        } else if (screenType === 'Register') {
             let success = await createUser({
                 'Username': info.Username,
                 'Password': info.Password,
                 'Email': info.Email
             })
+        } else if (screenType === 'Forgot') {
+            let success = await forgotLogin();
         }
 
     }
@@ -167,18 +186,51 @@ function Complogin({ close }) {
                             <label className='underline'>Username: </label>
                             <input name="Username" type="text" pattern="[A-Za-z0-9_.]{4,24}" value={info.Username} title="4 to 24 characters in length: letters, numbers, _ and . allowed" onChange={(e) => handleInputChange(e)} required></input>
                             <label className='underline'>Password: </label>
-                            <input name="Password" type="password" pattern="[A-Za-z0-9!@#$%^&*_\-\.]{4,32}" value={info.Password} title="4 to 32 characters in length: letters, numbers, and special characters allowed" onChange={(e) => handleInputChange(e)} required></input>
+                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', position: 'relative' }}>
+                                <input name="Password" type={showPassword ? 'text' : 'password'} pattern="[A-Za-z0-9!@#$%^&*_\-\.]{4,32}" value={info.Password} title="4 to 32 characters in length: letters, numbers, and special characters allowed" onChange={(e) => handleInputChange(e)} required></input>
+                                <img
+                                    src={`${process.env.PUBLIC_URL}/assets/images/reveal.png`}
+                                    style={{ width: '32px', height: '32px', position: 'absolute', right: '-32px', borderRadius: '20%' }}
+                                    onMouseDown={handleMouseDown}
+                                    onMouseUp={handleMouseUp}
+                                    onMouseLeave={handleMouseUp}
+                                />
+                            </div>
                         </div>
 
                         <div style={{ textAlign: 'center' }}>
                             <p style={{ fontSize: '1vw' }}>{log}</p>
                             <input type="submit" value="Login" style={{ padding: '.5% 3%', marginTop: '2.5%' }} />
                         </div>
-
-                        <div></div>
                     </form>
+
+                    <small className='forgot-link' onClick={() => setScreenType('Forgot')}>Forgot password?</small>
+
                     <div className='login-title-bar' id='bottom-title-bar'><hr className='deco-bar-bottom bar-left' /><p>New User?</p><hr className='deco-bar-bottom bar-right' /></div>
                     <div><button onClick={() => { setScreenType('Register'); setLog("") }} type="button">Create Account</button></div>
+                </div>
+            </div>
+        )
+    }
+
+    const getForgot = () => {
+        return (
+            <div>
+                <div className='xClose' onClick={close}>X</div>
+                <div className="login-gui">
+                    <div className='login-title-bar'><hr className='deco-bar-top bar-left' /><p>Forgot password</p><hr className='deco-bar-top bar-right' /></div>
+                    <div className='forgot-gui'>
+                        <form className='forgot-form' onSubmit={handleSubmit}>
+                            <label className='underline'>Email:</label>
+                            <input type='email' value={resetEmail} onChange={(e) => setResetEmail(e.target.value)} required />
+                            <input id="send-email" type="submit" value="Send" />
+                            <p>{log}</p>
+                        </form>
+                    </div>
+                    <hr id="forgot-hr" />
+                    <div className='forgot-bottom-buttons'>
+                        <button onClick={() => { setScreenType('Register'); setLog("") }} type="button">Create Account</button><button onClick={() => { setScreenType('Login'); setLog("") }} type="button">Login</button>
+                    </div>
                 </div>
             </div>
         )
@@ -258,20 +310,12 @@ function Complogin({ close }) {
         )
     }
 
-    const getForgot = () => {
-        // https://nodemailer.com/about/license/
-        return (
-            <div>
-                forgor pass (skull emoji)
-            </div>
-        )
-    }
-
-    if (screenType === 'Register') {
-        return getRegister()
-    } else {
+    if (screenType === 'Login') {
         return getLogin()
-
+    } else if (screenType === 'Forgot') {
+        return getForgot();
+    } else {
+        return getRegister()
     }
 
 }

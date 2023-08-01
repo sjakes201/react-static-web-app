@@ -31,7 +31,7 @@ function PasswordReset() {
             return;
         }
 
-        let result = await fetch('http://localhost:7071/api/resetPassword', {
+        let result = await fetch('https://farm-api.azurewebsites.net/api/resetPassword', {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
