@@ -144,33 +144,35 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
 
         let res;
         const token = localStorage.getItem('token');
-
-        if (action === 'plant') {
-            res = await fetch('https://farm-api.azurewebsites.net/api/plant', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    seedName: seedName,
-                    tileID: tileID
-                })
-            }).then((x) => x.json())
-        } else {
-            res = await fetch('https://farm-api.azurewebsites.net/api/harvest', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    tileID: tileID
-                })
-            }).then((x) => x.json());
+        if (simRes.message === 'SUCCESS') {
+            if (action === 'plant') {
+                res = await fetch('https://farm-api.azurewebsites.net/api/plant', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        seedName: seedName,
+                        tileID: tileID
+                    })
+                }).then((x) => x.json())
+            } else {
+                res = await fetch('https://farm-api.azurewebsites.net/api/harvest', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        tileID: tileID
+                    })
+                }).then((x) => x.json());
+            }
         }
+
         console.log(res)
     }
 
