@@ -63,7 +63,6 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
             action = 'harvest';
             //attempt harvest
             if (targetTile.CropID === -1) {
-                console.log(`Nothing to harvest at tile ${tileID}`)
                 simRes = { ...targetTile };
                 simRes.message = `Nothing to harvest at tile ${tileID}`
             } else {
@@ -75,7 +74,6 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
 
                 let secsPassed = (curTime - plantedTime) / 1000;
                 let secsNeeded = growthTimes.reduce((sum, e) => sum + e, 0)
-                console.log(`secsPassed: ${secsPassed} secsNeeded: ${secsNeeded}`);
                 if (secsPassed >= secsNeeded) {
                     if (targetTile.HarvestsRemaining === 1) {
                         // last harvest
@@ -104,12 +102,10 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
                             TileID: tileID,
                             message: "SUCCESS"
                         }
-                        console.log(simRes);
 
                     }
                 } else {
                     // not ready for harvest
-                    console.log("Not ready for harvest");
                     simRes = { ...targetTile };
                     simRes.message = "Not ready for harvest"
                 }
@@ -142,7 +138,6 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
 
         const token = localStorage.getItem('token');
         if (simRes.message === 'SUCCESS') {
-            console.log("QUERYING")
             if (action === 'plant') {
                 await fetch('https://farm-api.azurewebsites.net/api/plant', {
                     method: "POST",
@@ -157,7 +152,6 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
                     })
                 }).then((x) => x.json())
             } else {
-                console.log(`QUERYING HARVEST ON TILEID ${tileID}`)
                 await fetch('https://farm-api.azurewebsites.net/api/harvest', {
                     method: "POST",
                     headers: {
