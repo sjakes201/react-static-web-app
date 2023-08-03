@@ -144,9 +144,11 @@ function PlantScreen({ }) {
         })
         if (preventAnimate) return;
         const invItem = document.getElementById(itemName);
-        invItem.classList.remove('flash');
-        void invItem.offsetWidth; // This forces a reflow hack
-        invItem.classList.add('flash');
+        if (invItem !== null) {
+            invItem.classList.remove('flash');
+            void invItem.offsetWidth; // This forces a reflow hack
+            invItem.classList.add('flash');
+        }
     }
 
 
@@ -162,7 +164,7 @@ function PlantScreen({ }) {
                 <div className="settings">SETTINGS</div>
             </div>
             <div className="login-GUI">
-                { loginBox && <Complogin close={() => setLoginBox(false)}/>}
+                {loginBox && <Complogin close={() => setLoginBox(false)} />}
             </div>
         </div>
     )

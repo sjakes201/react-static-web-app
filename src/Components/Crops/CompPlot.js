@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import CompTile from "./CompTile";
 import CONSTANTS from '../../CONSTANTS';
 import UPGRADES from "../../UPGRADES";
@@ -39,31 +39,28 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
             PlantTime: null,
             HarvestsRemaining: null,
         }
-        if (action === 'plant') {
-            if (targetTile?.CropID === -1) {
-                // do we have it unlocked? permit and xp
-                if (!isUnlocked(seedName)) {
-                    console.log("NOT UNLOCKED");
-                    return { message: "NOT UNLOCKED" };
-                }
-                // can plant
-                simRes = {
-                    TileID: tileID,
-                    CropID: CONSTANTS.ProduceIDs[seedName],
-                    PlantTime: Date.now(),
-                    HarvestsRemaining: UPGRADES[numHarvestTable][seedName],
-                    message: "SUCCESS",
-                    stage: 0,
-                    UserID: null
-                }
-                console.log("Resulting tile:");
-                console.log(simRes);
-            } else {
-                console.log(`Tile ${tileID}: tile is already planted!`);
-                simRes = { ...targetTile };
-                simRes.message = `Tile: ${tileID}: tile is already planted!`
+        if (action === 'plant' && targetTile?.CropID === -1 && seedName in CONSTANTS.SeedCropMap) {
+            
+            // do we have it unlocked? permit and xp
+            if (!isUnlocked(seedName)) {
+                console.log("NOT UNLOCKED");
+                return { message: "NOT UNLOCKED" };
             }
+            // can plant
+            simRes = {
+                TileID: tileID,
+                CropID: CONSTANTS.ProduceIDs[seedName],
+                PlantTime: Date.now(),
+                HarvestsRemaining: UPGRADES[numHarvestTable][seedName],
+                message: "SUCCESS",
+                stage: 0,
+                UserID: null
+            }
+
+
         } else {
+            // there was a crop so we are permitting harvest attempt despite holding seeds
+            action = 'harvest';
             //attempt harvest
             if (targetTile.CropID === -1) {
                 console.log(`Nothing to harvest at tile ${tileID}`)
@@ -121,6 +118,7 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
 
         }
 
+        
         if (simRes.message === 'SUCCESS') {
             if (action === 'plant') {
                 updateInventory(seedName, -1);
@@ -142,11 +140,11 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
         }));
 
 
-        let res;
         const token = localStorage.getItem('token');
         if (simRes.message === 'SUCCESS') {
+            console.log("QUERYING")
             if (action === 'plant') {
-                res = await fetch('https://farm-api.azurewebsites.net/api/plant', {
+                await fetch('https://farm-api.azurewebsites.net/api/plant', {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json',
@@ -159,7 +157,8 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
                     })
                 }).then((x) => x.json())
             } else {
-                res = await fetch('https://farm-api.azurewebsites.net/api/harvest', {
+                console.log(`QUERYING HARVEST ON TILEID ${tileID}`)
+                await fetch('https://farm-api.azurewebsites.net/api/harvest', {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json',
@@ -173,7 +172,6 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
             }
         }
 
-        console.log(res)
     }
 
 

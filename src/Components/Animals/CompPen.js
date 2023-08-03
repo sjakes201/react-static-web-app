@@ -112,7 +112,7 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
             updateInventory(UPGRADES[quantTableName][type][0], UPGRADES[quantTableName][type][1])
             updateXP(CONSTANTS.XP[UPGRADES[quantTableName][type][0]]);
             const token = localStorage.getItem('token');
-            let res = await fetch('https://farm-api.azurewebsites.net/api/collect', {
+            await fetch('https://farm-api.azurewebsites.net/api/collect', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

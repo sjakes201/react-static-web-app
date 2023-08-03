@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 function AnimalCard({ animal, coop, setCoop, setBarn }) {
 
@@ -41,7 +41,7 @@ function AnimalCard({ animal, coop, setCoop, setBarn }) {
                 })
             })
         }
-        let rename = await fetch('https://farm-api.azurewebsites.net/api/nameAnimal', {
+        await fetch('https://farm-api.azurewebsites.net/api/nameAnimal', {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -144,6 +144,7 @@ function AnimalCard({ animal, coop, setCoop, setBarn }) {
                                 style={{
                                     width: '16px'
                                 }}
+                                alt={'submit'}
                             />
                         </button>
                     </form>
@@ -161,6 +162,7 @@ function AnimalCard({ animal, coop, setCoop, setBarn }) {
                     onClick={() => {
                         setRenameAppear((old) => !old)
                     }}
+                    alt={'animal rename prompt button'}
                 />
             </p>
             <img
@@ -168,6 +170,7 @@ function AnimalCard({ animal, coop, setCoop, setBarn }) {
                 style={{
                     width: '80%',
                 }}
+                alt={'animal icon'}
             />
             {/* <p style={{ textAlign: 'center' }}>Makes {produce}</p> */}
             <button style={{ margin: '3%', background: "var(--menu_lighter)", padding: '1.6%', borderRadius: '10%', fontSize: '1.8vh' }} onClick={() => deleteAnimal(Animal_ID)}>Release</button>

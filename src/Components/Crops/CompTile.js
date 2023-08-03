@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import '../../CONSTANTS'
 import CONSTANTS from "../../CONSTANTS";
 import UPGRADES from "../../UPGRADES";
@@ -8,11 +8,11 @@ function CompTile({ tile, stage, updateTile }) {
     const [imgURL, setImgURL] = useState(`${process.env.PUBLIC_URL}/assets/images/dirt.png`);
     const [gif, setGif] = useState(null);
 
-    
+
 
 
     const createGif = (e) => {
-        if(gif) return;
+        if (gif) return;
         const rect = e.target.getBoundingClientRect();
         setGif({
             x: e.clientX - rect.left - 16,
@@ -21,25 +21,21 @@ function CompTile({ tile, stage, updateTile }) {
             src: `${process.env.PUBLIC_URL}/assets/images/scythe.gif`
         })
 
-        setTimeout( () => setGif(null), 300)
+        setTimeout(() => setGif(null), 300)
     }
 
     const onTileClick = async (e) => {
         let equipped = sessionStorage.getItem("equipped");
         if (equipped !== "") {
             // is it plantable?
-            if (CONSTANTS.ProduceNameFromID.includes(equipped)) {
-                // seed, attempt plant
-                updateTile(tile.TileID, 'plant', equipped, null);
-            } else {
-                console.log("Something equipped, but is not a seed")
-                // not a seed
-            }
+            // seed, attempt plant
+            updateTile(tile.TileID, 'plant', equipped, tile.CropID);
+
         } else {
             // nothing equipped, harvest animation if final stage and attempt harvest
-            if(tile.CropID !== -1) {
+            if (tile.CropID !== -1) {
                 let seedName = CONSTANTS.ProduceNameFromID[tile.CropID];
-                if(UPGRADES.GrowthTimes0[seedName].length === stage) {
+                if (UPGRADES.GrowthTimes0[seedName].length === stage) {
                     console.log('FINAL STAGE');
                     createGif(e);
                 }
@@ -65,12 +61,12 @@ function CompTile({ tile, stage, updateTile }) {
                 height: '92%',
                 position: 'relative'
             }}>
-                {gif && <img 
-                    key={gif.id}
-                    style= {{position: 'absolute', left: gif.x, right: gif.y, width: '32px', height: '32px', zIndex: '15'}}
-                    src={gif.src}
-                    alt="harvest gif"
-                />}
+            {gif && <img
+                key={gif.id}
+                style={{ position: 'absolute', left: gif.x, right: gif.y, width: '32px', height: '32px', zIndex: '15' }}
+                src={gif.src}
+                alt="harvest gif"
+            />}
             <img
                 style={{
                     textAlign: 'center',
