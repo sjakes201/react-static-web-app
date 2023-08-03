@@ -9,6 +9,14 @@
     position: absolute;
     top: 30vh;
     left: 34vw;
+    z-index: 50;
+}
+
+.order-GUI {
+    position: absolute;
+    top: 10vh;
+    left: 20vw;
+    z-index: 50;
 }
 
 .left-column {

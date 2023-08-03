@@ -66,4 +66,10 @@
 .other-screensAn {
     height: 10vh;
 }
-    
+
+.login-GUI {
+    position: absolute;
+    top: 30vh;
+    left: 34vw;
+    z-index: 50;
+}

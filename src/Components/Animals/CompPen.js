@@ -36,7 +36,6 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
     useEffect(() => {
         if (firstRender.current && importedAnimals.length > 0) {
             // First render and animals exist, generate random positionds
-            console.log("in here")
             createAnimals();
             firstRender.current = false;
         } else if (importedAnimals.length > 0) {
@@ -132,12 +131,8 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
     // Initialize all animals, with random positions
     const createAnimals = async () => {
         if (importedAnimals.length === 0) {
-            console.log("Waiting to receive animals");
             return;
-        } else {
-            console.log("received!");
-            console.log(importedAnimals)
-        }
+        } 
         let dbAnimals = importedAnimals;
 
         // init animals state array to objects with ID, type, last collect

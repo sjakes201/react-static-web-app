@@ -3,8 +3,8 @@ import CONSTANTS from '../../CONSTANTS';
 
 
 function Order({ good, numNeeded, numHave, claimOrder, orderNum }) {
-    const goldReward = CONSTANTS.Init_Market_Prices[good] * numNeeded;
-    const xpReward = CONSTANTS.XP[good] * (1 / 2) * numNeeded;
+    const goldReward = Math.floor(CONSTANTS.Init_Market_Prices[good] * (2 / 3) * numNeeded);
+    const xpReward = Math.floor(CONSTANTS.XP[good] * (2 / 3) * numNeeded);
 
 
     const [progressWidth, setProgressWidth] = useState('40%');

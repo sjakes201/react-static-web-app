@@ -7,6 +7,8 @@ import CompProfile from "../Components/GUI/CompProfile";
 import Complogin from '../Components/GUI/CompLogin';
 import AnimalsTopBar from '../Components/Animals/AnimalsTopBar';
 import AnimalManagement from '../Components/Animals/AnimalManagement';
+import OrderBoard from "../Components/Orders/OrderBoard";
+
 import { useNavigate } from 'react-router-dom';
 
 
@@ -53,6 +55,7 @@ function AnimalScreen({ }) {
   const [XP, setXP] = useState(0);
   const [Username, setUsername] = useState("");
   const [loginBox, setLoginBox] = useState(false);
+  const [orderBox, setOrderBox] = useState(false);
   const [coop, setCoop] = useState([]);
   const [barn, setBarn] = useState([]);
   const [manager, setManager] = useState(false);
@@ -63,9 +66,6 @@ function AnimalScreen({ }) {
   useEffect(() => {
     if (Object.keys(upgrades).length === 0) {
       setUpgrades(getUpgrades)
-      console.log("PINGING FOR UPGRADES")
-    } else {
-      console.log("RECEIVED UPGRADES")
     }
   })
 
@@ -215,13 +215,16 @@ function AnimalScreen({ }) {
 
       </div>
       <div className='right-column'>
-        <div className="userProfile"><CompProfile type={'tall'} setLoginBox={setLoginBox} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
+        <div className="userProfile"><CompProfile type={'tall'} setLoginBox={setLoginBox} setOrderBox={setOrderBox} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
         <div className="inventory"><CompInventory items={items} updateInventory={updateInventory} /></div>
         <div className="settings">SETTINGS</div>
       </div>
       <div className="login-GUI">
         {loginBox && <Complogin close={() => setLoginBox(false)} />}
       </div>
+      <div className="order-GUI">
+                {orderBox && <OrderBoard close={() => setOrderBox(false)}/>}
+            </div>
     </div>
 
   );

@@ -5,6 +5,7 @@ import CompInventory from "../Components/GUI/CompInventory";
 import CompOtherScreens from "../Components/GUI/CompOtherScreens";
 import CompProfile from "../Components/GUI/CompProfile";
 import Complogin from "../Components/GUI/CompLogin";
+import OrderBoard from "../Components/Orders/OrderBoard";
 import { useNavigate } from 'react-router-dom';
 
 
@@ -27,6 +28,7 @@ function PlantScreen({ }) {
     const [animals, setAnimals] = useState({});
     const [prices, setPrices] = useState([{}, {}]);
     const [loginBox, setLoginBox] = useState(false);
+    const [orderBox, setOrderBox] = useState(false);
     const [upgrades, setUpgrades] = useState({});
 
 
@@ -159,12 +161,15 @@ function PlantScreen({ }) {
                 <div className='plot'><CompPlot getUpgrades={getUpgrades} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div>
             </div>
             <div className='right-column'>
-                <div className="userProfile"><CompProfile setLoginBox={setLoginBox} type={'tall'} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
+                <div className="userProfile"><CompProfile setOrderBox={setOrderBox} setLoginBox={setLoginBox} type={'tall'} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
                 <div className="inventoryPl"><CompInventory items={items} updateInventory={updateInventory} /></div>
                 <div className="settings">SETTINGS</div>
             </div>
             <div className="login-GUI">
                 {loginBox && <Complogin close={() => setLoginBox(false)} />}
+            </div>
+            <div className="order-GUI">
+                {orderBox && <OrderBoard close={() => setOrderBox(false)}/>}
             </div>
         </div>
     )

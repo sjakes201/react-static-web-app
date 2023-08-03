@@ -64,6 +64,7 @@
     width: 20%;
     object-fit: contain;
     border: 1px solid black;
+    cursor: pointer;
 }
 
 .profileLink>img {

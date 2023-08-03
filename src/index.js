@@ -3,14 +3,12 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './reset.css'
 import GameContainer from './GameContainer';
-import OrderBoard from './Components/Orders/OrderBoard';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Router>
         <div id='root' style={{ height: '100vh', width: '100vw' }}>
             <GameContainer />
-            <OrderBoard />
         </div>
     </Router>
 );

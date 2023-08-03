@@ -40,7 +40,6 @@ function InitLoading({ }) {
             const img = new Image();
             img.onload = () => {
                 toLoad--;
-                console.log(`loaded ${path}`)
                 if (toLoad <= 0) {
                     setInitLoad(true);
                 }
@@ -55,7 +54,6 @@ function InitLoading({ }) {
             const img = new Image();
             img.onload = () => {
                 toLoad--;
-                console.log(`loaded ${path}`)
                 if (toLoad <= 0) {
                     setInitLoad(true);
                 }
@@ -67,7 +65,6 @@ function InitLoading({ }) {
     const checkAuth = async () => {
         const token = localStorage.getItem('token')
         if (token === null) {
-            console.log("NO AUTH TOKEN")
             const tempLogin = await fetch('https://farm-api.azurewebsites.net/api/tempAuth', {
                 method: "POST",
                 headers: {
@@ -78,22 +75,17 @@ function InitLoading({ }) {
             })
             if (tempLogin.ok) {
                 const data = await tempLogin.json();
-                console.log("GUEST ACCOUNT CREATED");
                 if (data.auth) {
                     localStorage.setItem('token', data.token);
                     setAuthorized(true)
-                    console.log("GUEST ACCOUNT AUTHORIZED");
                 } else {
                     setLog("Loading failed :( try clearing cookies and reloading")
-                    console.log("GUEST ACCOUNT AUTHORIZATION FAILED");
                 }
             } else {
                 setLog("Loading failed :( try clearing cookies and reloading")
-                console.log("GUEST ACCOUNT CREATION FAILED")
             }
         } else {
             setAuthorized(true)
-            console.log("LOGGED IN!")
         }
     }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Order from "./Order";
 
-function OrderBoard() {
+function OrderBoard({close}) {
 
     const [orders, setOrders] = useState([{}, {}, {}, {}]);
 
@@ -24,7 +24,7 @@ function OrderBoard() {
     }, [])
 
     const claimOrder = async (orderNum) => {
-        if(orders[orderNum-1].numHave < orders[orderNum-1].numNeeded){
+        if (orders[orderNum - 1].numHave < orders[orderNum - 1].numNeeded) {
             return;
         }
         const token = localStorage.getItem('token');
@@ -42,10 +42,10 @@ function OrderBoard() {
         let data = await ordersQuery.json();
         // animation ?
 
-        if(data.message === "SUCCESS") {
+        if (data.message === "SUCCESS") {
             setOrders((old) => {
                 let newOrders = [...old]
-                newOrders[orderNum-1] = {
+                newOrders[orderNum - 1] = {
                     good: data.newGood,
                     numNeeded: data.newNumNeeded,
                     numHave: 0
@@ -64,6 +64,7 @@ function OrderBoard() {
             boxShadow: '0 0 0 3px var(--black), 0 0 0 6px var(--border_orange), 0 0 0 8px var(--border_shadow_orange), 0 0 0 11px var(--black)',
             backgroundColor: 'var(--menu_dark)'
         }}>
+            <div style={{position: 'absolute', top: '2.2vh', right: '1.3vw', cursor:'pointer'}} onClick={close}>X</div>
             <div id='title' style={{
                 width: '100%',
                 height: '10%',

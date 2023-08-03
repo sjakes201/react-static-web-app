@@ -36,7 +36,6 @@ function CompTile({ tile, stage, updateTile }) {
             if (tile.CropID !== -1) {
                 let seedName = CONSTANTS.ProduceNameFromID[tile.CropID];
                 if (UPGRADES.GrowthTimes0[seedName].length === stage) {
-                    console.log('FINAL STAGE');
                     createGif(e);
                 }
             }

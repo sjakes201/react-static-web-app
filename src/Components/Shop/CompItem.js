@@ -201,10 +201,7 @@ function CompItem({ updateAnimals, itemName, cost, unlocked, info, updateBalance
         )
     }
 
-    // todo: make unlocked based on capacity
-
     if (itemName in CONSTANTS.AnimalTypes) {
-        console.log(info)
         return (
             <div id="itemBox" className={(!unlocked || !hasSpace) ? "notAvailable" : ""} >
                 {(!unlocked) && (

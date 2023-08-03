@@ -84,14 +84,12 @@ function CompShop({ updateAnimals, getAnimals, getXP, updateUpgrades, updateBala
             let unlockInfo = isUnlocked(name);
             let hasSpace = animals[`${(allAnimals[i][1][0])}Count`] < animals[`${(allAnimals[i][1][0])}Capacity`]
             if (unlockInfo[0]) {
-                console.log("appending to firstItems")
                 if (hasSpace) {
                     firstItems.push(<CompItem key={100 + i} updateAnimals={updateAnimals} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={allAnimals[i][1][1]} unlocked={true} info={`${(allAnimals[i][1][0]).toUpperCase()} ${unlockInfo[1]}`} hasSpace={hasSpace} />)
                 } else {
                     lastItems.push(<CompItem key={100 + i} updateAnimals={updateAnimals} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={allAnimals[i][1][1]} unlocked={true} info={`${(allAnimals[i][1][0]).toUpperCase()} ${unlockInfo[1]}`} hasSpace={hasSpace} />)
                 }
             } else {
-                console.log("appending to lastItems")
                 lastItems.push(<CompItem key={100 + i} updateAnimals={updateAnimals} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={allAnimals[i][1][1]} unlocked={false} info={`${(allAnimals[i][1][0]).toUpperCase()} ${unlockInfo[1]}`} hasSpace={hasSpace} />)
             }
 
