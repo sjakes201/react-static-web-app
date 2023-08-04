@@ -55,7 +55,7 @@ function ShopScreen({ }) {
         fetchData();
 
         async function fetchProfile() {
-            const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
+            const result = await fetch('http://localhost:7071/api/profileInfo', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -65,6 +65,7 @@ function ShopScreen({ }) {
                 body: JSON.stringify({})
             });
             const data = await result.json();
+            console.log(data)
 
             const prices = await fetch('https://farm-api.azurewebsites.net/api/prices', {
                 method: 'POST',

@@ -74,7 +74,7 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
 
                 let secsPassed = (curTime - plantedTime) / 1000;
                 // buffer for less 400's
-                secsPassed -= 0.25;
+                secsPassed -= 0.1;
                 let secsNeeded = growthTimes.reduce((sum, e) => sum + e, 0)
                 if (secsPassed >= secsNeeded) {
                     if (targetTile.HarvestsRemaining === 1) {
@@ -178,7 +178,6 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
 
             let secsPassed = (curTime - date) / (1000);
             // buffer for less 400's
-            secsPassed -= 0.25;
             // Use secs passed to find out what stage you are in by summing growth in constants
             let growth = UPGRADES[growthTable][CONSTANTS.ProduceNameFromID[CropID]];
             let stage = 0;
