@@ -180,7 +180,7 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
         if (Last_produce === null || !(Animal_type in UPGRADES.AnimalCollectTimes0)) { console.log("INVALID isCollectible inputs"); return false; }
 
         let curTime = Date.now()
-        let secsPassed = ((curTime - Last_produce) / 1000) - 0.2;
+        let secsPassed = ((curTime - Last_produce) / 1000) - 0.25;
 
         let level = isBarn ? (passedUpgrades.barnCollectTimeUpgrade) : (passedUpgrades.coopCollectTimeUpgrade)
         let tableName = "AnimalCollectTimes".concat(level)
