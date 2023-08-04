@@ -28,7 +28,7 @@ function OrderBoard({close}) {
             return;
         }
         const token = localStorage.getItem('token');
-        const ordersQuery = await fetch('http://localhost:7071/api/claimOrder', {
+        const ordersQuery = await fetch('https://farm-api.azurewebsites.net/api/claimOrder', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
