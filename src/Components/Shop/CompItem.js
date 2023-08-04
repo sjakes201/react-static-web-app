@@ -123,7 +123,8 @@ function CompItem({ updateAnimals, itemName, cost, unlocked, info, updateBalance
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    upgrade: itemName
+                    upgrade: itemName,
+                    tier: tier
                 })
             })
             if (res.message !== 'SUCCESS') {
