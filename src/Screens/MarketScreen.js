@@ -18,63 +18,114 @@ function MarketScreen({ }) {
         navigate('/');
     }
     // Functions
-    const [items, setItems] = useState({});
 
     // profile info
+    const [items, setItems] = useState({});
     const [Balance, setBalance] = useState(0);
     const [XP, setXP] = useState(0);
     const [Username, setUsername] = useState("");
     const [loginBox, setLoginBox] = useState(false);
-
+    const [prices, setPrices] = useState(null);
+    const [marketItems, setMarketItems] = useState([]);
+    const [selected, setSelected] = useState({
+        name: "",
+        newPrice: 0,
+        oldPrice: 0,
+        imgURL: "EMPTY.png"
+    });
 
     useEffect(() => {
         const token = localStorage.getItem('token');
         async function fetchData() {
-            const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({})
-            });
-            let data = await result.json();
-            setItems(data);
+
+            try {
+                const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({})
+                });
+                if (!result.ok) {
+                    throw new Error(`HTTP error! status: ${result.status}`);
+
+                } else {
+                    let data = await result.json();
+                    setItems(data);
+                }
+            } catch (error) {
+                if (error.message.includes('401')) {
+                    console.log("AUTH EXPIRED")
+                    localStorage.removeItem('token');
+                    navigate('/');
+                } else {
+                    console.log(error)
+                }
+            }
+
+
+        }
+        async function fetchProfile() {
+            try {
+                const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({})
+                });
+                if (!result.ok) {
+                } else {
+                    const data = await result.json();
+                    setBalance(data.Balance);
+                    setXP(data.XP);
+                    setUsername(data.Username);
+
+                }
+
+                const prices = await fetch('https://farm-api.azurewebsites.net/api/prices', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({})
+                });
+                if (!prices.ok) {
+                    throw new Error(`HTTP error! status: ${prices.status}`);
+                } else {
+                    const pricesData = await prices.json()
+                    setPrices(pricesData);
+                }
+            } catch (error) {
+                if (error.message.includes('401')) {
+                    console.log("AUTH EXPIRED")
+                    localStorage.removeItem('token');
+                    navigate('/');
+                } else {
+                    console.log(error)
+                }
+            }
+
+
+
         }
         fetchData();
-
-        async function fetchProfile() {
-            const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({})
-            });
-            const data = await result.json();
-
-            const prices = await fetch('https://farm-api.azurewebsites.net/api/prices', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({})
-            });
-            const pricesData = await prices.json()
-
-            setBalance(data.Balance);
-            setXP(data.XP);
-            setUsername(data.Username);
-            setPrices(pricesData);
-        }
         fetchProfile();
-
     }, []);
+
+    useEffect(() => {
+        getMarketItems()
+    }, [])
+
+    useEffect(() => {
+        if (prices) getMarketItems();
+    }, [prices])
 
     const getXP = () => {
         return XP;
@@ -116,14 +167,6 @@ function MarketScreen({ }) {
         invItem.classList.add('flash');
     }
 
-
-    const [selected, setSelected] = useState({
-        name: "",
-        newPrice: 0,
-        oldPrice: 0,
-        imgURL: "EMPTY.png"
-    });
-
     // set market select item by name, used to permit selection in inventory
     const setMarketSelected = (name) => {
         if (marketItems) {
@@ -135,17 +178,6 @@ function MarketScreen({ }) {
             setSelected(targetItem[0])
         }
     }
-
-    const [prices, setPrices] = useState(null);
-    const [marketItems, setMarketItems] = useState([]);
-
-    useEffect(() => {
-        getMarketItems()
-    }, [])
-
-    useEffect(() => {
-        if (prices) getMarketItems();
-    }, [prices])
 
     const getMarketItems = () => {
         if (!prices) return null;

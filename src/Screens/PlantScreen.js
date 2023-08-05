@@ -9,7 +9,7 @@ import OrderBoard from "../Components/Orders/OrderBoard";
 import { useNavigate } from 'react-router-dom';
 
 
-function PlantScreen({ }) {
+function PlantScreen() {
 
     const navigate = useNavigate();
     if (localStorage.getItem('token') === null) {
@@ -23,10 +23,6 @@ function PlantScreen({ }) {
     const [Balance, setBalance] = useState(0);
     const [XP, setXP] = useState(0);
     const [Username, setUsername] = useState("");
-    const [deluxePermit, setDeluxePermit] = useState(false);
-    const [exoticPermit, setExoticPermit] = useState(false);
-    const [animals, setAnimals] = useState({});
-    const [prices, setPrices] = useState([{}, {}]);
     const [loginBox, setLoginBox] = useState(false);
     const [orderBox, setOrderBox] = useState(false);
     const [upgrades, setUpgrades] = useState({});
@@ -35,68 +31,76 @@ function PlantScreen({ }) {
     useEffect(() => {
         const token = localStorage.getItem('token');
         sessionStorage.setItem('equipped', '')
+
         async function fetchData() {
-            const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({})
-            });
-            let data = await result.json();
-            setItems(data);
+            try {
+                const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({})
+                });
+                if (!result.ok) {
+                    throw new Error(`HTTP error! status: ${result.status}`);
+                } else {
+                    let data = await result.json();
+                    setItems(data);
+                }
+            } catch (error) {
+                if (error.message.includes('401')) {
+                    console.log("AUTH EXPIRED")
+                    localStorage.removeItem('token');
+                    navigate('/');
+                } else {
+                    console.log(error)
+                }
+            }
+
         }
         fetchData();
 
         async function fetchProfile() {
-            const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({})
-            });
-            const data = await result.json();
 
-            const prices = await fetch('https://farm-api.azurewebsites.net/api/prices', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({})
-            });
-            const pricesData = await prices.json()
-
-            setBalance(data.Balance);
-            setXP(data.XP);
-            setUsername(data.Username);
-            setDeluxePermit(data.deluxePermit);
-            setExoticPermit(data.exoticPermit);
-            setAnimals({
-                coopCount: data.CoopAnimals,
-                coopCapacity: data.CoopCapacity,
-                barnCount: data.BarnAnimals,
-                barnCapacity: data.BarnCapacity
-            });
-            setPrices(pricesData);
-
-
-            let upgrades = {};
-            for (const column in data) {
-                if (column.includes('Upgrade') || column.includes('Permit')) {
-                    upgrades[column] = data[column];
+            try {
+                let data;
+                const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({})
+                });
+                if (!result.ok) {
+                    throw new Error(`HTTP error! status: ${result.status}`);
+                } else {
+                    data = await result.json();
+                    setBalance(data.Balance);
+                    setXP(data.XP);
+                    setUsername(data.Username);
+                    let upgrades = {};
+                    for (const column in data) {
+                        if (column.includes('Upgrade') || column.includes('Permit')) {
+                            upgrades[column] = data[column];
+                        }
+                    }
+                    setUpgrades(upgrades);
+                }
+            } catch (error) {
+                if (error.message.includes('401')) {
+                    console.log("AUTH EXPIRED")
+                    localStorage.removeItem('token');
+                    navigate('/');
+                } else {
+                    console.log(error)
                 }
             }
-            setUpgrades(upgrades);
         }
         fetchProfile();
-
     }, []);
 
     const getXP = () => {
@@ -169,7 +173,7 @@ function PlantScreen({ }) {
                 {loginBox && <Complogin close={() => setLoginBox(false)} />}
             </div>
             <div className="order-GUI">
-                {orderBox && <OrderBoard close={() => setOrderBox(false)}/>}
+                {orderBox && <OrderBoard close={() => setOrderBox(false)} />}
             </div>
         </div>
     )

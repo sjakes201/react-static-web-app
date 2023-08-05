@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import CompTile from "./CompTile";
 import CONSTANTS from '../../CONSTANTS';
 import UPGRADES from "../../UPGRADES";
+import { useNavigate } from 'react-router-dom';
 
 function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
 
@@ -12,6 +13,7 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
     const [hasDeluxe, setHasDeluxe] = useState(false);
     const [xp, setXP] = useState(0);
 
+    const navigate = useNavigate();
 
     // can you plant this plant?
     const isUnlocked = (name) => {
@@ -40,7 +42,7 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
             HarvestsRemaining: null,
         }
         if (action === 'plant' && targetTile?.CropID === -1 && seedName in CONSTANTS.SeedCropMap) {
-            
+
             // do we have it unlocked? permit and xp
             if (!isUnlocked(seedName)) {
                 console.log("NOT UNLOCKED");
@@ -116,7 +118,7 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
 
         }
 
-        
+
         if (simRes.message === 'SUCCESS') {
             if (action === 'plant') {
                 updateInventory(seedName, -1);
@@ -140,31 +142,47 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
 
         const token = localStorage.getItem('token');
         if (simRes.message === 'SUCCESS') {
-            if (action === 'plant') {
-                await fetch('https://farm-api.azurewebsites.net/api/plant', {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        seedName: seedName,
-                        tileID: tileID
+            try {
+                if (action === 'plant') {
+                    let plantQuery = await fetch('https://farm-api.azurewebsites.net/api/plant', {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            seedName: seedName,
+                            tileID: tileID
+                        })
                     })
-                }).then((x) => x.json())
-            } else {
-                await fetch('https://farm-api.azurewebsites.net/api/harvest', {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        tileID: tileID
+                    if (!plantQuery.ok) {
+                        throw new Error(`HTTP error! status: ${plantQuery.status}`);
+                    }
+                } else {
+                    let harvestQuery = await fetch('https://farm-api.azurewebsites.net/api/harvest', {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            tileID: tileID
+                        })
                     })
-                }).then((x) => x.json());
+                    if (!harvestQuery.ok) {
+                        throw new Error(`HTTP error! status: ${harvestQuery.status}`);
+                    }
+                }
+            } catch (error) {
+                if (error.message.includes('401')) {
+                    console.log("AUTH EXPIRED")
+                    localStorage.removeItem('token');
+                    navigate('/');
+                } else {
+                    console.log(error)
+                }
             }
         }
 
@@ -209,7 +227,7 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
     const createTiles = async () => {
         try {
             const token = localStorage.getItem('token');
-            let dbTiles = await fetch('https://farm-api.azurewebsites.net/api/tilesAll', {
+            let dbData = await fetch('https://farm-api.azurewebsites.net/api/tilesAll', {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -217,18 +235,27 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({})
-            }).then((x) => x.json());
+            })
+            if (!dbData.ok) {
+                throw new Error(`HTTP error! status: ${dbData.status}`);
+            } else {
+                let dbTiles = await dbData.json();
+                let updatedTiles = dbTiles.map((tile) => {
+                    let stage = getStage(tile.PlantTime, tile.CropID);
+                    return { ...tile, stage: stage };
+                });
+                setTiles(updatedTiles);
+            }
 
             // Compute the stage for each tile and include it in the tile object.
-            let updatedTiles = dbTiles.map((tile) => {
-                let stage = getStage(tile.PlantTime, tile.CropID);
-                return { ...tile, stage: stage };
-            });
-
-            setTiles(updatedTiles);
         } catch (error) {
-            console.error("Error loading farmable tiles:", error);
-            return { message: `ERROR loading farmable tiles` };
+            if (error.message.includes('401')) {
+                console.log("AUTH EXPIRED")
+                localStorage.removeItem('token');
+                navigate('/');
+            } else {
+                console.log(error)
+            }
         }
     }
 

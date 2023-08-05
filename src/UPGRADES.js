@@ -29,7 +29,7 @@ module.exports = {
     },
     // default
     GrowthTimes0: {
-        carrot_seeds: [4, 8, 8],
+        carrot_seeds: [5, 5],
         melon_seeds: [40, 40, 40, 40],
         cauliflower_seeds: [30, 30, 40, 40],
         pumpkin_seeds: [30, 50, 50, 50],
@@ -47,7 +47,7 @@ module.exports = {
     },
     // 1st upgrade
     GrowthTimes1: {
-        carrot_seeds: [4, 8, 8],
+        carrot_seeds: [5, 5],
         melon_seeds: [40, 40, 40, 40],
         cauliflower_seeds: [30, 30, 40, 40],
         pumpkin_seeds: [30, 50, 50, 50],
@@ -65,7 +65,7 @@ module.exports = {
     },
     // 2nd upgrade
     GrowthTimes2: {
-        carrot_seeds: [4, 8, 8],
+        carrot_seeds: [5, 5],
         melon_seeds: [40, 40, 40, 40],
         cauliflower_seeds: [30, 30, 40, 40],
         pumpkin_seeds: [30, 50, 50, 50],

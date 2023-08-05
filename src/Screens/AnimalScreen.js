@@ -12,7 +12,7 @@ import OrderBoard from "../Components/Orders/OrderBoard";
 import { useNavigate } from 'react-router-dom';
 
 
-function AnimalScreen({ }) {
+function AnimalScreen() {
 
   const navigate = useNavigate();
   if (localStorage.getItem('token') === null) {
@@ -73,26 +73,41 @@ function AnimalScreen({ }) {
     const token = localStorage.getItem('token');
     sessionStorage.setItem('equipped', '')
     async function fetchData() {
-      const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({})
-      });
-      let data = await result.json();
-      setItems(data);
+      try {
+        const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({})
+        });
+
+        if (!result.ok) {
+          throw new Error(`HTTP error! status: ${result.status}`);
+        } else {
+          let data = await result.json();
+          setItems(data);
+        }
+
+      } catch (error) {
+        if (error.message.includes('401')) {
+          console.log("AUTH EXPIRED")
+          localStorage.removeItem('token');
+          navigate('/');
+        } else {
+          console.log(error)
+        }
+      }
     }
     fetchData();
 
+
     const getAnimals = async () => {
-      let coopAnimals;
-      let barnAnimals;
       try {
         const token = localStorage.getItem('token');
-        barnAnimals = await fetch('https://farm-api.azurewebsites.net/api/allBarn', {
+        const barnData = await fetch('https://farm-api.azurewebsites.net/api/allBarn', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -100,8 +115,17 @@ function AnimalScreen({ }) {
             'Authorization': `Bearer ${token}`
           },
           body: JSON.stringify({})
-        }).then((x) => x.json())
-        coopAnimals = await fetch('https://farm-api.azurewebsites.net/api/allCoop', {
+        })
+
+        if (!barnData.ok) {
+          throw new Error(`HTTP error! status: ${barnData.status}`);
+        } else {
+          let barnAnimals = await barnData.json();
+          setBarn(barnAnimals);
+        }
+
+
+        const coopData = await fetch('https://farm-api.azurewebsites.net/api/allCoop', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -109,45 +133,60 @@ function AnimalScreen({ }) {
             'Authorization': `Bearer ${token}`
           },
           body: JSON.stringify({})
-        }).then((x) => x.json())
+        })
+        if (!coopData.ok) {
+          throw new Error(`HTTP error! status: ${barnData.status}`);
+        } else {
+          let coopAnimals = await coopData.json();
+          setCoop(coopAnimals);
+        }
+
+
       } catch (error) {
-        console.log(error);
+        if (error.message.includes('401')) {
+          localStorage.removeItem('token');
+          navigate('/');
+        }
       }
-      setCoop(coopAnimals);
-      setBarn(barnAnimals);
     }
 
     async function fetchProfile() {
-      const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({})
-      });
-      const data = await result.json();
-
-      setCapacities({ barnCapacity: data.BarnCapacity, coopCapacity: data.CoopCapacity })
-      setBalance(data.Balance);
-      setXP(data.XP);
-      setUsername(data.Username);
-
-      let upgrades = {};
-      for (const column in data) {
-        if (column.includes('Upgrade') || column.includes('Permit')) {
-          upgrades[column] = data[column];
+      try {
+        const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({})
+        });
+        if (!result.ok) {
+          throw new Error(`HTTP error! status: ${result.status}`);
+        } else {
+          const data = await result.json();
+          setCapacities({ barnCapacity: data.BarnCapacity, coopCapacity: data.CoopCapacity })
+          setBalance(data.Balance);
+          setXP(data.XP);
+          setUsername(data.Username);
+          let upgrades = {};
+          for (const column in data) {
+            if (column.includes('Upgrade') || column.includes('Permit')) {
+              upgrades[column] = data[column];
+            }
+          }
+          setUpgrades(upgrades);
+        }
+      } catch (error) {
+        if (error.message.includes('401')) {
+          localStorage.removeItem('token');
+          navigate('/');
         }
       }
-      setUpgrades(upgrades);
     }
     fetchProfile();
     getAnimals();
-
   }, []);
-
-  // pass each screen this. they will use it and assign it to their building/path buttons
 
   const getXP = () => {
     return XP;
@@ -166,7 +205,6 @@ function AnimalScreen({ }) {
 
   const getUpgrades = () => {
     if (upgrades) return upgrades;
-    // for all of these.. else return proper formatted data with default values?
   }
 
   const updateXP = (amount) => {
@@ -223,8 +261,8 @@ function AnimalScreen({ }) {
         {loginBox && <Complogin close={() => setLoginBox(false)} />}
       </div>
       <div className="order-GUI">
-                {orderBox && <OrderBoard close={() => setOrderBox(false)}/>}
-            </div>
+        {orderBox && <OrderBoard close={() => setOrderBox(false)} />}
+      </div>
     </div>
 
   );

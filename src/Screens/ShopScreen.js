@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-function ShopScreen({ }) {
+function ShopScreen() {
 
     const navigate = useNavigate();
     if (localStorage.getItem('token') === null) {
@@ -31,7 +31,6 @@ function ShopScreen({ }) {
     const [deluxePermit, setDeluxePermit] = useState(false);
     const [exoticPermit, setExoticPermit] = useState(false);
     const [animals, setAnimals] = useState({})
-    const [prices, setPrices] = useState([{}, {}])
 
     const [upgrades, setUpgrades] = useState({});
     const [loginBox, setLoginBox] = useState(false);
@@ -40,74 +39,84 @@ function ShopScreen({ }) {
     useEffect(() => {
         const token = localStorage.getItem('token');
         async function fetchData() {
-            const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({})
-            });
-            let data = await result.json();
-            setItems(data);
+            try {
+                const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({})
+                });
+                if (!result.ok) {
+                    throw new Error(`HTTP error! status: ${result.status}`);
+                } else {
+                    let data = await result.json();
+                    setItems(data);
+                }
+            } catch (error) {
+                if (error.message.includes('401')) {
+                    localStorage.removeItem('token');
+                    navigate('/');
+                }
+            }
         }
         fetchData();
 
         async function fetchProfile() {
-            const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({})
-            });
-            const data = await result.json();
-            console.log(data)
 
-            const prices = await fetch('https://farm-api.azurewebsites.net/api/prices', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({})
-            });
-            const pricesData = await prices.json()
-
-            setBalance(data.Balance);
-            setXP(data.XP);
-            setUsername(data.Username);
-            setDeluxePermit(data.deluxePermit);
-            setExoticPermit(data.exoticPermit);
-            setAnimals({
-                coopCount: data.CoopAnimals,
-                coopCapacity: data.CoopCapacity,
-                barnCount: data.BarnAnimals,
-                barnCapacity: data.BarnCapacity
-            });
-            setPrices(pricesData);
-
-
-            let upgrades = {};
-            for (const column in data) {
-                if (column.includes('Upgrade') || column.includes('Permit')) {
-                    upgrades[column] = data[column];
+            try {
+                const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({})
+                });
+                if (!result.ok) {
+                    throw new Error(`HTTP error! status: ${result.status}`);
+                } else {
+                    const data = await result.json();
+                    setBalance(data.Balance);
+                    setXP(data.XP);
+                    setUsername(data.Username);
+                    setDeluxePermit(data.deluxePermit);
+                    setExoticPermit(data.exoticPermit);
+                    setAnimals({
+                        coopCount: data.CoopAnimals,
+                        coopCapacity: data.CoopCapacity,
+                        barnCount: data.BarnAnimals,
+                        barnCapacity: data.BarnCapacity
+                    });
+                    let upgrades = {};
+                    for (const column in data) {
+                        if (column.includes('Upgrade') || column.includes('Permit')) {
+                            upgrades[column] = data[column];
+                        }
+                    }
+                    setUpgrades(upgrades);
+                }
+            } catch (error) {
+                if (error.message.includes('401')) {
+                    console.log("AUTH EXPIRED")
+                    localStorage.removeItem('token');
+                    navigate('/');
+                } else {
+                    console.log(error)
                 }
             }
-            setUpgrades(upgrades);
+
         }
         fetchProfile();
 
-    }, []);
+    }, [navigate]);
 
     // pass each screen this. they will use it and assign it to their building/path buttons
-    const switchScreen = (screenName) => {
+    const switchScreen = () => {
         sessionStorage.setItem("equipped", "");
-        console.log("SWITCH SCREEN CALLED")
     }
 
     const getAnimals = () => {
@@ -116,10 +125,6 @@ function ShopScreen({ }) {
 
     const getXP = () => {
         return XP;
-    }
-
-    const getPrices = () => {
-        if (prices.newPrices) return prices;
     }
 
     const getBal = () => {
@@ -135,7 +140,6 @@ function ShopScreen({ }) {
 
     const getUpgrades = () => {
         if (upgrades) return upgrades;
-        // for all of these.. else return proper formatted data with default values?
     }
 
     const updateAnimals = (animal) => {

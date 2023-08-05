@@ -2,14 +2,15 @@ import React, { useEffect, useState, useRef } from 'react'
 import CompAnimal from './CompAnimal';
 import CONSTANTS from '../../CONSTANTS';
 import UPGRADES from '../../UPGRADES';
-
-// Should we stop CompPen from rerendering everything when individual animals update? I think that happens automatically 
+import { useNavigate } from 'react-router-dom';
 
 function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP }) {
     let xSlots = 6;
     let ySlots = 9;
     let animalWidth = Math.round(penWidth / xSlots);
     let animalHeight = Math.round(penHeight / ySlots);
+
+    const navigate = useNavigate();
 
     // Profile info
     const [hasExotic, setHasExotic] = useState(false);
@@ -111,17 +112,34 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
             updateInventory(UPGRADES[quantTableName][type][0], UPGRADES[quantTableName][type][1])
             updateXP(CONSTANTS.XP[UPGRADES[quantTableName][type][0]]);
             const token = localStorage.getItem('token');
-            await fetch('https://farm-api.azurewebsites.net/api/collect', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    AnimalID: animal.Animal_ID
-                })
-            });
+
+            try {
+                let collectCall = await fetch('https://farm-api.azurewebsites.net/api/collect', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        AnimalID: animal.Animal_ID
+                    })
+                });
+                if (!collectCall.ok) {
+                    throw new Error(`HTTP error! status: ${collectCall.status}`);
+                }
+            } catch (error) {
+                if (error.message.includes('401')) {
+                    console.log("AUTH EXPIRED")
+                    localStorage.removeItem('token');
+                    navigate('/');
+                } else {
+                    console.log(error)
+                }
+            }
+
+
+
 
         } else {
         }
@@ -132,7 +150,7 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
     const createAnimals = async () => {
         if (importedAnimals.length === 0) {
             return;
-        } 
+        }
         let dbAnimals = importedAnimals;
 
         // init animals state array to objects with ID, type, last collect

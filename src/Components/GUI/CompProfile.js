@@ -43,7 +43,7 @@ function CompProfile({ getBal, getUser, getXP, type, setLoginBox, setOrderBox })
                     <Link className='profileLink' to={`/leaderboard`}>
                         <img src={`${process.env.PUBLIC_URL}/assets/images/leaderboard.png`} alt='leaderboard' />
                     </Link>
-                    <Link className='profileLink' to={`/leaderboard`}>
+                    <Link className='profileLink' to={`/howtoplay`}>
                         <img src={`${process.env.PUBLIC_URL}/assets/images/questionmark.png`} alt='info/how to play' />
                     </Link>
                 </div>}

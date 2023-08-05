@@ -3,20 +3,8 @@ import CompLeaderboard from '../Components/Leaderboard/CompLeaderboard';
 import './CSS/LeaderboardScreen.css'
 import { useNavigate } from 'react-router-dom';
 
-
-/*
-All time contains all time most harvested, and current max balance. So balance is current, can change, but crops are total harvested
-ever.
-Weekly only contains crops, and contains total harvested in past week
-
-Explain this in text box inside each respective leaderboard
-
-*/
-
-
-
 function LeaderboardScreen({ }) {
-    
+
     const navigate = useNavigate();
     if (localStorage.getItem('token') === null) {
         // no auth token present
@@ -30,24 +18,36 @@ function LeaderboardScreen({ }) {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        try {
-            let data = fetch('https://farm-api.azurewebsites.net/api/leaderboard', {
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            }).then((res) => res.json()).then((res) => {
-                setLeadersAll(res.allTimeLeaderboard);
-                setleadersWeekly(res.tempLeaderboard);
-            });
-        } catch (error) {
-            console.error("ERROR LOADING LEADERBOARDs", error);
-            // tell user to refresh or something
-        }
+        const getLeaderboards = async () => {
+            try {
 
-    }, [])
+                let data = await fetch('https://farm-api.azurewebsites.net/api/leaderboard', {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                if (!data.ok) {
+                    throw new Error(`HTTP error! status: ${data.status}`);
+                } else {
+                    let res = await data.json();
+                    setLeadersAll(res.allTimeLeaderboard);
+                    setleadersWeekly(res.tempLeaderboard);
+                }
+            } catch (error) {
+                if (error.message.includes('401')) {
+                    console.log("AUTH EXPIRED")
+                    localStorage.removeItem('token');
+                    navigate('/');
+                } else {
+                    console.log(error)
+                }
+            }
+        }
+        getLeaderboards();
+    }, [navigate])
 
     return (
         <div id="leaderboards" className="leaderboards" >
