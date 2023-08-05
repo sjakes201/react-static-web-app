@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 
 function HowToPlay() {
 
@@ -9,8 +10,18 @@ function HowToPlay() {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            gap: '2%'
+            gap: '2%',
+            position: 'relative'
         }}>
+            <div style={{ position: 'absolute', width: '20%', top: '5%', left: '5%' }}>
+                <Link className='profileLink' to={`/plants`}>
+                    <img
+                        src={`${process.env.PUBLIC_URL}/assets/images/back_arrow.png`}
+                        alt='back-arrow'
+                        
+                        />
+                </Link>
+            </div>
             <div
                 style={{
                     display: 'grid',
@@ -18,7 +29,6 @@ function HowToPlay() {
                     gridTemplateColumns: 'repeat(4, 1fr)',
                     width: '90%',
                     height: '90%',
-                    border: '1px solid black',
                     justifyItems: 'center',
                     alignItems: 'center',
                 }}>
@@ -284,8 +294,8 @@ function HowToPlay() {
                             I'm no artist, but when they're pixel images, there's only so many combinations of wrong before you get it right.
                             Hope you enjoy playing!
                         </p>
-                        <div style={{height: '20%'}}>
-                            <li>Contact: livefarmgame.service@gmail.com</li>
+                        <div style={{ height: '20%' }}>
+                            <li>Contact: livefarmgame@gmail.com</li>
                             <li><a target='_blank' href="/privacy.html">Privacy Policy</a></li>
                             <li><a target='_blank' href="/terms.html">Terms and Conditions</a></li>
                             <li><a target='_blank' href="/cookiepolicy.html">Cookie Policy</a></li>

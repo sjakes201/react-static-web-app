@@ -74,6 +74,7 @@ function Complogin({ close }) {
         if (data.auth) {
             localStorage.setItem('token', data.token);
             console.log("Login success");
+            window.location.reload(false)
         } else {
             console.log("Login failed")
         }
@@ -123,6 +124,7 @@ function Complogin({ close }) {
         if (data.auth) {
             localStorage.setItem('token', data.token);
             console.log("Login success");
+            window.location.reload(false)
 
         } else {
             console.log("Login failed")

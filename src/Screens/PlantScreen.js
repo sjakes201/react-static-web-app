@@ -26,6 +26,7 @@ function PlantScreen() {
     const [loginBox, setLoginBox] = useState(false);
     const [orderBox, setOrderBox] = useState(false);
     const [upgrades, setUpgrades] = useState({});
+    const [orderNotice, setOrderNotice] = useState(false);
 
 
     useEffect(() => {
@@ -113,8 +114,7 @@ function PlantScreen() {
 
     const getUser = () => {
         if (Username) {
-            if (Username.includes('#')) return "Guest"
-            return Username;
+            return Username
         }
     }
 
@@ -162,12 +162,12 @@ function PlantScreen() {
         <div className="app">
             <div className='left-column'>
                 <div className='other-screensPl'><CompOtherScreens current={'plants'} /></div>
-                <div className='plot'><CompPlot getUpgrades={getUpgrades} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div>
+                <div className='plot'><CompPlot setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div>
             </div>
             <div className='right-column'>
-                <div className="userProfile"><CompProfile setOrderBox={setOrderBox} setLoginBox={setLoginBox} type={'tall'} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
+                <div className="userProfile"><CompProfile orderNotice={orderNotice} setOrderBox={setOrderBox} setLoginBox={setLoginBox} type={'tall'} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
                 <div className="inventoryPl"><CompInventory items={items} updateInventory={updateInventory} /></div>
-                <div className="settings">SETTINGS</div>
+                <div className="settings">SETTINGS, policies etc</div>
             </div>
             <div className="login-GUI">
                 {loginBox && <Complogin close={() => setLoginBox(false)} />}

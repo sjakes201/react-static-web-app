@@ -137,7 +137,6 @@ function MarketScreen({ }) {
 
     const getUser = () => {
         if (Username) {
-            if (Username.includes('#')) return "Guest"
             return Username;
         }
     }

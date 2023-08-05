@@ -4,7 +4,7 @@ import CONSTANTS from '../../CONSTANTS';
 import UPGRADES from "../../UPGRADES";
 import { useNavigate } from 'react-router-dom';
 
-function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
+function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotice }) {
 
     const [tiles, setTiles] = useState([]);
     const [growthTable, setGrowthTable] = useState("GrowthTimes0")
@@ -12,6 +12,9 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
     const [quantityYieldTable, setQuantityYieldTable] = useState("PlantQuantityYields0")
     const [hasDeluxe, setHasDeluxe] = useState(false);
     const [xp, setXP] = useState(0);
+
+    // this is for triggering order button animation
+    const [orderTimer, setOrderTimer] = useState(null)
 
     const navigate = useNavigate();
 
@@ -28,7 +31,6 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
         return true;
     }
 
-    // plant receives seedName, harvest receives cropID (why? fix this)
     const updateTile = async (tileID, action, seedName, cropID) => {
 
         let targetTile = tiles.filter(tile => tile?.TileID === tileID);
@@ -173,6 +175,20 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP }) {
                     })
                     if (!harvestQuery.ok) {
                         throw new Error(`HTTP error! status: ${harvestQuery.status}`);
+                    } else {
+                        let data = await harvestQuery.json()
+                        let finished = data.finishedOrder;
+                        if(finished) {
+                            // setOrderNotice(false);
+                            setOrderNotice(true);
+                            if(orderTimer !== null) {
+                                clearTimeout(orderTimer)
+                            }
+                            let id = setTimeout(() => {
+                                setOrderNotice(false);
+                            }, 500)
+                            setOrderTimer(id)
+                        }
                     }
                 }
             } catch (error) {

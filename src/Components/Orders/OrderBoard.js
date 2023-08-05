@@ -1,24 +1,44 @@
 import { useEffect, useState } from 'react'
 import Order from "./Order";
+import { useNavigate } from 'react-router-dom';
 
-function OrderBoard({close}) {
+function OrderBoard({ close }) {
+    const navigate = useNavigate();
 
     const [orders, setOrders] = useState([{}, {}, {}, {}]);
 
     useEffect(() => {
         const fetchOrders = async () => {
             const token = localStorage.getItem('token');
-            const orders = await fetch('https://farm-api.azurewebsites.net/api/getAllOrders', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({})
-            });
-            let data = await orders.json();
-            setOrders(data.orders)
+
+            try {
+                const orders = await fetch('https://farm-api.azurewebsites.net/api/getAllOrders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({})
+                });
+                if (!orders.ok) {
+                    throw new Error(`HTTP error! status: ${orders.status}`);
+                } else {
+                    let data = await orders.json();
+                    setOrders(data.orders)
+                }
+            } catch (error) {
+                if (error.message.includes('401')) {
+                    console.log("AUTH EXPIRED")
+                    localStorage.removeItem('token');
+                    navigate('/');
+                } else {
+                    console.log(error)
+                }
+            }
+
+
+
         }
         fetchOrders();
     }, [])
@@ -64,7 +84,7 @@ function OrderBoard({close}) {
             boxShadow: '0 0 0 3px var(--black), 0 0 0 6px var(--border_orange), 0 0 0 8px var(--border_shadow_orange), 0 0 0 11px var(--black)',
             backgroundColor: 'var(--menu_dark)'
         }}>
-            <div style={{position: 'absolute', top: '2.2vh', right: '1.3vw', cursor:'pointer'}} onClick={close}>X</div>
+            <div style={{ position: 'absolute', top: '2.2vh', right: '1.3vw', cursor: 'pointer' }} onClick={close}>X</div>
             <div id='title' style={{
                 width: '100%',
                 height: '10%',

@@ -60,6 +60,7 @@ function AnimalScreen() {
   const [barn, setBarn] = useState([]);
   const [manager, setManager] = useState(false);
   const [capacities, setCapacities] = useState({ barnCapacity: 0, coopCapacity: 0 });
+  const [orderNotice, setOrderNotice] = useState(false);
 
   const [upgrades, setUpgrades] = useState({});
 
@@ -198,7 +199,6 @@ function AnimalScreen() {
 
   const getUser = () => {
     if (Username) {
-      if (Username.includes('#')) return "Guest"
       return Username;
     }
   }
@@ -246,16 +246,16 @@ function AnimalScreen() {
       <div className='left-column'>
         <div className='pen-management'> <AnimalsTopBar setManager={setManager} /> </div>
         <div className="pens-wrapper" ref={componentRef}>
-          {renderPens && (<><div className="barn-container"><CompPen passedUpgrades={upgrades} getUpgrades={getUpgrades} className='barnPen' importedAnimals={barn} setBarn={setBarn} isBarn={true} key={1} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
-          {renderPens && (<><div className="coop-container"><CompPen passedUpgrades={upgrades} getUpgrades={getUpgrades} className='coopPen' importedAnimals={coop} setCoop={setCoop} isBarn={false} key={2} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
+          {renderPens && (<><div className="barn-container"><CompPen setOrderNotice={setOrderNotice} passedUpgrades={upgrades} getUpgrades={getUpgrades} className='barnPen' importedAnimals={barn} setBarn={setBarn} isBarn={true} key={1} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
+          {renderPens && (<><div className="coop-container"><CompPen setOrderNotice={setOrderNotice} passedUpgrades={upgrades} getUpgrades={getUpgrades} className='coopPen' importedAnimals={coop} setCoop={setCoop} isBarn={false} key={2} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
         </div>
         <div className='other-screensAn'><CompOtherScreens current={'animals'} /></div>
 
       </div>
       <div className='right-column'>
-        <div className="userProfile"><CompProfile type={'tall'} setLoginBox={setLoginBox} setOrderBox={setOrderBox} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
+        <div className="userProfile"><CompProfile orderNotice={orderNotice} type={'tall'} setLoginBox={setLoginBox} setOrderBox={setOrderBox} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
         <div className="inventory"><CompInventory items={items} updateInventory={updateInventory} /></div>
-        <div className="settings">SETTINGS</div>
+        <div className="settings">SETTINGS, policies etc</div>
       </div>
       <div className="login-GUI">
         {loginBox && <Complogin close={() => setLoginBox(false)} />}

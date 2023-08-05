@@ -4,7 +4,7 @@ import CONSTANTS from '../../CONSTANTS';
 import UPGRADES from '../../UPGRADES';
 import { useNavigate } from 'react-router-dom';
 
-function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP }) {
+function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP, setOrderNotice }) {
     let xSlots = 6;
     let ySlots = 9;
     let animalWidth = Math.round(penWidth / xSlots);
@@ -20,6 +20,9 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
     const [animals, setAnimals] = useState([]);
     const [collectible, setCollectible] = useState([]);
     const [walking, setWalking] = useState([]);
+
+    // this is for triggering order button animation
+    const [orderTimer, setOrderTimer] = useState(null)
 
     // Load in profile info
     useEffect(() => {
@@ -127,6 +130,19 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
                 });
                 if (!collectCall.ok) {
                     throw new Error(`HTTP error! status: ${collectCall.status}`);
+                } else {
+                    let data = await collectCall.json()
+                    let finished = data.finishedOrder;
+                    if (finished) {
+                        setOrderNotice(true);
+                        if (orderTimer !== null) {
+                            clearTimeout(orderTimer)
+                        }
+                        let id = setTimeout(() => {
+                            setOrderNotice(false);
+                        }, 500)
+                        setOrderTimer(id)
+                    }
                 }
             } catch (error) {
                 if (error.message.includes('401')) {

@@ -65,24 +65,28 @@ function InitLoading({ }) {
     const checkAuth = async () => {
         const token = localStorage.getItem('token')
         if (token === null) {
-            const tempLogin = await fetch('https://farm-api.azurewebsites.net/api/tempAuth', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: {}
-            })
-            if (tempLogin.ok) {
-                const data = await tempLogin.json();
-                if (data.auth) {
-                    localStorage.setItem('token', data.token);
-                    setAuthorized(true)
+            try {
+                const tempLogin = await fetch('https://farm-api.azurewebsites.net/api/tempAuth', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: {}
+                })
+                if (tempLogin.ok) {
+                    const data = await tempLogin.json();
+                    if (data.auth) {
+                        localStorage.setItem('token', data.token);
+                        setAuthorized(true)
+                    } else {
+                        setLog("Loading failed :( try clearing cookies and reloading")
+                    }
                 } else {
-                    setLog("Loading failed :( try clearing cookies and reloading")
+                    throw new Error(`HTTP error! status: ${tempLogin.status}`);
                 }
-            } else {
-                setLog("Loading failed :( try clearing cookies and reloading")
+            } catch (error) {
+                setLog("Servers down! Please try again later.")
             }
         } else {
             setAuthorized(true)
@@ -109,6 +113,9 @@ function InitLoading({ }) {
         sessionStorage.setItem("equipped", "");
 
 
+        setTimeout(() => {
+            setLog("Servers taking a while to respond. They were probably asleep, and now waking up. ");
+        }, 10000)
     }, [])
 
     useEffect(() => {
@@ -137,7 +144,7 @@ function InitLoading({ }) {
                 width: '5vw'
             }}
             draggable={false} />
-            <p>{log}</p>
+        <p>{log}</p>
     </div>)
 
 }

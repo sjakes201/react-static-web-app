@@ -27,8 +27,6 @@ function CompAnimal({ type, onCollect, sizeWidth, sizeHeight, walkingInfo, colle
     const left = (walkingInfo?.coordinates[0] ? walkingInfo.coordinates[0] : 0);
     const top = (walkingInfo?.coordinates[1] ? walkingInfo.coordinates[1] : 0);
 
-    let trans = walkingInfo.walking ? 'all 3s' : 'none'
-
     return (
         <div style={{
             position: 'absolute',
