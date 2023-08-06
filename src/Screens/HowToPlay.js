@@ -13,14 +13,14 @@ function HowToPlay() {
             gap: '2%',
             position: 'relative'
         }}>
-            <div style={{ position: 'absolute', width: '20%', top: '5%', left: '5%' }}>
-                <Link className='profileLink' to={`/plants`}>
-                    <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/back_arrow.png`}
-                        alt='back-arrow'
-                        
-                        />
-                </Link>
+            <div style={{ position: 'absolute', width: '10%', top: '2%', left: '2%' }}>
+                <img
+                    src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_light.png`}
+                    alt='back-arrow'
+                    onClick={() => window.history.back()}
+                    style={{ width: '70%', cursor: 'pointer'}}
+                />
+
             </div>
             <div
                 style={{

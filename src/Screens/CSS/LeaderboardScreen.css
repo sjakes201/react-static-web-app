@@ -98,12 +98,12 @@
 
 .back-arrow-leader {
     position: absolute;
-    top: 5%;
-    left: 5%;
+    top: 2%;
+    left: 1%;
     cursor: pointer;
+
 }
 
-.back-arrow-leader > img {
-    width: 6%;
-    height: 6%;
+.back-arrow-leader>img {
+    width: 50%;
 }

@@ -53,7 +53,7 @@ function LeaderboardScreen({ }) {
         <div id="leaderboards" className="leaderboards" >
             <div className='back-arrow-leader'>
                 <img
-                    src={`${process.env.PUBLIC_URL}/assets/images/back_arrow.png`}
+                    src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_light.png`}
                     alt='profile/stats'
                     onClick={() => window.history.back()}
                 />

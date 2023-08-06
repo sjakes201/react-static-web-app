@@ -79,7 +79,7 @@ function AccountScreen() {
         <div className='acc-screen'>
             <div className='back-arrow-acc'>
                 <img
-                    src={`${process.env.PUBLIC_URL}/assets/images/back_arrow.png`}
+                    src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_dark.png`}
                     alt='profile/stats'
                     onClick={() => window.history.back()}
                 />
