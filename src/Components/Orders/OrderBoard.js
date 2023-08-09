@@ -84,7 +84,7 @@ function OrderBoard({ close }) {
             boxShadow: '0 0 0 3px var(--black), 0 0 0 6px var(--border_orange), 0 0 0 8px var(--border_shadow_orange), 0 0 0 11px var(--black)',
             backgroundColor: 'var(--menu_dark)'
         }}>
-            <div style={{ position: 'absolute', top: '2.2vh', right: '1.3vw', cursor: 'pointer' }} onClick={close}>X</div>
+            <div style={{ position: 'absolute', top: '2.2vh', right: '1.3vw', cursor: 'pointer', textShadow: '-1px 1px var(--menu_light)' }} onClick={close}>X</div>
             <div id='title' style={{
                 width: '100%',
                 height: '10%',

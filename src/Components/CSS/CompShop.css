@@ -42,11 +42,19 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    background-color: #D2B48C;
+    background-color: var(--menu_light);
     overflow-y: hidden;
     margin: 1vh 1vw;
     box-sizing: border-box;
     border: 1px solid black;
+
+
+    box-sizing: border-box;
+    box-shadow:
+        0 0 0 1px var(--black),
+        0 0 0 2px var(--menu_dark),
+        0 0 0 3px var(--border_shadow_orange),
+        0 0 0 4px var(--black);
 }
 
 .items {
@@ -71,8 +79,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
+    
+    box-shadow:
+        0 0 0 1px var(--black),
+        0 0 0 2px var(--menu_dark),
+        0 0 0 3px var(--border_shadow_orange),
+        0 0 0 4px var(--black);
 
-    border-right: 1px solid black;
 }
 
 .label>h2 {

@@ -207,7 +207,7 @@ function HowToPlay() {
                     <div style={{ width: '100%', height: '40%', display: 'flex', flexDirection: 'row' }}>
                         <img src={`${process.env.PUBLIC_URL}/assets/images/corn.png`} style={{ width: '24px', height: '24px' }} />
                         <p>
-                            Here you can also rent permits to handle rarer animals and plants that produce more expensive goods.
+                            Here you can also buy permits to handle rarer animals and plants that produce more expensive goods.
                         </p>
                     </div>
                 </div>
