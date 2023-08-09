@@ -1,18 +1,18 @@
 module.exports = {
     // costs for each upgrade, num of upgrade is length 
-    // default [******* BALANCED ******
+    // default [******* BALANCED ******]
     UpgradeCosts: {
-        exoticPermit: [20000],
-        deluxePermit: [20000],
-        barnCollectTimeUpgrade: [8000, 15000],
-        barnCollectQuantityUpgrade: [9000, 15000],
-        barnCapacityUpgrade: [5000, 10000],
-        coopCollectTimeUpgrade: [8000, 16000],
-        coopCollectQuantityUpgrade: [8000, 12000],
-        coopCapacityUpgrade: [5000, 10000],
-        plantGrowthTimeUpgrade: [6000, 12000],
-        plantHarvestQuantityUpgrade: [8000, 15000],
-        plantNumHarvestsUpgrade: [9000, 15000],
+        exoticPermit: [25000],
+        deluxePermit: [25000],
+        barnCollectTimeUpgrade: [10000, 18000],
+        barnCollectQuantityUpgrade: [10000, 16000],
+        barnCapacityUpgrade: [8000, 12000],
+        coopCollectTimeUpgrade: [10000, 18000],
+        coopCollectQuantityUpgrade: [10000, 16000],
+        coopCapacityUpgrade: [8000, 12000],
+        plantGrowthTimeUpgrade: [8000, 14000],
+        plantHarvestQuantityUpgrade: [10000, 16000],
+        plantNumHarvestsUpgrade: [10000, 16000],
     },
     UpgradeDescriptions: {
         exoticPermit: ["Exotic Animals", "Allows the farmer to handle exotic animals"],
@@ -28,61 +28,61 @@ module.exports = {
         plantNumHarvestsUpgrade: ["Crop Num Harvests", "Increases total harvests for multi harvest crops"],
 
     },
-    // default [******* BALANCED *******]
+    // default
     GrowthTimes0: {
-        carrot_seeds: [210, 90],
-        melon_seeds: [2400, 2400, 2400, 3600],
-        cauliflower_seeds: [1350, 1350, 1350, 1350],
-        pumpkin_seeds: [1350, 1350, 1350, 1350],
-        yam_seeds: [60, 60, 60],
-        beet_seeds: [90, 60],
-        parsnip_seeds: [120, 60],
-        bamboo_seeds: [30, 30, 30],
-        hops_seeds: [112, 112, 75],
-        corn_seeds: [15, 25, 20, 15],
-        potato_seeds: [360, 90],
-        blueberry_seeds: [450, 450, 60],
-        grape_seeds: [900, 900, 60],
+        carrot_seeds: [40, 20],
+        melon_seeds: [100, 100, 100, 60],
+        cauliflower_seeds: [80, 80, 80, 60],
+        pumpkin_seeds: [100, 100, 100, 60],
+        yam_seeds: [40, 40, 60],
+        beet_seeds: [60, 20],
+        parsnip_seeds: [30, 30],
+        bamboo_seeds: [15, 15, 30],
+        hops_seeds: [20, 20, 20],
+        corn_seeds: [10, 10, 10, 15],
+        potato_seeds: [45, 15],
+        blueberry_seeds: [35, 35, 15],
+        grape_seeds: [35, 35, 15],
         oats_seeds: [11, 11, 8],
-        strawberry_seeds: [375, 375, 300]
+        strawberry_seeds: [20, 20, 20]
     },
-    // 1st upgrade [******* BALANCED *******]
+    // 1st upgrade 
     GrowthTimes1: {
-        carrot_seeds: [160, 70],
-        melon_seeds: [1500, 1500, 2000, 1500],
-        cauliflower_seeds: [1000, 1000, 1000, 1500],
-        pumpkin_seeds: [1200, 1200, 1400, 1400],
-        yam_seeds: [55, 55, 50],
-        beet_seeds: [80, 50],
-        parsnip_seeds: [110, 50],
-        bamboo_seeds: [25, 25, 25],
-        hops_seeds: [100, 100, 60],
-        corn_seeds: [12, 22, 20, 12],
-        potato_seeds: [300, 80],
-        blueberry_seeds: [330, 330, 50],
-        grape_seeds: [330, 330, 50],
-        oats_seeds: [7, 13, 6],
-        strawberry_seeds: [325, 325, 250]
+        carrot_seeds: [25, 15],
+        melon_seeds: [60, 60, 60, 40],
+        cauliflower_seeds: [80, 80, 80, 60],
+        pumpkin_seeds: [80, 100, 80, 50],
+        yam_seeds: [32, 33, 50],
+        beet_seeds: [55, 20],
+        parsnip_seeds: [30, 30],
+        bamboo_seeds: [10, 10, 20],
+        hops_seeds: [20, 20, 20],
+        corn_seeds: [10, 10, 10, 15],
+        potato_seeds: [45, 15],
+        blueberry_seeds: [22, 23, 15],
+        grape_seeds: [22, 23, 15],
+        oats_seeds: [8, 8, 6],
+        strawberry_seeds: [17, 18, 16]
     },
-    // 2nd upgrade [******* BALANCED *******]
+    // 2nd upgrade 
     GrowthTimes2: {
-        carrot_seeds: [100, 40],
-        melon_seeds: [1000, 1200, 1300, 1000],
-        cauliflower_seeds: [800, 1000, 1000, 1200],
-        pumpkin_seeds: [1200, 1400, 1200, 1400],
-        yam_seeds: [50, 50, 45],
-        beet_seeds: [70, 40],
-        parsnip_seeds: [100, 45],
-        bamboo_seeds: [20, 20, 20],
-        hops_seeds: [80, 80, 40],
-        corn_seeds: [15, 15, 15, 10],
-        potato_seeds: [180, 40],
-        blueberry_seeds: [200, 200, 40],
-        grape_seeds: [200, 200, 40],
-        oats_seeds: [7, 8, 4],
-        strawberry_seeds: [175, 175, 160]
+        carrot_seeds: [22, 13],
+        melon_seeds: [55, 60, 60, 37],
+        cauliflower_seeds: [80, 80, 80, 60],
+        pumpkin_seeds: [80, 80, 100, 50],
+        yam_seeds: [25, 30, 40],
+        beet_seeds: [50, 18],
+        parsnip_seeds: [25, 28],
+        bamboo_seeds: [7, 8, 13],
+        hops_seeds: [17, 18, 15],
+        corn_seeds: [10, 10, 10, 15],
+        potato_seeds: [30, 10],
+        blueberry_seeds: [17, 18, 8],
+        grape_seeds: [18, 17, 8],
+        oats_seeds: [5, 5, 4],
+        strawberry_seeds: [17, 18, 15]
     },
-    // [******* BALANCED *******]
+    // 
     NumHarvests0: {
         carrot_seeds: 2,
         melon_seeds: 1,
@@ -100,7 +100,7 @@ module.exports = {
         oats_seeds: 3,
         strawberry_seeds: 2
     },
-    // [******* BALANCED *******]
+    // 
     NumHarvests1: {
         carrot_seeds: 3,
         melon_seeds: 1,
@@ -118,7 +118,7 @@ module.exports = {
         oats_seeds: 3,
         strawberry_seeds: 3
     },
-    // [******* BALANCED *******]
+    //
     NumHarvests2: {
         carrot_seeds: 3,
         melon_seeds: 1,
@@ -136,7 +136,7 @@ module.exports = {
         oats_seeds: 4,
         strawberry_seeds: 3
     },
-    // [******* BALANCED *******]
+    // 
     PlantQuantityYields0: {
         carrot_seeds: 4,
         melon_seeds: 1,
@@ -154,7 +154,7 @@ module.exports = {
         oats_seeds: 3,
         strawberry_seeds: 3
     },
-    // [******* BALANCED *******] 
+    // 
     PlantQuantityYields1: {
         carrot_seeds: 4,
         melon_seeds: 1,
@@ -172,7 +172,7 @@ module.exports = {
         oats_seeds: 3,
         strawberry_seeds: 3
     },
-    // [******* BALANCED *******] 
+    //  
     PlantQuantityYields2: {
         carrot_seeds: 5,
         melon_seeds: 2,
@@ -191,25 +191,25 @@ module.exports = {
         strawberry_seeds: 5
     },
     // how much of an increase in capacity for purchasing that level
-    // default [******* BALANCED ******
+    // default 
     CapacityIncreases: {
         Barn: [4, 4, 4],
         Coop: [4, 6, 4]
     },
-    // barn and coop upgrades, go to the table for the levels [******* BALANCED *******]
+    // barn and coop upgrades, go to the table for the levels 
     AnimalCollectTimes0: {
-        "cow": [240],
-        "chicken": [120],
-        "duck": [180],
-        "quail": [220],
-        "yak": [400],
-        "sheep": [360],
-        "goat": [220],
-        "ostrich": [900],
-        "llama": [400],
-        "kiwi": [660]
+        "cow": [120],
+        "chicken": [80],
+        "duck": [100],
+        "quail": [100],
+        "yak": [240],
+        "sheep": [180],
+        "goat": [110],
+        "ostrich": [600],
+        "llama": [300],
+        "kiwi": [500]
     },
-    // [******* BALANCED *******]
+    // 
     AnimalProduceMap0: {
         "cow": ["cow_milk", 1],
         "chicken": ["chicken_egg", 1],
@@ -222,20 +222,20 @@ module.exports = {
         "llama": ["llama_wool", 1],
         "kiwi": ["kiwi_egg", 1]
     },
-    // [******* BALANCED *******]
+    // 
     AnimalCollectTimes1: {
-        "cow": [200],
-        "chicken": [120],
-        "duck": [155],
-        "quail": [200],
-        "yak": [300],
-        "sheep": [280],
-        "goat": [160],
-        "ostrich": [450],
-        "llama": [350],
-        "kiwi": [420]
+        "cow": [100],
+        "chicken": [70],
+        "duck": [90],
+        "quail": [90],
+        "yak": [120],
+        "sheep": [160],
+        "goat": [100],
+        "ostrich": [300],
+        "llama": [240],
+        "kiwi": [240]
     },
-    // [******* BALANCED *******]
+    // 
     AnimalProduceMap1: {
         "cow": ["cow_milk", 2],
         "chicken": ["chicken_egg", 2],
@@ -248,20 +248,20 @@ module.exports = {
         "llama": ["llama_wool", 2],
         "kiwi": ["kiwi_egg", 1]
     },
-    // [******* BALANCED *******]
+    // 
     AnimalCollectTimes2: {
-        "cow": [150],
-        "chicken": [110],
-        "duck": [140],
-        "quail": [150],
-        "yak": [260],
-        "sheep": [260],
-        "goat": [120],
-        "ostrich": [450],
-        "llama": [350],
-        "kiwi": [280]
+        "cow": [80],
+        "chicken": [60],
+        "duck": [80],
+        "quail": [80],
+        "yak": [120],
+        "sheep": [160],
+        "goat": [60],
+        "ostrich": [300],
+        "llama": [240],
+        "kiwi": [140]
     },
-    // [******* BALANCED *******]
+    // 
     AnimalProduceMap2: {
         "cow": ["cow_milk", 2],
         "chicken": ["chicken_egg", 3],
