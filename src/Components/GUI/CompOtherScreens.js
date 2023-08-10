@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 // pass parameter for what screen you are at right now
 
 function CompOtherScreens({ current }) {
-  console.log(current)
   const [otherScreens, setOtherScreens] = useState([]);
 
   let classes = 'buttons-container ' + (current === 'animals' ? 'top-bar' : 'bottom-bar')

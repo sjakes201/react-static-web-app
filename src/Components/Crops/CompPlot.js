@@ -162,7 +162,7 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
                         throw new Error(`HTTP error! status: ${plantQuery.status}`);
                     }
                 } else {
-                    let harvestQuery = await fetch('http://localhost:7071/api/harvest', {
+                    let harvestQuery = await fetch('https://farm-api.azurewebsites.net/api/harvest', {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
