@@ -2,17 +2,17 @@ module.exports = {
     // costs for each upgrade, num of upgrade is length 
     // default [******* BALANCED ******]
     UpgradeCosts: {
-        exoticPermit: [25000],
-        deluxePermit: [25000],
-        barnCollectTimeUpgrade: [10000, 18000],
-        barnCollectQuantityUpgrade: [10000, 16000],
-        barnCapacityUpgrade: [8000, 12000],
-        coopCollectTimeUpgrade: [10000, 18000],
-        coopCollectQuantityUpgrade: [10000, 16000],
-        coopCapacityUpgrade: [8000, 12000],
-        plantGrowthTimeUpgrade: [8000, 14000],
-        plantHarvestQuantityUpgrade: [10000, 16000],
-        plantNumHarvestsUpgrade: [10000, 16000],
+        exoticPermit: [50000],
+        deluxePermit: [50000],
+        barnCollectTimeUpgrade: [15000, 20000],
+        barnCollectQuantityUpgrade: [15000, 25000],
+        barnCapacityUpgrade: [25000, 50000],
+        coopCollectTimeUpgrade: [15000, 20000],
+        coopCollectQuantityUpgrade: [15000, 25000],
+        coopCapacityUpgrade: [25000, 50000],
+        plantGrowthTimeUpgrade: [12000, 20000],
+        plantHarvestQuantityUpgrade: [15000, 20000],
+        plantNumHarvestsUpgrade: [15000, 20000],
     },
     UpgradeDescriptions: {
         exoticPermit: ["Exotic Animals", "Allows the farmer to handle exotic animals"],
