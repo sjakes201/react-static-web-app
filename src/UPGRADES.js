@@ -1,6 +1,6 @@
 module.exports = {
     // costs for each upgrade, num of upgrade is length 
-    // default [******* BALANCED ******]
+    // default
     UpgradeCosts: {
         exoticPermit: [50000],
         deluxePermit: [50000],
@@ -17,15 +17,15 @@ module.exports = {
     UpgradeDescriptions: {
         exoticPermit: ["Exotic Animals", "Allows the farmer to handle exotic animals"],
         deluxePermit: ["Deluxe Crops", "Allows the farmer to plant luxury crops"],
-        barnCollectTimeUpgrade: ["Barn Collect", "Increases barn animal production speed"],
-        barnCollectQuantityUpgrade: ["Barn Quantity", "Increases the yield of barn animals"],
+        barnCollectTimeUpgrade: ["Barn Rate", "Increases barn animal production speed"],
+        barnCollectQuantityUpgrade: ["Barn Yields", "Increases the yield of barn animals"],
         barnCapacityUpgrade: ["Barn Capacity", "Increases the total barn capacity"],
-        coopCollectTimeUpgrade: ["Coop Collect", "Increases Coop animal production speed"],
-        coopCollectQuantityUpgrade: ["Coop Quantity", "Increases the yield of coop animals"],
+        coopCollectTimeUpgrade: ["Coop Rate", "Increases Coop animal production speed"],
+        coopCollectQuantityUpgrade: ["Coop Yields", "Increases the yield of coop animals"],
         coopCapacityUpgrade: ["Coop Capacity", "Increases the total coop capacity"],
         plantGrowthTimeUpgrade: ["Crop Growth Time", "Decreases total crop growth time"],
-        plantHarvestQuantityUpgrade: ["Crop Harvest Quantity", "Increases per harvest crop yields"],
-        plantNumHarvestsUpgrade: ["Crop Num Harvests", "Increases total harvests for multi harvest crops"],
+        plantHarvestQuantityUpgrade: ["Crop Yields", "Increases per harvest crop yields"],
+        plantNumHarvestsUpgrade: ["Crop Harvests", "Increases total harvests for multi harvest crops"],
 
     },
     // default
@@ -50,14 +50,14 @@ module.exports = {
     GrowthTimes1: {
         carrot_seeds: [25, 15],
         melon_seeds: [60, 60, 60, 40],
-        cauliflower_seeds: [80, 80, 80, 60],
+        cauliflower_seeds: [66, 66, 66, 60],
         pumpkin_seeds: [80, 100, 80, 50],
         yam_seeds: [32, 33, 50],
         beet_seeds: [55, 20],
         parsnip_seeds: [30, 30],
         bamboo_seeds: [10, 10, 20],
         hops_seeds: [20, 20, 20],
-        corn_seeds: [10, 10, 10, 15],
+        corn_seeds: [8, 8, 7, 12],
         potato_seeds: [45, 15],
         blueberry_seeds: [22, 23, 15],
         grape_seeds: [22, 23, 15],
@@ -68,14 +68,14 @@ module.exports = {
     GrowthTimes2: {
         carrot_seeds: [22, 13],
         melon_seeds: [55, 60, 60, 37],
-        cauliflower_seeds: [80, 80, 80, 60],
+        cauliflower_seeds: [60, 60, 60, 60],
         pumpkin_seeds: [80, 80, 100, 50],
         yam_seeds: [25, 30, 40],
         beet_seeds: [50, 18],
         parsnip_seeds: [25, 28],
         bamboo_seeds: [7, 8, 13],
         hops_seeds: [17, 18, 15],
-        corn_seeds: [10, 10, 10, 15],
+        corn_seeds: [7, 7, 6, 12],
         potato_seeds: [30, 10],
         blueberry_seeds: [17, 18, 8],
         grape_seeds: [18, 17, 8],
@@ -111,7 +111,7 @@ module.exports = {
         parsnip_seeds: 2,
         bamboo_seeds: 3,
         hops_seeds: 3,
-        corn_seeds: 3,
+        corn_seeds: 2,
         potato_seeds: 3,
         blueberry_seeds: 4,
         grape_seeds: 4,
@@ -129,7 +129,7 @@ module.exports = {
         parsnip_seeds: 2,
         bamboo_seeds: 3,
         hops_seeds: 3,
-        corn_seeds: 4,
+        corn_seeds: 3,
         potato_seeds: 3,
         blueberry_seeds: 5,
         grape_seeds: 5,

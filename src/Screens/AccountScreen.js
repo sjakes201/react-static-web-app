@@ -32,6 +32,7 @@ function AccountScreen() {
                     throw new Error(`HTTP error! status: ${result.status}`);
                 } else {
                     const data = await result.json();
+                    console.log(data)
                     setProfileData(data)
                     const allGoods = Object.keys(CONSTANTS.Init_Market_Prices);
                     let allCrops = {};
@@ -82,6 +83,7 @@ function AccountScreen() {
                     src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_dark.png`}
                     alt='profile/stats'
                     onClick={() => window.history.back()}
+                    
                 />
             </div>
             {(Object.keys(profileData).length !== 0) &&
@@ -93,13 +95,13 @@ function AccountScreen() {
                             <p>XP: {profileData.XP}</p>
                             <p>Balance: {profileData.Balance}</p>
                         </div>
-                        <div id='acc-permit-holder'>
+                        {/* <div id='acc-permit-holder'>
                             <p id='acc-permits-label'>Permits:</p>
                             <div id='acc-permits-status'>
                                 <p>Deluxe Crops: </p>
                                 <p>Exotic Animals: </p>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className='acc-row' id='acc-stats'>

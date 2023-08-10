@@ -164,7 +164,7 @@ function CompItem({ updateAnimals, itemName, cost, unlocked, info, updateBalance
                         <p>{(info === 'EXOTIC') ? 'EXOTIC' : (info === 'DELUXE') ? 'DELUXE' : `${getXPNeeded()}xp`}</p>
                     </div>
                 )}
-                <div id="itemImg">
+                <div className="itemImg">
                     <img src={`${process.env.PUBLIC_URL}/assets/images/${itemName}.png`} />
                 </div>
                 <div id="name">
@@ -216,7 +216,7 @@ function CompItem({ updateAnimals, itemName, cost, unlocked, info, updateBalance
                         <p>MAX CAPACITY</p>
                     </div>
                 )}
-                <div id="itemImg">
+                <div className="itemImg">
                     <img src={`${process.env.PUBLIC_URL}/assets/images/${itemName}_standing_right.png`} />
                 </div>
                 <div id="name">
@@ -253,8 +253,8 @@ function CompItem({ updateAnimals, itemName, cost, unlocked, info, updateBalance
                         <p>{itemName.includes('Permit') ? "BOUGHT" : "MAXED"}</p>
                     </div>
                 )}
-                <div id="itemImg">
-                    <img src={`${process.env.PUBLIC_URL}/assets/images/${itemName}.png`} />
+                <div className="itemImg">
+                    <img id='upgradeImg' src={`${process.env.PUBLIC_URL}/assets/images/${itemName}.png`} />
                 </div>
                 <div id="name">
                     <p>{(UPGRADES.UpgradeDescriptions[itemName][0])}</p>

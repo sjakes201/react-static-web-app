@@ -154,7 +154,7 @@ module.exports = {
         ostrich_egg: ["Ostrich Egg", "Produce"],
         llama_wool: ["Llama Wool", "Produce"],
         kiwi_egg: ["Kiwi Egg", "Produce"],
-        Balance: ["Coins", "Currency"]
+        Balance: ["Money", "Currency"]
     },
     // For each permit type, what crops and animals it permits
     Permits: {

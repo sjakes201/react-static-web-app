@@ -142,13 +142,14 @@ function CompProfile({ getBal, getUser, getXP, type, setLoginBox, setOrderBox, o
                     </Link>
                     <div className={orderNotice ? 'profileLink orderNotice' : 'profileLink'} id='orderboard-button'
                         onMouseOver={() => handleMouseOver(2)}
-                        onMouseOut={() => handleMouseOut(2)}>
+                        onMouseOut={() => handleMouseOut(2)}
+                        onClick={() => setOrderBox(true)}>
                         {
                             tool2 && <div className='toolTip'>
                                 Orders Board
                             </div>
                         }
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/order-icon.png`} alt='orders' onClick={() => setOrderBox(true)} />
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/order-icon.png`} alt='orders' />
                     </div>
                     <Link className='profileLink' to={`/leaderboard`}
                         onMouseOver={() => handleMouseOver(3)}

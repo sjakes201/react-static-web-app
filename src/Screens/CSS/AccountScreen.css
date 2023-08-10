@@ -32,12 +32,12 @@
 .back-arrow-acc {
     position: absolute;
     top: 2%;
-    left: 2%;
+    left: 1%;
     cursor: pointer;
 }
 
 .back-arrow-acc > img {
-    width: 50%;
+    width: 30%;
 }
 
 /*

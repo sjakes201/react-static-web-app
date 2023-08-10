@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
 import '../CSS/CompShop.css'
 import CompItem from './CompItem'

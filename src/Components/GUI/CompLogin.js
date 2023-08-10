@@ -240,7 +240,11 @@ function Complogin({ close }) {
 
     const getRegister = () => {
         return (
-            <div>
+            <div style={{ position: 'relative' }}>
+                <span style={{ position: 'absolute', bottom: '1%', right: '5%', color: 'gray', fontSize: '.7vw', display: 'flex', flexDirection: 'column' }}>
+                    <span>*Email optional and exclusively</span>
+                    <span>for 'forgot password'</span>
+                </span>
                 <div className='xClose' onClick={close}>X</div>
                 <div id="register" className="login-gui">
                     <div style={{
@@ -286,13 +290,9 @@ function Complogin({ close }) {
                         </div>
 
 
-                        <label style={{ textDecoration: 'underline' }}>Email:</label>
+                        <label >*<span style={{ textDecoration: 'underline' }}>Email:</span></label>
                         <input name="Email" type="email" value={info.Email} onChange={(e) => handleInputChange(e)} >
                         </input>
-
-
-
-
 
                         <div style={{ textAlign: 'center' }}>
                             <p style={{ fontSize: '1vw' }}>{log}</p>
@@ -304,7 +304,7 @@ function Complogin({ close }) {
                         width: '100%', textAlign: 'center', marginTop: '2.5%'
                     }}>
                         <hr style={{ width: '35%', height: '3px', marginLeft: '5%', backgroundColor: 'var(--menu_dark)' }} />
-                        <p>Login</p>
+                        <p>Login?</p>
                         <hr style={{ width: '35%', height: '3px', marginRight: '5%', backgroundColor: 'var(--menu_dark)' }} /></div>
                     <div><button onClick={() => { setScreenType('Login'); setLog("") }} type="button">Login</button></div>
                 </div>

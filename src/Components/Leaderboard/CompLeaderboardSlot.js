@@ -6,11 +6,11 @@ function CompLeaderboardSlot({ item, data }) {
     function ordinalSuffix(number) {
         const lastDigit = number % 10;
         const lastTwoDigits = number % 100;
-    
+
         if (lastTwoDigits > 10 && lastTwoDigits < 20) {
             return "th";
         }
-        
+
         switch (lastDigit) {
             case 1:
                 return "st";
@@ -21,7 +21,7 @@ function CompLeaderboardSlot({ item, data }) {
             default:
                 return "th";
         }
-    }    
+    }
 
     return data === undefined ? (<div></div>) : (
         <div id="leaderboard-slot"
@@ -47,7 +47,7 @@ function CompLeaderboardSlot({ item, data }) {
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}>
-                    <img
+                    {item !== "Balance" && <img
                         src={`${process.env.PUBLIC_URL}/assets/images/`.concat(item.concat(".png"))}
                         style={{
                             maxWidth: '90%',
@@ -56,7 +56,7 @@ function CompLeaderboardSlot({ item, data }) {
                             borderRadius: '50%',
                             alignSelf: 'center',
                             background: 'var(--menu_lighter)'
-                        }} />
+                        }} />}
 
                 </div>
 
@@ -72,10 +72,10 @@ function CompLeaderboardSlot({ item, data }) {
 
                     }}>
                     <p style={{ textAlign: 'center', textDecoration: 'underline', textTransform: 'uppercase', fontSize: "2.7vh" }}>{CONSTANTS.InventoryDescriptions[item][0]}</p>
-                    <p><position style={{color: '#fec32d', padding:'0 5px'}}>1<sup>st</sup></position> {data.first.Username}: {data.first[item]}</p>
-                    <p><position style={{color: 'silver', padding:'0 5px'}}>2<sup>nd</sup></position>{data.second.Username}: {data.second[item]}</p>
-                    <p><position style={{color: 'brown', padding:'0 5px'}}>3<sup>rd</sup></position> {data.third.Username}: {data.third[item]}</p>
-                    <div style={{textAlign: 'center', color: 'gray'}}><p>You: {data.you === -1 ? "" : data.you}<sup>{ordinalSuffix(data.you)}</sup></p></div>
+                    <p><position style={{ color: '#fec32d', padding: '0 5px' }}>1<sup>st</sup></position> {data.first.Username === '' ? 'Guest' : data.first.Username}: {data.first[item]}</p>
+                    <p><position style={{ color: 'silver', padding: '0 5px' }}>2<sup>nd</sup></position>{data.second.Username === '' ? 'Guest' : data.second.Username}: {data.second[item]}</p>
+                    <p><position style={{ color: 'brown', padding: '0 5px' }}>3<sup>rd</sup></position> {data.third.Username === '' ? 'Guest' : data.third.Username}: {data.third[item]}</p>
+                    <div style={{ textAlign: 'center', color: 'gray' }}><p>You: {data.you === -1 ? "" : data.you}<sup>{ordinalSuffix(data.you)}</sup></p></div>
 
                 </div>
             </div>

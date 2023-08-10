@@ -10,7 +10,7 @@
     padding-top: 5px;
 }
 
-#itemImg {
+.itemImg {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -18,7 +18,7 @@
     height: 48%;
 }
 
-#itemImg>img {
+.itemImg>img {
     border-radius: 50%;
     border: 1px solid rgb(41, 10, 10);
     object-fit: contain;
@@ -26,6 +26,11 @@
     max-height: 100%;
     background-color: #D2B48C;
 }
+
+#upgradeImg {
+    border-radius: 10%;
+}
+
 
 #name {
     height: 10%;
