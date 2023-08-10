@@ -41,13 +41,24 @@ function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell }) {
                     <div style={{ marginTop: "10%", textAlign: 'center' }}>
                         <form onSubmit={handleSubmit} autocomplete="off">
                             <input
-                                style={{ boxSizing: 'border-box', width: '85%', padding: "10% 0", textAlign: 'center' }}
-                                name="sellQuantity" 
-                                placeholder="0" 
+                                style={{
+                                    boxSizing: 'border-box',
+                                    width: '85%',
+                                    padding: "10% 0",
+                                    textAlign: 'center',
+                                    boxShadow: '0 0 0 1px var(--black), 0 0 0 3px var(--border_yellow), 0 0 0 5px var(--border_shadow_yellow), 0 0 0 7px var(--black)',
+                                }}
+                                name="sellQuantity"
+                                placeholder="0"
                                 value={quantity}
                                 onChange={(e) => setQuantity(e.target.value)}
                             ></input>
-                            <input type="submit" value="SELL"></input>
+                            <input type="submit" value="SELL"
+                                style={{
+                                    marginTop: '15%',
+                                    boxSizing: 'border-box',
+                                    boxShadow: '0 0 0 1px var(--black), 0 0 0 3px var(--border_orange), 0 0 0 5px var(--border_shadow_orange), 0 0 0 7px var(--black)',
+                                }}></input>
                         </form>
 
                     </div>
