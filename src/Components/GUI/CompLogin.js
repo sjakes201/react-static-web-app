@@ -109,7 +109,7 @@ function Complogin({ close }) {
     const createUser = async (profile) => {
 
         const token = localStorage.getItem('token');
-        const response = await fetch('https://farm-api.azurewebsites.net/api/userRegister', {
+        const response = await fetch('http://localhost:7071/api/userRegister', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -144,7 +144,11 @@ function Complogin({ close }) {
                 setLog("Invalid username or password characters");
                 break;
             case 409:
-                setLog("Username not available");
+                if(data.message.includes('EMAIL')) {
+                    setLog("Email already associated with an account")
+                } else {
+                    setLog("Username not available");
+                }
                 break;
             case 500:
                 setLog("Internal server error, try again");
