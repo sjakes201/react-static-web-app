@@ -211,6 +211,7 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
             const curTime = Date.now();
 
             let secsPassed = (curTime - date) / (1000);
+            secsPassed -= 0.5;
             // buffer for less 400's
             // Use secs passed to find out what stage you are in by summing growth in constants
             let growth = UPGRADES[growthTable][CONSTANTS.ProduceNameFromID[CropID]];
