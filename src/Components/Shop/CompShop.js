@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 
 import '../CSS/CompShop.css'
 import CompItem from './CompItem'
@@ -141,29 +141,67 @@ function CompShop({ updateAnimals, getAnimals, getXP, updateUpgrades, updateBala
     }
 
 
+    // handle horizontal scrolling
+    const seedsRef = useRef(null);
+    const animalsRef = useRef(null);
+    const upgradesRef = useRef(null);
+
+    useEffect(() => {
+        const handleScroll = (event) => {
+            const target = event.currentTarget;
+            const scrollSpeed = 0.4;
+
+            target.scrollLeft += event.deltaY * scrollSpeed;
+            event.preventDefault();
+        };
+
+        if (seedsRef.current) {
+            seedsRef.current.addEventListener('wheel', handleScroll);
+        }
+        if (animalsRef.current) {
+            animalsRef.current.addEventListener('wheel', handleScroll);
+        }
+        if (upgradesRef.current) {
+            upgradesRef.current.addEventListener('wheel', handleScroll);
+        }
+
+        return () => {
+            if (seedsRef.current) {
+                seedsRef.current.removeEventListener('wheel', handleScroll);
+            }
+            if (animalsRef.current) {
+                animalsRef.current.removeEventListener('wheel', handleScroll);
+            }
+            if (upgradesRef.current) {
+                upgradesRef.current.removeEventListener('wheel', handleScroll);
+            }
+        };
+    }, []);
+
+
     return (
         <div className='shop'>
-            <section id='Seeds' className='shopRow'>
+            <section id='Seeds' className='shopRow' >
                 <div className='label'>
                     <h2>SEEDS</h2>
                 </div>
-                <div className='items'>
+                <div className='items' ref={seedsRef}>
                     {(totalXP !== -1) && getSeedItems()}
                 </div>
             </section>
-            <section id='Animals' className='shopRow'>
+            <section id='Animals' className='shopRow' >
                 <div className='label'>
                     <h2>ANIMALS</h2>
                 </div>
-                <div className='items'>
+                <div className='items' ref={animalsRef}>
                     {(Object.keys(animals).length !== 0) && getAnimalItems()}
                 </div>
             </section>
-            <section id='Upgrades' className='shopRow'>
+            <section id='Upgrades' className='shopRow' >
                 <div className='label'>
                     <h2>UPGRADES</h2>
                 </div>
-                <div className='items'>
+                <div className='items' ref={upgradesRef}>
                     {(Object.keys(upgrades).length !== 0) && getUpgradeItems()}
                 </div>
             </section>

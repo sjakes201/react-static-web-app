@@ -72,7 +72,7 @@ function AnimalCard({ animal, coop, setCoop, setBarn }) {
             })
         }
         const token = localStorage.getItem('token');
-        await fetch('https://farm-api.azurewebsites.net/api/deleteAnimal', {
+        await fetch('http://localhost:7071/api/deleteAnimal', {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
