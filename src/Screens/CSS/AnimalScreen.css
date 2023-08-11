@@ -31,22 +31,22 @@
 .pens-wrapper {
     display: flex;
     height: 80vh;
-    background-color: blueviolet;
+    background-color: var(--menu_dark);
 }
 
 .pen-management {
     height: 10vh;
-    background-color: blueviolet;
+    background-color: var(--menu_dark);
 }
 
 .barn-container {
     flex: 1;
-    background-color: rgb(226, 186, 43);
+    background-color: var(--menu_dark);
 }
 
 .coop-container {
     flex: 1;
-    background-color: rgb(244, 133, 194);
+    background-color: var(--menu_dark);
 }
 
 .userProfile {
