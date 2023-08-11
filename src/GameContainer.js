@@ -9,21 +9,27 @@ import LeaderboardScreen from './Screens/LeaderboardScreen'
 import AccountScreen from './Screens/AccountScreen';
 import PasswordReset from './Screens/PasswordReset';
 import HowToPlay from './Screens/HowToPlay';
+import GoogleAnalyticsReporter from './GoogleAnalyticsReporter';
+
 
 function GameContainer() {
     return (
-        <Routes>
-            <Route path="/" element={<InitLoading />} />
-            <Route path="/plants" element={<PlantScreen />} />
-            <Route path="/animals" element={<AnimalScreen />} />
-            <Route path="/shop" element={<ShopScreen />} />
-            <Route path="/market" element={<MarketScreen />} />
-            <Route path="/leaderboard" element={<LeaderboardScreen />} />
-            <Route path="/account" element={<AccountScreen />} />
-            <Route path="/passwordReset" element={<PasswordReset />} />
-            <Route path="/howtoplay" element={<HowToPlay />} />
-        </Routes>
-    )
+        <div style={{width: '100vw', height: '100vh'}}>
+            <GoogleAnalyticsReporter />
+            <Routes>
+                <Route path="/" element={<InitLoading />} />
+                <Route path="/plants" element={<PlantScreen />} />
+                <Route path="/animals" element={<AnimalScreen />} />
+                <Route path="/shop" element={<ShopScreen />} />
+                <Route path="/market" element={<MarketScreen />} />
+                <Route path="/leaderboard" element={<LeaderboardScreen />} />
+                <Route path="/account" element={<AccountScreen />} />
+                <Route path="/passwordReset" element={<PasswordReset />} />
+                <Route path="/howtoplay" element={<HowToPlay />} />
+            </Routes>
+        </div>
+    );
 }
+
 
 export default GameContainer;
