@@ -33,7 +33,6 @@ function MarketScreen({ }) {
         oldPrice: 0,
         imgURL: "EMPTY.png"
     });
-
     useEffect(() => {
         const token = localStorage.getItem('token');
         async function fetchData() {
@@ -233,7 +232,7 @@ function MarketScreen({ }) {
 
             <div className='market-right'>
                 <div className='market-profile'><CompProfile setLoginBox={setLoginBox} type="wide" getBal={getBal} getUser={getUser} getXP={getXP} /></div>
-                <div className='market-select-info'><CompMarketSelection onSell={onSell} name={selected.name} newPrice={selected.newPrice} oldPrice={selected.oldPrice} imgURL={selected.imgURL} /></div>
+                <div className='market-select-info'><CompMarketSelection items={items} onSell={onSell} name={selected.name} newPrice={selected.newPrice} oldPrice={selected.oldPrice} imgURL={selected.imgURL} /></div>
                 <div className='market-inventory'><CompInventory items={items} displayOnly={true} setMarketSelected={setMarketSelected} /></div>
                 <div className='market-other'></div>
             </div>

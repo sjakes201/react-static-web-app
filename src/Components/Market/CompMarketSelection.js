@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 // pass it all price info
-function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell }) {
+function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell, items }) {
+
+    const autoSubmit = useRef(false);
 
     let arrowURL = `${process.env.PUBLIC_URL}/assets/images/market_direction_error.png`;
     if (newPrice === 0 && oldPrice === 0) {
@@ -14,10 +16,19 @@ function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell }) {
         arrowURL = `${process.env.PUBLIC_URL}/assets/images/market-neutral.png`
     }
 
+
+
     const [quantity, setQuantity] = useState('')
 
+    useEffect(() => {
+        if (autoSubmit.current) {
+            handleSubmit();
+            autoSubmit.current = false;
+        }
+    }, [quantity])
+
     const handleSubmit = (e) => {
-        e.preventDefault();
+        e?.preventDefault();
         onSell(name, quantity)
         setQuantity('')
     }
@@ -53,12 +64,45 @@ function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell }) {
                                 value={quantity}
                                 onChange={(e) => setQuantity(e.target.value)}
                             ></input>
-                            <input type="submit" value="SELL"
-                                style={{
-                                    marginTop: '15%',
+                            <div style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                marginTop: '15%',
+                                width: '100%',
+                                height: '100%',
+                                fontSize: '1.7vh'
+                            }}>
+                                <input type="submit" value="SELL"
+                                    style={{
+                                        boxSizing: 'border-box',
+                                        boxShadow: '0 0 0 1px var(--black), 0 0 0 2px var(--border_orange), 0 0 0 3px var(--border_shadow_orange), 0 0 0 4px var(--black)',
+                                        width: 'calc(45% - 8px)',
+                                        height: 'calc(6vh - 8px)',
+                                        cursor: 'pointer'
+                                    }}>
+
+                                </input>
+                                <div style={{
                                     boxSizing: 'border-box',
-                                    boxShadow: '0 0 0 1px var(--black), 0 0 0 3px var(--border_orange), 0 0 0 5px var(--border_shadow_orange), 0 0 0 7px var(--black)',
-                                }}></input>
+                                    boxShadow: '0 0 0 1px var(--black), 0 0 0 2px var(--border_orange), 0 0 0 3px var(--border_shadow_orange), 0 0 0 4px var(--black)',
+                                    width: 'calc(45% - 8px)',
+                                    height: 'calc(6vh - 8px)',
+                                    background: 'white',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    cursor: 'pointer'
+                                }}
+                                    onClick={() => {
+                                        autoSubmit.current = true;
+                                        setQuantity(items[name]);
+                                    }}
+                                >
+                                    SELL ALL
+                                </div>
+                            </div>
+
                         </form>
 
                     </div>
