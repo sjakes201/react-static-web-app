@@ -113,7 +113,7 @@ function CompItem({ updateAnimals, itemName, cost, unlocked, info, updateBalance
             setGif(gifCopy);
             setGifKey(prevKey => prevKey + 1);
             if (gifCopy[num] === 'fail') return;
-            
+
             const token = localStorage.getItem('token');
             let res = await fetch('https://farm-api.azurewebsites.net/api/buyUpgrade', {
                 method: "POST",
