@@ -109,7 +109,7 @@ function Complogin({ close }) {
     const createUser = async (profile) => {
 
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:7071/api/userRegister', {
+        const response = await fetch('https://farm-api.azurewebsites.net/api/userRegister', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
