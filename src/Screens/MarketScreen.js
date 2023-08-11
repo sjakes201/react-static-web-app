@@ -173,7 +173,6 @@ function MarketScreen({ }) {
             if (targetItem.length !== 1) {
                 return;
             }
-            console.log(targetItem[0])
             setSelected(targetItem[0])
         }
     }
@@ -195,10 +194,8 @@ function MarketScreen({ }) {
     }
 
     const onSell = async (itemName, quantity) => {
-        console.log(`request to sell ${quantity} ${itemName}`)
         if (itemName in items && itemName in prices.newPrices) {
             if (items[itemName] >= quantity) {
-                console.log("CAN SELL");
                 updateInventory(itemName, -1 * quantity, false);
                 updateBalance(prices.newPrices[itemName] * quantity);
                 const token = localStorage.getItem('token');
@@ -218,9 +215,7 @@ function MarketScreen({ }) {
                     // out of sync splash
                     console.log("OUT OF SYNC MARKET SELL")
                 }
-
             } else {
-                console.log("DOES NOT HAVE QUANTITY");
             }
         } else {
             console.log("INVALID ITEM");
