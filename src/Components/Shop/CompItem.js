@@ -140,7 +140,7 @@ function CompItem({ updateAnimals, itemName, cost, unlocked, info, updateBalance
             if (gif[key] !== null) {
                 timeouts.push(setTimeout(() => {
                     setGif(prevGif => ({ ...prevGif, [key]: null }));
-                }, 400));
+                }, 447));
             }
         });
         return () => timeouts.forEach(clearTimeout);  // Clean up on unmount
