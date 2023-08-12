@@ -3,6 +3,21 @@ import CONSTANTS from '../../CONSTANTS';
 
 function CompLeaderboardSlot({ item, data }) {
 
+    if (item === "Balance") {
+        data.first.Balance = formatMoney(data.first.Balance);
+        data.second.Balance = formatMoney(data.second.Balance);
+        data.third.Balance = formatMoney(data.third.Balance);
+    }
+
+    function formatMoney(amount) {
+        if(amount.toString().includes("$")) return amount;
+        const formatted = amount.toLocaleString('en-US');
+        return "$" + formatted;
+    }
+
+
+
+
     function ordinalSuffix(number) {
         const lastDigit = number % 10;
         const lastTwoDigits = number % 100;
