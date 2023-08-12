@@ -167,7 +167,7 @@ function PlantScreen() {
             <div className='right-column'>
                 <div className="userProfile"><CompProfile orderNotice={orderNotice} setOrderBox={setOrderBox} setLoginBox={setLoginBox} type={'tall'} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
                 <div className="inventoryPl"><CompInventory items={items} updateInventory={updateInventory} /></div>
-                <div className="settings"></div>
+                <div className="settings"><a target='_blank' href="/updateNotes.html" style={{fontSize: '.7vw', margin: '1%'}}>update notes </a></div>
             </div>
             <div className="login-GUI">
                 {loginBox && <Complogin close={() => setLoginBox(false)} />}
