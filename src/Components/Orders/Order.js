@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react'
 import CONSTANTS from '../../CONSTANTS';
 
 
-function Order({ good, numNeeded, numHave, claimOrder, orderNum }) {
+function Order({ good, numNeeded, numHave, claimOrder, orderNum, refreshOrder, refreshable }) {
+
     const goldReward = Math.floor(CONSTANTS.Init_Market_Prices[good] * (2 / 3) * numNeeded);
     const xpReward = Math.floor(CONSTANTS.XP[good] * (2 / 3) * numNeeded);
 
@@ -64,16 +65,16 @@ function Order({ good, numNeeded, numHave, claimOrder, orderNum }) {
 
     return (
         <div
-        onClick={() => claimOrder(orderNum)}
-        style={{
-            width: 'calc(90% - 14px)',
-            height: 'calc(90% - 14px)',
-            justifySelf: 'center',
-            alignSelf: 'center',
-            position: 'relative',
-            display: 'flex',
-            flexDirection: 'column',
-            boxShadow: `
+            onClick={() => claimOrder(orderNum)}
+            style={{
+                width: 'calc(90% - 14px)',
+                height: 'calc(90% - 14px)',
+                justifySelf: 'center',
+                alignSelf: 'center',
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                boxShadow: `
             0 0 0 1px var(--black),
             0 0 0 3px var(--border_yellow),
             0 0 0 4px var(--border_shadow_yellow),
@@ -81,9 +82,9 @@ function Order({ good, numNeeded, numHave, claimOrder, orderNum }) {
             -15px 0 6px -15px black, /* Additional shadow for the left side */
             -15px 15px 6px -5px black /* Additional shadow for the bottom */
           `,
-            backgroundColor: 'var(--menu_lighter)',
-            cursor: numHave >= numNeeded ? 'pointer' : 'default'
-        }}>
+                backgroundColor: 'var(--menu_lighter)',
+                cursor: numHave >= numNeeded ? 'pointer' : 'default'
+            }}>
             <div style={{ ...dotStyling, top: '4%', left: '2%' }}></div>
             <div style={{ ...dotStyling, top: '4%', right: '2%' }}></div>
             <div style={{ ...dotStyling, bottom: '4%', left: '2%' }}></div>
@@ -130,15 +131,34 @@ function Order({ good, numNeeded, numHave, claimOrder, orderNum }) {
                 width: '100%',
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
             }}>
                 <span style={{
                     ...barStyle,
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    backgroundColor: 'var(--menu_light)'
-                }}>{numHave}/{numNeeded} {CONSTANTS.InventoryDescriptions[good][0]}</span>
+                    backgroundColor: 'var(--menu_light)',
+                    position: 'relative',
+                }}>{numHave}/{numNeeded} {CONSTANTS.InventoryDescriptions[good][0]}
+                    <div style={{
+                        position: 'absolute',
+                        right: '-32%',
+                        top: '5%',
+                        width: '20%',
+                    }}>
+                        {numHave < numNeeded &&
+                            <img src={`${process.env.PUBLIC_URL}/assets/images/${refreshable ? 'refresh' : 'refresh_disabled'}.png`} style={{
+                                cursor: refreshable ? 'pointer' : 'default',
+                                width: '100%',
+                                objectFit: 'contain'
+                            }}
+                                onClick={() => {
+                                    refreshOrder(orderNum)
+                                }} />}
+                    </div>
+                </span>
+
             </div>
         </div>
     )

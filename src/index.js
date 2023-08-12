@@ -9,6 +9,7 @@ root.render(
     <Router>
         <div id='root' style={{ height: '100vh', width: '100vw' }}>
             <GameContainer />
+            {/* <li><a target='_blank' href="/updateNotes.html">update notes</a></li> */}
         </div>
     </Router>
 );

@@ -1,4 +1,8 @@
 module.exports = {
+    VALUES: {
+        NUM_CROP_TILES: 60,
+        ORDER_REFRESH_COOLDOWN: 1800000,
+    },
     // CropIDS are for the integer ID's for different crops in SQL tile table
     ProduceIDs: {
         carrot_seeds: 1,
@@ -166,10 +170,10 @@ module.exports = {
     // What crops are unlocked at each XP threshold
     Levels: {
         0: ['carrot_seeds', 'oats_seeds', 'cauliflower_seeds', 'corn_seeds', 'potato_seeds', 'parsnip_seeds', 'cow', 'chicken', 'grape_seeds', 'bamboo_seeds', 'hops_seeds', 'quail', 'kiwi'],
-        200: ['pumpkin_seeds', 'yam_seeds', 'beet_seeds', 'duck', 'sheep'],
-        500: ['melon_seeds', 'llama', 'goat'],
-        1000: ['blueberry_seeds', 'ostrich', 'quail'],
-        2000: ['strawberry_seeds', 'yak']
+        500: ['pumpkin_seeds', 'yam_seeds', 'beet_seeds', 'duck', 'sheep'],
+        1000: ['melon_seeds', 'llama', 'goat'],
+        2000: ['blueberry_seeds', 'ostrich', 'quail'],
+        5000: ['strawberry_seeds', 'yak']
     },
     // the xp you get from harvesting/collecting this thing once total, not per item (ex: total for grape tile harvest, not per grape)
     XP: {
