@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import '../CSS/CompProfile.css'
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import ScrollingText from "./ScrollingText";
 
 function CompProfile({ getBal, getUser, getXP, type, setLoginBox, setOrderBox, orderNotice }) {
     const navigate = useNavigate();
@@ -126,6 +127,11 @@ function CompProfile({ getBal, getUser, getXP, type, setLoginBox, setOrderBox, o
 
 
             </div>
+
+            {type === 'tall' && <div className='splashArea'>
+                <ScrollingText />
+            </div>
+            }
 
             {type === 'tall' &&
                 <div className="profileButtons">

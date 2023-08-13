@@ -50,12 +50,12 @@
 }
 
 .userProfile {
-    height: 20vh;
+    height: 25vh;
     background-color: black;
 }
 
 .inventory {
-    height: 60vh;
+    height: 55vh;
     border: 1px solid black;
 }
 

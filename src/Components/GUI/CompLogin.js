@@ -278,7 +278,7 @@ function Complogin({ close }) {
                                 type={showPassword ? 'text' : 'password'}
                                 pattern="[A-Za-z0-9!@#$%^&*_\-\.]{4,32}"
                                 value={info.Password}
-                                title="4 to 16 characters in length: letters, numbers, and special characters allowed"
+                                title="4 to 32 characters in length: letters, numbers, and special characters allowed"
                                 onChange={(e) => handleInputChange(e)}
                                 style={{ position: 'relative' }}
                                 required

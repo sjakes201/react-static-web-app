@@ -14,11 +14,11 @@
 }
 
 .user-info {
-    flex-grow: 10;
+    height: 48%;
     display: flex;
     flex-direction: row;
     background: var(--menu_light);
-
+    flex-grow: 10;
 }
 
 .profile-stats {
@@ -58,6 +58,15 @@
         0 0 0 6px var(--black);
 }
 
+
+.splashArea {
+    height: 12%;
+    width: 100%;
+    background-color: var(--menu_light);
+    border-top: 1px solid var(--menu_dark);
+    border-bottom: 1px solid var(--menu_dark);
+}
+
 .profileButtons {
     height: 32%;
     background: var(--menu_light);
@@ -65,7 +74,6 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
-    flex-grow: 1;
     position: relative;
     font-size: 1vw;
 }

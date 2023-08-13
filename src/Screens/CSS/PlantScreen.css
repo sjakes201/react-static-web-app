@@ -34,11 +34,11 @@
 }
 
 .userProfile {
-    height: 20vh;
+    height: 25vh;
 }
 
 .inventoryPl {
-    height: 60vh;
+    height: 55vh;
     border: 1px solid black;
     background-color: rgb(158, 92, 45);
 }
