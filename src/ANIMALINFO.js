@@ -60,7 +60,7 @@ module.exports = {
         },
         "kiwi": {
             like: ['melon'],
-            dislike: ['empty']
+            dislike: ['EMPTY']
         },
     }
 }
