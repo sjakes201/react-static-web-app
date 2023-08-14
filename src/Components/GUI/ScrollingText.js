@@ -28,7 +28,6 @@ function ScrollingText() {
                 throw new Error(`HTTP error! status: ${result.status}`);
             } else {
                 data = await result.json();
-                console.log(data)
                 setTotals(data.totals);
                 setLbPositions(data.lbPositions)
             }
@@ -125,7 +124,6 @@ function ScrollingText() {
 
     useEffect(() => {
         if (splashes.length > 1) {
-            console.log(splashes)
             setChosenText(splashes[Math.floor(Math.random() * splashes.length)]);
             setNewText(true);
             setTimeout(() => { setNewText(false) }, 10000)

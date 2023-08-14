@@ -3,8 +3,9 @@ import CompAnimal from './CompAnimal';
 import CONSTANTS from '../../CONSTANTS';
 import UPGRADES from '../../UPGRADES';
 import { useNavigate } from 'react-router-dom';
+import ANIMALINFO from '../../ANIMALINFO';
 
-function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP, setOrderNotice }) {
+function CompPen({ importedAnimals, setAnimalsParent, passedUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP, setOrderNotice, setEquippedFeed }) {
     let xSlots = 6;
     let ySlots = 9;
     let animalWidth = Math.round(penWidth / xSlots);
@@ -72,6 +73,86 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
 
     }
 
+    // Feed animal function
+    const handleFeed = async (Animal_ID, feed) => {
+        let targetAnimal = animals.filter((a) => a.Animal_ID === Animal_ID)[0];
+
+        const lastFed = targetAnimal.Last_fed;
+        let timePassedMS = Date.now() - lastFed;
+        console.log(timePassedMS)
+        if (timePassedMS >= ANIMALINFO.VALUES.FEED_COOLDOWN) {
+            let newCount = updateInventory(feed, -1);
+            let happinessAdd = ANIMALINFO.FoodHappinessYields[feed];
+            if (ANIMALINFO.foodPreferences[targetAnimal.Animal_type].like.includes(feed)) {
+                happinessAdd *= 2;
+            } else if (ANIMALINFO.foodPreferences[targetAnimal.Animal_type].dislike.includes(feed)) {
+                happinessAdd *= -1;
+            }
+            setAnimalsParent((old) => {
+                return old.map((a) => {
+                    if (a.Animal_ID === targetAnimal.Animal_ID) {
+                        // set last fed and new happiness
+                        let newAnimal = { ...a };
+                        newAnimal.Last_fed = Date.now();
+                        newAnimal.Happiness = newAnimal.Happiness + happinessAdd;
+                        return newAnimal;
+                    } else {
+                        return a;
+                    }
+                })
+            })
+            setAnimals((old) => {
+                return old.map((a) => {
+                    if (a.Animal_ID === targetAnimal.Animal_ID) {
+                        // set last fed and new happiness
+                        let newAnimal = { ...a };
+                        newAnimal.Last_fed = Date.now();
+                        newAnimal.Happiness = newAnimal.Happiness + happinessAdd;
+                        return newAnimal;
+                    } else {
+                        return a;
+                    }
+                })
+            })
+            if (newCount === 0) {
+                setEquippedFeed('');
+                sessionStorage.setItem('equipped', '')
+            }
+            try {
+                const token = localStorage.getItem('token');
+                let feedCall = await fetch('https://farm-api.azurewebsites.net/api/feedAnimal', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        animalID: targetAnimal.Animal_ID,
+                        foodType: feed,
+                    })
+                });
+                if (!feedCall.ok) {
+                    throw new Error(`HTTP error! status: ${feedCall.status}`);
+                } else {
+                    let data = await feedCall.json()
+
+                }
+            } catch (error) {
+                if (error.message.includes('401')) {
+                    console.log("AUTH EXPIRED")
+                    localStorage.removeItem('token');
+                    navigate('/');
+                } else {
+                    console.log(error)
+                }
+            }
+        } else {
+            // cooldown
+        }
+    }
+
+
     // Collect produce function
     const handleCollect = async (Animal_ID, type) => {
         let animal = animals.filter((a) => a.Animal_ID === Animal_ID)[0];
@@ -112,7 +193,20 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
                     quantTableName = "AnimalProduceMap".concat(passedUpgrades.coopCollectQuantityUpgrade);
                     break;
             }
-            updateInventory(UPGRADES[quantTableName][type][0], UPGRADES[quantTableName][type][1])
+            // FORCE REFRESH HERE
+            if (passedUpgrades.barnCollectQuantityUpgrade === undefined) quantTableName = 'AnimalProduceMap0'
+
+
+            let qty = UPGRADES[quantTableName][type][1];
+            // Check random probability of extra
+            let happiness = animal.Happiness, nextRandom = animal.Next_random;
+            let probOfExtra = happiness > 1 ? 0.67 : happiness / 1.5;
+            if (nextRandom < probOfExtra) {
+                // extra produce bc of happiness
+                qty += 1;
+            }
+
+            updateInventory(UPGRADES[quantTableName][type][0], qty);
             updateXP(CONSTANTS.XP[UPGRADES[quantTableName][type][0]]);
             const token = localStorage.getItem('token');
 
@@ -143,6 +237,17 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
                         }, 500)
                         setOrderTimer(id)
                     }
+                    setAnimals((old) => {
+                        return old.map((a) => {
+                            if(a.Animal_ID === data.Animal_ID) {
+                                let updatedRandom = {...a};
+                                updatedRandom.Next_random = data.Next_random;
+                                return updatedRandom;
+                            } else {
+                                return a;
+                            }
+                        })
+                    })
                 }
             } catch (error) {
                 if (error.message.includes('401')) {
@@ -153,10 +258,6 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
                     console.log(error)
                 }
             }
-
-
-
-
         } else {
         }
     }
@@ -385,7 +486,7 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
             gridTemplateRows: `repeat(${ySlots}, 1fr)`,
             border: '1px solid black',
 
-            backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/grass1.png), url(${process.env.PUBLIC_URL}/assets/images/grass2.png`,
+            backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/grass1.png), url(${process.env.PUBLIC_URL}/assets/images/grass2.png)`,
             backgroundRepeat: 'repeat, repeat',
 
             width: `40vw`,
@@ -400,6 +501,8 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
                     key={animal.Animal_ID}
                     Animal_ID={animal.Animal_ID}
                     type={animal.Animal_type}
+                    name={animal.Name}
+                    lastFed={animal.Last_fed}
                     walkingInfo={
                         (walking.filter((a) => a.Animal_ID === animal.Animal_ID)[0] || {})
                     }
@@ -407,6 +510,7 @@ function CompPen({ importedAnimals, passedUpgrades, penWidth, penHeight, classNa
                         (collectible.filter((a) => a.Animal_ID === animal.Animal_ID)[0]?.collectible || false)
                     }
                     onCollect={handleCollect}
+                    onFeed={handleFeed}
                     sizeWidth={`${animalWidth}px`}
                     sizeHeight={`${animalHeight}px`}
                 />

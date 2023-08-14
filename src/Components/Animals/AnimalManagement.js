@@ -14,20 +14,27 @@ function AnimalManagement({ coop, setCoop, barn, setBarn, setManager, capacities
             background: 'var(--menu_light)',
             boxSizing: 'border-box',
             boxShadow: '0 0 0 3px var(--black),0 0 0 6px var(--border_yellow),0 0 0 8px var(--border_shadow_yellow),0 0 0 11px var(--black)',
-            position: 'relative'
+            position: 'relative',
+            cursor: 'default'
         }}>
             <div style={{
                 position: 'absolute',
                 top: '2.2%',
                 right: '2.2%',
                 cursor: 'pointer',
+                border: '1px solid var(--menu_dark)',
+                borderRadius: '10%',
+                background: 'var(--menu_lighter)',
+                width: '2%',
+                zIndex: '20',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
             }}
                 onClick={
                     () => setManager(false)
                 }
-            >
-                X
-            </div>
+            >X</div>
             <div style={{
                 width: '50%',
                 borderRight: '1px solid black',
@@ -35,14 +42,14 @@ function AnimalManagement({ coop, setCoop, barn, setBarn, setManager, capacities
             }}>
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: '1fr 1fr 1fr',
+                    gridTemplateColumns: '1fr 1fr',
                     gridAutoRows: 'auto',
                     columnGap: '5%',
                     rowGap: '20px',  // or use any other fixed size as per your requirement
                     padding: '2.5%',
                 }}>
                     <div style={{
-                        gridColumn: '1 / 4',
+                        gridColumn: '1 / 3',
                         height: '100%',
                         display: 'flex',
                         flexDirection: 'column',
@@ -68,14 +75,14 @@ function AnimalManagement({ coop, setCoop, barn, setBarn, setManager, capacities
             }}>
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: '1fr 1fr 1fr',
+                    gridTemplateColumns: '1fr 1fr',
                     gridAutoRows: 'auto',
                     columnGap: '5%',
                     rowGap: '20px',  // or use any other fixed size as per your requirement
                     padding: '2.5%',
                 }}>
                     <div style={{
-                        gridColumn: '1 / 4',
+                        gridColumn: '1 / 3',
                         height: '100%',
                         display: 'flex',
                         flexDirection: 'column',

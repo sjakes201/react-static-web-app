@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import '../CSS/CompInventory.css'
 import CONSTANTS from '../../CONSTANTS';
+import ANIMALINFO from '../../ANIMALINFO';
 
-function CompInventory({ items, displayOnly, setMarketSelected }) {
+function CompInventory({ items, displayOnly, setMarketSelected, isAnimalScreen, setEquippedFeed }) {
     const [selectedItem, setSelectedItem] = useState({
         name: '',
         quantity: 0,
@@ -24,7 +25,17 @@ function CompInventory({ items, displayOnly, setMarketSelected }) {
 
     const handleClick = (itemName) => {
         if (items[itemName]) {
-            sessionStorage.setItem("equipped", itemName);
+            if (isAnimalScreen && (itemName in ANIMALINFO.FoodHappinessYields)) {
+                sessionStorage.setItem("equipped", itemName);
+                setEquippedFeed(itemName);
+            } else if (isAnimalScreen) {
+                setEquippedFeed('')
+                sessionStorage.setItem('equipped', '')
+            } else {
+                sessionStorage.setItem("equipped", itemName);
+            }
+
+
             if (setMarketSelected) setMarketSelected(itemName);
             setSelectedItem({
                 name: itemName,
@@ -32,8 +43,13 @@ function CompInventory({ items, displayOnly, setMarketSelected }) {
                 description: CONSTANTS.InventoryDescriptions[itemName],
                 image: `${process.env.PUBLIC_URL}/assets/images/${itemName}.png`
             });
+
+            // If in animal screen, turn mouse into item for feeding
+
+
         } else {
             sessionStorage.setItem("equipped", '');
+            if(isAnimalScreen) setEquippedFeed('');
             setSelectedItem({
                 name: '',
                 quantity: 0,
@@ -63,7 +79,7 @@ function CompInventory({ items, displayOnly, setMarketSelected }) {
             let itemCount = sortedObject[item];
             while (itemCount > 1000) {
                 totalSlots.push(
-                    <div className="item-slot" id={item.concat(itemCount)} key={`${item}+${itemCount}`} onClick={() => handleClick(item)}>
+                    <div className={isAnimalScreen ? (item in ANIMALINFO.FoodHappinessYields && itemCount !== 0 ? 'item-slot is-feed' : 'item-slot') : "item-slot"} id={item.concat(itemCount)} key={`${item}+${itemCount}`} onClick={() => handleClick(item)}>
                         {itemCount ? (
                             <>
                                 <img src={`${process.env.PUBLIC_URL}/assets/images/${item}.png`} alt={item} />
@@ -77,7 +93,7 @@ function CompInventory({ items, displayOnly, setMarketSelected }) {
                 itemCount -= 1000;
             }
             totalSlots.push(
-                <div className="item-slot" id={item} key={item} onClick={() => handleClick(item)}>
+                <div className={isAnimalScreen ? (item in ANIMALINFO.FoodHappinessYields && itemCount !== 0 ? 'item-slot is-feed' : 'item-slot') : "item-slot"} id={item} key={item} onClick={() => handleClick(item)}>
                     {itemCount ? (
                         <>
                             <img src={`${process.env.PUBLIC_URL}/assets/images/${item}.png`} alt={item} />

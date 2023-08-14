@@ -64,6 +64,8 @@ function AnimalScreen() {
 
   const [upgrades, setUpgrades] = useState({});
 
+  const [equippedFeed, setEquippedFeed] = useState("")
+
   useEffect(() => {
     if (Object.keys(upgrades).length === 0) {
       setUpgrades(getUpgrades)
@@ -139,6 +141,7 @@ function AnimalScreen() {
           throw new Error(`HTTP error! status: ${barnData.status}`);
         } else {
           let coopAnimals = await coopData.json();
+          console.log(coopAnimals)
           setCoop(coopAnimals);
         }
 
@@ -222,8 +225,10 @@ function AnimalScreen() {
   }
 
   const updateInventory = (itemName, quantity, preventAnimate) => {
+    let newCount = 0;
     setItems((prevItems) => {
       let invItems = { ...prevItems, [itemName]: (prevItems[itemName] || 0) + quantity };
+      newCount = (prevItems[itemName] || 0) + quantity;
       const sortedKeys = Object.keys(invItems).sort((a, b) => invItems[b] - invItems[a]);
       const sortedObject = {};
       sortedKeys.forEach(key => {
@@ -232,30 +237,41 @@ function AnimalScreen() {
 
       return { ...sortedObject };
     })
-    if (preventAnimate) return;
+    if (preventAnimate) return newCount;
     const invItem = document.getElementById(itemName);
     invItem.classList.remove('flash');
     void invItem.offsetWidth; // This forces a reflow hack
     invItem.classList.add('flash');
+    return newCount;
   }
 
+  const appStyle = {
+    height: '100vh',
+    display: 'grid',
+    gridTemplateColumns: '80% 20%',
+    position: 'relative'
+  }
 
+  if (equippedFeed !== "") {
+    appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/${equippedFeed}32.png) 16 16, auto`
+  }
+ 
   return (
-    <div className='app3'>
+    <div style={appStyle}>
       {manager && <div className='manage-animals'> <AnimalManagement capacities={capacities} coop={coop} setCoop={setCoop} barn={barn} setBarn={setBarn} setManager={setManager} /></div>}
       <div className='left-column'>
         <div className='pen-management'> <AnimalsTopBar setManager={setManager} /> </div>
         <div className="pens-wrapper" ref={componentRef}>
-          {renderPens && (<><div className="barn-container"><CompPen setOrderNotice={setOrderNotice} passedUpgrades={upgrades} getUpgrades={getUpgrades} className='barnPen' importedAnimals={barn} setBarn={setBarn} isBarn={true} key={1} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
-          {renderPens && (<><div className="coop-container"><CompPen setOrderNotice={setOrderNotice} passedUpgrades={upgrades} getUpgrades={getUpgrades} className='coopPen' importedAnimals={coop} setCoop={setCoop} isBarn={false} key={2} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
+          {renderPens && (<><div className="barn-container"><CompPen setEquippedFeed={setEquippedFeed} equippedFeed={equippedFeed} setOrderNotice={setOrderNotice} passedUpgrades={upgrades} getUpgrades={getUpgrades} className='barnPen' importedAnimals={barn} setAnimalsParent={setBarn} isBarn={true} key={1} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
+          {renderPens && (<><div className="coop-container"><CompPen setEquippedFeed={setEquippedFeed} equippedFeed={equippedFeed} setOrderNotice={setOrderNotice} passedUpgrades={upgrades} getUpgrades={getUpgrades} className='coopPen' importedAnimals={coop} setAnimalsParent={setCoop} isBarn={false} key={2} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
         </div>
         <div className='other-screensAn'><CompOtherScreens current={'animals'} /></div>
 
       </div>
       <div className='right-column'>
         <div className="userProfile"><CompProfile orderNotice={orderNotice} type={'tall'} setLoginBox={setLoginBox} setOrderBox={setOrderBox} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
-        <div className="inventory"><CompInventory items={items} updateInventory={updateInventory} /></div>
-        <div className="settings"><a target='_blank' href="/updateNotes.html" style={{fontSize: '.7vw', margin: '1%'}}>update notes </a></div>
+        <div className="inventory"><CompInventory items={items} updateInventory={updateInventory} isAnimalScreen={true} setEquippedFeed={setEquippedFeed} /></div>
+        <div className="settings"><a target='_blank' href="/updateNotes.html" style={{ fontSize: '.7vw', margin: '1%' }}>update notes </a></div>
       </div>
       <div className="login-GUI">
         {loginBox && <Complogin close={() => setLoginBox(false)} />}

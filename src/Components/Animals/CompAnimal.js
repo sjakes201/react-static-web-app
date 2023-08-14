@@ -1,12 +1,35 @@
 import React, { useEffect, useState, useMemo } from 'react'
+import ANIMALINFO from '../../ANIMALINFO';
 
 
-function CompAnimal({ type, onCollect, sizeWidth, sizeHeight, walkingInfo, collectible, Animal_ID }) {
+function CompAnimal({ type, onCollect, onFeed, sizeWidth, sizeHeight, walkingInfo, collectible, Animal_ID, name, lastFed }) {
+
+    const [hover, setHover] = useState(false);
+    const [feedGif, setFeedGif] = useState(null);
+
 
     const handleClick = () => {
-        onCollect(Animal_ID, type);
-    }
+        if (sessionStorage.getItem('equipped') in ANIMALINFO.FoodHappinessYields) {
+            if (Date.now() - lastFed >= ANIMALINFO.VALUES.FEED_COOLDOWN) {
+                let feed = sessionStorage.getItem('equipped');
+                onFeed(Animal_ID, feed);
+                if (ANIMALINFO.foodPreferences[type].like.includes(feed)) {
+                    setFeedGif('love.gif');
+                } else if (ANIMALINFO.foodPreferences[type].dislike.includes(feed)) {
+                    setFeedGif('hate.gif');
+                } else {
+                    setFeedGif('neutral.gif');
+                }
+                // 583ms = 7 frames at 12fps
+                setTimeout(() => { setFeedGif(null) }, 583)
+            } else {
+                // cooldown on feed
+            }
+        } else {
+            onCollect(Animal_ID, type);
+        }
 
+    }
 
     const imgURL = () => {
         if (collectible) {
@@ -27,6 +50,22 @@ function CompAnimal({ type, onCollect, sizeWidth, sizeHeight, walkingInfo, colle
     const left = (walkingInfo?.coordinates[0] ? walkingInfo.coordinates[0] : 0);
     const top = (walkingInfo?.coordinates[1] ? walkingInfo.coordinates[1] : 0);
 
+    let imgStyle = {
+        height: '100%',
+        maxWidth: '100%',
+        objectFit: 'contain',
+        // border: '1px dotted purple',
+        transform: walkingInfo.direction === 'left' ? 'scaleX(-1)' : 'scaleX(1)',
+        WebkitUserSelect: "none",
+        MozUserSelect: "none",
+        msUserSelect: "none",
+        userSelect: "none",
+    }
+
+    if (sessionStorage.getItem('equipped') === '') {
+        imgStyle.cursor = collectible ? 'grab' : 'default'
+    }
+
     return (
         <div style={{
             position: 'absolute',
@@ -44,24 +83,37 @@ function CompAnimal({ type, onCollect, sizeWidth, sizeHeight, walkingInfo, colle
             MozUserSelect: "none",
             msUserSelect: "none",
             userSelect: "none",
-        }} onMouseDown={handleClick}
+        }}
+            onMouseEnter={() => { setHover(true) }}
+            onMouseLeave={() => { setHover(false) }}
+            onMouseDown={handleClick}
             draggable={false}
         >
+            {
+                (hover && sessionStorage.getItem('equipped') in ANIMALINFO.FoodHappinessYields) &&
+                <div style={{
+                    position: 'absolute',
+                    top: '-0.75vh',
+                    fontSize: '2.1vh',
+                    textTransform: name === '' ? 'capitalize' : '',
+                    color: '#303030'
+                }}>
+                    {name === '' ? type : name}
+                </div>
+            }
+            {
+                feedGif &&
+                <div style={{
+                    position: 'absolute',
+                    top: '-3vh',
+                }}>
+                    <img src={`${process.env.PUBLIC_URL}/assets/images/animal_reactions/${feedGif}`} style={{ width: '3vw' }} />
+                </div>
+            }
             <img
                 src={imgURL()}
                 alt={type}
-                style={{
-                    height: '100%',
-                    maxWidth: '100%',
-                    objectFit: 'contain',
-                    // border: '1px dotted purple',
-                    transform: walkingInfo.direction === 'left' ? 'scaleX(-1)' : 'scaleX(1)',
-                    WebkitUserSelect: "none",
-                    MozUserSelect: "none",
-                    msUserSelect: "none",
-                    userSelect: "none",
-                    cursor: collectible ? 'grab' : 'default'
-                }}
+                style={imgStyle}
                 draggable={false} />
         </div>
     )

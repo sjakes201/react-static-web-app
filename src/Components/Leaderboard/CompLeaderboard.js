@@ -20,7 +20,7 @@ function CompLeaderboard({ type, leadersWeekly, leadersAll }) {
                             <p>These are the farming leaderboards! Positions refresh every hour.</p>
                             <hr style={{ width: '50%', marginTop: '2px', marginBottom: '2px' }}></hr>
                             <p>They contain the total crop and animal produce farmed over the past week and all time.</p>
-                            <p>Weekly leaderboard resets 11:59 Sunday (UTC), and all time leaderboards never reset.</p>
+                            <p>Weekly leaderboard resets 11:59PM Sunday (UTC), and all time leaderboards never reset.</p>
                             <hr style={{ width: '50%', marginTop: '2px', marginBottom: '2px' }}></hr>
                             <p>The all time leaderboard contains the current richest players' balances, which decrease as money is spent. Everything else are all time totals: even if you sell your goods.</p>
                         </div>
