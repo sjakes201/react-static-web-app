@@ -110,7 +110,7 @@ function ScrollingText() {
                 if (num === 0) {
                     newSplashes.push(`0 ${CONSTANTS.InventoryDescriptionsPlural[category][0]} produced! Someone clearly doesn't like ${CONSTANTS.InventoryDescriptionsPlural[category][0]}.`)
                 } else if (num >= 1 && num <= 10) {
-                    newSplashes.push(`Only ${num} ${CONSTANTS.InventoryDescriptions[category][0]} ever produced! They must be very lonely.`)
+                    newSplashes.push(`Only ${num} ${CONSTANTS.InventoryDescriptions[category][0]} ever produced!`)
                 } else {
                     newSplashes.push(`${num} ${CONSTANTS.InventoryDescriptionsPlural[category][0]} produced!`)
                 }
