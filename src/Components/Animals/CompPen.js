@@ -239,8 +239,8 @@ function CompPen({ importedAnimals, setAnimalsParent, passedUpgrades, penWidth, 
                     }
                     setAnimals((old) => {
                         return old.map((a) => {
-                            if(a.Animal_ID === data.Animal_ID) {
-                                let updatedRandom = {...a};
+                            if (a.Animal_ID === data.Animal_ID) {
+                                let updatedRandom = { ...a };
                                 updatedRandom.Next_random = data.Next_random;
                                 return updatedRandom;
                             } else {
@@ -478,6 +478,13 @@ function CompPen({ importedAnimals, setAnimalsParent, passedUpgrades, penWidth, 
 
     }
 
+    let [visible, setVisible] = useState('visible')
+
+    document.addEventListener("visibilitychange", () => {
+        setVisible(document.visibilityState)
+    });
+
+
     return (
         <div className={className} style={{
             position: 'absolute',
@@ -513,6 +520,7 @@ function CompPen({ importedAnimals, setAnimalsParent, passedUpgrades, penWidth, 
                     onFeed={handleFeed}
                     sizeWidth={`${animalWidth}px`}
                     sizeHeight={`${animalHeight}px`}
+                    visible={visible}
                 />
             })}
         </div>

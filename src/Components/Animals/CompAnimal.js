@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react'
 import ANIMALINFO from '../../ANIMALINFO';
 
 
-function CompAnimal({ type, onCollect, onFeed, sizeWidth, sizeHeight, walkingInfo, collectible, Animal_ID, name, lastFed }) {
+function CompAnimal({ type, onCollect, onFeed, sizeWidth, sizeHeight, walkingInfo, collectible, Animal_ID, name, lastFed, visible }) {
 
     const [hover, setHover] = useState(false);
     const [feedGif, setFeedGif] = useState(null);
@@ -33,13 +33,13 @@ function CompAnimal({ type, onCollect, onFeed, sizeWidth, sizeHeight, walkingInf
 
     const imgURL = () => {
         if (collectible) {
-            if (walkingInfo.walking) {
+            if (walkingInfo.walking && visible) {
                 // left animation is just right animation but mirrored
                 return `${process.env.PUBLIC_URL}/assets/images/${type}_collectible_walking_${walkingInfo.direction === 'left' ? 'right' : walkingInfo.direction}.gif`
             }
             return `${process.env.PUBLIC_URL}/assets/images/${type}_collectible_standing_${walkingInfo.direction === 'left' ? 'right' : walkingInfo.direction}.png`
         } else {
-            if (walkingInfo.walking) {
+            if (walkingInfo.walking && visible) {
                 return `${process.env.PUBLIC_URL}/assets/images/${type}_walking_${walkingInfo.direction === 'left' ? 'right' : walkingInfo.direction}.gif`
             }
             return `${process.env.PUBLIC_URL}/assets/images/${type}_standing_${walkingInfo.direction === 'left' ? 'right' : walkingInfo.direction}.png`
@@ -67,25 +67,28 @@ function CompAnimal({ type, onCollect, onFeed, sizeWidth, sizeHeight, walkingInf
         imgStyle.cursor = collectible ? 'grab' : 'default'
     }
 
+    let divStyle = {
+        position: 'absolute',
+        left: `${left}px`,
+        top: `${top}px`,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: `${sizeWidth}`,
+        height: `${sizeHeight}`,
+        WebkitUserSelect: "none",
+        MozUserSelect: "none",
+        msUserSelect: "none",
+        userSelect: "none",
+        draggable: 'false'
+    }
+    if(visible === 'visible') {
+        divStyle.transition = 'all 3s'
+        divStyle.transitionTimingFunction = 'linear'
+    }
+
     return (
-        <div style={{
-            position: 'absolute',
-            left: `${left}px`,
-            top: `${top}px`,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            transition: 'all 3s',
-            transitionTimingFunction: 'linear',
-            // border: '1px solid red',
-            width: `${sizeWidth}`,
-            height: `${sizeHeight}`,
-            WebkitUserSelect: "none",
-            MozUserSelect: "none",
-            msUserSelect: "none",
-            userSelect: "none",
-            draggable: 'false'
-        }}
+        <div style={divStyle}
             onMouseEnter={() => { setHover(true) }}
             onMouseLeave={() => { setHover(false) }}
             onMouseDown={handleClick}
