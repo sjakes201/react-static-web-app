@@ -141,7 +141,6 @@ function AnimalScreen() {
           throw new Error(`HTTP error! status: ${barnData.status}`);
         } else {
           let coopAnimals = await coopData.json();
-          console.log(coopAnimals)
           setCoop(coopAnimals);
         }
 

@@ -60,6 +60,7 @@ function CompAnimal({ type, onCollect, onFeed, sizeWidth, sizeHeight, walkingInf
         MozUserSelect: "none",
         msUserSelect: "none",
         userSelect: "none",
+        draggable: 'false'
     }
 
     if (sessionStorage.getItem('equipped') === '') {
@@ -83,6 +84,7 @@ function CompAnimal({ type, onCollect, onFeed, sizeWidth, sizeHeight, walkingInf
             MozUserSelect: "none",
             msUserSelect: "none",
             userSelect: "none",
+            draggable: 'false'
         }}
             onMouseEnter={() => { setHover(true) }}
             onMouseLeave={() => { setHover(false) }}
