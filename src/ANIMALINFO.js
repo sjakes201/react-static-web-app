@@ -40,7 +40,7 @@ module.exports = {
         },
         "yak": {
             like: ['cauliflower', 'yam'],
-            dislimelonke: ['bamboo', 'strawberry']
+            dislike: ['bamboo', 'strawberry']
         },
         "sheep": {
             like: ['oats', 'parsnip'],
