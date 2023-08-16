@@ -236,7 +236,7 @@ function CompItem({ updateAnimals, itemName, cost, unlocked, info, updateBalance
                 </div>
                 <div id="buyButtons">
                     <div className='buyButton' id='adopt'>
-                        <button onClick={() => handleClick(1)}>ADOPT</button>
+                        <button onClick={() => handleClick(1)}>BUY</button>
                         {gif[1] && <img key={gifKey} src={`${process.env.PUBLIC_URL}/assets/images/${gif[1]}.gif`} className="gif" />}
                     </div>
 
