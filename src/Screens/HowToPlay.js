@@ -85,7 +85,7 @@ function HowToPlay() {
                             Once animals have produced, they will show you by holding their produce: click them to collect. Feeding animals can increase their happiness, and happier animals have a higher chance of producing extra goods.
                         </p>
                     </div>
-                    
+
                     <div style={{ display: 'flex', flexDirection: 'row', height: '20%', justifyContent: 'center', alignItems: 'center' }}>
                         <img src={`${process.env.PUBLIC_URL}/assets/images/goat_walking_right.gif`} style={{ width: '10%' }} />
                         <img src={`${process.env.PUBLIC_URL}/assets/images/orange_arrow.png`} style={{ width: '5%' }} />
@@ -288,14 +288,15 @@ function HowToPlay() {
                         fontSize: '.7vw'
                     }}>
                         <div style={{ textAlign: 'center', fontSize: '1.5vw', height: '12%' }}>Other</div>
-                        <p style={{ height: '60%' }}>
+                        <p style={{ height: '55%' }}>
                             <span style={{ textDecoration: 'underline' }}>About</span>:
                             I am an undergrad studying computer science at UMass Amherst who enjoys programming in their free time, and made this website initially as a summer 2023 project.
                             It's done in React and hosted with various Azure services. I wrote all of the code and made all of the images.
                             I'm no artist, but when they're pixel images, there's only so many combinations of wrong before you get it right.
                             Hope you enjoy playing!
                         </p>
-                        <div style={{ height: '20%' }}>
+                        <div style={{ height: '25%' }}>
+                            <li>Discord <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ width: '4%' }} /> sjake1 <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ width: '4%' }} /></li>
                             <li>Contact: livefarmgame@gmail.com</li>
                             <li><a target='_blank' href="/privacy.html">Privacy Policy</a></li>
                             <li><a target='_blank' href="/terms.html">Terms and Conditions</a></li>

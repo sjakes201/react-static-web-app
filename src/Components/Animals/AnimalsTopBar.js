@@ -40,7 +40,23 @@ function AnimalsTopBar({ setManager }) {
                 width: '40%',
                 backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/grass1.png), url(${process.env.PUBLIC_URL}/assets/images/grass2.png)`,
                 backgroundRepeat: 'repeat, repeat',
-            }}></div>
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}>
+                <div style={{
+                    width: '40%', 
+                    height: '70%',
+                    background: 'var(--menu_light)',
+                    border: '2px solid var(--menu_dark)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    Machines (coming soon)
+                </div>
+
+            </div>
         </div>
     )
 
