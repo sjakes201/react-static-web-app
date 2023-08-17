@@ -11,11 +11,14 @@ function AnimalsTopBar({ setManager }) {
             flexDirection: 'row',
             justifyContent: 'center'
         }}>
-            <div style={{background:'var(--menu_light)', width: '40%'}}></div>
+            <div style={{
+                width: '40%',
+                backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/grass1.png), url(${process.env.PUBLIC_URL}/assets/images/grass2.png)`,
+                backgroundRepeat: 'repeat, repeat',
+            }}></div>
             <div style={{
                 height: 'calc(100% - 14px)',
                 width: '20%',
-                border: '1px solid black',
                 objectFit: 'contain',
                 boxSizing: 'border-box',
                 margin: '7px',
@@ -33,7 +36,11 @@ function AnimalsTopBar({ setManager }) {
                 />
 
             </div>
-            <div style={{background:'var(--menu_light)', width: '40%'}}></div>
+            <div style={{
+                width: '40%',
+                backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/grass1.png), url(${process.env.PUBLIC_URL}/assets/images/grass2.png)`,
+                backgroundRepeat: 'repeat, repeat',
+            }}></div>
         </div>
     )
 

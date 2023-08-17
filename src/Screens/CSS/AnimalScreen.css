@@ -36,7 +36,6 @@
 
 .pen-management {
     height: 10vh;
-    background-color: var(--menu_dark);
 }
 
 .barn-container {
@@ -56,7 +55,6 @@
 
 .inventory {
     height: 55vh;
-    border: 1px solid black;
 }
 
 .settings {

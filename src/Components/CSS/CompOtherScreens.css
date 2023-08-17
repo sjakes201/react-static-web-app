@@ -8,7 +8,6 @@
 }
 
 .nav-button {
-    height: 70%;
     padding: 0;
     cursor: pointer;
     display: flex;
@@ -42,7 +41,6 @@
     padding-left: 5%;
     padding-right: 5%;
     background-color: var(--menu_dark);
-
     box-sizing: border-box;
 
 }

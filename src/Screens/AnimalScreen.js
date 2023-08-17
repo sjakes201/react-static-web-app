@@ -254,17 +254,17 @@ function AnimalScreen() {
   if (equippedFeed !== "") {
     appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/${equippedFeed}32.png) 16 16, auto`
   }
- 
+
   return (
     <div style={appStyle}>
       {manager && <div className='manage-animals'> <AnimalManagement capacities={capacities} coop={coop} setCoop={setCoop} barn={barn} setBarn={setBarn} setManager={setManager} /></div>}
       <div className='left-column'>
+        <div className='other-screensAn'><CompOtherScreens current={'animals'} /></div>
         <div className='pen-management'> <AnimalsTopBar setManager={setManager} /> </div>
         <div className="pens-wrapper" ref={componentRef}>
           {renderPens && (<><div className="barn-container"><CompPen setEquippedFeed={setEquippedFeed} equippedFeed={equippedFeed} setOrderNotice={setOrderNotice} passedUpgrades={upgrades} getUpgrades={getUpgrades} className='barnPen' importedAnimals={barn} setAnimalsParent={setBarn} isBarn={true} key={1} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
           {renderPens && (<><div className="coop-container"><CompPen setEquippedFeed={setEquippedFeed} equippedFeed={equippedFeed} setOrderNotice={setOrderNotice} passedUpgrades={upgrades} getUpgrades={getUpgrades} className='coopPen' importedAnimals={coop} setAnimalsParent={setCoop} isBarn={false} key={2} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
         </div>
-        <div className='other-screensAn'><CompOtherScreens current={'animals'} /></div>
 
       </div>
       <div className='right-column'>

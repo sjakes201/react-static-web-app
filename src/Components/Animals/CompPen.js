@@ -491,7 +491,7 @@ function CompPen({ importedAnimals, setAnimalsParent, passedUpgrades, penWidth, 
             display: 'grid',
             gridTemplateColumns: `repeat(${xSlots}, 1fr)`,
             gridTemplateRows: `repeat(${ySlots}, 1fr)`,
-            border: '1px solid black',
+            borderRight: isBarn ? '1px solid black' : '',
 
             backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/grass1.png), url(${process.env.PUBLIC_URL}/assets/images/grass2.png)`,
             backgroundRepeat: 'repeat, repeat',

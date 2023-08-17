@@ -18,7 +18,7 @@ function HowToPlay() {
                     src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_light.png`}
                     alt='back-arrow'
                     onClick={() => window.history.back()}
-                    style={{ width: '70%', cursor: 'pointer'}}
+                    style={{ width: '70%', cursor: 'pointer' }}
                 />
 
             </div>
@@ -73,19 +73,20 @@ function HowToPlay() {
                     <div style={{ height: '10%', textAlign: 'center', fontSize: '1.5vw', paddingTop: '1%', textDecoration: 'underline' }}>
                         FARMING
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'row', height: '30%', padding: '3% 2% 2% 2%' }}>
+                    <div style={{ display: 'flex', flexDirection: 'row', height: '20%', padding: '3% 2% 2% 2%' }}>
                         <img src={`${process.env.PUBLIC_URL}/assets/images/corn.png`} style={{ width: '24px', height: '24px' }} />
                         <p>
                             Grow crops and raise animals to harvest goods to sell in the market. Different crops and animals take different amounts of time to produce their goods, and crops may be multi-harvest.
                         </p>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'row', height: '30%', padding: '4% 2% 2% 2%' }}>
+                    <div style={{ display: 'flex', flexDirection: 'row', height: '40%', padding: '4% 2% 2% 2%' }}>
                         <img src={`${process.env.PUBLIC_URL}/assets/images/corn.png`} style={{ width: '24px', height: '24px' }} />
                         <p>
-                            Once animals have produced, they will show you by holding their produce: click them to collect. Crops grow in stages, and can be harvested in the final stage.
+                            Once animals have produced, they will show you by holding their produce: click them to collect. Feeding animals can increase their happiness, and happier animals have a higher chance of producing extra goods.
                         </p>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'row', height: '30%', justifyContent: 'center', alignItems: 'center' }}>
+                    
+                    <div style={{ display: 'flex', flexDirection: 'row', height: '20%', justifyContent: 'center', alignItems: 'center' }}>
                         <img src={`${process.env.PUBLIC_URL}/assets/images/goat_walking_right.gif`} style={{ width: '10%' }} />
                         <img src={`${process.env.PUBLIC_URL}/assets/images/orange_arrow.png`} style={{ width: '5%' }} />
                         <img src={`${process.env.PUBLIC_URL}/assets/images/goat_collectible_walking_right.gif`} style={{ width: '10%', cursor: 'grab' }} />
