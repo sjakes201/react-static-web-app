@@ -8,8 +8,8 @@ import ANIMALINFO from '../../ANIMALINFO';
 function CompPen({ importedAnimals, setAnimalsParent, passedUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP, setOrderNotice, setEquippedFeed }) {
     let xSlots = 6;
     let ySlots = 9;
-    let animalWidth = Math.round(penWidth / xSlots);
-    let animalHeight = Math.round(penHeight / ySlots);
+    let animalWidth = Math.floor(penWidth / xSlots);
+    let animalHeight = Math.floor(penHeight / ySlots);
 
     const navigate = useNavigate();
 
@@ -497,7 +497,7 @@ function CompPen({ importedAnimals, setAnimalsParent, passedUpgrades, penWidth, 
             backgroundRepeat: 'repeat, repeat',
 
             width: `40vw`,
-            height: `calc(80vh - 2px)`,
+            height: `80vh`,
             WebkitUserSelect: "none",
             MozUserSelect: "none",
             msUserSelect: "none",
