@@ -22,6 +22,7 @@
         0 0 0 4px var(--border_yellow),
         0 0 0 6px var(--border_shadow_yellow),
         0 0 0 8px var(--black);
+    height: 80%;
 }
 
 .nav-button>img {
@@ -43,15 +44,6 @@
     background-color: var(--menu_dark);
     box-sizing: border-box;
 
-}
-
-.top-bar {
-    margin: 8px 0px 0px 0px;
-    box-shadow:
-        0 0 0 2px var(--black),
-        0 0 0 4px var(--border_orange),
-        0 0 0 6px var(--border_shadow_orange),
-        0 0 0 8px var(--black);
 }
 
 .bottom-bar {

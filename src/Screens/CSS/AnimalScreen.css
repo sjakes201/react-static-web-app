@@ -30,7 +30,7 @@
 
 .pens-wrapper {
     display: flex;
-    height: 80vh;
+    height: calc(80vh - 2px);
     background-color: var(--menu_dark);
 }
 

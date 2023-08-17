@@ -15,6 +15,7 @@ function AnimalsTopBar({ setManager }) {
                 width: '40%',
                 backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/grass1.png), url(${process.env.PUBLIC_URL}/assets/images/grass2.png)`,
                 backgroundRepeat: 'repeat, repeat',
+                height: '100%'
             }}></div>
             <div style={{
                 height: 'calc(100% - 14px)',
@@ -42,13 +43,15 @@ function AnimalsTopBar({ setManager }) {
                 backgroundRepeat: 'repeat, repeat',
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                height: '100%'
             }}>
                 <div style={{
                     width: '40%', 
                     height: '70%',
                     background: 'var(--menu_light)',
                     border: '2px solid var(--menu_dark)',
+                    boxSizing: 'border-box',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center'
