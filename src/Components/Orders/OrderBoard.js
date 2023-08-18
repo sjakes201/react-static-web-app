@@ -3,7 +3,7 @@ import Order from "./Order";
 import { useNavigate } from 'react-router-dom';
 import CONSTANTS from '../../CONSTANTS';
 
-function OrderBoard({ close, updateBalance }) {
+function OrderBoard({ close, updateBalance, updateXP }) {
     const navigate = useNavigate();
 
     const [orders, setOrders] = useState([{}, {}, {}, {}]);
@@ -49,11 +49,12 @@ function OrderBoard({ close, updateBalance }) {
         fetchOrders();
     }, [])
 
-    const claimOrder = async (orderNum, goldReward) => {
+    const claimOrder = async (orderNum, goldReward, xpReward) => {
         if (orders[orderNum - 1].numHave < orders[orderNum - 1].numNeeded) {
             return;
         }
         updateBalance(goldReward)
+        updateXP(xpReward)
         const token = localStorage.getItem('token');
         const ordersQuery = await fetch('https://farm-api.azurewebsites.net/api/claimOrder', {
             method: 'POST',

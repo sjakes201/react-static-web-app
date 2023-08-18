@@ -173,7 +173,7 @@ function PlantScreen() {
                 {loginBox && <Complogin close={() => setLoginBox(false)} />}
             </div>
             <div className="order-GUI">
-                {orderBox && <OrderBoard close={() => setOrderBox(false)} updateBalance={updateBalance} />}
+                {orderBox && <OrderBoard close={() => setOrderBox(false)} updateBalance={updateBalance} updateXP={updateXP} />}
             </div>
         </div>
     )

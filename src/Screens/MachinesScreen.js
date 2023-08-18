@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './CSS/MachinesScreen.css'
+import MachineUnit from '../Components/Machines/MachineUnit';
 
 function MachinesScreen() {
 
@@ -24,12 +25,12 @@ function MachinesScreen() {
                 </div>
 
                 <div id='machineArea'>
-                    <div className='machineUnit'>1</div>
-                    <div className='machineUnit'>2</div>
-                    <div className='machineUnit'>3</div>
-                    <div className='machineUnit'>4</div>
-                    <div className='machineUnit'>5</div>
-                    <div className='machineUnit'>6</div>
+                    <div className='machineUnit'> <MachineUnit /></div>
+                    <div className='machineUnit'> <MachineUnit /></div>
+                    <div className='machineUnit'> <MachineUnit /></div>
+                    <div className='machineUnit'> <MachineUnit /></div>
+                    <div className='machineUnit'> <MachineUnit /></div>
+                    <div className='machineUnit'> <MachineUnit /></div>
                 </div>
 
             </div>
