@@ -65,7 +65,7 @@ function Order({ good, numNeeded, numHave, claimOrder, orderNum, refreshOrder, r
 
     return (
         <div
-            onClick={() => claimOrder(orderNum)}
+            onClick={() => claimOrder(orderNum, goldReward)}
             style={{
                 width: 'calc(90% - 14px)',
                 height: 'calc(90% - 14px)',

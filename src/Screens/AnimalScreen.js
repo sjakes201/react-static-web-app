@@ -276,7 +276,7 @@ function AnimalScreen() {
         {loginBox && <Complogin close={() => setLoginBox(false)} />}
       </div>
       <div className="order-GUI">
-        {orderBox && <OrderBoard close={() => setOrderBox(false)} />}
+        {orderBox && <OrderBoard close={() => setOrderBox(false)} updateBalance={updateBalance} />}
       </div>
     </div>
 
