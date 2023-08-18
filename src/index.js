@@ -8,8 +8,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Router>
         <div id='root' style={{ height: '100vh', width: '100vw' }}>
-            {/* <GameContainer /> */}
-            <div style={{ background: 'var(--menu_light)', width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <GameContainer />
+            {/* <div style={{ background: 'var(--menu_light)', width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 Temporary down time! Upgrading server resources. Esimated: 10 minutes.
                 <img
                     src={`${process.env.PUBLIC_URL}/assets/images/chicken_collectible_walking_right.gif`}
@@ -18,7 +18,7 @@ root.render(
                         width: '5vw'
                     }}
                     draggable={false} />
-            </div>
+            </div> */}
             {/* <li><a target='_blank' href="/updateNotes.html">update notes</a></li> */}
         </div>
     </Router>
