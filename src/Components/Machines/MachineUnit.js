@@ -2,11 +2,15 @@
 
 
 
-function MachineUnit () {
-    return(
+function MachineUnit({ machineNum, machineInfo }) {
+    return (
         <div>
-            BOOM
-        </div> 
+            <p>machineNum: {machineNum}</p>
+            <p>typeID: {machineInfo.ID}</p>
+            <p>level: {machineInfo.level}</p>
+            <p>produceReceived: {machineInfo.produceReceived}</p>
+            <p>startTime: {machineInfo.startTime}</p>
+        </div>
     )
 }
 
