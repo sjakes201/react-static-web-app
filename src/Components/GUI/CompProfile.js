@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import ScrollingText from "./ScrollingText";
 
-function CompProfile({ getBal, getUser, getXP, type, setLoginBox, setOrderBox, orderNotice }) {
+function CompProfile({ getBal, getUser, getXP, type, setLoginBox, setOrderBox, orderNotice, disableBorder, noPFP }) {
     const navigate = useNavigate();
 
     const [bal, setBal] = useState(0);
@@ -85,9 +85,11 @@ function CompProfile({ getBal, getUser, getXP, type, setLoginBox, setOrderBox, o
 
 
     return (
-        <div className="user-profile">
+        <div className={`user-profile ${disableBorder ? '' : 'orangeBorder'}`}>
             <div className="user-info">
-                <div className='pfp' ><img src={`${process.env.PUBLIC_URL}/assets/images/homie.png`} alt='homie' /></div>
+                { noPFP !== true &&
+                    <div className='pfp' ><img src={`${process.env.PUBLIC_URL}/assets/images/homie.png`} alt='homie' /></div>
+                }
                 <div className='profile-stats'>
                     <div>{user && user.includes("#") ? "Guest" : user}</div>
                     <div>XP: {xp}</div>

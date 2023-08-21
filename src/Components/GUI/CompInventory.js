@@ -3,7 +3,7 @@ import '../CSS/CompInventory.css'
 import CONSTANTS from '../../CONSTANTS';
 import ANIMALINFO from '../../ANIMALINFO';
 
-function CompInventory({ items, displayOnly, setMarketSelected, isAnimalScreen, setEquippedFeed }) {
+function CompInventory({ items, displayOnly, setMarketSelected, isAnimalScreen, setEquippedFeed, showBottomBar }) {
     const [selectedItem, setSelectedItem] = useState({
         name: '',
         quantity: 0,
@@ -35,7 +35,6 @@ function CompInventory({ items, displayOnly, setMarketSelected, isAnimalScreen, 
                 sessionStorage.setItem("equipped", itemName);
             }
 
-
             if (setMarketSelected) setMarketSelected(itemName);
             setSelectedItem({
                 name: itemName,
@@ -48,8 +47,9 @@ function CompInventory({ items, displayOnly, setMarketSelected, isAnimalScreen, 
 
 
         } else {
+            if (setMarketSelected) setMarketSelected("");
             sessionStorage.setItem("equipped", '');
-            if(isAnimalScreen) setEquippedFeed('');
+            if (isAnimalScreen) setEquippedFeed('');
             setSelectedItem({
                 name: '',
                 quantity: 0,
@@ -113,7 +113,7 @@ function CompInventory({ items, displayOnly, setMarketSelected, isAnimalScreen, 
     if (displayOnly) {
         return (
             <div className='inventory-container'>
-                <div className='inventorySlots'>
+                <div className={`inventorySlots ${showBottomBar ? 'showBottomBar' : 'noBottomBar'}`}>
                     {
                         items && (<div id="display" className="items-grid">{toLoad()}</div>)
                     }
@@ -121,9 +121,10 @@ function CompInventory({ items, displayOnly, setMarketSelected, isAnimalScreen, 
             </div>
         )
     }
+
     return (
-        <div className='inventory-container'>
-            <div className="inventorySlots">
+        <div className={`inventory-container`}>
+            <div className={`inventorySlots ${showBottomBar ? 'showBottomBar' : 'noBottomBar'}`}>
                 <div className="selected-item-info">
                     <img src={selectedItem.image} alt={selectedItem.name} />
                     <summary>

@@ -27,7 +27,7 @@ function GameContainer() {
                 <Route path="/account" element={<AccountScreen />} />
                 <Route path="/passwordReset" element={<PasswordReset />} />
                 <Route path="/howtoplay" element={<HowToPlay />} />
-                <Route path="/machines" element={<MachinesScreen />} />
+                {/* <Route path="/machines" element={<MachinesScreen />} /> */}
             </Routes>
         </div>
     );

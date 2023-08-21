@@ -68,6 +68,7 @@
 
 .other-screensAn {
     height: 10vh;
+    z-index: 4;
 }
 
 .login-GUI {

@@ -1,5 +1,3 @@
-
-
 function AnimalsTopBar({ setManager }) {
 
     return (
@@ -18,12 +16,14 @@ function AnimalsTopBar({ setManager }) {
                 height: '100%'
             }}></div>
             <div style={{
-                height: 'calc(100% - 14px)',
+                height: 'calc(100% - 7px)',
                 width: '20%',
                 objectFit: 'contain',
                 boxSizing: 'border-box',
-                margin: '7px',
+                margin: '0 7px 7px 7px',
                 boxShadow: '0 0 0 1px var(--black), 0 0 0 3px var(--border_orange), 0 0 0 5px var(--border_shadow_orange), 0 0 0 7px var(--black)',
+                zIndex: '3',
+                background: 'var(--menu_light)'
             }}>
                 <img
                     src={`${process.env.PUBLIC_URL}/assets/images/animal_manage.png`}

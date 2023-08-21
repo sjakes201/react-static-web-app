@@ -24,7 +24,6 @@
 .inventorySlots {
     width: calc(100% - 22px);
     margin: 0 11px;
-    height: 100%;
     box-sizing: border-box;
     box-shadow:
         0 0 0 3px rgb(0, 0, 0),
@@ -33,6 +32,14 @@
         0 0 0 11px rgb(0, 0, 0);
     position: relative;
     z-index: 2;
+}
+
+.showBottomBar {
+    height: calc(100% - 11px)
+}
+
+.noBottomBar {
+    height: 100%;
 }
 
 .selected-item-info {
@@ -81,19 +88,20 @@
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
-    justify-content: space-between;
+    justify-content: center;
     height: 85%;
     overflow-y: auto;
     padding: 5px;
     background-color: var(--menu_dark);
 }
 
-/*
-.items-grid::after {
+
+/* .items-grid::after {
     content: "";
     flex: auto;
-}
-*/
+    margin: 2px;
+} */
+
 
 #display {
     height: 100%

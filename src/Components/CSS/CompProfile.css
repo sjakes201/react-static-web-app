@@ -6,6 +6,9 @@
     margin: 11px;
     position: relative;
     z-index: 5;
+}
+
+.orangeBorder {
     box-shadow:
         0 0 0 3px var(--black),
         0 0 0 6px var(--border_orange),
