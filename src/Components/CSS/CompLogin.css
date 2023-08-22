@@ -15,7 +15,7 @@
     align-items: center;
     border: 1px solid black;
     width: calc(32vw - 22px);
-    height: calc(40vh - 22px);
+    height: calc(45vh - 22px);
     font-size: 1.75h;
     background-color: var(--menu_lighter);
     
