@@ -1,4 +1,8 @@
+import { useNavigate } from 'react-router-dom';
+
 function AnimalsTopBar({ setManager }) {
+    const navigate = useNavigate();
+
 
     return (
         <div style={{
@@ -47,16 +51,17 @@ function AnimalsTopBar({ setManager }) {
                 height: '100%'
             }}>
                 <div style={{
-                    width: '40%', 
-                    height: '70%',
-                    background: 'var(--menu_light)',
-                    border: '2px solid var(--menu_dark)',
+                    height: '100%',
                     boxSizing: 'border-box',
                     display: 'flex',
                     justifyContent: 'center',
-                    alignItems: 'center'
-                }}>
-                    Machines (coming soon)
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    width: '20%'
+                }}
+                onClick={() => navigate('/machines')}
+                >
+                    <img src={`${process.env.PUBLIC_URL}/assets/images/machines/deskClickable.png`} style={{height: '100%', objectFit: 'contain'}}/>
                 </div>
 
             </div>

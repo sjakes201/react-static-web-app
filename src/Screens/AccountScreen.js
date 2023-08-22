@@ -32,7 +32,6 @@ function AccountScreen() {
                     throw new Error(`HTTP error! status: ${result.status}`);
                 } else {
                     const data = await result.json();
-                    console.log(data)
                     setProfileData(data)
                     const allGoods = Object.keys(CONSTANTS.Init_Market_Prices);
                     let allCrops = {};
@@ -40,7 +39,6 @@ function AccountScreen() {
 
                     for (const property in data) {
                         if (!allGoods.includes(property)) {
-                            console.log(`Not including ${property}!`);
                         } else {
                             if (property.includes('_')) {
                                 // is animal produce
@@ -54,9 +52,6 @@ function AccountScreen() {
                     }
                     setCropCounts(allCrops);
                     setProduceCounts(allProduce);
-                    console.log(allCrops)
-                    console.log(allProduce)
-
                 }
             } catch (error) {
                 if (error.message.includes('401')) {

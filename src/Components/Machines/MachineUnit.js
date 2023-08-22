@@ -2,7 +2,7 @@ import MACHINESINFO from '../../MACHINESINFO';
 import '../CSS/MachineUnit.css'
 import React, { useState, useEffect } from 'react';
 
-function MachineUnit({ setItems, items, machineNum, machineInfo, buyMachine, startMachine, collectMachine, cancelMachine }) {
+function MachineUnit({ setItems, items, machineNum, machineInfo, buyMachine, startMachine, collectMachine, cancelMachine, sellMachine }) {
 
 
     // total info is constants machine type info
@@ -127,6 +127,7 @@ function MachineUnit({ setItems, items, machineNum, machineInfo, buyMachine, sta
                 id='machineMainGUI'
                 className='machineGUIDefault'
             >
+                {sellGUI()}
                 <div className='machineCloseX' onClick={() => setMainGUI(false)}>X</div>
                 <div style={{
                     width: '50%',
@@ -328,6 +329,7 @@ function MachineUnit({ setItems, items, machineNum, machineInfo, buyMachine, sta
         let nextTierCosts = MACHINESINFO[`${MACHINESINFO.machineTypeFromIDS[machineInfo.ID]}MachineCost`]?.[`tier${machineInfo.level + 1}`];
         return (
             <div className='runningGUI machineGUIDefault'>
+                {sellGUI()}
                 <div
                     className='machineCloseX'
                     onClick={() => { setMainGUI(false); setSelectedBuild("") }}>X</div>
@@ -416,8 +418,47 @@ function MachineUnit({ setItems, items, machineNum, machineInfo, buyMachine, sta
         )
     }
 
+    const [sellConfirmGUI, setSellConfirmGUI] = useState(false);
+    const sellGUI = () => {
+        return (
+            <div style={{ position: 'absolute', bottom: '-1%', left: '1%', width: '9%' }} onClick={() => setSellConfirmGUI(true)}>
+                <img src={`${process.env.PUBLIC_URL}/assets/images/machines/trashCan.png`} style={{ width: '100%', objectFit: 'contain', cursor: 'pointer' }} />
+
+            </div>
+        )
+    }
+
+    useEffect(() => {
+        if(!mainGUI) setSellConfirmGUI(false);
+    }, [mainGUI])
+
     return (
         <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {sellConfirmGUI &&
+                <div className='sellConfirmGUI'>
+                    <div className='machineCloseX' onClick={() => setSellConfirmGUI(false)}>X</div>
+                    <p>Scrap this machine?</p>
+                    <p>Refund:</p>
+                    <div className='scrapComp'>
+                        <span className='scrapCount'>
+                            <img src={`${process.env.PUBLIC_URL}/assets/images/Gears.png`} style={{ height: '100%', objectFit: 'contain', cursor: 'pointer' }} />
+                            X
+                            {MACHINESINFO.sellRefunds[`tier${machineInfo.level}`]?.Gears}
+                        </span>
+                        <span className='scrapCount'>
+                            <img src={`${process.env.PUBLIC_URL}/assets/images/Bolts.png`} style={{ height: '100%', objectFit: 'contain', cursor: 'pointer' }} />
+                            X
+                            {MACHINESINFO.sellRefunds[`tier${machineInfo.level}`]?.Bolts}
+                        </span>
+                        <span className='scrapCount'>
+                            <img src={`${process.env.PUBLIC_URL}/assets/images/MetalSheets.png`} style={{ height: '100%', objectFit: 'contain', cursor: 'pointer' }} />
+                            X
+                            {MACHINESINFO.sellRefunds[`tier${machineInfo.level}`]?.MetalSheets}
+                        </span>
+                    </div>
+                    <button onClick={() => {sellMachine(machineNum); setSellConfirmGUI(false); setMainGUI(false)}}>SCRAP</button>
+                </div>
+            }
             {(mainGUI && machineInfo.startTime === -1) &&
                 createMainGUI()
             }

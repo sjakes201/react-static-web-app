@@ -162,7 +162,7 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
                         throw new Error(`HTTP error! status: ${plantQuery.status}`);
                     }
                 } else {
-                    let harvestQuery = await fetch('https://farm-api.azurewebsites.net/api/harvest', {
+                    let harvestQuery = await fetch('https://farm-api.azurewebsites.net/api/harvest?', {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
@@ -177,6 +177,7 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
                         throw new Error(`HTTP error! status: ${harvestQuery.status}`);
                     } else {
                         let data = await harvestQuery.json()
+                        
                         let finished = data.finishedOrder;
                         if(finished) {
                             // setOrderNotice(false);
@@ -189,6 +190,7 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
                             }, 500)
                             setOrderTimer(id)
                         }
+                        return data.randomPart;
                     }
                 }
             } catch (error) {

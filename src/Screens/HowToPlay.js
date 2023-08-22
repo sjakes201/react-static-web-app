@@ -296,7 +296,7 @@ function HowToPlay() {
                             Hope you enjoy playing!
                         </p>
                         <div style={{ height: '25%' }}>
-                            <li>Discord <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ width: '4%' }} /> sjake1 <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ width: '4%' }} /></li>
+                            <li><img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ width: '4%' }} /> <a target='_blank' href="https://discord.com/invite/jrxWrgNCHw">Game Discord</a> <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ width: '4%' }} /></li>
                             <li>Contact: livefarmgame@gmail.com</li>
                             <li><a target='_blank' href="/privacy.html">Privacy Policy</a></li>
                             <li><a target='_blank' href="/terms.html">Terms and Conditions</a></li>

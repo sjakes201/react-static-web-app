@@ -8,7 +8,8 @@ function CompTile({ tile, stage, updateTile }) {
     const [imgURL, setImgURL] = useState(`${process.env.PUBLIC_URL}/assets/images/dirt.png`);
     const [gif, setGif] = useState(null);
 
-
+    const [partResult, setPartResult] = useState('EMPTY')
+    const [animatePart, setAnimatePart] = useState(false)
 
 
     const createGif = (e) => {
@@ -39,7 +40,10 @@ function CompTile({ tile, stage, updateTile }) {
                     createGif(e);
                 }
             }
-            updateTile(tile.TileID, 'harvest', null, tile.CropID)
+            let resPartResult = await updateTile(tile.TileID, 'harvest', null, tile.CropID);
+            if (['MetalSheets', 'Bolts', 'Gears'].includes(resPartResult)) {
+                setPartResult(resPartResult);
+            }
         }
     }
 
@@ -52,6 +56,35 @@ function CompTile({ tile, stage, updateTile }) {
             setImgURL(`${process.env.PUBLIC_URL}/assets/images/dirt.png`);
         }
     }, [tile, stage]);
+
+    useEffect(() => {
+        if (partResult !== '') {
+            setAnimatePart(true);
+            setTimeout(() => {
+                setAnimatePart(false);
+                setPartResult('EMPTY')
+            }, 1500);
+        }
+    }, [partResult]);
+
+    // animation styles for part gotten
+    const defaultStyle = {
+        transition: 'all 1.5s ease-out',
+        opacity: 1,
+        transform: 'translateY(0)',
+        position: 'absolute',
+        top: '0',
+        right: '25%',
+        zIndex: '50',
+        width: '50%',
+        pointerEvents: 'none'
+    };
+
+    const animatedStyle = {
+        ...defaultStyle,
+        opacity: 0,
+        transform: 'translateY(-30px)',
+    };
 
     return (
         <div
@@ -66,6 +99,15 @@ function CompTile({ tile, stage, updateTile }) {
                 src={gif.src}
                 alt="harvest gif"
             />}
+
+            <img
+                src={`${process.env.PUBLIC_URL}/assets/images/${partResult}.png`}
+                alt="Description"
+                style={animatePart ? animatedStyle : defaultStyle}
+            />
+
+
+
             <img
                 style={{
                     textAlign: 'center',

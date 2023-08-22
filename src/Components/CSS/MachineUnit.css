@@ -205,12 +205,13 @@
     cursor: pointer;
     background-color: var(--menu_lighter);
     width: 38%;
-    border-radius: 2%;;
+    border-radius: 2%;
+    ;
 }
 
 .machineButtonD {
     border-radius: 2%;
-    padding: 2% 2%;  
+    padding: 2% 2%;
     cursor: pointer;
     background-color: var(--menu_lighter);
 }
@@ -222,7 +223,7 @@
     border-radius: 10%;
 }
 
-.machineQuantityButtonB{
+.machineQuantityButtonB {
     margin: 0 4%;
     padding: 0 3%;
     background-color: var(--menu_light);
@@ -244,4 +245,48 @@
 
 .isRunningUpgrade {
     color: gray;
+}
+
+.sellConfirmGUI {
+    position: absolute;
+    z-index: 20;
+    width: 60%;
+    height: 50%;
+    border: 1px solid var(--menu_dark);
+    box-shadow:
+        0 0 0 1px var(--black),
+        0 0 0 2px var(--border_yellow),
+        0 0 0 3px var(--border_shadow_yellow),
+        0 0 0 4px var(--black);
+    background-color: var(--menu_lighter);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 6% 1% 1% 1%;
+    font-size: 1vw;
+    text-align: center;
+}
+
+.scrapComp {
+    height: 30%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.scrapCount {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: .8vw;
+}
+
+.sellConfirmGUI>button {
+    height: 20%;
+    font-size: 1.8vh;
+    padding: 1%;
 }

@@ -170,7 +170,22 @@ function PlantScreen() {
                 <div className="settings">
                     <a target='_blank' href="/updateNotes.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>update notes </a>
                     <a target='_blank' href="/privacy.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>Privacy Policy </a>
+
+                    <div style={{ width: '70%', height: '3vh', position: 'absolute', bottom: '3vh', left: '0', fontSize: '1vw' }}>
+                        <a target='_black' href="https://discord.gg/jrxWrgNCHw" style={{ fontSize: '.6vw', textDecoration: 'underline', height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                            <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ height: '50%', marginRight: '2%' }}></img>
+                            Community Discord
+                            <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ height: '50%', marginLeft: '2%' }}></img>
+                        </a>
                     </div>
+                    <div style={{ width: '70%', height: '3vh', position: 'absolute', bottom: '0', left: '0', fontSize: '1vw' }}>
+                        <a target='_black' href="https://www.buymeacoffee.com/farmgame" style={{ fontSize: '.6vw', textDecoration: 'underline', height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                            <img src={`${process.env.PUBLIC_URL}/assets/images/goat_standing_right.png`} style={{ width: '20%' }}></img>
+                            Buy me a coffee
+                            <img src={`${process.env.PUBLIC_URL}/assets/images/goat_standing_right.png`} style={{ width: '20%' }}></img>
+                        </a>
+                    </div>
+                </div>
             </div>
             <div className="login-GUI">
                 {loginBox && <Complogin close={() => setLoginBox(false)} />}

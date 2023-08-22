@@ -30,8 +30,6 @@ function CompOtherScreens({ current }) {
     const allImgsPressed = [`${process.env.PUBLIC_URL}/assets/images/go_shop_pressed.png`, `${process.env.PUBLIC_URL}/assets/images/go_animals_pressed.png`, `${process.env.PUBLIC_URL}/assets/images/go_plants_pressed.png`, `${process.env.PUBLIC_URL}/assets/images/go_market_pressed.png`]
     let otherScreenButtons = [];
     for (let i = 0; i < allScreens.length; ++i) {
-      console.log(allImgs[i])
-      console.log(current)
       if (allScreens[i] === current) {
         otherScreenButtons.push(
           renderScreenButton(allImgsPressed[i], allScreens[i], allScreens[i])

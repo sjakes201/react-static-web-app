@@ -59,6 +59,7 @@
         0 0 0 3px var(--border_yellow),
         0 0 0 4px var(--border_shadow_yellow),
         0 0 0 6px var(--black);
+    font-size: 1vw;
 }
 
 

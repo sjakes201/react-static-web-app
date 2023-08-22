@@ -82,18 +82,23 @@ function CompProfile({ getBal, getUser, getXP, type, setLoginBox, setOrderBox, o
         setUser(getUser());
         setXP(getXP());
     }, [getBal, getUser, getXP]);
-
+    
+    function formatMoney(amount) {
+        if (amount.toString().includes("$")) return amount;
+        const formatted = amount.toLocaleString('en-US');
+        return "$" + formatted;
+    }
 
     return (
         <div className={`user-profile ${disableBorder ? '' : 'orangeBorder'}`}>
             <div className="user-info">
-                { noPFP !== true &&
+                {noPFP !== true &&
                     <div className='pfp' ><img src={`${process.env.PUBLIC_URL}/assets/images/homie.png`} alt='homie' /></div>
                 }
                 <div className='profile-stats'>
                     <div>{user && user.includes("#") ? "Guest" : user}</div>
                     <div>XP: {xp}</div>
-                    <div>${bal === 0 ? 0 : Math.round(bal * 100) / 100}</div>
+                    <div>{formatMoney(bal === 0 ? 0 : Math.round(bal * 100) / 100)}</div>
                 </div>
 
 

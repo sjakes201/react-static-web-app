@@ -28,7 +28,7 @@ function MachinesScreen() {
 
             try {
                 let data;
-                const result = await fetch('http://localhost:7071/api/getAllMachines', {
+                const result = await fetch('https://farm-api.azurewebsites.net/api/getAllMachines', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -104,15 +104,15 @@ function MachinesScreen() {
 
         let goodPrices = MACHINESINFO.artisanPrices;
         let totalRevenue = goodPrices[good] * quantity;
-        
+
         setProfile((old) => {
-            let newProfile = {...old};
+            let newProfile = { ...old };
             newProfile.Balance += totalRevenue;
             return newProfile
         })
 
         setItems((old) => {
-            let newItems = {...old};
+            let newItems = { ...old };
             newItems[good] -= quantity;
             return newItems
         })
@@ -120,7 +120,7 @@ function MachinesScreen() {
         try {
             const token = localStorage.getItem('token');
             let data;
-            const result = await fetch('http://localhost:7071/api/sellArtisanGood', {
+            const result = await fetch('https://farm-api.azurewebsites.net/api/sellArtisanGood', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -192,7 +192,7 @@ function MachinesScreen() {
         try {
             const token = localStorage.getItem('token');
             let data;
-            const result = await fetch('http://localhost:7071/api/buyMachine', {
+            const result = await fetch('https://farm-api.azurewebsites.net/api/buyMachine', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -251,7 +251,7 @@ function MachinesScreen() {
         try {
             const token = localStorage.getItem('token');
             let data;
-            const result = await fetch('http://localhost:7071/api/useMachine', {
+            const result = await fetch('https://farm-api.azurewebsites.net/api/useMachine', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -270,8 +270,6 @@ function MachinesScreen() {
                 throw new Error(`HTTP error! status: ${result.status}`);
             } else {
                 data = await result.json();
-                console.log(data)
-                // Should this before confirmation of success start?
             }
         } catch (error) {
             if (error.message.includes('401')) {
@@ -298,7 +296,7 @@ function MachinesScreen() {
         try {
             const token = localStorage.getItem('token');
             let data;
-            const result = await fetch('http://localhost:7071/api/collectMachine', {
+            const result = await fetch('https://farm-api.azurewebsites.net/api/collectMachine', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -373,7 +371,7 @@ function MachinesScreen() {
         try {
             const token = localStorage.getItem('token');
             let data;
-            const result = await fetch('http://localhost:7071/api/sellMachine', {
+            const result = await fetch('https://farm-api.azurewebsites.net/api/sellMachine', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -413,7 +411,7 @@ function MachinesScreen() {
 
             const token = localStorage.getItem('token');
             let data;
-            const result = await fetch('http://localhost:7071/api/cancelMachine', {
+            const result = await fetch('https://farm-api.azurewebsites.net/api/cancelMachine', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -450,22 +448,11 @@ function MachinesScreen() {
 
                     <div className='artisanLeftColumn'>
                         <div className='artisanInfoGrid'>
-                            <div className='artisanInfoSpot'>
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/assets/images/machines/machineDesk.png`}
-                                    alt='machines-desk'
-                                    id='artisanDeskGraphic'
-                                />
 
-                            </div>
-
-                            <div className='artisanInfoSpot'>
-                                2
-                            </div>
                             <div className='artisanInfoSpot'>
                                 <h3>Build</h3>
                                 <p>
-                                    Build up to 6machines with money and parts.  Machines convert animal produce into
+                                    Build up to 6 machines with money and parts.  Machines convert animal produce into
                                     artisan goods. Each ingredient put into a machine will produce 1 of it's respective artisan good.
                                 </p>
                             </div>
@@ -476,46 +463,71 @@ function MachinesScreen() {
                                 </p>
                             </div>
                             <div className='artisanInfoSpot'>
-
-
                                 <h3>
-                                    <img
+                                    {/* <img
                                         src={`${process.env.PUBLIC_URL}/assets/images/Bolts.png`}
                                         alt='bolts icon'
                                         onClick={() => setHelpGUI((old) => !old)}
                                         className='imgInfoGraphicLeft'
-                                    />
+                                    /> */}
                                     Parts
-                                    <img
+                                    {/* <img
                                         src={`${process.env.PUBLIC_URL}/assets/images/Gears.png`}
                                         alt='gears icon'
                                         onClick={() => setHelpGUI((old) => !old)}
                                         className='imgInfoGraphicRight'
-                                    />
+                                    /> */}
                                 </h3>
                                 <p>
-                                    Find machine parts in your field when harvesting crops. All crops have a small chance of giving you a random part when harvested.
+                                    Find machine parts in your field when harvesting crops. All crops have a small chance of giving you a random part (1-3%) when harvested. Quicker growth crops have lower drop chances.
                                 </p>
                             </div>
                             <div className='artisanInfoSpot'>
                                 <h3>
-                                    <img
+                                    {/* <img
                                         src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ1.png`}
                                         alt='cheese icon'
                                         onClick={() => setHelpGUI((old) => !old)}
                                         className='imgInfoGraphicLeftArtisan'
-                                    />
+                                    /> */}
                                     Artisan Goods
-                                    <img
+                                    {/* <img
                                         src={`${process.env.PUBLIC_URL}/assets/images/clothQ3.png`}
                                         alt='cloth icon'
                                         onClick={() => setHelpGUI((old) => !old)}
                                         className='imgInfoGraphicRightArtisan'
-                                    />
+                                    /> */}
                                 </h3>
                                 <p>
                                     Artisan goods can be sold for a fixed price. Higher quality artisan goods sell for more. There are normal, bronze, silver, and gold quality artisan goods.
                                 </p>
+                            </div>
+                            <div className='infoGUIDecoBottom'>
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                                        alt='deco icon'
+                                    />
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                                        alt='deco icon'
+                                    />
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                                        alt='deco icon'
+                                    />
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                                        alt='deco icon'
+                                    />
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                                        alt='deco icon'
+                                    />
+                                    <img
+                                        src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                                        alt='deco icon'
+                                    />
+
                             </div>
                         </div>
                     </div>
@@ -645,12 +657,12 @@ function MachinesScreen() {
 
                 {Object.keys(machines).length !== 0 &&
                     <div id='machineArea'>
-                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={1} machineInfo={{ ID: machines.Slot1, level: machines.Slot1Level, produceReceived: machines.Slot1ProduceReceived, startTime: machines.Slot1StartTime }} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
-                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={2} machineInfo={{ ID: machines.Slot2, level: machines.Slot2Level, produceReceived: machines.Slot2ProduceReceived, startTime: machines.Slot2StartTime }} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
-                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={3} machineInfo={{ ID: machines.Slot3, level: machines.Slot3Level, produceReceived: machines.Slot3ProduceReceived, startTime: machines.Slot3StartTime }} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
-                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={4} machineInfo={{ ID: machines.Slot4, level: machines.Slot4Level, produceReceived: machines.Slot4ProduceReceived, startTime: machines.Slot4StartTime }} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
-                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={5} machineInfo={{ ID: machines.Slot5, level: machines.Slot5Level, produceReceived: machines.Slot5ProduceReceived, startTime: machines.Slot5StartTime }} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
-                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={6} machineInfo={{ ID: machines.Slot6, level: machines.Slot6Level, produceReceived: machines.Slot6ProduceReceived, startTime: machines.Slot6StartTime }} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
+                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={1} machineInfo={{ ID: machines.Slot1, level: machines.Slot1Level, produceReceived: machines.Slot1ProduceReceived, startTime: machines.Slot1StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
+                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={2} machineInfo={{ ID: machines.Slot2, level: machines.Slot2Level, produceReceived: machines.Slot2ProduceReceived, startTime: machines.Slot2StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
+                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={3} machineInfo={{ ID: machines.Slot3, level: machines.Slot3Level, produceReceived: machines.Slot3ProduceReceived, startTime: machines.Slot3StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
+                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={4} machineInfo={{ ID: machines.Slot4, level: machines.Slot4Level, produceReceived: machines.Slot4ProduceReceived, startTime: machines.Slot4StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
+                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={5} machineInfo={{ ID: machines.Slot5, level: machines.Slot5Level, produceReceived: machines.Slot5ProduceReceived, startTime: machines.Slot5StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
+                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={6} machineInfo={{ ID: machines.Slot6, level: machines.Slot6Level, produceReceived: machines.Slot6ProduceReceived, startTime: machines.Slot6StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
                     </div>
                 }
 

@@ -70,7 +70,7 @@ function ScrollingText() {
         if (Object.keys(totals).length !== 0 && Object.keys(lbPositions).length !== 0) {
 
             let newSplashes = []
-
+            newSplashes.push("Community Discord!: https://discord.gg/jrxWrgNCHw")
             // get top leaderboard position then all others
             let allSpots = Object.keys(lbPositions);
             for (let i = 0; i < allSpots.length; ++i) {
