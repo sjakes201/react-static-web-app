@@ -549,7 +549,7 @@ function MachinesScreen() {
                     />
                     <img
                     src={`${process.env.PUBLIC_URL}/assets/images/questionMark.png`}
-                    alt='machines-desk'
+                    alt='info'
                     onClick={() => setHelpGUI((old) => !old)}
                     id='questionMark'
                 />
