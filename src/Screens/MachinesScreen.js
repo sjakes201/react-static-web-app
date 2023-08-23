@@ -548,7 +548,7 @@ function MachinesScreen() {
                         style={{ width: '10%', marginLeft: '1%', cursor: 'pointer', objectFit: 'contain' }}
                     />
                     <img
-                    src={`${process.env.PUBLIC_URL}/assets/images/questionMark.png`}
+                    src={`${process.env.PUBLIC_URL}/assets/images/questionmark.png`}
                     alt='info'
                     onClick={() => setHelpGUI((old) => !old)}
                     id='questionMark'
