@@ -62,7 +62,7 @@ function CompLeaderboardSlot({ item, data }) {
                         justifyContent: 'center',
                         alignItems: 'center',
                     }}>
-                    {item !== "Balance" && <img
+                    <img
                         src={`${process.env.PUBLIC_URL}/assets/images/`.concat(item.concat(".png"))}
                         style={{
                             maxWidth: '90%',
@@ -71,7 +71,7 @@ function CompLeaderboardSlot({ item, data }) {
                             borderRadius: '50%',
                             alignSelf: 'center',
                             background: 'var(--menu_lighter)'
-                        }} />}
+                        }} />
 
                 </div>
 

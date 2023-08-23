@@ -73,13 +73,13 @@ function HowToPlay() {
                     <div style={{ height: '10%', textAlign: 'center', fontSize: '1.5vw', paddingTop: '1%', textDecoration: 'underline' }}>
                         FARMING
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'row', height: '20%', padding: '3% 2% 2% 2%' }}>
+                    <div style={{ display: 'flex', flexDirection: 'row', height: '25%', padding: '3% 2% 2% 2%', fontSize: '1.8vh' }}>
                         <img src={`${process.env.PUBLIC_URL}/assets/images/corn.png`} style={{ width: '24px', height: '24px' }} />
                         <p>
                             Grow crops and raise animals to harvest goods to sell in the market. Different crops and animals take different amounts of time to produce their goods, and crops may be multi-harvest.
                         </p>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'row', height: '40%', padding: '4% 2% 2% 2%' }}>
+                    <div style={{ display: 'flex', flexDirection: 'row', height: '35%', padding: '4% 2% 2% 2%', fontSize: '1.8vh' }}>
                         <img src={`${process.env.PUBLIC_URL}/assets/images/corn.png`} style={{ width: '24px', height: '24px' }} />
                         <p>
                             Once animals have produced, they will show you by holding their produce: click them to collect. Feeding animals can increase their happiness, and happier animals have a higher chance of producing extra goods.
@@ -121,7 +121,7 @@ function HowToPlay() {
                     <div style={{ gridColumnStart: '1', gridColumnEnd: '3', gridRowStart: '1', gridRowEnd: '2', paddingTop: '1%' }}>
                         <div style={{ textAlign: 'center', fontSize: '1.5vw', textDecoration: 'underline' }}>MARKET</div>
                         <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'row' }}>
-                            <img src={`${process.env.PUBLIC_URL}/assets/images/corn.png`} style={{ width: '24px', height: '24px' }} />
+                            <img src={`${process.env.PUBLIC_URL}/assets/images/corn.png`} style={{ width: '24px', height: '24px', fontSize: '1.8vh' }} />
                             <p>
                                 The market is where you sell your produce. It is a dynamic pricing model: the prices change at midnight, and are based on the volume of each good sold by all players the previous day.
                             </p>
@@ -129,7 +129,7 @@ function HowToPlay() {
                     </div>
                     <div style={{ gridColumnStart: '1', gridColumnEnd: '2', gridRowStart: '2', gridRowEnd: '3' }}>
                         <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'row' }}>
-                            <img src={`${process.env.PUBLIC_URL}/assets/images/corn.png`} style={{ width: '24px', height: '24px' }} />
+                            <img src={`${process.env.PUBLIC_URL}/assets/images/corn.png`} style={{ width: '24px', height: '24px', fontSize: '1.8vh' }} />
                             <p>
                                 The more something is sold, supply drives price down, and the less something is sold, demand drives the price up. Deluxe and exotic goods receive a sell price bonus.
                             </p>

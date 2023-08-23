@@ -33,6 +33,7 @@ function LeaderboardScreen({ }) {
                     throw new Error(`HTTP error! status: ${data.status}`);
                 } else {
                     let res = await data.json();
+                    console.log(res)
                     setLeadersAll(res.allTimeLeaderboard);
                     setleadersWeekly(res.tempLeaderboard);
                 }

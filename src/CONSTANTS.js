@@ -158,7 +158,8 @@ module.exports = {
         ostrich_egg: ["Ostrich Egg", "Produce"],
         llama_wool: ["Llama Wool", "Produce"],
         kiwi_egg: ["Kiwi Egg", "Produce"],
-        Balance: ["Money", "Currency"]
+        Balance: ["Money", "Currency"],
+        XP: ["XP", "Experience points"]
     },
     InventoryDescriptionsPlural: {
         carrot_seeds: ["Carrot Seeds", "High yield, medium growth time"],

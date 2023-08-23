@@ -547,6 +547,12 @@ function MachinesScreen() {
                         onClick={() => navigate('/animals')}
                         style={{ width: '10%', marginLeft: '1%', cursor: 'pointer', objectFit: 'contain' }}
                     />
+                    <img
+                    src={`${process.env.PUBLIC_URL}/assets/images/questionMark.png`}
+                    alt='machines-desk'
+                    onClick={() => setHelpGUI((old) => !old)}
+                    id='questionMark'
+                />
 
                 </div>
 
