@@ -6,7 +6,7 @@ module.exports = {
     },
     fertilizerInfo: {
         YieldsFertilizer: 'Next 10 harvests receive higher yields',
-        HarvestsFertilizer: 'Next 5 seeds planted receive 1 extra harvest',
+        HarvestsFertilizer: 'Next 5 seeds plants receive 1 extra harvest',
         TimeFertilizer: 'Double growth speed for next 10 minutes'
     },
     yieldFertilizerBonuses: {

@@ -296,6 +296,7 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
                                 const newTile = {
                                     ...tile,
                                     hasTimeFertilizer: data.hasTimeFertilizer,
+                                    stage: getStage(tile.PlantTime, tile.CropID, tile.hasTimeFertilizer)
 
                                 };
                                 return newTile;
@@ -331,7 +332,9 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
 
     }
 
-
+    let pnid = [null, "carrot_seeds", "melon_seeds", "cauliflower_seeds", "pumpkin_seeds", "yam_seeds",
+    "beet_seeds", "parsnip_seeds", "bamboo_seeds", "hops_seeds", "corn_seeds", "potato_seeds",
+    "blueberry_seeds", "grape_seeds", "oats_seeds", "strawberry_seeds"];
     const getStage = (PlantTime, CropID, hasTimeFertilizer) => {
         if (PlantTime !== null && CropID !== -1) {
             const date = PlantTime;
@@ -342,7 +345,7 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
                 secsPassed = secsPassed * 2;
             }
             // Use secs passed to find out what stage you are in by summing growth in constants
-            let growth = UPGRADES[growthTable][CONSTANTS.ProduceNameFromID[CropID]];
+            let growth = UPGRADES[growthTable][pnid[CropID]];
             let stage = 0;
             while (secsPassed > 0 && stage < growth.length) {
                 secsPassed -= growth[stage];
@@ -357,9 +360,13 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
     }
 
     const updateAllStages = () => {
+        console.log('updating')
         setTiles((old) => old.map((tile) => {
-            return { ...tile, stage: getStage(tile.PlantTime, tile.CropID, tile.hasTimeFertilizer) };
-        }));
+            let newTile = { ...tile };
+            newTile.stage = getStage(newTile.PlantTime, newTile.CropID, newTile.hasTimeFertilizer);
+            return newTile;
+        })
+        );
     }
 
     useEffect(() => {
@@ -367,7 +374,7 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
         return () => {
             clearInterval(interval);
         };
-    }, [tiles]);
+    }, [tiles, growthTable]);
 
     const createTiles = async () => {
         try {
