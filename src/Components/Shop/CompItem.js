@@ -215,10 +215,9 @@ function CompItem({ unlockInfo, updateAnimals, itemName, cost, unlocked, info, u
             </div>
         )
     }
-
     if (itemName in CONSTANTS.AnimalTypes) {
         return (
-            <div id="itemBox" className={(!unlockInfo[0] || unlockInfo[1] !== '' || !hasSpace) ? "notAvailable" : ""} >
+            <div id="itemBox" className={(!unlockInfo[0] || !hasSpace) ? "notAvailable" : ""} >
                 {!unlockInfo[0] && (
                     <div className='content'>
                         <p>LOCKED</p>
@@ -233,7 +232,7 @@ function CompItem({ unlockInfo, updateAnimals, itemName, cost, unlocked, info, u
                     </div>
                 )}
 
-                {!hasSpace &&
+                {(unlockInfo[0] && !hasSpace) &&
                     <p className='content'>
                         MAX CAPACITY
                     </p>
