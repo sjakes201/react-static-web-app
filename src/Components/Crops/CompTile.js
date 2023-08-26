@@ -4,7 +4,6 @@ import CONSTANTS from "../../CONSTANTS";
 import UPGRADES from "../../UPGRADES";
 
 function CompTile({ tile, stage, updateTile, equippedFert, fertilizeTile }) {
-
     const [imgURL, setImgURL] = useState(`${process.env.PUBLIC_URL}/assets/images/dirt.png`);
     const [gif, setGif] = useState(null);
 
@@ -76,7 +75,7 @@ function CompTile({ tile, stage, updateTile, equippedFert, fertilizeTile }) {
                 strawberry_seeds: ["strawberry", 3, 4]
             }
             let cropName = seedCropMap[seedsArray[tile.CropID]][0];
-            console.log(cropName)
+            
             let url = cropName.concat("_stage_", stage, ".png");
             setImgURL(`${process.env.PUBLIC_URL}/assets/images/crops/${url}`);
         } else {

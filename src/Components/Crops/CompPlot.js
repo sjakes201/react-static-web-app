@@ -157,7 +157,6 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
 
                 let secsPassed = (curTime - plantedTime) / 1000;
                 // buffer for less 400's
-                secsPassed -= 0.1;
                 let secsNeeded = growthTimes.reduce((sum, e) => sum + e, 0)
                 if (simRes.hasTimeFertilizer) {
                     secsPassed *= 2;
@@ -212,8 +211,8 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
                 updateInventory(seedName, -1);
             } else {
                 let PNFI = [null, "carrot_seeds", "melon_seeds", "cauliflower_seeds", "pumpkin_seeds", "yam_seeds",
-                "beet_seeds", "parsnip_seeds", "bamboo_seeds", "hops_seeds", "corn_seeds", "potato_seeds",
-                "blueberry_seeds", "grape_seeds", "oats_seeds", "strawberry_seeds"];
+                    "beet_seeds", "parsnip_seeds", "bamboo_seeds", "hops_seeds", "corn_seeds", "potato_seeds",
+                    "blueberry_seeds", "grape_seeds", "oats_seeds", "strawberry_seeds"];
                 let SCM = {
                     carrot_seeds: ["carrot", 3, 2],
                     melon_seeds: ["melon", 1, 1],
@@ -281,7 +280,6 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
                         console.log(await plantQuery.json())
                         throw new Error(`HTTP error! status: ${plantQuery.status}`);
                     }
-                    console.log(await plantQuery.json())
                 } else {
                     let harvestQuery = await fetch('https://farm-api.azurewebsites.net/api/harvest', {
                         method: "POST",
@@ -302,10 +300,9 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
                             if (tile.TileID === data.TileID) {
                                 console.log(data)
                                 const newTile = {
-                                    ...tile, stage:
-                                        getStage(data.PlantTime, data.CropID, data.hasTimeFertilizer),
+                                    ...tile,
                                     hasTimeFertilizer: data.hasTimeFertilizer,
-                                    PlantTime: data.PlantTime
+
                                 };
                                 return newTile;
                             } else {
@@ -347,8 +344,10 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
             const curTime = Date.now();
 
             let secsPassed = (curTime - date) / (1000);
-            if (hasTimeFertilizer) secsPassed *= 2;
-            // buffer for less 400's
+            if (hasTimeFertilizer) {
+                secsPassed = secsPassed * 2;
+            }
+            console.log(growthTable)
             // Use secs passed to find out what stage you are in by summing growth in constants
             let growth = UPGRADES[growthTable][CONSTANTS.ProduceNameFromID[CropID]];
             let stage = 0;
@@ -358,6 +357,7 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
                     stage++;
                 }
             }
+            if (stage !== -1) console.log(stage)
             return stage;
         } else {
             return -1
@@ -365,7 +365,7 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
     }
 
     const updateAllStages = () => {
-        setTiles(tiles.map((tile) => {
+        setTiles((old) => old.map((tile) => {
             return { ...tile, stage: getStage(tile.PlantTime, tile.CropID, tile.hasTimeFertilizer) };
         }));
     }
@@ -398,9 +398,13 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
                 let updatedTiles = dbTiles.map((tile) => {
                     let hasTimeFertilizer = tile.TimeFertilizer !== -1
                     let stage = getStage(tile.PlantTime, tile.CropID, hasTimeFertilizer);
-                    return { ...tile, stage: stage, hasTimeFertilizer: hasTimeFertilizer };
+                    return {
+                        ...tile,
+                        stage: stage,
+                        hasTimeFertilizer: hasTimeFertilizer
+                    };
                 });
-                console.log(updatedTiles)
+                // console.log(updatedTiles)
                 setTiles(updatedTiles);
             }
 
@@ -419,9 +423,11 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
     // Manage async creation of tiles
 
     useEffect(() => {
-        createTiles()
-        updateAllStages();
-    }, []);
+        if (Object.keys(getUpgrades()).length > 0) {
+            createTiles()
+            updateAllStages();
+        }
+    }, [growthTable]);
 
     useEffect(() => {
         if (Object.keys(getUpgrades()).length > 0) {
