@@ -54,7 +54,12 @@ function CompTile({ tile, stage, updateTile, equippedFert, fertilizeTile }) {
 
     useEffect(() => {
         if (tile.CropID !== -1) {
-            let cropName = CONSTANTS.SeedCropMap[CONSTANTS.ProduceNameFromID[tile.CropID]][0];
+            // console.log(tile.CropID)
+            let seedsArray = [null, "carrot_seeds", "melon_seeds", "cauliflower_seeds", "pumpkin_seeds", "yam_seeds",
+            "beet_seeds", "parsnip_seeds", "bamboo_seeds", "hops_seeds", "corn_seeds", "potato_seeds",
+            "blueberry_seeds", "grape_seeds", "oats_seeds", "strawberry_seeds"];
+            let cropName = CONSTANTS.SeedCropMap[seedsArray[tile.CropID]][0];
+            // console.log(cropName)
             let url = cropName.concat("_stage_", stage, ".png");
             setImgURL(`${process.env.PUBLIC_URL}/assets/images/${url}`);
         } else {
