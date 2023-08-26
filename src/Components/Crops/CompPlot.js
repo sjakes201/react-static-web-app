@@ -69,7 +69,7 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
             })
             const token = localStorage.getItem('token');
             try {
-                let fertilizeQuery = await fetch('http://localhost:7071/api/fertilizeTile', {
+                let fertilizeQuery = await fetch('https://farm-api.azurewebsites.net/api/fertilizeTile', {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json',
@@ -241,7 +241,7 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
         if (simRes.message === 'SUCCESS') {
             try {
                 if (action === 'plant') {
-                    let plantQuery = await fetch('http://localhost:7071/api/plant', {
+                    let plantQuery = await fetch('https://farm-api.azurewebsites.net/api/plant', {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
@@ -259,7 +259,7 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
                     }
                     console.log(await plantQuery.json())
                 } else {
-                    let harvestQuery = await fetch('http://localhost:7071/api/harvest', {
+                    let harvestQuery = await fetch('https://farm-api.azurewebsites.net/api/harvest', {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
@@ -357,7 +357,7 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
     const createTiles = async () => {
         try {
             const token = localStorage.getItem('token');
-            let dbData = await fetch('http://localhost:7071/api/tilesAll', {
+            let dbData = await fetch('https://farm-api.azurewebsites.net/api/tilesAll', {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',

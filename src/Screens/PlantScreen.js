@@ -48,7 +48,7 @@ function PlantScreen() {
 
         async function fetchData() {
             try {
-                const result = await fetch('http://localhost:7071/api/inventoryAll', {
+                const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

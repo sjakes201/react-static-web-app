@@ -17,7 +17,7 @@ function OrderBoard({ close, updateBalance, updateXP, setFertilizers }) {
             const token = localStorage.getItem('token');
 
             try {
-                const orders = await fetch('http://localhost:7071/api/getAllOrders', {
+                const orders = await fetch('https://farm-api.azurewebsites.net/api/getAllOrders', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ function OrderBoard({ close, updateBalance, updateXP, setFertilizers }) {
             return newFert;
         })
         const token = localStorage.getItem('token');
-        const ordersQuery = await fetch('http://localhost:7071/api/claimOrder', {
+        const ordersQuery = await fetch('https://farm-api.azurewebsites.net/api/claimOrder', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ function OrderBoard({ close, updateBalance, updateXP, setFertilizers }) {
             try {
                 const token = localStorage.getItem('token');
 
-                const orders = await fetch('http://localhost:7071/api/refreshOrder', {
+                const orders = await fetch('https://farm-api.azurewebsites.net/api/refreshOrder', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
