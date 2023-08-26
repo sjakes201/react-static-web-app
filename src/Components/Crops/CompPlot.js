@@ -97,6 +97,9 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
         }
     }
 
+    let pnid = [null, "carrot_seeds", "melon_seeds", "cauliflower_seeds", "pumpkin_seeds", "yam_seeds",
+        "beet_seeds", "parsnip_seeds", "bamboo_seeds", "hops_seeds", "corn_seeds", "potato_seeds",
+        "blueberry_seeds", "grape_seeds", "oats_seeds", "strawberry_seeds"];
 
     const updateTile = async (tileID, action, seedName, cropID) => {
 
@@ -143,7 +146,7 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
                 simRes = { ...targetTile };
                 simRes.message = `Nothing to harvest at tile ${tileID}`
             } else {
-                let growthTimes = UPGRADES[growthTable][CONSTANTS.ProduceNameFromID[targetTile.CropID]];
+                let growthTimes = UPGRADES[growthTable][pnid[targetTile.CropID]];
 
                 // ms since epoch
                 let plantedTime = targetTile.PlantTime;
@@ -332,9 +335,7 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
 
     }
 
-    let pnid = [null, "carrot_seeds", "melon_seeds", "cauliflower_seeds", "pumpkin_seeds", "yam_seeds",
-    "beet_seeds", "parsnip_seeds", "bamboo_seeds", "hops_seeds", "corn_seeds", "potato_seeds",
-    "blueberry_seeds", "grape_seeds", "oats_seeds", "strawberry_seeds"];
+
     const getStage = (PlantTime, CropID, hasTimeFertilizer) => {
         if (PlantTime !== null && CropID !== -1) {
             const date = PlantTime;

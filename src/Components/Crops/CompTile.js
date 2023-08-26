@@ -121,7 +121,12 @@ function CompTile({ tile, stage, updateTile, equippedFert, fertilizeTile }) {
         objectFit: 'contain',
     }
 
-    if (UPGRADES.GrowthTimes0[CONSTANTS.ProduceNameFromID[tile?.CropID]]?.length === stage && equippedFert === "") {
+    let pnid = [null, "carrot_seeds", "melon_seeds", "cauliflower_seeds", "pumpkin_seeds", "yam_seeds",
+    "beet_seeds", "parsnip_seeds", "bamboo_seeds", "hops_seeds", "corn_seeds", "potato_seeds",
+    "blueberry_seeds", "grape_seeds", "oats_seeds", "strawberry_seeds"];
+
+
+    if (UPGRADES.GrowthTimes0[pnid[tile?.CropID]]?.length === stage && equippedFert === "") {
         imgStyle.cursor = 'grab'
     }
 
