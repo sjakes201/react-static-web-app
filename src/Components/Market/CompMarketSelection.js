@@ -48,7 +48,7 @@ function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell, items }
                 <div style={{ height: '100%', width: '40%', padding: "1.5vh 1vh", paddingTop: "10%" }}>
                     <div style={{ textAlign: 'center', textTransform: 'uppercase', textDecoration: 'underline', fontSize: "clamp(12px, 1vw, 80px)", wordBreak: 'break-all' }}>{name}</div>
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5%', fontSize: '1.3vw' }}>${newPrice} <small>/each</small> <img src={arrowURL} style={{ width: '12%' }} /></div>
-                    <div style={{ fontSize: '0.7vw' }}>${oldPrice} /each yesterday</div>
+                    <div style={{ fontSize: '0.7vw' }}>${oldPrice} /each previously</div>
                     <div style={{ marginTop: "10%", textAlign: 'center' }}>
                         <form onSubmit={handleSubmit} autocomplete="off">
                             <input

@@ -123,7 +123,7 @@ function HowToPlay() {
                         <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'row' }}>
                             <img src={`${process.env.PUBLIC_URL}/assets/images/corn.png`} style={{ width: '24px', height: '24px', fontSize: '1.8vh' }} />
                             <p>
-                                The market is where you sell your produce. It is a dynamic pricing model: the prices change at midnight, and are based on the volume of each good sold by all players the previous day.
+                                The market is where you sell your produce. It is a dynamic pricing model: the prices change every 2 hours, and are based on the volume of each good sold by all players the previous 2 hours.
                             </p>
                         </div>
                     </div>
@@ -163,7 +163,7 @@ function HowToPlay() {
                                 ORDERS
                             </div>
                             <p>
-                                The order board requests specific goods and can be filled by harvesting them. They reward gold and XP. You can keep the goods after you fill an order!
+                                The order board requests specific goods and can be filled by harvesting them. They reward gold, XP and fertilizer. You can keep the goods after you fill an order!
                             </p>
                             <hr />
                             <small>Find the Orders board button in your profile.</small>
