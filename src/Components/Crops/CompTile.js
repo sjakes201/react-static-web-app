@@ -56,12 +56,29 @@ function CompTile({ tile, stage, updateTile, equippedFert, fertilizeTile }) {
         if (tile.CropID !== -1) {
             // console.log(tile.CropID)
             let seedsArray = [null, "carrot_seeds", "melon_seeds", "cauliflower_seeds", "pumpkin_seeds", "yam_seeds",
-            "beet_seeds", "parsnip_seeds", "bamboo_seeds", "hops_seeds", "corn_seeds", "potato_seeds",
-            "blueberry_seeds", "grape_seeds", "oats_seeds", "strawberry_seeds"];
-            let cropName = CONSTANTS.SeedCropMap[seedsArray[tile.CropID]][0];
-            // console.log(cropName)
+                "beet_seeds", "parsnip_seeds", "bamboo_seeds", "hops_seeds", "corn_seeds", "potato_seeds",
+                "blueberry_seeds", "grape_seeds", "oats_seeds", "strawberry_seeds"];
+            let seedCropMap = {
+                carrot_seeds: ["carrot", 3, 2],
+                melon_seeds: ["melon", 1, 1],
+                cauliflower_seeds: ["cauliflower", 1, 1],
+                pumpkin_seeds: ["pumpkin", 1, 1],
+                yam_seeds: ["yam", 4, 3],
+                beet_seeds: ["beet", 4, 3],
+                parsnip_seeds: ["parsnip", 2, 1],
+                bamboo_seeds: ["bamboo", 5, 4],
+                hops_seeds: ["hops", 1, 3],
+                corn_seeds: ["corn", 1, 3],
+                potato_seeds: ["potato", 3, 3],
+                blueberry_seeds: ["blueberry", 6, 5],
+                grape_seeds: ["grape", 6, 5],
+                oats_seeds: ["oats", 4, 4],
+                strawberry_seeds: ["strawberry", 3, 4]
+            }
+            let cropName = seedCropMap[seedsArray[tile.CropID]][0];
+            console.log(cropName)
             let url = cropName.concat("_stage_", stage, ".png");
-            setImgURL(`${process.env.PUBLIC_URL}/assets/images/${url}`);
+            setImgURL(`${process.env.PUBLIC_URL}/assets/images/crops/${url}`);
         } else {
             setImgURL(`${process.env.PUBLIC_URL}/assets/images/dirt.png`);
         }

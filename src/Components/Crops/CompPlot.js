@@ -38,7 +38,7 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
             setFertilizers((old) => {
                 let newCounts = { ...old };
                 newCounts[desiredFertilizer] -= 1;
-                if(newCounts[desiredFertilizer] === 0) {
+                if (newCounts[desiredFertilizer] === 0) {
                     setEquippedFert("")
                 }
                 return newCounts
@@ -211,15 +211,39 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
             if (action === 'plant') {
                 updateInventory(seedName, -1);
             } else {
-                let seed_name = CONSTANTS.ProduceNameFromID[cropID];
-                let cropName = CONSTANTS.SeedCropMap[seed_name][0];
+                let PNFI = [null, "carrot_seeds", "melon_seeds", "cauliflower_seeds", "pumpkin_seeds", "yam_seeds",
+                "beet_seeds", "parsnip_seeds", "bamboo_seeds", "hops_seeds", "corn_seeds", "potato_seeds",
+                "blueberry_seeds", "grape_seeds", "oats_seeds", "strawberry_seeds"];
+                let SCM = {
+                    carrot_seeds: ["carrot", 3, 2],
+                    melon_seeds: ["melon", 1, 1],
+                    cauliflower_seeds: ["cauliflower", 1, 1],
+                    pumpkin_seeds: ["pumpkin", 1, 1],
+                    yam_seeds: ["yam", 4, 3],
+                    beet_seeds: ["beet", 4, 3],
+                    parsnip_seeds: ["parsnip", 2, 1],
+                    bamboo_seeds: ["bamboo", 5, 4],
+                    hops_seeds: ["hops", 1, 3],
+                    corn_seeds: ["corn", 1, 3],
+                    potato_seeds: ["potato", 3, 3],
+                    blueberry_seeds: ["blueberry", 6, 5],
+                    grape_seeds: ["grape", 6, 5],
+                    oats_seeds: ["oats", 4, 4],
+                    strawberry_seeds: ["strawberry", 3, 4]
+                };
+                let seed_name = PNFI[cropID];
+                let cropName = SCM[seed_name][0];
+
+
                 let quantity = UPGRADES[quantityYieldTable][seed_name];
                 if (simRes.YieldsFertilizer > 0) {
                     simRes.YieldsFertilizer -= 1;
                     let bonus = CONSTANTS.yieldFertilizerBonuses[seed_name];
                     quantity += bonus;
                 }
-                console.log(simRes)
+
+
+
                 updateInventory(cropName, quantity);
                 updateXP(CONSTANTS.XP[cropName]);
             }

@@ -91,9 +91,9 @@ function HowToPlay() {
                         <img src={`${process.env.PUBLIC_URL}/assets/images/orange_arrow.png`} style={{ width: '5%' }} />
                         <img src={`${process.env.PUBLIC_URL}/assets/images/goat_collectible_walking_right.gif`} style={{ width: '10%', cursor: 'grab' }} />
                         <img src={`${process.env.PUBLIC_URL}/assets/images/EMPTY.png`} style={{ width: '10%' }} />
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/blueberry_stage_0.png`} style={{ width: '10%' }} />
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/crops/blueberry_stage_0.png`} style={{ width: '10%' }} />
                         <img src={`${process.env.PUBLIC_URL}/assets/images/orange_arrow.png`} style={{ width: '5%' }} />
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/blueberry_stage_3.png`} style={{ width: '10%', cursor: 'grab' }} />
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/crops/blueberry_stage_3.png`} style={{ width: '10%', cursor: 'grab' }} />
                     </div>
                 </div>
 
