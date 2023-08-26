@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import '../CSS/CompProfile.css'
+import CONSTANTS from "../../CONSTANTS";
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import ScrollingText from "./ScrollingText";
@@ -82,11 +83,78 @@ function CompProfile({ getBal, getUser, getXP, type, setLoginBox, setOrderBox, o
         setUser(getUser());
         setXP(getXP());
     }, [getBal, getUser, getXP]);
-    
+
     function formatMoney(amount) {
         if (amount.toString().includes("$")) return amount;
         const formatted = amount.toLocaleString('en-US');
         return "$" + formatted;
+    }
+
+    // Take integer XP, return object {level: int, overflow: xx, nextLvl: yy} for the current level and how close you are to next level
+
+
+    const [showXP, setShowXP] = useState(false)
+
+    // Used in calculating unlocks and creating XP bar
+    function xpBarInfo(XP) {
+        const lvlThresholds = CONSTANTS.xpToLevel;
+        let level = 0;
+        let remainingXP = XP;
+        for (let i = 0; i < lvlThresholds.length; ++i) {
+            if (XP >= lvlThresholds[i]) {
+                level = i;
+                remainingXP = XP - lvlThresholds[i]
+            }
+        }
+        // If level is >= 15, and remainingXP is > 0, we calculate remaining levels (which are formulaic, each level is)
+        while (remainingXP >= 600) {
+            ++level;
+            remainingXP -= 600;
+        }
+        // find next threshold
+        let nextXPThreshold = 100;
+        if (level < lvlThresholds.length - 1) {
+            nextXPThreshold = lvlThresholds[level + 1] - lvlThresholds[level];
+        } else {
+            nextXPThreshold = 600;
+        }
+        return {
+            level: level,
+            overflow: remainingXP,
+            nextLvlThresholdTotal: nextXPThreshold
+        }
+    }
+
+    function xpProgressBar(XP) {
+        let barInfo = xpBarInfo(XP)
+        // for parent
+
+        return (
+            <div className='levelInfoContainer'
+                onMouseEnter={() => setShowXP(true)}
+                onMouseLeave={() => setShowXP(false)}>
+                <div className='levelTopBar'>
+                    <p id='levelPrefix'>
+                        LVL {barInfo.level}
+                    </p>
+                    {
+                        showXP && <p className='hoverXPCount'>
+                            {barInfo.overflow} / {barInfo.nextLvlThresholdTotal} XP
+                        </p>
+                    }
+                </div>
+                <div className='xpBarContainer'>
+                    <div style={{
+                        height: '100%', borderRight: '1px solid black', width: '100%', background: 'lightblue', position: 'absolute',
+                        right: `${100 - (barInfo.overflow / barInfo.nextLvlThresholdTotal) * 100}%`
+                    }}
+                    >
+                    </div>
+
+                </div>
+
+            </div>
+        )
     }
 
     return (
@@ -97,7 +165,7 @@ function CompProfile({ getBal, getUser, getXP, type, setLoginBox, setOrderBox, o
                 }
                 <div className='profile-stats'>
                     <div>{user && user.includes("#") ? "Guest" : user}</div>
-                    <div>XP: {xp}</div>
+                    {xpProgressBar(xp)}
                     <div>{formatMoney(bal === 0 ? 0 : Math.round(bal * 100) / 100)}</div>
                 </div>
 

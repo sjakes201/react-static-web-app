@@ -11,29 +11,36 @@ function AnimalsTopBar({ setManager }) {
             background: 'var(--menu_light)',
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            borderBottom: '1px solid black'
         }}>
             <div style={{
-                width: '40%',
+                width: '75%',
                 backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/grass1.png), url(${process.env.PUBLIC_URL}/assets/images/grass2.png)`,
                 backgroundRepeat: 'repeat, repeat',
                 height: '100%'
-            }}></div>
+            }}>
+                {/* <div style={{ position: 'relative', background: 'orange', width: '970px', height: '90px', zIndex: '20000' }}>
+                   728px x 90px
+                </div> */}
+            </div>
             <div style={{
                 height: 'calc(100% - 7px)',
-                width: '20%',
                 objectFit: 'contain',
                 boxSizing: 'border-box',
-                margin: '0 7px 7px 7px',
                 boxShadow: '0 0 0 1px var(--black), 0 0 0 3px var(--border_orange), 0 0 0 5px var(--border_shadow_orange), 0 0 0 7px var(--black)',
                 zIndex: '3',
-                background: 'var(--menu_light)'
+                background: 'var(--menu_light)',
+                padding: '0 1%',
+                width: '15%',
+                display: 'flex',
+                alignItems: 'flex-end'
             }}>
                 <img
                     src={`${process.env.PUBLIC_URL}/assets/images/animal_manage.png`}
                     style={{
-                        height: '100%',
                         width: '100%',
+                        maxHeight: '100%',
                         cursor: 'pointer',
                         objectFit: 'contain'
                     }}
@@ -42,7 +49,7 @@ function AnimalsTopBar({ setManager }) {
 
             </div>
             <div style={{
-                width: '40%',
+                width: '10%',
                 backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/grass1.png), url(${process.env.PUBLIC_URL}/assets/images/grass2.png)`,
                 backgroundRepeat: 'repeat, repeat',
                 display: 'flex',
@@ -59,9 +66,9 @@ function AnimalsTopBar({ setManager }) {
                     cursor: 'pointer',
                     width: '20%'
                 }}
-                onClick={() => navigate('/machines')}
+                    onClick={() => navigate('/machines')}
                 >
-                    <img src={`${process.env.PUBLIC_URL}/assets/images/machines/deskClickable.png`} style={{height: '100%', objectFit: 'contain'}}/>
+                    <img src={`${process.env.PUBLIC_URL}/assets/images/machines/deskClickable.png`} style={{ height: '100%', objectFit: 'contain' }} />
                 </div>
 
             </div>

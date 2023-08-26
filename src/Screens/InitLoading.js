@@ -66,7 +66,7 @@ function InitLoading({ }) {
         const token = localStorage.getItem('token')
         if (token === null) {
             try {
-                const tempLogin = await fetch('https://farm-api.azurewebsites.net/api/tempAuth', {
+                const tempLogin = await fetch('http://localhost:7071/api/tempAuth', {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json',

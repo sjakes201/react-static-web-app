@@ -84,7 +84,7 @@ function ScrollingText() {
                     } else if (position === 3) {
                         newSplashes.push(`3rd richest player in the game. Finally getting seen for your work.`)
                     } else if (position > 3 && position <= 50) {
-                        newSplashes.push(`Congrats on being the ${position}${ordinalSuffix(position)} player in the game. If only this game had a stock market.`)
+                        newSplashes.push(`Congrats on being the ${position}${ordinalSuffix(position)} richest player in the game. If only this game had a stock market.`)
                     } else {
                         newSplashes.push(`${position}${ordinalSuffix(position)} richest player in the game.`);
                     }

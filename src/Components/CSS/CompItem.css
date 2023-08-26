@@ -39,6 +39,8 @@
     align-items: center;
     font-size: 1.05vw;
     font-family: 'Trebuchet MS', sans-serif;
+    width: 100%;
+    position: relative
 }
 
 
@@ -57,6 +59,25 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.shopItemInfo {
+    position: absolute;
+    right: 5%;
+    z-index: 3;
+    width: 10%;
+    object-fit: contain;
+}
+
+.seedTooltip {
+    border: 1px solid black;
+    background-color: rgb(236, 237, 226);
+    position: absolute;
+    font-size: .7vw;
+    z-index: 5;
+    padding: 0 2%;
+    pointer-events: none;
+    width: 90%;
 }
 
 .gif {
@@ -98,7 +119,7 @@
     border-radius: 5%;
     background-color: #FFFACD;
     text-align: center;
-    font-size: 2.2vh;
+    font-size: 1.1vw;
 }
 
 .buyButton > small {
@@ -129,8 +150,9 @@
     transform: translate(-50%, -50%);
     text-align: center;
     color: white;
-    font-size: 24px;
+    font-size: 1vw;
     z-index: 10;
+    width: 100%;
 }
 
 .content > p {

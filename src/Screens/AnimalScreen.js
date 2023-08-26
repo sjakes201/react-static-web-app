@@ -1,4 +1,5 @@
 import React, { useRef, useLayoutEffect, useEffect, useState } from 'react';
+import CONSTANTS from '../CONSTANTS';
 import './CSS/AnimalScreen.css'
 import CompPen from '../Components/Animals/CompPen';
 import CompOtherScreens from '../Components/GUI/CompOtherScreens'
@@ -8,6 +9,7 @@ import Complogin from '../Components/GUI/CompLogin';
 import AnimalsTopBar from '../Components/Animals/AnimalsTopBar';
 import AnimalManagement from '../Components/Animals/AnimalManagement';
 import OrderBoard from "../Components/Orders/OrderBoard";
+import NotificationBox from '../Components/GUI/NotificationBox';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -66,6 +68,12 @@ function AnimalScreen() {
 
   const [equippedFeed, setEquippedFeed] = useState("")
 
+  // level for unlocks and unlocks notifictaion stuff
+  const [unlockContents, setUnlockContents] = useState([])
+  const [notificationBox, setNotificationBox] = useState(false)
+  const [level, setLevel] = useState(0)
+  let newXP = useRef(false)
+
   useEffect(() => {
     if (Object.keys(upgrades).length === 0) {
       setUpgrades(getUpgrades)
@@ -77,7 +85,7 @@ function AnimalScreen() {
     sessionStorage.setItem('equipped', '')
     async function fetchData() {
       try {
-        const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
+        const result = await fetch('http://localhost:7071/api/inventoryAll', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -91,6 +99,7 @@ function AnimalScreen() {
           throw new Error(`HTTP error! status: ${result.status}`);
         } else {
           let data = await result.json();
+          delete data.HarvestsFertilizer; delete data.TimeFertilizer; delete data.YieldsFertilizer;
           setItems(data);
         }
 
@@ -174,6 +183,41 @@ function AnimalScreen() {
     getAnimals();
   }, []);
 
+  const calcLevel = (XP) => {
+    const lvlThresholds = CONSTANTS.xpToLevel;
+    let level = 0;
+    let remainingXP = XP;
+    for (let i = 0; i < lvlThresholds.length; ++i) {
+      if (XP >= lvlThresholds[i]) {
+        level = i;
+        remainingXP = XP - lvlThresholds[i]
+      }
+    }
+    // If level is >= 15, and remainingXP is > 0, we calculate remaining levels (which are formulaic, each level is)
+    while (remainingXP >= 600) {
+      ++level;
+      remainingXP -= 600;
+    }
+    // find next threshold
+    return level
+  }
+
+  useEffect(() => {
+    console.log('xp updated')
+    setLevel(calcLevel(XP))
+  }, [XP])
+
+  useEffect(() => {
+    console.log('lvl updated')
+    console.log(newXP.current)
+    if (newXP.current && level in CONSTANTS.levelUnlocks) {
+      console.log('lvl updated bc of new')
+      setUnlockContents(CONSTANTS.levelUnlocks[level])
+      setNotificationBox(true)
+
+    }
+  }, [level])
+
   const getXP = () => {
     return XP;
   }
@@ -193,6 +237,7 @@ function AnimalScreen() {
   }
 
   const updateXP = (amount) => {
+    newXP.current = true;
     setXP(prevXP => {
       const newXP = prevXP + amount;
       return newXP;
@@ -240,6 +285,7 @@ function AnimalScreen() {
 
   return (
     <div style={appStyle}>
+      {notificationBox && <NotificationBox close={() => setNotificationBox(false)} contents={unlockContents} />}
       {manager && <div className='manage-animals'> <AnimalManagement capacities={capacities} coop={coop} setCoop={setCoop} barn={barn} setBarn={setBarn} setManager={setManager} /></div>}
       <div className='left-column'>
         <div className='other-screensAn'><CompOtherScreens current={'animals'} /></div>
@@ -254,17 +300,26 @@ function AnimalScreen() {
         <div className="userProfile"><CompProfile orderNotice={orderNotice} type={'tall'} setLoginBox={setLoginBox} setOrderBox={setOrderBox} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
         <div className="inventory"><CompInventory items={items} updateInventory={updateInventory} isAnimalScreen={true} setEquippedFeed={setEquippedFeed} /></div>
         <div className="settings">
+          {/* <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '60px', justifyContent: 'space-evenly', position: 'absolute', top: '0' }}>
+            <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
+              AD 120px x 60px
+            </div>
+            <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
+              AD 120px x 60px
+            </div>
+
+          </div> */}
           <a target='_blank' href="/updateNotes.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>update notes </a>
           <a target='_blank' href="/privacy.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>Privacy Policy </a>
-          <div style={{ width: '70%', height: '3vh', position: 'absolute', bottom: '3vh', left: '0', fontSize: '1vw' }}>
-            <a target='_black' href="https://discord.gg/jrxWrgNCHw" style={{ fontSize: '.6vw',textDecoration: 'underline', height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+          <div style={{ width: '70%', height: '3vh', position: 'absolute', bottom: '4vh', left: '0', fontSize: '1vw' }}>
+            <a target='_black' href="https://discord.gg/jrxWrgNCHw" style={{ fontSize: '.6vw', textDecoration: 'underline', height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
               <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ height: '50%', marginRight: '2%' }}></img>
-               Community Discord 
+              Community Discord
               <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ height: '50%', marginLeft: '2%' }}></img>
             </a>
           </div>
-          <div style={{ width: '70%', height: '3vh', position: 'absolute', bottom: '0', left: '0', fontSize: '1vw' }}>
-            <a target='_black' href="https://www.buymeacoffee.com/farmgame" style={{ fontSize: '.6vw',textDecoration: 'underline', height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+          <div style={{ width: '70%', height: '3vh', position: 'absolute', bottom: '1vh', left: '0', fontSize: '1vw' }}>
+            <a target='_black' href="https://www.buymeacoffee.com/farmgame" style={{ fontSize: '.6vw', textDecoration: 'underline', height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
               <img src={`${process.env.PUBLIC_URL}/assets/images/goat_standing_right.png`} style={{ width: '20%' }}></img>
               Buy me a coffee
               <img src={`${process.env.PUBLIC_URL}/assets/images/goat_standing_right.png`} style={{ width: '20%' }}></img>

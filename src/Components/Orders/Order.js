@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import CONSTANTS from '../../CONSTANTS';
 
 
-function Order({ good, numNeeded, numHave, claimOrder, orderNum, refreshOrder, refreshable }) {
+function Order({ good, reward, numNeeded, numHave, claimOrder, orderNum, refreshOrder, refreshable }) {
 
     const goldReward = Math.floor(CONSTANTS.Init_Market_Prices[good] * (2 / 3) * numNeeded);
     const xpReward = Math.floor(CONSTANTS.XP[good] * (2 / 3) * numNeeded);
@@ -63,9 +63,15 @@ function Order({ good, numNeeded, numHave, claimOrder, orderNum, refreshOrder, r
 
     let barStyle = numHave >= numNeeded ? completeStyle : progressStyle;
 
+    let rewardInfo = ['', -1]
+    if (reward !== '') {
+        rewardInfo[1] = reward.substring(reward.length - 1, reward.length)
+        rewardInfo[0] = reward.substring(0, reward.length - 1)
+    }
+
     return (
         <div
-            onClick={() => claimOrder(orderNum, goldReward, xpReward)}
+            onClick={() => claimOrder(orderNum, goldReward, xpReward, rewardInfo)}
             style={{
                 width: 'calc(90% - 14px)',
                 height: 'calc(90% - 14px)',
@@ -123,6 +129,12 @@ function Order({ good, numNeeded, numHave, claimOrder, orderNum, refreshOrder, r
                         color: 'lightblue',
                         textShadow: '1px 1px 1px darkblue',
                     }}>XP:</span> {xpReward}</p>
+                    {rewardInfo[1] !== -1 &&
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', fontSize: '2.2vh' }}>
+                            <img src={`${process.env.PUBLIC_URL}/assets/images/${rewardInfo[0]}.png`} style={{ width: '20%' }} />
+                            x {rewardInfo[1]}
+                        </div>
+                    }
                 </div>
             </div>
 

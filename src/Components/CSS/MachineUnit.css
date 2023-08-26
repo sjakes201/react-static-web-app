@@ -37,6 +37,7 @@
     text-decoration: underline;
     width: 100%;
     text-align: center;
+    font-size: 1vw;
 }
 
 .maxedMachineText {
@@ -107,6 +108,7 @@
 
 .machineGUIColumn {
     width: 50%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -206,7 +208,7 @@
     background-color: var(--menu_lighter);
     width: 38%;
     border-radius: 2%;
-    ;
+    font-size: 1vw;
 }
 
 .machineButtonD {
@@ -221,6 +223,7 @@
     padding: 0 2%;
     background-color: var(--menu_light);
     border-radius: 10%;
+    font-size: .8vw;
 }
 
 .machineQuantityButtonB {
@@ -228,6 +231,15 @@
     padding: 0 3%;
     background-color: var(--menu_light);
     border-radius: 10%;
+    font-size: .8vw;
+}
+
+.machineQuantityButtonC {
+    margin: 0 2%;
+    padding: 0 1%;
+    background-color: var(--menu_light);
+    border-radius: 10%;
+    font-size: .8vw;
 }
 
 .machineBuildButton {

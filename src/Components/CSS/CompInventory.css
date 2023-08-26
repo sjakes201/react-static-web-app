@@ -51,11 +51,6 @@
     background-color: var(--menu_dark);
 }
 
-.selected-item-info>img {
-    max-height: 100%;
-    width: 64px;
-}
-
 .selected-item-info>summary {
     margin-left: 1%;
     text-align: left;
@@ -63,7 +58,7 @@
     flex-direction: column;
     justify-content: center;
     height: 100%;
-    width: 80%;
+    flex-grow: 1;
     font-size: 1.1vw;
 }
 
@@ -80,8 +75,8 @@
 
 .selected-item-info>img {
     border: 1px solid #2C1600;
-    width: 64px;
     height: 64px;
+    max-height: 100%;
 }
 
 .items-grid {
@@ -133,6 +128,84 @@
 .item-slot:hover {
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
     transform: scale(1.02);
+}
+
+
+.dequipFertilizer {
+    width: 13%;
+    padding-left: 3%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer
+}
+
+.dequipFertilizer>img {
+    width: 100%;
+    object-fit: contain;
+}
+
+.fertilizerButtonArea {
+    width: 15%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fertilizerButton {
+    width: 100%;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+.fertilizerMenu {
+    position: absolute;
+    width: 15vw;
+    border: 1px solid black;
+    background-color: whitesmoke;
+    top: 1%;
+    right: 2%;
+    z-index: 8;
+
+    padding: 5%;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.fertRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+}
+
+.fertCloseX {
+    position: absolute;
+    width: 10%;
+    top: 3%;
+    right: 3%;
+    font-size: .8vw;
+    cursor: pointer;
+    text-align: center;
+}
+
+.fertilizerType {
+    width: 28%;
+    margin-top: 4%;
+    text-align: center;
+}
+
+.fertilizerType>img {
+    width: 100%;
+    object-fit: contain;
+
+}
+
+.fertTextDescription {
+    font-size: .8vw;
 }
 
 @keyframes flashAnimation {

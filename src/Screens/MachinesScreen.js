@@ -71,6 +71,7 @@ function MachinesScreen() {
                     throw new Error(`HTTP error! status: ${result.status}`);
                 } else {
                     let data = await result.json();
+                    delete data.HarvestsFertilizer; delete data.TimeFertilizer; delete data.YieldsFertilizer;
                     let keys = Object.keys(data);
                     keys.forEach((key) => {
                         if (key.includes('seeds') || !key.includes("_")) {
@@ -116,7 +117,6 @@ function MachinesScreen() {
             newItems[good] -= quantity;
             return newItems
         })
-        setSellQty('')
         try {
             const token = localStorage.getItem('token');
             let data;
@@ -503,30 +503,30 @@ function MachinesScreen() {
                                 </p>
                             </div>
                             <div className='infoGUIDecoBottom'>
-                                    <img
-                                        src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
-                                        alt='deco icon'
-                                    />
-                                    <img
-                                        src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
-                                        alt='deco icon'
-                                    />
-                                    <img
-                                        src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
-                                        alt='deco icon'
-                                    />
-                                    <img
-                                        src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
-                                        alt='deco icon'
-                                    />
-                                    <img
-                                        src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
-                                        alt='deco icon'
-                                    />
-                                    <img
-                                        src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
-                                        alt='deco icon'
-                                    />
+                                <img
+                                    src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                                    alt='deco icon'
+                                />
+                                <img
+                                    src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                                    alt='deco icon'
+                                />
+                                <img
+                                    src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                                    alt='deco icon'
+                                />
+                                <img
+                                    src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                                    alt='deco icon'
+                                />
+                                <img
+                                    src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                                    alt='deco icon'
+                                />
+                                <img
+                                    src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                                    alt='deco icon'
+                                />
 
                             </div>
                         </div>
@@ -547,12 +547,15 @@ function MachinesScreen() {
                         onClick={() => navigate('/animals')}
                         style={{ width: '10%', marginLeft: '1%', cursor: 'pointer', objectFit: 'contain' }}
                     />
+                    <div style={{display: 'none', position: 'relative', width: '728px', height: '90px', zIndex: '2000', backgroundColor: 'orange'}}>
+                        AD 728px x 90px
+                    </div>
                     <img
-                    src={`${process.env.PUBLIC_URL}/assets/images/questionmark.png`}
-                    alt='info'
-                    onClick={() => setHelpGUI((old) => !old)}
-                    id='questionMark'
-                />
+                        src={`${process.env.PUBLIC_URL}/assets/images/questionmark.png`}
+                        alt='info'
+                        onClick={() => setHelpGUI((old) => !old)}
+                        id='questionMark'
+                    />
 
                 </div>
 
@@ -656,7 +659,25 @@ function MachinesScreen() {
                         <div className='artSellInputs'>
                             <input placeholder='0' value={sellQty} className='sellQtyInput' onChange={(e) => setSellQty(e.target.value)}></input>
                             <button id='artSell' onClick={() => sellArtisan(selectedGood, parseInt(sellQty))}>SELL</button>
-                            <button id='artSellAll' onClick={() => sellArtisan(selectedGood, parseInt(items[selectedGood]))}>SELL ALL</button>
+                            <button id='artSellAll' onClick={() => {
+                                sellArtisan(selectedGood, parseInt(items[selectedGood]));
+                                setSellQty('')
+                                // automatically equip next artisan good
+                                let allKeys = Object.keys(items)
+                                let foundNew = false;
+                                for(let i = 0; i < allKeys.length; ++i) {
+                                    if(allKeys[i].includes("Q") && items[allKeys[i]] !== 0) {
+                                        setSelected(allKeys[i]);
+                                        setSellQty(items[allKeys[i]])
+                                        foundNew = true;
+                                        break;
+                                    }
+                                }
+                                if(!foundNew) {
+                                    setSelected("")
+                                    setSellQty('')
+                                }
+                            }}>SELL ALL</button>
                         </div>
                     </div>
                 </div>

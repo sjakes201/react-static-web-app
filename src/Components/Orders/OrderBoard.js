@@ -3,7 +3,7 @@ import Order from "./Order";
 import { useNavigate } from 'react-router-dom';
 import CONSTANTS from '../../CONSTANTS';
 
-function OrderBoard({ close, updateBalance, updateXP }) {
+function OrderBoard({ close, updateBalance, updateXP, setFertilizers }) {
     const navigate = useNavigate();
 
     const [orders, setOrders] = useState([{}, {}, {}, {}]);
@@ -17,7 +17,7 @@ function OrderBoard({ close, updateBalance, updateXP }) {
             const token = localStorage.getItem('token');
 
             try {
-                const orders = await fetch('https://farm-api.azurewebsites.net/api/getAllOrders', {
+                const orders = await fetch('http://localhost:7071/api/getAllOrders', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -30,6 +30,7 @@ function OrderBoard({ close, updateBalance, updateXP }) {
                     throw new Error(`HTTP error! status: ${orders.status}`);
                 } else {
                     let data = await orders.json();
+                    console.log(data)
                     setOrders(data.orders)
                     setLastRefresh(data.lastOrderRefresh.LastOrderRefresh)
                 }
@@ -49,14 +50,19 @@ function OrderBoard({ close, updateBalance, updateXP }) {
         fetchOrders();
     }, [])
 
-    const claimOrder = async (orderNum, goldReward, xpReward) => {
+    const claimOrder = async (orderNum, goldReward, xpReward, rewardInfo) => {
         if (orders[orderNum - 1].numHave < orders[orderNum - 1].numNeeded) {
             return;
         }
         updateBalance(goldReward)
         updateXP(xpReward)
+        if (setFertilizers && rewardInfo[1] !== -1) setFertilizers((old) => {
+            let newFert = { ...old };
+            newFert[rewardInfo[0]] = parseInt(newFert[rewardInfo[0]]) + parseInt(rewardInfo[1]);
+            return newFert;
+        })
         const token = localStorage.getItem('token');
-        const ordersQuery = await fetch('https://farm-api.azurewebsites.net/api/claimOrder', {
+        const ordersQuery = await fetch('http://localhost:7071/api/claimOrder', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -76,8 +82,10 @@ function OrderBoard({ close, updateBalance, updateXP }) {
                 newOrders[orderNum - 1] = {
                     good: data.newGood,
                     numNeeded: data.newNumNeeded,
-                    numHave: 0
+                    numHave: 0,
+                    reward: data.newReward
                 }
+                console.log(newOrders[orderNum-1])
                 return newOrders;
             })
         }
@@ -94,7 +102,7 @@ function OrderBoard({ close, updateBalance, updateXP }) {
             try {
                 const token = localStorage.getItem('token');
 
-                const orders = await fetch('https://farm-api.azurewebsites.net/api/refreshOrder', {
+                const orders = await fetch('http://localhost:7071/api/refreshOrder', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -114,7 +122,8 @@ function OrderBoard({ close, updateBalance, updateXP }) {
                         newOrders[orderNumToRefresh - 1] = {
                             good: data.newGood,
                             numNeeded: data.newNumNeeded,
-                            numHave: 0
+                            numHave: 0,
+                            reward: data.newReward
                         }
                         return newOrders;
                     })
@@ -169,10 +178,10 @@ function OrderBoard({ close, updateBalance, updateXP }) {
                 gridTemplateColumns: 'repeat(2, 1fr)',
                 gridTemplateRows: 'repeat(2, 1fr)',
             }}>
-                {orders[1].good !== undefined && <Order orderNum={1} good={orders[0].good} numHave={orders[0].numHave} numNeeded={orders[0].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMS > CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN} />}
-                {orders[1].good !== undefined && <Order orderNum={2} good={orders[1].good} numHave={orders[1].numHave} numNeeded={orders[1].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMS > CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN} />}
-                {orders[1].good !== undefined && <Order orderNum={3} good={orders[2].good} numHave={orders[2].numHave} numNeeded={orders[2].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMS > CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN} />}
-                {orders[1].good !== undefined && <Order orderNum={4} good={orders[3].good} numHave={orders[3].numHave} numNeeded={orders[3].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMS > CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN} />}
+                {orders[1].good !== undefined && <Order orderNum={1} good={orders[0].good} reward={orders[0].reward} numHave={orders[0].numHave} numNeeded={orders[0].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMS > CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN} />}
+                {orders[1].good !== undefined && <Order orderNum={2} good={orders[1].good} reward={orders[1].reward} numHave={orders[1].numHave} numNeeded={orders[1].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMS > CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN} />}
+                {orders[1].good !== undefined && <Order orderNum={3} good={orders[2].good} reward={orders[2].reward} numHave={orders[2].numHave} numNeeded={orders[2].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMS > CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN} />}
+                {orders[1].good !== undefined && <Order orderNum={4} good={orders[3].good} reward={orders[3].reward} numHave={orders[3].numHave} numNeeded={orders[3].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMS > CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN} />}
 
             </div>
         </div >

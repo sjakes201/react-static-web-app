@@ -3,7 +3,7 @@ import '../../CONSTANTS'
 import CONSTANTS from "../../CONSTANTS";
 import UPGRADES from "../../UPGRADES";
 
-function CompTile({ tile, stage, updateTile }) {
+function CompTile({ tile, stage, updateTile, equippedFert, fertilizeTile }) {
 
     const [imgURL, setImgURL] = useState(`${process.env.PUBLIC_URL}/assets/images/dirt.png`);
     const [gif, setGif] = useState(null);
@@ -11,6 +11,7 @@ function CompTile({ tile, stage, updateTile }) {
     const [partResult, setPartResult] = useState('EMPTY')
     const [animatePart, setAnimatePart] = useState(false)
 
+    // console.log(tile.hasTimeFertilizer)
 
     const createGif = (e) => {
         if (gif) return;
@@ -26,6 +27,10 @@ function CompTile({ tile, stage, updateTile }) {
     }
 
     const onTileClick = async (e) => {
+        if (equippedFert !== '') {
+            fertilizeTile(tile.TileID);
+            return
+        }
         let equipped = sessionStorage.getItem("equipped");
         if (equipped !== "") {
             // is it plantable?
@@ -86,6 +91,17 @@ function CompTile({ tile, stage, updateTile }) {
         transform: 'translateY(-30px)',
     };
 
+    let imgStyle = {
+        textAlign: 'center',
+        maxWidth: '100%',
+        height: '100%',
+        objectFit: 'contain',
+    }
+
+    if (UPGRADES.GrowthTimes0[CONSTANTS.ProduceNameFromID[tile?.CropID]]?.length === stage && equippedFert === "") {
+        imgStyle.cursor = 'grab'
+    }
+
     return (
         <div
             style={{
@@ -109,13 +125,7 @@ function CompTile({ tile, stage, updateTile }) {
 
 
             <img
-                style={{
-                    textAlign: 'center',
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                    cursor: (UPGRADES.GrowthTimes0[CONSTANTS.ProduceNameFromID[tile?.CropID]]?.length === stage) ? 'grab' : 'default'
-                }}
+                style={imgStyle}
                 src={imgURL}
                 alt={`seed ID: ${tile.CropID} tile ID: ${tile.TileID}`}
                 draggable="false"
@@ -124,7 +134,33 @@ function CompTile({ tile, stage, updateTile }) {
                 }
                 }
             />
+            <div style={{
+                position: 'absolute', bottom: '0', width: '100%', display: 'flex',
+                justifyContent: 'center', zIndex: '5', opacity: '0.75', pointerEvents: 'none',
+            }}>
+                {tile.YieldsFertilizer !== 0 &&
+                    <img src={`${process.env.PUBLIC_URL}/assets/images/YieldsFertilizer.png`}
+                        style={{
+                            width: '20%',
+                            objectFit: 'contain',
+                        }}
+                    />}
+                {tile.HarvestsFertilizer !== 0 &&
+                    <img src={`${process.env.PUBLIC_URL}/assets/images/HarvestsFertilizer.png`}
+                        style={{
+                            width: '20%',
+                            objectFit: 'contain',
+                        }}
+                    />}
+                {tile.hasTimeFertilizer &&
+                    <img src={`${process.env.PUBLIC_URL}/assets/images/TimeFertilizer.png`}
+                        style={{
+                            width: '20%',
+                            objectFit: 'contain',
+                        }}
+                    />}
 
+            </div>
         </div>
     )
 }

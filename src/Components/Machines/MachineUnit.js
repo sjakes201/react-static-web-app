@@ -118,141 +118,6 @@ function MachineUnit({ setItems, items, machineNum, machineInfo, buyMachine, sta
         )
     }
 
-    const createMainGUI = () => {
-        let validInputsArray = totalInfo?.validInputs;
-        let nextTierCosts = MACHINESINFO[`${MACHINESINFO.machineTypeFromIDS[machineInfo.ID]}MachineCost`]?.[`tier${machineInfo.level + 1}`];
-        return (
-            validInputsArray !== undefined &&
-            <div
-                id='machineMainGUI'
-                className='machineGUIDefault'
-            >
-                {sellGUI()}
-                <div className='machineCloseX' onClick={() => setMainGUI(false)}>X</div>
-                <div style={{
-                    width: '50%',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'space-around',
-                    padding: '5%',
-                }}>
-                    <div style={{ textDecoration: 'underline', width: '90%', height: '10%' }}>Insert Produce</div>
-                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '90%', height: '80%' }}>
-                        {validInputsArray.map((good) => {
-                            // row per good with increment and decrement
-                            return (
-                                <div key={good} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: '90%', height: `20%` }}>
-                                    <img src={`${process.env.PUBLIC_URL}/assets/images/${good}.png`} style={{ width: '40%', maxHeight: '100%', objectFit: 'contain' }} />
-                                    <span style={{ marginRight: '5%' }}> x </span>
-                                    <span style={{ margin: '0 3%' }}> {ingredients[good]}</span>
-                                    <button className='machineQuantityButtonA'
-                                        onClick={() => {
-                                            setIngredients((old) => {
-                                                let newIngredients = { ...old };
-                                                let sum = 0;
-                                                Object.keys(newIngredients).forEach((e) => sum += newIngredients[e]);
-                                                if (items[good] > newIngredients[good] && sum < tierInfo.capacity) {
-                                                    newIngredients[good] += 1;
-                                                }
-                                                return newIngredients
-                                            })
-                                        }}>
-                                        +
-                                    </button>
-                                    <button className='machineQuantityButtonB'
-                                        onClick={() => {
-                                            setIngredients((old) => {
-                                                let newIngredients = { ...old };
-                                                if (newIngredients[good] > 0) {
-                                                    newIngredients[good] -= 1;
-                                                }
-                                                return newIngredients
-                                            })
-                                        }}>
-                                        -
-                                    </button>
-                                </div>
-                            )
-                        })}
-                    </div>
-                    <button
-                        className='machineButtonC'
-                        onClick={() => {
-                            let totalProduce = 0;
-                            let ingredientsKeys = Object.keys(ingredients);
-                            ingredientsKeys.forEach((e) => { totalProduce += ingredients[e] })
-                            if (totalProduce > 0) {
-                                setRunning(true)
-                                setDone(false)
-                                startMachine(machineNum, machineInfo.ID, ingredients);
-                                setItems((old) => {
-                                    let newItems = { ...old };
-                                    ingredientsKeys.forEach((e) => { newItems[e] -= ingredients[e] })
-                                    return newItems
-                                })
-                                setMainGUI(false)
-                            }
-                        }}
-                    >Start</button>
-                </div>
-                <div className='machineRightColumn'>
-                    <div className='machineStats'>
-                        <div className='machineGUILabel'>Stats:</div>
-                        <div>Capacity: {tierInfo.capacity}</div>
-                        <div>Time: {Math.ceil(tierInfo.timeInMs * (1 / 1000) * (1 / 60))} {Math.ceil(tierInfo.timeInMs * (1 / 1000) * (1 / 60)) === 1 ? 'minute' : 'minutes'}</div>
-                    </div>
-                    {machineInfo.level === 3 &&
-                        <div className='maxedMachineText'>
-                            <p>Machine is</p>
-                            <p>highest tier</p>
-                        </div>
-                    }
-                    {machineInfo.level !== 3 &&
-                        <div className='normalMachineText'>
-                            <div className='machineGUILabel'>Upgrade:</div>
-                            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                <div className='costColumn'>
-                                    <p className='costRow'>
-                                        <span>$</span>
-                                        : {nextTierCosts.Money}
-                                    </p>
-                                    <p className='costRow'>
-                                        <img src={`${process.env.PUBLIC_URL}/assets/images/Gears.png`} className='costIconW' />
-                                        : {nextTierCosts.Gears}
-                                    </p>
-                                </div>
-                                <div className='costColumn'>
-                                    <p className='costRow'>
-                                        <img src={`${process.env.PUBLIC_URL}/assets/images/MetalSheets.png`} className='costIconW' />
-                                        : {nextTierCosts.MetalSheets}
-                                    </p>
-                                    <p className='costRow'>
-                                        <img src={`${process.env.PUBLIC_URL}/assets/images/Bolts.png`} className='costIconW' />
-                                        : {nextTierCosts.Bolts}
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                style={{ width: '100%', textAlign: 'center' }}
-                                onClick={() => {
-                                    let typeName = MACHINESINFO.machineTypeFromIDS[machineInfo.ID];
-                                    let nextTier = machineInfo.level + 1;
-                                    buyMachine(typeName, machineNum, nextTier);
-                                    setMainGUI(false)
-                                }}
-                            >
-                                <button className='machineButtonD'>UPGRADE</button>
-                            </div>
-                        </div>
-                    }
-
-                </div>
-            </div >
-        )
-    }
-
     const createBuildGUI = () => {
         return (<div id='buildGUI' className='machineGUIDefault'>
             <div
@@ -321,102 +186,225 @@ function MachineUnit({ setItems, items, machineNum, machineInfo, buyMachine, sta
         </div>)
     }
 
-    const createRunningGUI = () => {
+    function createGUI() {
+        let running = machineInfo.startTime !== -1;
+        return (<div className='runningGUI machineGUIDefault'>
+            <div
+                className='machineCloseX'
+                onClick={() => { setMainGUI(false);}}>X</div>
+            {sellGUI()}
+            {running && runningLeftColumn()}
+            {!running && idleLeftColumn()}
+
+            <div className='machineGUIColumn'>
+                {getStats()}
+                {machineInfo.level === 3 &&
+                    maxedText()
+                }
+                {machineInfo.level !== 3 &&
+                    upgradeMenu()
+                }
+            </div>
+        </div>)
+    }
+
+    function idleLeftColumn() {
+        let validInputsArray = totalInfo?.validInputs;
+        if (validInputsArray === undefined) {
+            return (<div></div>)
+        }
+        return (<div style={{
+            width: '50%',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+            padding: '5%',
+        }}>
+            <div style={{ textDecoration: 'underline', width: '100%', height: '10%', textAlign: 'center', fontSize: '1vw' }}>Insert Produce</div>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '90%', height: '80%' }}>
+                {validInputsArray.map((good) => {
+                    // row per good with increment and decrement
+                    return (
+                        <div key={good} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: '90%', height: `20%` }}>
+                            <img src={`${process.env.PUBLIC_URL}/assets/images/${good}.png`} style={{ width: '40%', maxHeight: '100%', objectFit: 'contain' }} />
+                            <span style={{ marginRight: '5%' }}> x </span>
+                            <span style={{ margin: '0 3%' }}> {ingredients[good]}</span>
+                            <button className='machineQuantityButtonA'
+                                onClick={() => {
+                                    setIngredients((old) => {
+                                        let newIngredients = { ...old };
+                                        let sum = 0;
+                                        Object.keys(newIngredients).forEach((e) => sum += newIngredients[e]);
+                                        if (items[good] > newIngredients[good] && sum < tierInfo.capacity) {
+                                            newIngredients[good] += 1;
+                                        }
+                                        return newIngredients
+                                    })
+                                }}>
+                                +
+                            </button>
+                            <button className='machineQuantityButtonB'
+                                onClick={() => {
+                                    setIngredients((old) => {
+                                        let newIngredients = { ...old };
+                                        if (newIngredients[good] > 0) {
+                                            newIngredients[good] -= 1;
+                                        }
+                                        return newIngredients
+                                    })
+                                }}>
+                                -
+                            </button>
+
+                            <button className='machineQuantityButtonC'
+                                onClick={() => {
+                                    setIngredients((old) => {
+                                        let newIngredients = { ...old };
+                                        let sum = 0;
+                                        let toAdd = items[good];
+                                        Object.keys(newIngredients).forEach((e) => sum += newIngredients[e]);
+                                        if (items[good] > newIngredients[good] && sum < tierInfo.capacity) {
+                                            if (toAdd > tierInfo.capacity - sum) {
+                                                toAdd = tierInfo.capacity - sum
+                                            }
+                                            newIngredients[good] += toAdd;
+                                        }
+                                        return newIngredients
+                                    })
+                                }}>
+                                MAX
+                            </button>
+                        </div>
+                    )
+                })}
+            </div>
+            <button
+                className='machineButtonC'
+                onClick={() => {
+                    let totalProduce = 0;
+                    let ingredientsKeys = Object.keys(ingredients);
+                    ingredientsKeys.forEach((e) => { totalProduce += ingredients[e] })
+                    if (totalProduce > 0) {
+                        setRunning(true)
+                        setDone(false)
+                        startMachine(machineNum, machineInfo.ID, ingredients);
+                        setItems((old) => {
+                            let newItems = { ...old };
+                            ingredientsKeys.forEach((e) => { newItems[e] -= ingredients[e] })
+                            return newItems
+                        })
+                        setMainGUI(false)
+                    }
+                }}
+            >Start</button>
+        </div>)
+    }
+
+    function runningLeftColumn() {
         let timePassedSeconds = (Date.now() - machineInfo.startTime) / 1000
         let timeNeededSeconds = tierInfo.timeInMs / 1000;
         let timeRemainingSeconds = timeNeededSeconds - timePassedSeconds;
         let timeRemainingMins = Math.ceil(timeRemainingSeconds / 60);
-        let nextTierCosts = MACHINESINFO[`${MACHINESINFO.machineTypeFromIDS[machineInfo.ID]}MachineCost`]?.[`tier${machineInfo.level + 1}`];
-        return (
-            <div className='runningGUI machineGUIDefault'>
-                {sellGUI()}
-                <div
-                    className='machineCloseX'
-                    onClick={() => { setMainGUI(false); setSelectedBuild("") }}>X</div>
-                <div className='machineGUIColumn'>
-                    <div className='machineRunningInfo'>
-                        <p className='underline'>Time remaining:</p>
-                        <div> {timeRemainingMins <= 0 ? 'DONE' : `${timeRemainingMins} mins`}</div>
-                        <p className='underline'>{timeRemainingMins > 0 ? 'Processing:' : 'Processed:'}</p>
-                        <div className='processingRow'>
-                            {machineInfo.produceReceived}
-                            <img src={`${process.env.PUBLIC_URL}/assets/images/${MACHINESINFO.machineTypeFromIDS[machineInfo.ID]}Q0.png`} className='processedIcon' />
-                        </div>
-                        <br />
-                        {timeRemainingMins > 0 &&
-                            <div className='cancelMachine'>
-                                <button
-                                    onClick={() => {
-                                        cancelMachine(machineNum);
-                                        setMainGUI(false);
-                                    }}
-                                    className='machineButtonD'
-                                >CANCEL</button>
-                                <small className='machineCancelInfo'>*Produce will not be refunded</small>
-                            </div>
-                        }
-                        {timeRemainingMins <= 0 &&
-                            <div>
-                                <button
-                                    className='machineButtonD'
-                                    onClick={() => {
-                                        collectMachine(machineNum)
-                                        setMainGUI(false)
-                                    }}>
-                                    COLLECT
-                                </button>
-                            </div>
-                        }
-                    </div>
+        return (<div className='machineGUIColumn'>
+            <div className='machineRunningInfo'>
+                <p className='underline'>Time remaining:</p>
+                <div> {timeRemainingMins <= 0 ? 'DONE' : `${timeRemainingMins} mins`}</div>
+                <p className='underline'>{timeRemainingMins > 0 ? 'Processing:' : 'Processed:'}</p>
+                <div className='processingRow'>
+                    {machineInfo.produceReceived}
+                    <img src={`${process.env.PUBLIC_URL}/assets/images/${MACHINESINFO.machineTypeFromIDS[machineInfo.ID]}Q0.png`} className='processedIcon' />
                 </div>
-                <div className='machineGUIColumn'>
-                    <div className='machineStats'>
-                        <div className='machineGUILabel'>Stats:</div>
-                        <div className='capacityRow'>Capacity: {tierInfo.capacity} </div>
-                        <div>Time: {Math.ceil(tierInfo.timeInMs * (1 / 1000) * (1 / 60))} {Math.ceil(tierInfo.timeInMs * (1 / 1000) * (1 / 60)) === 1 ? 'minute' : 'minutes'}</div>
+                <br />
+                {timeRemainingMins > 0 &&
+                    <div className='cancelMachine'>
+                        <button
+                            onClick={() => {
+                                cancelMachine(machineNum);
+                                setMainGUI(false);
+                            }}
+                            className='machineButtonD'
+                        >CANCEL</button>
+                        <small className='machineCancelInfo'>*Produce will not be refunded</small>
                     </div>
-                    {machineInfo.level === 3 &&
-                        <div className='maxedMachineText'>
-                            <p>Machine is</p>
-                            <p>highest tier</p>
-                        </div>
-                    }
-                    {machineInfo.level !== 3 &&
-                        <div className={`normalMachineText ${machineRunning ? 'isRunningUpgrade' : ''}`}>
-                            <div className='machineGUILabel'>Upgrade:</div>
-                            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                <div className='costColumn'>
-                                    <p className='costRow'>
-                                        <span>$</span>
-                                        : {nextTierCosts.Money}
-                                    </p>
-                                    <p className='costRow'>
-                                        <img src={`${process.env.PUBLIC_URL}/assets/images/Gears.png`} className='costIconW' />
-                                        : {nextTierCosts.Gears}
-                                    </p>
-                                </div>
-                                <div className='costColumn'>
-                                    <p className='costRow'>
-                                        <img src={`${process.env.PUBLIC_URL}/assets/images/MetalSheets.png`} className='costIconW' />
-                                        : {nextTierCosts.MetalSheets}
-                                    </p>
-                                    <p className='costRow'>
-                                        <img src={`${process.env.PUBLIC_URL}/assets/images/Bolts.png`} className='costIconW' />
-                                        : {nextTierCosts.Bolts}
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                style={{ width: '100%', textAlign: 'center' }}
+                }
+                {timeRemainingMins <= 0 &&
+                    <div>
+                        <button
+                            className='machineButtonD'
+                            onClick={() => {
+                                collectMachine(machineNum)
+                                setMainGUI(false)
+                            }}>
+                            COLLECT
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>)
 
-                            ><button className={`machineButtonD ${machineRunning ? 'isRunningUpgrade' : ''}`}>UPGRADE</button>
-                            </div>
-                        </div>
-                    }
-                </div>
+    }
+
+    function getStats() {
+        return (
+            <div className='machineStats'>
+                <div className='machineGUILabel'>Stats:</div>
+                <div>Capacity: {tierInfo.capacity}</div>
+                <div>Time: {Math.ceil(tierInfo.timeInMs * (1 / 1000) * (1 / 60))} {Math.ceil(tierInfo.timeInMs * (1 / 1000) * (1 / 60)) === 1 ? 'minute' : 'minutes'}</div>
+            </div>)
+    }
+
+    function maxedText() {
+        return (
+            <div className='maxedMachineText'>
+                <p>Machine is</p>
+                <p>highest tier</p>
             </div>
         )
     }
+
+    function upgradeMenu() {
+        let nextTierCosts = MACHINESINFO[`${MACHINESINFO.machineTypeFromIDS[machineInfo.ID]}MachineCost`]?.[`tier${machineInfo.level + 1}`];
+        return (<div className={`normalMachineText ${machineRunning ? 'isRunningUpgrade' : ''}`}>
+            <div className='machineGUILabel'>Upgrade:</div>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div className='costColumn'>
+                    <p className='costRow'>
+                        <span>$</span>
+                        : {nextTierCosts.Money}
+                    </p>
+                    <p className='costRow'>
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/Gears.png`} className='costIconW' />
+                        : {nextTierCosts.Gears}
+                    </p>
+                </div>
+                <div className='costColumn'>
+                    <p className='costRow'>
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/MetalSheets.png`} className='costIconW' />
+                        : {nextTierCosts.MetalSheets}
+                    </p>
+                    <p className='costRow'>
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/Bolts.png`} className='costIconW' />
+                        : {nextTierCosts.Bolts}
+                    </p>
+                </div>
+            </div>
+            <div
+                style={{ width: '100%', textAlign: 'center' }}
+                onClick={() => {
+                    let typeName = MACHINESINFO.machineTypeFromIDS[machineInfo.ID];
+                    let nextTier = machineInfo.level + 1;
+                    buyMachine(typeName, machineNum, nextTier);
+                    setMainGUI(false)
+                }}
+            ><button className={`machineButtonD ${machineRunning ? 'isRunningUpgrade' : ''}`}>UPGRADE</button>
+            </div>
+        </div>)
+    }
+
+
+
 
     const [sellConfirmGUI, setSellConfirmGUI] = useState(false);
     const sellGUI = () => {
@@ -429,7 +417,7 @@ function MachineUnit({ setItems, items, machineNum, machineInfo, buyMachine, sta
     }
 
     useEffect(() => {
-        if(!mainGUI) setSellConfirmGUI(false);
+        if (!mainGUI) setSellConfirmGUI(false);
     }, [mainGUI])
 
     return (
@@ -456,15 +444,10 @@ function MachineUnit({ setItems, items, machineNum, machineInfo, buyMachine, sta
                             {MACHINESINFO.sellRefunds[`tier${machineInfo.level}`]?.MetalSheets}
                         </span>
                     </div>
-                    <button onClick={() => {sellMachine(machineNum); setSellConfirmGUI(false); setMainGUI(false)}}>SCRAP</button>
+                    <button onClick={() => { sellMachine(machineNum); setSellConfirmGUI(false); setMainGUI(false) }}>SCRAP</button>
                 </div>
             }
-            {(mainGUI && machineInfo.startTime === -1) &&
-                createMainGUI()
-            }
-            {(mainGUI && machineInfo.startTime !== -1) &&
-                createRunningGUI()
-            }
+            {mainGUI && createGUI()}
             {buildGUI &&
                 createBuildGUI()
             }

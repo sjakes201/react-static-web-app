@@ -3,13 +3,18 @@ import '../CSS/CompInventory.css'
 import CONSTANTS from '../../CONSTANTS';
 import ANIMALINFO from '../../ANIMALINFO';
 
-function CompInventory({ items, displayOnly, setMarketSelected, isAnimalScreen, setEquippedFeed, showBottomBar }) {
+function CompInventory({ fertilizers, items, displayOnly, setMarketSelected, isAnimalScreen, setEquippedFeed, showBottomBar, showFertilizer, setEquippedFert, equippedFert }) {
     const [selectedItem, setSelectedItem] = useState({
         name: '',
         quantity: 0,
         description: '',
         image: `${process.env.PUBLIC_URL}/assets/images/EMPTY.png`
     });
+
+    // for equipped, from parent
+    const [fertilizerMenu, setFerilizerMenu] = useState(false)
+    // for which one to display info (not equal to parent, in case they re-open menu and have one equipped)
+    const [fertInfo, setFertInfo] = useState("")
 
     useEffect(() => {
         if (items[selectedItem.name] === 0) {
@@ -57,8 +62,11 @@ function CompInventory({ items, displayOnly, setMarketSelected, isAnimalScreen, 
                 image: `${process.env.PUBLIC_URL}/assets/images/EMPTY.png`
             });
         }
+        if (setEquippedFert) {
+            setEquippedFert("");
+            setFerilizerMenu(false)
+        }
     }
-
     const toLoad = () => {
         let invItems = { ...items };
         if (displayOnly) {
@@ -67,7 +75,34 @@ function CompInventory({ items, displayOnly, setMarketSelected, isAnimalScreen, 
                 if (keys[i].includes("_seeds")) delete invItems[keys[i]];
             }
         }
-        const sortedKeys = Object.keys(invItems).sort((a, b) => invItems[b] - invItems[a]);
+
+        const customSort = (a, b) => {
+            const aValue = invItems.hasOwnProperty(a) ? invItems[a] : -1;
+            const bValue = invItems.hasOwnProperty(b) ? invItems[b] : -1;
+
+            const hasQ = str => str.includes("Q");
+            const hasSeeds = str => str.includes("_seeds");
+            const hasUnderscore = str => str.includes("_");
+
+            const getPriority = (str, val) => {
+                if (val === 0) return 0;
+                if (hasQ(str)) return 4;
+                if (hasSeeds(str)) return 3;
+                if (hasUnderscore(str)) return 2;
+                return 1;
+            };
+
+            const aPriority = getPriority(a, aValue);
+            const bPriority = getPriority(b, bValue);
+
+            if (aPriority !== bPriority) {
+                return bPriority - aPriority;
+            } else {
+                return bValue - aValue;
+            }
+        };
+
+        const sortedKeys = Object.keys(invItems).sort(customSort);
         const sortedObject = {};
 
         sortedKeys.forEach(key => {
@@ -82,7 +117,7 @@ function CompInventory({ items, displayOnly, setMarketSelected, isAnimalScreen, 
                     <div className={isAnimalScreen ? (item in ANIMALINFO.FoodHappinessYields && itemCount !== 0 ? 'item-slot is-feed' : 'item-slot') : "item-slot"} id={item.concat(itemCount)} key={`${item}+${itemCount}`} onClick={() => handleClick(item)}>
                         {itemCount ? (
                             <>
-                                <img src={`${process.env.PUBLIC_URL}/assets/images/${item}.png`} alt={item} />
+                                <img draggable={false} src={`${process.env.PUBLIC_URL}/assets/images/${item}.png`} alt={item} />
                                 <ins className='count'>1000</ins>
                             </>
                         ) : (
@@ -96,7 +131,7 @@ function CompInventory({ items, displayOnly, setMarketSelected, isAnimalScreen, 
                 <div className={isAnimalScreen ? (item in ANIMALINFO.FoodHappinessYields && itemCount !== 0 ? 'item-slot is-feed' : 'item-slot') : "item-slot"} id={item} key={item} onClick={() => handleClick(item)}>
                     {itemCount ? (
                         <>
-                            <img src={`${process.env.PUBLIC_URL}/assets/images/${item}.png`} alt={item} />
+                            <img draggable={false} src={`${process.env.PUBLIC_URL}/assets/images/${item}.png`} alt={item} />
                             <ins className='count'>{itemCount}</ins>
                         </>
                     ) : (
@@ -122,21 +157,70 @@ function CompInventory({ items, displayOnly, setMarketSelected, isAnimalScreen, 
         )
     }
 
+    const fertilizerGUI = () => {
+        return (
+            <div className='fertilizerMenu'>
+                <span className='fertCloseX' onClick={() => { setFerilizerMenu(false); setFertInfo(""); }}>X</span>
+                <div className='fertRow'>
+                    <div className='fertilizerType' id='YieldsFertilizer'>
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/YieldsFertilizer.png`}
+                            onClick={() => { if (fertilizers.YieldsFertilizer > 0) { setEquippedFert('YieldsFertilizer'); setFerilizerMenu(false) } }}
+                            onMouseEnter={() => setFertInfo('YieldsFertilizer')} onMouseLeave={() => setFertInfo("")} draggable={false} />
+                        <p>x{fertilizers.YieldsFertilizer}</p>
+                    </div>
+                    <div className='fertilizerType' id='HarvestsFertilizer'>
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/HarvestsFertilizer.png`}
+                            onClick={() => { if (fertilizers.HarvestsFertilizer > 0) { setEquippedFert('HarvestsFertilizer'); setFerilizerMenu(false) } }}
+                            onMouseEnter={() => setFertInfo('HarvestsFertilizer')} onMouseLeave={() => setFertInfo("")} draggable={false} />
+                        <p>x{fertilizers.HarvestsFertilizer}</p>
+                    </div>
+                    <div className='fertilizerType' id='TimeFertilizer'>
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/TimeFertilizer.png`}
+                            onClick={() => { if (fertilizers.TimeFertilizer > 0) { setEquippedFert('TimeFertilizer'); setFerilizerMenu(false) } }}
+                            onMouseEnter={() => setFertInfo('TimeFertilizer')} onMouseLeave={() => setFertInfo("")} draggable={false} />
+                        <p>x{fertilizers.TimeFertilizer}</p>
+                    </div>
+                </div>
+                {fertInfo !== '' && <p className='fertTextDescription'>
+                    {CONSTANTS.fertilizerInfo[fertInfo]}
+                </p>}
+            </div>
+        )
+    }
+
     return (
         <div className={`inventory-container`}>
             <div className={`inventorySlots ${showBottomBar ? 'showBottomBar' : 'noBottomBar'}`}>
                 <div className="selected-item-info">
-                    <img src={selectedItem.image} alt={selectedItem.name} />
+                    <img id='selected-inv-image' src={selectedItem.image} alt={selectedItem.name} />
                     <summary>
                         <p>{selectedItem.description[0]}</p>
-                        <small>{selectedItem.description[1]}</small>
+                        {/* <small>{selectedItem.description[1]}</small> */}
                     </summary>
+
+                    {showFertilizer && equippedFert !== '' &&
+                        <div className='dequipFertilizer'>
+                            <img onClick={() => setEquippedFert('')} src={`${process.env.PUBLIC_URL}/assets/images/cancel.png`} />
+                        </div>
+
+
+                    }
+                    {showFertilizer &&
+                        <div className='fertilizerButtonArea'>
+                            <img className='fertilizerButton' src={`${process.env.PUBLIC_URL}/assets/images/fertilizerBlank.png`} onClick={() => setFerilizerMenu(true)} />
+                        </div>
+                    }
+
+                    {fertilizerMenu &&
+                        fertilizerGUI()
+                    }
+
                 </div>
                 {
                     items && (<div className="items-grid">{toLoad()}</div>)
                 }
             </div>
-        </div>
+        </div >
     );
 }
 

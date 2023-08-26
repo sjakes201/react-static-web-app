@@ -61,7 +61,7 @@ function CompPen({ importedAnimals, setAnimalsParent, passedUpgrades, penWidth, 
 
     // Can you collect on this animal?
     const isUnlocked = (name) => {
-        let xpNeeded = Object.keys(CONSTANTS.Levels).filter((threshold) => CONSTANTS.Levels[threshold].includes(name) ? true : false)
+        let xpNeeded = Object.keys(CONSTANTS.levelUnlocks).filter((lvl) => CONSTANTS.levelUnlocks[lvl].includes(name) ? true : false)
         let permitNeeded = CONSTANTS.Permits.exoticAnimals.includes(name);
         if (parseInt(xpNeeded[0]) > xp) {
             return false;

@@ -5,10 +5,11 @@ import UPGRADES from "../../UPGRADES";
 
 const SEED_LIMIT = 100;
 
-function CompItem({ updateAnimals, itemName, cost, unlocked, info, updateBalance, getBal, updateInventory, tier, updateUpgrades, items, hasSpace }) {
+function CompItem({ unlockInfo, updateAnimals, itemName, cost, unlocked, info, updateBalance, getBal, updateInventory, tier, updateUpgrades, items, hasSpace }) {
 
     const [gif, setGif] = useState({ 1: null, 5: null, 25: null });
     const [gifKey, setGifKey] = useState(0);
+    const [itemInfo, setItemInfo] = useState(false)
 
     const getLocationStyle = () => {
         switch (info.split(" ")[0]) {
@@ -147,28 +148,41 @@ function CompItem({ updateAnimals, itemName, cost, unlocked, info, updateBalance
     }, [gif, gifKey]);
 
 
-    const getXPNeeded = () => {
-        for (let threshold in CONSTANTS.Levels) {
-            if (CONSTANTS.Levels[threshold].includes(itemName)) return threshold
+    const getLevelNeeded = () => {
+        for (let level in CONSTANTS.levelUnlocks) {
+            if (CONSTANTS.levelUnlocks[level].includes(itemName)) return level
         }
         return -1;
 
     }
-
     if (itemName in CONSTANTS.Fixed_Prices) {
         return (
             <div id="itemBox" className={unlocked ? "" : "notAvailable"} >
                 {!unlocked && (
                     <div className='content'>
-                        <p>UNAVAILABLE</p>
-                        <p>{(info === 'EXOTIC') ? 'EXOTIC' : (info === 'DELUXE') ? 'DELUXE' : `${getXPNeeded()}xp`}</p>
+                        <p>LOCKED</p>
+                        {
+                            unlockInfo[1] !== '' &&
+                            <p>{unlockInfo[1]}</p>
+
+                        }
+                        {!unlockInfo[0] &&
+                            <p>{`Level ${getLevelNeeded()}`}</p>
+                        }
                     </div>
                 )}
                 <div className="itemImg">
                     <img src={`${process.env.PUBLIC_URL}/assets/images/${itemName}.png`} />
                 </div>
                 <div id="name">
-                    <p>{CONSTANTS.InventoryDescriptions[itemName][0]}</p>
+                    <p>{CONSTANTS.InventoryDescriptions[CONSTANTS.SeedCropMap[itemName][0]][0]}</p>
+                    <img src={`${process.env.PUBLIC_URL}/assets/images/info.png`} className='shopItemInfo' onMouseEnter={() => setItemInfo(true)} onMouseLeave={() => setItemInfo(false)}/>
+                    {
+                        itemInfo &&
+                        <div className='seedTooltip'> 
+                            {CONSTANTS.InventoryDescriptions[itemName][1]}
+                        </div>
+                    }
                 </div>
                 <div id="info">
                     <div className='left-text'>
@@ -204,18 +218,26 @@ function CompItem({ updateAnimals, itemName, cost, unlocked, info, updateBalance
 
     if (itemName in CONSTANTS.AnimalTypes) {
         return (
-            <div id="itemBox" className={(!unlocked || !hasSpace) ? "notAvailable" : ""} >
-                {(!unlocked) && (
+            <div id="itemBox" className={(!unlockInfo[0] || unlockInfo[1] !== '' || !hasSpace) ? "notAvailable" : ""} >
+                {!unlockInfo[0] && (
                     <div className='content'>
-                        <p>UNAVAILABLE</p>
-                        <p>{info.split(" ")[1] ? info.split(" ")[1] : `${getXPNeeded()} XP`}</p>
+                        <p>LOCKED</p>
+                        {
+                            unlockInfo[1] !== '' &&
+                            <p>{unlockInfo[1]}</p>
+
+                        }
+                        {!unlockInfo[0] &&
+                            <p>{`Level ${getLevelNeeded()}`}</p>
+                        }
                     </div>
                 )}
-                {(unlocked && !hasSpace) && (
-                    <div className='content'>
-                        <p>MAX CAPACITY</p>
-                    </div>
-                )}
+
+                {!hasSpace &&
+                    <p className='content'>
+                        MAX CAPACITY
+                    </p>
+                }
                 <div className="itemImg">
                     <img src={`${process.env.PUBLIC_URL}/assets/images/${itemName}_standing_right.png`} />
                 </div>

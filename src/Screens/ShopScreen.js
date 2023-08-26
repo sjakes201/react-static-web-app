@@ -35,7 +35,6 @@ function ShopScreen() {
     const [upgrades, setUpgrades] = useState({});
     const [loginBox, setLoginBox] = useState(false);
 
-
     useEffect(() => {
         const token = localStorage.getItem('token');
         async function fetchData() {
@@ -53,6 +52,7 @@ function ShopScreen() {
                     throw new Error(`HTTP error! status: ${result.status}`);
                 } else {
                     let data = await result.json();
+                    delete data.HarvestsFertilizer; delete data.TimeFertilizer; delete data.YieldsFertilizer;
                     setItems(data);
                 }
             } catch (error) {
@@ -125,6 +125,29 @@ function ShopScreen() {
 
     const getXP = () => {
         return XP;
+    }
+
+    const calcLevel = (XP) => {
+        const lvlThresholds = CONSTANTS.xpToLevel;
+        let level = 0;
+        let remainingXP = XP;
+        for (let i = 0; i < lvlThresholds.length; ++i) {
+            if (XP >= lvlThresholds[i]) {
+                level = i;
+                remainingXP = XP - lvlThresholds[i]
+            }
+        }
+        // If level is >= 15, and remainingXP is > 0, we calculate remaining levels (which are formulaic, each level is)
+        while (remainingXP >= 600) {
+            ++level;
+            remainingXP -= 600;
+        }
+        // find next threshold
+        return level
+    }
+
+    const getLevel = () => {
+        return calcLevel(XP)
     }
 
     const getBal = () => {
@@ -221,13 +244,16 @@ function ShopScreen() {
                 <div style={{ width: '30vw' }}>
                     <CompProfile setLoginBox={setLoginBox} type={'short'} getBal={getBal} getUser={getUser} getXP={getXP} />
                 </div>
-
-
             </div>
-            <CompShop getXP={getXP} getAnimals={getAnimals} updateUpgrades={updateUpgrades}
-                getUpgrades={getUpgrades} updateInventory={updateInventory} permits={{ 'deluxePermit': deluxePermit, 'exoticPermit': exoticPermit }}
-                updateBalance={updateBalance} getBal={getBal} updateAnimals={updateAnimals}
-                items={items} />
+            <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+                <CompShop getLevel={getLevel} getXP={getXP} getAnimals={getAnimals} updateUpgrades={updateUpgrades}
+                    getUpgrades={getUpgrades} updateInventory={updateInventory} permits={{ 'deluxePermit': deluxePermit, 'exoticPermit': exoticPermit }}
+                    updateBalance={updateBalance} getBal={getBal} updateAnimals={updateAnimals}
+                    items={items} />
+                {/* <div style={{ position: 'relative', background: 'orange', width: '160px', height: '600px', zIndex: '2000', border: '2px solid purple' }}>
+                    AD 160 x 600
+                </div> */}
+            </div>
             <div className="login-GUI">
                 {loginBox && <Complogin close={() => setLoginBox(false)} />}
             </div>

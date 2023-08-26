@@ -5,19 +5,19 @@ import CompItem from './CompItem'
 import CONSTANTS from '../../CONSTANTS'
 import UPGRADES from '../../UPGRADES'
 
-function CompShop({ updateAnimals, getAnimals, getXP, updateUpgrades, updateBalance, getBal, updateInventory, getUpgrades, items }) {
+function CompShop({ updateAnimals, getAnimals, getXP, getLevel, updateUpgrades, updateBalance, getBal, updateInventory, getUpgrades, items }) {
 
     const upgrades = getUpgrades();
     const animals = getAnimals();
 
-    let totalXP = getXP();
+    let playerLevel = getLevel();
     let unlocked = [];
-    for (let threshold in CONSTANTS.Levels) {
-        if (totalXP >= threshold) {
-
+    for (let unlockLevel in CONSTANTS.levelUnlocks) {
+        if (playerLevel >= unlockLevel) {
             // if we have enough xp
-            for (let i = 0; i < CONSTANTS.Levels[threshold].length; ++i) {
-                let item = CONSTANTS.Levels[threshold][i];
+
+            for (let i = 0; i < CONSTANTS.levelUnlocks[unlockLevel].length; ++i) {
+                let item = CONSTANTS.levelUnlocks[unlockLevel][i];
                 if (CONSTANTS.Permits.deluxeCrops.includes(item)) {
                     // you need a deluxeCrops permit
                     if (upgrades.deluxePermit) {
@@ -43,22 +43,23 @@ function CompShop({ updateAnimals, getAnimals, getXP, updateUpgrades, updateBala
     //[boolean, isexotic/isdeluxe]
     const isUnlocked = (itemName) => {
         let permit = "";
-        if (CONSTANTS.Permits.deluxeCrops.includes(itemName)) { permit = 'DELUXE'; }
-        else if (CONSTANTS.Permits.exoticAnimals.includes(itemName)) { permit = 'EXOTIC'; }
+        if (CONSTANTS.Permits.deluxeCrops.includes(itemName) && !upgrades.hasDeluxePermit) { permit = 'Deluxe'; }
+        else if (CONSTANTS.Permits.exoticAnimals.includes(itemName) && !upgrades.hasExoticPermit) { permit = 'Exotic'; }
         return [unlocked.includes(itemName), permit]
     }
 
     const getSeedItems = () => {
         const firstItems = [];
         const lastItems = [];
-
-        for (let i = 1; i < CONSTANTS.ProduceNameFromID.length; ++i) {
-            let name = CONSTANTS.ProduceNameFromID[i];
+        let allSeedsArray = CONSTANTS.ProduceNameFromID;
+        allSeedsArray.sort((a,b) => CONSTANTS.shopOrder.indexOf(a) - CONSTANTS.shopOrder.indexOf(b))
+        for (let i = 1; i < allSeedsArray.length; ++i) {
+            let name = allSeedsArray[i];
             let unlockInfo = isUnlocked(name);
             if (unlockInfo[0]) {
-                firstItems.push(<CompItem key={i} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={CONSTANTS.Fixed_Prices[name]} unlocked={true} info={unlockInfo[1]} items={items} />)
+                firstItems.push(<CompItem key={i} unlockInfo={unlockInfo} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={CONSTANTS.Fixed_Prices[name]} unlocked={true} info={unlockInfo[1]} items={items} />)
             } else {
-                lastItems.push(<CompItem key={i} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={CONSTANTS.Fixed_Prices[name]} unlocked={false} info={unlockInfo[1]} items={items} />)
+                lastItems.push(<CompItem key={i} unlockInfo={unlockInfo} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={CONSTANTS.Fixed_Prices[name]} unlocked={false} info={unlockInfo[1]} items={items} />)
             }
 
         }
@@ -77,20 +78,21 @@ function CompShop({ updateAnimals, getAnimals, getXP, updateUpgrades, updateBala
             allAnimals.push([allKeys[i], CONSTANTS.AnimalTypes[allKeys[i]]]);
         }
         // does this work? we are sorting it based on alphabetical because object.keys() is not consistent
-        allAnimals.sort((a, b) => a[0].localeCompare(b[0]));
+        allAnimals.sort((a,b) => CONSTANTS.shopOrder.indexOf(a) - CONSTANTS.shopOrder.indexOf(b))
 
         for (let i = 0; i < allAnimals.length; ++i) {
             let name = allAnimals[i][0];
             let unlockInfo = isUnlocked(name);
+            //unlock info is array [xpUnlock (true / false), permitNeeded (either permit or blank)]
             let hasSpace = animals[`${(allAnimals[i][1][0])}Count`] < animals[`${(allAnimals[i][1][0])}Capacity`]
             if (unlockInfo[0]) {
                 if (hasSpace) {
-                    firstItems.push(<CompItem key={100 + i} updateAnimals={updateAnimals} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={allAnimals[i][1][1]} unlocked={true} info={`${(allAnimals[i][1][0]).toUpperCase()} ${unlockInfo[1]}`} hasSpace={hasSpace} />)
+                    firstItems.push(<CompItem unlockInfo={unlockInfo} key={100 + i} updateAnimals={updateAnimals} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={allAnimals[i][1][1]} unlocked={true} info={`${(allAnimals[i][1][0]).toUpperCase()} ${unlockInfo[1]}`} hasSpace={hasSpace} />)
                 } else {
-                    lastItems.push(<CompItem key={100 + i} updateAnimals={updateAnimals} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={allAnimals[i][1][1]} unlocked={true} info={`${(allAnimals[i][1][0]).toUpperCase()} ${unlockInfo[1]}`} hasSpace={hasSpace} />)
+                    lastItems.push(<CompItem unlockInfo={unlockInfo} key={100 + i} updateAnimals={updateAnimals} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={allAnimals[i][1][1]} unlocked={true} info={`${(allAnimals[i][1][0]).toUpperCase()} ${unlockInfo[1]}`} hasSpace={hasSpace} />)
                 }
             } else {
-                lastItems.push(<CompItem key={100 + i} updateAnimals={updateAnimals} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={allAnimals[i][1][1]} unlocked={false} info={`${(allAnimals[i][1][0]).toUpperCase()} ${unlockInfo[1]}`} hasSpace={hasSpace} />)
+                lastItems.push(<CompItem unlockInfo={unlockInfo} key={100 + i} updateAnimals={updateAnimals} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={allAnimals[i][1][1]} unlocked={false} info={`${(allAnimals[i][1][0]).toUpperCase()} ${unlockInfo[1]}`} hasSpace={hasSpace} />)
             }
 
         }
@@ -186,7 +188,7 @@ function CompShop({ updateAnimals, getAnimals, getXP, updateUpgrades, updateBala
                     <h2>SEEDS</h2>
                 </div>
                 <div className='items' ref={seedsRef}>
-                    {(totalXP !== -1) && getSeedItems()}
+                    {(getXP() !== -1) && getSeedItems()}
                 </div>
             </section>
             <section id='Animals' className='shopRow' >

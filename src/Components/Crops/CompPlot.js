@@ -4,7 +4,7 @@ import CONSTANTS from '../../CONSTANTS';
 import UPGRADES from "../../UPGRADES";
 import { useNavigate } from 'react-router-dom';
 
-function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotice }) {
+function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, getUpgrades, updateInventory, updateXP, getXP, setOrderNotice }) {
 
     const [tiles, setTiles] = useState([]);
     const [growthTable, setGrowthTable] = useState("GrowthTimes0")
@@ -20,7 +20,7 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
 
     // can you plant this plant?
     const isUnlocked = (name) => {
-        let xpNeeded = Object.keys(CONSTANTS.Levels).filter((threshold) => CONSTANTS.Levels[threshold].includes(name) ? true : false)
+        let xpNeeded = Object.keys(CONSTANTS.levelUnlocks).filter((level) => CONSTANTS.levelUnlocks[level].includes(name) ? true : false)
         let permitNeeded = CONSTANTS.Permits.deluxeCrops.includes(name);
         if (permitNeeded && !hasDeluxe) {
             return false;
@@ -31,12 +31,86 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
         return true;
     }
 
+    const fertilizeTile = async (tileID) => {
+        let desiredFertilizer = equippedFert;
+        console.log(desiredFertilizer)
+        if (fertilizers[desiredFertilizer] > 0) {
+            setFertilizers((old) => {
+                let newCounts = { ...old };
+                newCounts[desiredFertilizer] -= 1;
+                if(newCounts[desiredFertilizer] === 0) {
+                    setEquippedFert("")
+                }
+                return newCounts
+            })
+            setTiles((old) => {
+                let newTiles = old.map((tile) => {
+                    if (tile.TileID === tileID) {
+                        let newTile = { ...tile }
+                        console.log(newTile)
+                        switch (equippedFert) {
+                            case 'TimeFertilizer':
+                                newTile.TimeFertilizer = Date.now();
+                                newTile.hasTimeFertilizer = true;
+                                break;
+                            case 'YieldsFertilizer':
+                                newTile.YieldsFertilizer = 10;
+                                break;
+                            case 'HarvestsFertilizer':
+                                newTile.HarvestsFertilizer = 5;
+                                break;
+                        }
+                        return newTile;
+                    } else {
+                        return tile;
+                    }
+                })
+                return newTiles;
+            })
+            const token = localStorage.getItem('token');
+            try {
+                let fertilizeQuery = await fetch('http://localhost:7071/api/fertilizeTile', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        tileID: tileID,
+                        fertilizerType: desiredFertilizer
+                    })
+                })
+                if (!fertilizeQuery.ok) {
+                    let data = await fertilizeQuery.json()
+                    console.log(data)
+                    throw new Error(`HTTP error! status: ${fertilizeQuery.status}`);
+                } else {
+                    let data = await fertilizeQuery.json()
+                    console.log(data)
+                }
+            } catch (error) {
+                if (error.message.includes('401')) {
+                    console.log("AUTH EXPIRED")
+                    localStorage.removeItem('token');
+                    navigate('/');
+                } else {
+                    console.log(error)
+                }
+
+            }
+
+        }
+    }
+
+
     const updateTile = async (tileID, action, seedName, cropID) => {
 
         let targetTile = tiles.filter(tile => tile?.TileID === tileID);
         if (targetTile.length < 1) { console.log('INVALID updateTile target'); return { message: "INVALID updateTile target" } };
         targetTile = targetTile[0];
         let simRes = {
+            ...targetTile,
             message: "",
             TileID: tileID,
             CropID: "",
@@ -52,6 +126,7 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
             }
             // can plant
             simRes = {
+                ...targetTile,
                 TileID: tileID,
                 CropID: CONSTANTS.ProduceIDs[seedName],
                 PlantTime: Date.now(),
@@ -59,6 +134,10 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
                 message: "SUCCESS",
                 stage: 0,
                 UserID: null
+            }
+            if (simRes.HarvestsFertilizer > 0) {
+                simRes.HarvestsFertilizer -= 1;
+                simRes.HarvestsRemaining += 1;
             }
 
 
@@ -80,10 +159,14 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
                 // buffer for less 400's
                 secsPassed -= 0.1;
                 let secsNeeded = growthTimes.reduce((sum, e) => sum + e, 0)
+                if (simRes.hasTimeFertilizer) {
+                    secsPassed *= 2;
+                }
                 if (secsPassed >= secsNeeded) {
                     if (targetTile.HarvestsRemaining === 1) {
                         // last harvest
                         simRes = {
+                            ...simRes,
                             CropID: -1,
                             PlantTime: null,
                             HarvestsRemaining: null,
@@ -96,12 +179,16 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
                         for (let i = 0; i < growthTimes.length - 1; ++i) {
                             timeSkip += growthTimes[i];
                         }
-
+                        timeSkip *= 1000; // seconds to ms
+                        if (simRes.hasTimeFertilizer) {
+                            timeSkip /= 2;
+                        }
                         // ms since epoch
                         let newPlantTime = Date.now();
-                        newPlantTime = newPlantTime - timeSkip * 1000;
+                        newPlantTime = newPlantTime - timeSkip;
 
                         simRes = {
+                            ...simRes,
                             CropID: cropID,
                             PlantTime: newPlantTime,
                             HarvestsRemaining: targetTile.HarvestsRemaining - 1,
@@ -120,7 +207,6 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
 
         }
 
-
         if (simRes.message === 'SUCCESS') {
             if (action === 'plant') {
                 updateInventory(seedName, -1);
@@ -128,16 +214,25 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
                 let seed_name = CONSTANTS.ProduceNameFromID[cropID];
                 let cropName = CONSTANTS.SeedCropMap[seed_name][0];
                 let quantity = UPGRADES[quantityYieldTable][seed_name];
+                if (simRes.YieldsFertilizer > 0) {
+                    simRes.YieldsFertilizer -= 1;
+                    let bonus = CONSTANTS.yieldFertilizerBonuses[seed_name];
+                    quantity += bonus;
+                }
+                console.log(simRes)
                 updateInventory(cropName, quantity);
                 updateXP(CONSTANTS.XP[cropName]);
             }
         }
         setTiles(prevTiles => prevTiles.map((tile) => {
             if (tile.TileID === tileID) {
-                const newTile = { ...simRes, stage: getStage(simRes.PlantTime, simRes.CropID) };
+                const newTile = {
+                    ...simRes,
+                    stage: getStage(simRes.PlantTime, simRes.CropID, tile.hasTimeFertilizer),
+                };
                 return newTile;
             } else {
-                return { ...tile, stage: getStage(tile.PlantTime, tile.CropID) };
+                return { ...tile, stage: getStage(tile.PlantTime, tile.CropID, tile.hasTimeFertilizer) };
             }
         }));
 
@@ -146,7 +241,7 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
         if (simRes.message === 'SUCCESS') {
             try {
                 if (action === 'plant') {
-                    let plantQuery = await fetch('https://farm-api.azurewebsites.net/api/plant', {
+                    let plantQuery = await fetch('http://localhost:7071/api/plant', {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
@@ -159,10 +254,12 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
                         })
                     })
                     if (!plantQuery.ok) {
+                        console.log(await plantQuery.json())
                         throw new Error(`HTTP error! status: ${plantQuery.status}`);
                     }
+                    console.log(await plantQuery.json())
                 } else {
-                    let harvestQuery = await fetch('https://farm-api.azurewebsites.net/api/harvest?', {
+                    let harvestQuery = await fetch('http://localhost:7071/api/harvest', {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
@@ -177,12 +274,25 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
                         throw new Error(`HTTP error! status: ${harvestQuery.status}`);
                     } else {
                         let data = await harvestQuery.json()
-                        
+                        setTiles(prevTiles => prevTiles.map((tile) => {
+                            if (tile.TileID === data.TileID) {
+                                console.log(data)
+                                const newTile = {
+                                    ...tile, stage:
+                                        getStage(data.PlantTime, data.CropID, data.hasTimeFertilizer),
+                                    hasTimeFertilizer: data.hasTimeFertilizer,
+                                    PlantTime: data.PlantTime
+                                };
+                                return newTile;
+                            } else {
+                                return { ...tile, stage: getStage(tile.PlantTime, tile.CropID, tile.hasTimeFertilizer) };
+                            }
+                        }));
                         let finished = data.finishedOrder;
-                        if(finished) {
+                        if (finished) {
                             // setOrderNotice(false);
                             setOrderNotice(true);
-                            if(orderTimer !== null) {
+                            if (orderTimer !== null) {
                                 clearTimeout(orderTimer)
                             }
                             let id = setTimeout(() => {
@@ -207,12 +317,13 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
     }
 
 
-    const getStage = (PlantTime, CropID) => {
+    const getStage = (PlantTime, CropID, hasTimeFertilizer) => {
         if (PlantTime !== null && CropID !== -1) {
             const date = PlantTime;
             const curTime = Date.now();
 
             let secsPassed = (curTime - date) / (1000);
+            if (hasTimeFertilizer) secsPassed *= 2;
             // buffer for less 400's
             // Use secs passed to find out what stage you are in by summing growth in constants
             let growth = UPGRADES[growthTable][CONSTANTS.ProduceNameFromID[CropID]];
@@ -231,11 +342,12 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
 
     const updateAllStages = () => {
         setTiles(tiles.map((tile) => {
-            return { ...tile, stage: getStage(tile.PlantTime, tile.CropID) };
+            return { ...tile, stage: getStage(tile.PlantTime, tile.CropID, tile.hasTimeFertilizer) };
         }));
     }
 
     useEffect(() => {
+        // console.log(tiles)
         const interval = setInterval(updateAllStages, 1000);
         return () => {
             clearInterval(interval);
@@ -245,7 +357,7 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
     const createTiles = async () => {
         try {
             const token = localStorage.getItem('token');
-            let dbData = await fetch('https://farm-api.azurewebsites.net/api/tilesAll', {
+            let dbData = await fetch('http://localhost:7071/api/tilesAll', {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -258,10 +370,13 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
                 throw new Error(`HTTP error! status: ${dbData.status}`);
             } else {
                 let dbTiles = await dbData.json();
+                // console.log(dbTiles)
                 let updatedTiles = dbTiles.map((tile) => {
-                    let stage = getStage(tile.PlantTime, tile.CropID);
-                    return { ...tile, stage: stage };
+                    let hasTimeFertilizer = tile.TimeFertilizer !== -1
+                    let stage = getStage(tile.PlantTime, tile.CropID, hasTimeFertilizer);
+                    return { ...tile, stage: stage, hasTimeFertilizer: hasTimeFertilizer };
                 });
+                console.log(updatedTiles)
                 setTiles(updatedTiles);
             }
 
@@ -310,7 +425,7 @@ function CompPlot({ getUpgrades, updateInventory, updateXP, getXP, setOrderNotic
             userSelect: "none",
         }}>
             {tiles.map((tile, index) => {
-                return <CompTile key={tile.TileID} tile={tile} stage={tile.stage} updateTile={updateTile} />
+                return <CompTile fertilizeTile={fertilizeTile} equippedFert={equippedFert} key={tile.TileID} tile={tile} stage={tile.stage} updateTile={updateTile} />
             })}
         </div>
     )

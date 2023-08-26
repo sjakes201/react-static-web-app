@@ -30,7 +30,7 @@
     font-size: 2vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
 
 }
 
@@ -118,6 +118,45 @@
     width: 95%;
     max-height: 64px;
     object-fit: contain;
+}
+
+
+.levelInfoContainer {
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+}
+
+#levelPrefix {
+    height: 100%;
+    font-size: 1.5vh;
+    width: 50%;
+}
+
+.levelTopBar {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    height: 60%;
+}
+
+.xpBarContainer {
+    height: 40%;
+    width: 90%;
+    overflow: hidden;
+    border: 1px solid black;
+    position: relative;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.hoverXPCount {
+    position: relative;
+    overflow: visible;
+    width: 50%;
+    height: 100%;
+    font-size: 1.5vh;
+    z-index: 5;
 }
 
 .orderNotice {

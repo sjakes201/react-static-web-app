@@ -52,6 +52,7 @@ function MarketScreen({ }) {
 
                 } else {
                     let data = await result.json();
+                    delete data.HarvestsFertilizer; delete data.TimeFertilizer; delete data.YieldsFertilizer;
                     setItems(data);
                 }
             } catch (error) {
@@ -234,7 +235,15 @@ function MarketScreen({ }) {
                 <div className='market-profile'><CompProfile setLoginBox={setLoginBox} type="wide" getBal={getBal} getUser={getUser} getXP={getXP} /></div>
                 <div className='market-select-info'><CompMarketSelection items={items} onSell={onSell} name={selected.name} newPrice={selected.newPrice} oldPrice={selected.oldPrice} imgURL={selected.imgURL} /></div>
                 <div className='market-inventory'><CompInventory items={items} displayOnly={true} setMarketSelected={setMarketSelected} /></div>
-                <div className='market-other'></div>
+                <div className='market-other'>
+
+                    {/* <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
+                        AD 120px x 60px
+                    </div>
+                    <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
+                        AD 120px x 60px
+                    </div> */}
+                </div>
             </div>
             <div className="login-GUI">
                 {loginBox && <Complogin close={() => setLoginBox(false)} />}
