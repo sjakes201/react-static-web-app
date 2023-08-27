@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, getUpgrades, updateInventory, updateXP, getXP, setOrderNotice }) {
 
     const [tiles, setTiles] = useState([]);
-    const [growthTable, setGrowthTable] = useState("GrowthTimes0")
+    const [growthTable, setGrowthTable] = useState("")
     const [numHarvestTable, setNumHarvestTable] = useState("NumHarvests0")
     const [quantityYieldTable, setQuantityYieldTable] = useState("PlantQuantityYields0")
     const [hasDeluxe, setHasDeluxe] = useState(false);
@@ -390,7 +390,9 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
                 body: JSON.stringify({})
             })
             if (!dbData.ok) {
+                console.log(await dbData.json())
                 throw new Error(`HTTP error! status: ${dbData.status}`);
+
             } else {
                 let dbTiles = await dbData.json();
                 let updatedTiles = dbTiles.map((tile) => {
