@@ -1,7 +1,7 @@
 module.exports = {
     VALUES: {
         NUM_CROP_TILES: 60,
-        ORDER_REFRESH_COOLDOWN: 1800000,
+        ORDER_REFRESH_COOLDOWN: 900000,
         TimeFeritilizeDuration: 600000 //ms duration of time fertilizer
     },
     fertilizerInfo: {

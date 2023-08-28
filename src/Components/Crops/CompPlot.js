@@ -375,7 +375,7 @@ function CompPlot({ setFertilizers, fertilizers, equippedFert, setEquippedFert, 
         return () => {
             clearInterval(interval);
         };
-    }, [tiles, growthTable]);
+    }, [tiles]);
 
     const createTiles = async () => {
         try {
