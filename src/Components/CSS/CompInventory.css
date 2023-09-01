@@ -130,6 +130,58 @@
     transform: scale(1.02);
 }
 
+/* Tool (multiharvest, multiplant) styles
+*/
+
+.toolSelect {
+    width: 10%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toolIcon {
+    height: 50%;
+    cursor: pointer;
+    position: relative;
+}
+
+.toolIconDisabled {
+    height: 50%;
+    position: relative;
+}
+
+.toolIcon>img {
+    height: 100%;
+    object-fit: contain;
+}
+
+.toolIconDisabled > img {
+    height: 100%;
+    object-fit: contain;
+    filter: grayscale(0.90);
+    opacity: 0.3;
+
+}
+
+.toolTipInv {
+    z-index: 100;
+    white-space: nowrap;
+    position: absolute;
+    top: 50%;
+    left: -200%;
+    padding: 0 .2vw 0 .2vw;
+    color: black;
+    border: 1px solid black;
+    background-color: rgb(235, 235, 235);
+    pointer-events: none;
+    font-size: .85vw;
+}
+
+/* Fertilizer equip and gui styles
+*/
 
 .dequipFertilizer {
     width: 13%;
@@ -146,7 +198,7 @@
 }
 
 .fertilizerButtonArea {
-    width: 15%;
+    width: 13%;
     height: 100%;
     position: relative;
     display: flex;
@@ -207,6 +259,9 @@
 .fertTextDescription {
     font-size: .8vw;
 }
+
+/* Item slot flash animation
+*/
 
 @keyframes flashAnimation {
     0% {

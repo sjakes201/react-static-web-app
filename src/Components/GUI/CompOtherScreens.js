@@ -25,9 +25,9 @@ function CompOtherScreens({ current }) {
   }
 
   const createButtons = () => {
-    const allScreens = ['shop', 'animals', 'plants', 'market']
-    const allImgs = [`${process.env.PUBLIC_URL}/assets/images/go_shop.png`, `${process.env.PUBLIC_URL}/assets/images/go_animals.png`, `${process.env.PUBLIC_URL}/assets/images/go_plants.png`, `${process.env.PUBLIC_URL}/assets/images/go_market.png`]
-    const allImgsPressed = [`${process.env.PUBLIC_URL}/assets/images/go_shop_pressed.png`, `${process.env.PUBLIC_URL}/assets/images/go_animals_pressed.png`, `${process.env.PUBLIC_URL}/assets/images/go_plants_pressed.png`, `${process.env.PUBLIC_URL}/assets/images/go_market_pressed.png`]
+    const allScreens = ['shop', 'plants', 'animals', 'market']
+    const allImgs = [`${process.env.PUBLIC_URL}/assets/images/go_shop.png`, `${process.env.PUBLIC_URL}/assets/images/go_plants.png`, `${process.env.PUBLIC_URL}/assets/images/go_animals.png`, `${process.env.PUBLIC_URL}/assets/images/go_market.png`]
+    const allImgsPressed = [`${process.env.PUBLIC_URL}/assets/images/go_shop_pressed.png`, `${process.env.PUBLIC_URL}/assets/images/go_plants_pressed.png`, `${process.env.PUBLIC_URL}/assets/images/go_animals_pressed.png`, `${process.env.PUBLIC_URL}/assets/images/go_market_pressed.png`]
     let otherScreenButtons = [];
     for (let i = 0; i < allScreens.length; ++i) {
       if (allScreens[i] === current) {

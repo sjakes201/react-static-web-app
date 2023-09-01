@@ -21,6 +21,7 @@ function PlantScreen() {
 
     const [items, setItems] = useState({});
     const [fertilizers, setFertilizers] = useState({})
+    const [tool, setTool] = useState("")
 
     // profile info
     const [Balance, setBalance] = useState(0);
@@ -84,7 +85,6 @@ function PlantScreen() {
         fetchData();
 
         async function fetchProfile() {
-
             try {
                 let data;
                 const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
@@ -231,11 +231,11 @@ function PlantScreen() {
             {notificationBox && <NotificationBox close={() => setNotificationBox(false)} contents={unlockContents} />}
             <div className='left-column'>
                 <div className='other-screensPl'><CompOtherScreens current={'plants'} /></div>
-                <div className='plot'><CompPlot setFertilizers={setFertilizers} fertilizers={fertilizers} equippedFert={equippedFert} setEquippedFert={setEquippedFert} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div>
+                <div className='plot'><CompPlot tool={tool} setFertilizers={setFertilizers} fertilizers={fertilizers} equippedFert={equippedFert} setEquippedFert={setEquippedFert} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} items={items} /></div>
             </div>
             <div className='right-column'>
                 <div className="userProfile"><CompProfile orderNotice={orderNotice} setOrderBox={setOrderBox} setLoginBox={setLoginBox} type={'tall'} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
-                <div className="inventoryPl"><CompInventory fertilizers={fertilizers} equippedFert={equippedFert} items={items} updateInventory={updateInventory} showFertilizer={true} setEquippedFert={setEquippedFert} /></div>
+                <div className="inventoryPl"><CompInventory level={calcLevel(XP)} tool={tool} setTool={setTool} fertilizers={fertilizers} equippedFert={equippedFert} items={items} updateInventory={updateInventory} showFertilizer={true} setEquippedFert={setEquippedFert} /></div>
                 <div className="settings">
                     {/* <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '60px', justifyContent: 'space-evenly', position: 'absolute', top: '0' }}>
                         <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>

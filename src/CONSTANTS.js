@@ -236,7 +236,9 @@ module.exports = {
         ostrich_egg: ["Ostrich Eggs", "Produce"],
         llama_wool: ["Llama Wool", "Produce"],
         kiwi_egg: ["Kiwi Eggs", "Produce"],
-        Balance: ["Money", "Currency"]
+        Balance: ["Money", "Currency"],
+        multiharvest: ["Multiharvest tool", "Tool"],
+        multiplant: ["Multiplant tool", "Tool"]
     },
     // For each permit type, what crops and animals it permits
     Permits: {
@@ -259,7 +261,7 @@ module.exports = {
         10: ['hops_seeds', 'sheep'],
         15: ['bamboo_seeds'],
         20: ['melon_seeds', 'yam_seeds'],
-        25: ['llama', 'goat'],
+        25: ['llama', 'goat', 'multiharvest', 'multiplant'],
         30: ['yak', 'duck'],
         35: ['blueberry_seeds'],
         40: ['grape_seeds', 'quail'],

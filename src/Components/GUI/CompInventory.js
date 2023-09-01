@@ -1,9 +1,53 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import '../CSS/CompInventory.css'
 import CONSTANTS from '../../CONSTANTS';
 import ANIMALINFO from '../../ANIMALINFO';
 
-function CompInventory({ fertilizers, items, displayOnly, setMarketSelected, isAnimalScreen, setEquippedFeed, showBottomBar, showFertilizer, setEquippedFert, equippedFert }) {
+const MULTIPLANTLEVEL = 25;
+const MULTIHARVESTLEVEL = 25;
+
+function CompInventory({ level, tool, setTool, fertilizers, items, displayOnly, setMarketSelected, isAnimalScreen, setEquippedFeed, showBottomBar, showFertilizer, setEquippedFert, equippedFert }) {
+
+    //Tooltip code
+    const [tip1, setTip1] = useState(false);
+    const [tip2, setTip2] = useState(false);
+
+    const ref1 = useRef();
+    const ref2 = useRef();
+
+    const handleMouseOver = (buttonNum) => {
+        console.log(`enter ${buttonNum}`)
+        switch (buttonNum) {
+            case 1:
+                ref1.current = setTimeout(() => {
+                    setTip1(true);
+                }, 500);
+                break;
+            case 2:
+                ref2.current = setTimeout(() => {
+                    console.log('setting tip 2 to true')
+                    setTip2(true);
+                }, 500);
+                break;
+        }
+    };
+
+    const handleMouseOut = (buttonNum) => {
+        console.log(`exit ${buttonNum}`)
+        // clear timeout when mouse leaves
+        switch (buttonNum) {
+            case 1:
+                clearTimeout(ref1.current);
+                setTip1(false);
+                break;
+            case 2:
+                clearTimeout(ref2.current);
+                setTip2(false);
+                break;
+        }
+    };
+
+
     const [selectedItem, setSelectedItem] = useState({
         name: '',
         quantity: 0,
@@ -192,12 +236,60 @@ function CompInventory({ fertilizers, items, displayOnly, setMarketSelected, isA
         <div className={`inventory-container`}>
             <div className={`inventorySlots ${showBottomBar ? 'showBottomBar' : 'noBottomBar'}`}>
                 <div className="selected-item-info">
-                    <img id='selected-inv-image' src={selectedItem.image} alt={selectedItem.name} />
+                    <img src={selectedItem.image} alt={selectedItem.name} />
                     <summary>
                         <p>{selectedItem.description[0]}</p>
                         {/* <small>{selectedItem.description[1]}</small> */}
                     </summary>
+                    {showFertilizer &&
+                        <div className='toolSelect'>
+                            {tool !== 'multiharvest' &&
+                                <div className={`toolIcon${level < MULTIHARVESTLEVEL ? 'Disabled' : ''}`}>
+                                    <img src={`${process.env.PUBLIC_URL}/assets/images/multiharvest.png`}
 
+                                        onClick={() => {
+                                            if (level < MULTIHARVESTLEVEL) return;
+                                            setTool("multiharvest")
+                                        }}
+                                        onMouseOver={() => handleMouseOver(1)}
+                                        onMouseOut={() => handleMouseOut(1)} />
+                                    {
+                                        tip1 && <div className='toolTipInv'>
+                                            Multiharvest {level < MULTIHARVESTLEVEL && '(Lvl 25)'}
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            {tool === 'multiharvest' &&
+                                <img src={`${process.env.PUBLIC_URL}/assets/images/GUI/cancel.png`} className='toolIcon'
+                                    onClick={() =>
+                                        setTool("")
+                                    } />
+                            }
+                            {tool !== 'multiplant' &&
+                                <div className={`toolIcon${level < MULTIHARVESTLEVEL ? 'Disabled' : ''}`}>
+                                    <img src={`${process.env.PUBLIC_URL}/assets/images/multiplant.png`}
+
+                                        onClick={() => {
+                                            if (level < MULTIPLANTLEVEL) return;
+                                            setTool("multiplant")
+                                        }}
+                                        onMouseOver={() => handleMouseOver(2)}
+                                        onMouseOut={() => handleMouseOut(2)} />
+                                    {
+                                        tip2 && <div className='toolTipInv'>
+                                            Multiplant {level < MULTIPLANTLEVEL && '(Lvl 25)'}
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            {tool === 'multiplant' &&
+                                <img src={`${process.env.PUBLIC_URL}/assets/images/GUI/cancel.png`} className='toolIcon'
+                                    onClick={() =>
+                                        setTool("")
+                                    } />
+                            }
+                        </div>}
                     {showFertilizer && equippedFert !== '' &&
                         <div className='dequipFertilizer'>
                             <img onClick={() => setEquippedFert('')} src={`${process.env.PUBLIC_URL}/assets/images/cancel.png`} />
@@ -205,7 +297,7 @@ function CompInventory({ fertilizers, items, displayOnly, setMarketSelected, isA
 
 
                     }
-                    {showFertilizer &&
+                    {showFertilizer && equippedFert === '' &&
                         <div className='fertilizerButtonArea'>
                             <img className='fertilizerButton' src={`${process.env.PUBLIC_URL}/assets/images/fertilizerBlank.png`} onClick={() => setFerilizerMenu(true)} />
                         </div>
