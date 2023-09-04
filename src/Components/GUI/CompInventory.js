@@ -16,7 +16,6 @@ function CompInventory({ level, tool, setTool, fertilizers, items, displayOnly, 
     const ref2 = useRef();
 
     const handleMouseOver = (buttonNum) => {
-        console.log(`enter ${buttonNum}`)
         switch (buttonNum) {
             case 1:
                 ref1.current = setTimeout(() => {
@@ -25,7 +24,6 @@ function CompInventory({ level, tool, setTool, fertilizers, items, displayOnly, 
                 break;
             case 2:
                 ref2.current = setTimeout(() => {
-                    console.log('setting tip 2 to true')
                     setTip2(true);
                 }, 500);
                 break;
@@ -33,7 +31,6 @@ function CompInventory({ level, tool, setTool, fertilizers, items, displayOnly, 
     };
 
     const handleMouseOut = (buttonNum) => {
-        console.log(`exit ${buttonNum}`)
         // clear timeout when mouse leaves
         switch (buttonNum) {
             case 1:

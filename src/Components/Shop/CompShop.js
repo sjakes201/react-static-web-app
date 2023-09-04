@@ -73,12 +73,13 @@ function CompShop({ updateAnimals, getAnimals, getXP, getLevel, updateUpgrades, 
         const lastItems = [];
 
         const allKeys = Object.keys(CONSTANTS.AnimalTypes)
-        const allAnimals = [];
+        let allAnimals = [];
         for (let i = 0; i < allKeys.length; ++i) {
             allAnimals.push([allKeys[i], CONSTANTS.AnimalTypes[allKeys[i]]]);
         }
-        // does this work? we are sorting it based on alphabetical because object.keys() is not consistent
-        allAnimals.sort((a,b) => CONSTANTS.shopOrder.indexOf(a) - CONSTANTS.shopOrder.indexOf(b))
+
+        // Consistent sorting order based on unlock (earlier unlocks first)
+        allAnimals = allAnimals.sort((a,b) => CONSTANTS.shopOrder.indexOf(a[0]) - CONSTANTS.shopOrder.indexOf(b[0]))
 
         for (let i = 0; i < allAnimals.length; ++i) {
             let name = allAnimals[i][0];

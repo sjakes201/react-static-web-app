@@ -51,7 +51,7 @@ function CompTile({ tool, partResult, setHovering, highlighted, tile, stage, til
     let seedCropMap = CROPINFO.seedCropMap;
 
     useEffect(() => {
-        if (tile.CropID !== -1) {
+        if (tile.CropID !== -1 && stage !== -1) {
             let cropName = seedCropMap[seedIDS[tile.CropID]];
             let url = cropName.concat("_stage_", stage, ".png");
             setImgURL(`${process.env.PUBLIC_URL}/assets/images/crops/${url}`);
