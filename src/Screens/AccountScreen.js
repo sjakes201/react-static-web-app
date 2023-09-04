@@ -84,7 +84,7 @@ function AccountScreen() {
             {(Object.keys(profileData).length !== 0) &&
                 <div className='acc-container'>
                     <div className='acc-row' id='acc-profile'>
-                        <img src={`${process.env.PUBLIC_URL}/assets/images/chicken_egg.png`} id='acc-pfp' alt='profile pic' />
+                        <img src={`${process.env.PUBLIC_URL}/assets/images/HIGHRESHOMIE.png`} id='acc-pfp' alt='profile pic' />
                         <div className='acc-user-info'>
                             <h3 id="acc-username">{profileData.Username}</h3>
                             <p>XP: {profileData.XP}</p>
