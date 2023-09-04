@@ -29,6 +29,12 @@ function CompTile({ tool, partResult, setHovering, highlighted, tile, stage, til
             fertilizeTile(tile.TileID);
             return
         }
+        if (tile.CropID !== -1) {
+            let seedName = CONSTANTS.ProduceNameFromID[tile.CropID];
+            if (UPGRADES.GrowthTimes0[seedName].length === stage) {
+                createGif(e);
+            }
+        }
         let equipped = sessionStorage.getItem("equipped");
         if (tile.CropID === -1 && CROPINFO.seedsFromID.includes(equipped)) {
             // Something equipped attempt plant
@@ -36,12 +42,7 @@ function CompTile({ tool, partResult, setHovering, highlighted, tile, stage, til
 
         } else {
             // nothing equipped, harvest animation and attempt harvest
-            if (tile.CropID !== -1) {
-                let seedName = CONSTANTS.ProduceNameFromID[tile.CropID];
-                if (UPGRADES.GrowthTimes0[seedName].length === stage) {
-                    createGif(e);
-                }
-            }
+
             tileAction(tile.TileID, 'harvest', null, tile.CropID);
 
         }
