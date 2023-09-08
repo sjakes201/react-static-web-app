@@ -99,7 +99,7 @@ function PlantScreen({ itemsData, setItemsData, getUpgrades, getUser, getBal, up
                         </div>
 
                     </div> */}
-                    <a target='_blank' href="/updateNotes.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>update notes </a>
+                    {/* <a target='_blank' href="/updateNotes.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>update notes </a> */}
                     <a target='_blank' href="/privacy.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>Privacy Policy </a>
 
                     <div style={{ width: '70%', height: '3vh', position: 'absolute', bottom: '4vh', left: '0', fontSize: '1vw' }}>
