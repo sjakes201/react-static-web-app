@@ -5,11 +5,10 @@ import CompPlot from "../Components/Crops/CompPlot";
 import CompInventory from "../Components/GUI/CompInventory";
 import CompOtherScreens from "../Components/GUI/CompOtherScreens";
 import CompProfile from "../Components/GUI/CompProfile";
-import Complogin from "../Components/GUI/CompLogin";
 import OrderBoard from "../Components/Orders/OrderBoard";
 import { useNavigate } from 'react-router-dom';
 
-function PlantScreen({ itemsData, setItemsData, getUpgrades, getUser, getBal, updateBalance, getXP, updateXP, level, setLoginBox }) {
+function PlantScreen({ tiles, setTiles, itemsData, setItemsData, getUpgrades, getUser, getBal, updateBalance, getXP, updateXP, level, setLoginBox }) {
 
 
     const navigate = useNavigate();
@@ -84,7 +83,7 @@ function PlantScreen({ itemsData, setItemsData, getUpgrades, getUser, getBal, up
         <div style={appStyle}>
             <div className='left-column'>
                 <div className='other-screensPl'><CompOtherScreens current={'plants'} /></div>
-                <div className='plot'><CompPlot tool={tool} setFertilizers={setFertilizers} fertilizers={fertilizers} equippedFert={equippedFert} setEquippedFert={setEquippedFert} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} items={items} /></div>
+                <div className='plot'><CompPlot tiles={tiles} setTiles={setTiles} tool={tool} setFertilizers={setFertilizers} fertilizers={fertilizers} equippedFert={equippedFert} setEquippedFert={setEquippedFert} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} items={items} /></div>
             </div>
             <div className='right-column'>
                 <div className="userProfile"><CompProfile orderNotice={orderNotice} setOrderBox={setOrderBox} setLoginBox={setLoginBox} type={'tall'} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>

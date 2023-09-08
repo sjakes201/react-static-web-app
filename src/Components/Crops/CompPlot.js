@@ -4,18 +4,15 @@ import CONSTANTS from '../../CONSTANTS';
 import CROPINFO from "../../CROPINFO";
 import UPGRADES from "../../UPGRADES";
 import { useNavigate } from 'react-router-dom';
-import ANIMALINFO from '../../ANIMALINFO';
 import { useWebSocket } from "../../WebSocketContext";
 
-function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquippedFert, getUpgrades, updateInventory, updateXP, getXP, setOrderNotice, items }) {
+function CompPlot({ tiles, setTiles, tool, setFertilizers, fertilizers, equippedFert, setEquippedFert, getUpgrades, updateInventory, updateXP, getXP, setOrderNotice, items }) {
     const { waitForServerResponse } = useWebSocket();
-
-    const [tiles, setTiles] = useState([]);
+    
     const [growthTable, setGrowthTable] = useState("")
     const [numHarvestTable, setNumHarvestTable] = useState("NumHarvests0")
     const [quantityYieldTable, setQuantityYieldTable] = useState("PlantQuantityYields0")
-    const [hasDeluxe, setHasDeluxe] = useState(false);
-    const [xp, setXP] = useState(0);
+
     // this is for triggering order button animation
     const [orderTimer, setOrderTimer] = useState(null)
 
@@ -50,10 +47,10 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
     const isUnlocked = (name) => {
         let xpNeeded = Object.keys(CONSTANTS.levelUnlocks).filter((level) => CONSTANTS.levelUnlocks[level].includes(name) ? true : false)
         let permitNeeded = CONSTANTS.Permits.deluxeCrops.includes(name);
-        if (permitNeeded && !hasDeluxe) {
+        if (permitNeeded && !getUpgrades().deluxePermit) {
             return false;
         }
-        if (parseInt(xpNeeded[0]) > xp) {
+        if (parseInt(xpNeeded[0]) > getXP()) {
             return false;
         }
         return true;
@@ -279,7 +276,6 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
             }
         }));
 
-        const token = localStorage.getItem('token');
         if (simRes.message === 'SUCCESS') {
             try {
                 if (waitForServerResponse) {
@@ -512,7 +508,7 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
 
 
     const getStage = (PlantTime, CropID, hasTimeFertilizer) => {
-        if (PlantTime !== null && CropID !== -1) {
+        if (PlantTime !== null && CropID !== -1 && Object.keys(getUpgrades()).length !== 0) {
             const date = PlantTime;
             const curTime = Date.now();
 
@@ -521,7 +517,7 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
                 secsPassed = secsPassed * 2;
             }
             // Use secs passed to find out what stage you are in by summing growth in constants
-            let growth = UPGRADES[growthTable][seedIDS[CropID]];
+            let growth = UPGRADES["GrowthTimes".concat(getUpgrades().plantGrowthTimeUpgrade)][CROPINFO.seedsFromID[CropID]];
             let stage = 0;
             while (secsPassed > 0 && stage < growth.length) {
                 secsPassed -= growth[stage];
@@ -551,40 +547,8 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
         };
     }, [tiles]);
 
-    const createTiles = async () => {
-        try {
-            if (waitForServerResponse) { 
-                const response = await waitForServerResponse('tilesAll');
-                let dbTiles = response.body;
-                let updatedTiles = dbTiles.map((tile) => {
-                    let hasTimeFertilizer = tile.TimeFertilizer !== -1
-                    let stage = getStage(tile.PlantTime, tile.CropID, hasTimeFertilizer);
-                    return {
-                        ...tile,
-                        stage: stage,
-                        hasTimeFertilizer: hasTimeFertilizer,
-                        highlighted: false,
-                    };
-                });
-                setTiles(updatedTiles);
-            }
-            // Compute the stage for each tile and include it in the tile object.
-        } catch (error) {
-            if (error.message.includes('401')) {
-                console.log("AUTH EXPIRED")
-                localStorage.removeItem('token');
-                navigate('/');
-            } else {
-                console.log(error)
-            }
-        }
-    }
-
-    // Manage async creation of tiles
-
     useEffect(() => {
         if (Object.keys(getUpgrades()).length > 0) {
-            createTiles()
             updateAllStages();
         }
     }, [growthTable]);
@@ -595,8 +559,6 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
             setGrowthTable("GrowthTimes".concat(upgrades.plantGrowthTimeUpgrade))
             setNumHarvestTable("NumHarvests".concat(upgrades.plantNumHarvestsUpgrade));
             setQuantityYieldTable("PlantQuantityYields".concat(upgrades.plantHarvestQuantityUpgrade));
-            setHasDeluxe(upgrades.deluxePermit);
-            setXP(getXP());
         }
     })
 

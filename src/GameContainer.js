@@ -17,6 +17,7 @@ import GoogleAnalyticsReporter from './GoogleAnalyticsReporter';
 import { useWebSocket } from './WebSocketContext'; // Replace with your actual import path
 
 import CONSTANTS from "./CONSTANTS";
+import CROPINFO from "./CROPINFO";
 import UPGRADES from './UPGRADES';
 
 
@@ -47,6 +48,8 @@ function GameContainer() {
     const [exoticPermit, setExoticPermit] = useState(false);
     const [animalsInfo, setAnimalsInfo] = useState({})
 
+    const [tiles, setTiles] = useState([]);
+
     let newXP = useRef(false)
 
     const [prices, setPrices] = useState(null);
@@ -55,6 +58,23 @@ function GameContainer() {
 
     useEffect(() => {
         let fetchData = async () => {
+
+            if (waitForServerResponse) { 
+                const response = await waitForServerResponse('tilesAll');
+                let dbTiles = response.body;
+                let updatedTiles = dbTiles.map((tile) => {
+                    let hasTimeFertilizer = tile.TimeFertilizer !== -1
+                    let stage = getStage(tile.PlantTime, tile.CropID, hasTimeFertilizer);
+                    return {
+                        ...tile,
+                        stage: stage,
+                        hasTimeFertilizer: hasTimeFertilizer,
+                        highlighted: false,
+                    };
+                });
+                setTiles(updatedTiles);
+            }
+
             if (waitForServerResponse) {
                 const response = await waitForServerResponse('profileInfo');
                 let data = response.body;
@@ -120,6 +140,30 @@ function GameContainer() {
 
         }
     }, [level])
+
+    const getStage = (PlantTime, CropID, hasTimeFertilizer) => {
+        if (PlantTime !== null && CropID !== -1 && Object.keys(getUpgrades()).length !== 0) {
+            const date = PlantTime;
+            const curTime = Date.now();
+
+            let secsPassed = (curTime - date) / (1000);
+            if (hasTimeFertilizer) {
+                secsPassed = secsPassed * 2;
+            }
+            // Use secs passed to find out what stage you are in by summing growth in constants
+            let growth = UPGRADES["GrowthTimes".concat(getUpgrades().plantGrowthTimeUpgrade)][CROPINFO.seedsFromID[CropID]];
+            let stage = 0;
+            while (secsPassed > 0 && stage < growth.length) {
+                secsPassed -= growth[stage];
+                if (secsPassed >= 0) {
+                    stage++;
+                }
+            }
+            return stage;
+        } else {
+            return -1
+        }
+    }
 
     const calcLevel = (XP) => {
         const lvlThresholds = CONSTANTS.xpToLevel;
@@ -247,7 +291,7 @@ function GameContainer() {
             <GoogleAnalyticsReporter />
             <Routes>
                 <Route path="/" element={<InitLoading />} />
-                <Route path="/plants" element={<PlantScreen itemsData={itemsData} setItemsData={setItemsData} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
+                <Route path="/plants" element={<PlantScreen tiles={tiles} setTiles={setTiles} itemsData={itemsData} setItemsData={setItemsData} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
                 <Route path="/animals" element={<AnimalScreen setAnimalsInfo={setAnimalsInfo} barn={barn} coop={coop} setBarn={setBarn} setCoop={setCoop} itemsData={itemsData} setItemsData={setItemsData} capacities={capacities} upgrades={upgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
                 <Route path="/shop" element={<ShopScreen addAnimal={addAnimal} itemsData={itemsData} setItemsData={setItemsData} animalsInfo={animalsInfo} updateAnimalsInfo={updateAnimalsInfo} deluxePermit={deluxePermit} exoticPermit={exoticPermit} updateUpgrades={updateUpgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} newXP={newXP} XP={XP} />} />
                 <Route path="/market" element={<MarketScreen itemsData={itemsData} setItemsData={setItemsData} prices={prices} setLoginBox={setLoginBox} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} newXP={newXP} XP={XP} />} />
