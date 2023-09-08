@@ -5,18 +5,13 @@ import CompPen from '../Components/Animals/CompPen';
 import CompOtherScreens from '../Components/GUI/CompOtherScreens'
 import CompInventory from '../Components/GUI/CompInventory'
 import CompProfile from "../Components/GUI/CompProfile";
-import Complogin from '../Components/GUI/CompLogin';
 import AnimalsTopBar from '../Components/Animals/AnimalsTopBar';
 import AnimalManagement from '../Components/Animals/AnimalManagement';
 import OrderBoard from "../Components/Orders/OrderBoard";
-import NotificationBox from '../Components/GUI/NotificationBox';
 
 import { useNavigate } from 'react-router-dom';
 
-import { useWebSocket } from "../WebSocketContext";
-
-function AnimalScreen() {
-  const { waitForServerResponse } = useWebSocket();
+function AnimalScreen({ setAnimalsInfo, barn, coop, setBarn, setCoop, itemsData, setItemsData, getUpgrades, getUser, getBal, updateBalance, getXP, updateXP, setLoginBox, capacities }) {
 
   const navigate = useNavigate();
   if (localStorage.getItem('token') === null) {
@@ -50,179 +45,30 @@ function AnimalScreen() {
 
   const renderPens = componentWidth !== null && componentHeight !== null;
 
-  // Functions
-
   const [items, setItems] = useState({});
 
-  // profile info
-  const [Balance, setBalance] = useState(0);
-  const [XP, setXP] = useState(0);
-  const [Username, setUsername] = useState("");
-  const [loginBox, setLoginBox] = useState(false);
   const [orderBox, setOrderBox] = useState(false);
-  const [coop, setCoop] = useState([]);
-  const [barn, setBarn] = useState([]);
   const [manager, setManager] = useState(false);
-  const [capacities, setCapacities] = useState({ barnCapacity: 0, coopCapacity: 0 });
   const [orderNotice, setOrderNotice] = useState(false);
 
-  const [upgrades, setUpgrades] = useState({});
 
   const [equippedFeed, setEquippedFeed] = useState("")
 
-  // level for unlocks and unlocks notifictaion stuff
-  const [unlockContents, setUnlockContents] = useState([])
-  const [notificationBox, setNotificationBox] = useState(false)
-  const [level, setLevel] = useState(0)
-  let newXP = useRef(false)
-
   useEffect(() => {
-    if (Object.keys(upgrades).length === 0) {
-      setUpgrades(getUpgrades)
-    }
-  })
+    let data = {...itemsData};
+    delete data.HarvestsFertilizer; delete data.TimeFertilizer; delete data.YieldsFertilizer;
+    setItems(data);
+  }, [itemsData]);
+
 
   useEffect(() => {
     sessionStorage.setItem('equipped', '')
-    async function fetchData() {
-      try {
-        if (waitForServerResponse) { 
-          const response = await waitForServerResponse('inventoryAll');
-          let data = response.body;
-          delete data.HarvestsFertilizer; delete data.TimeFertilizer; delete data.YieldsFertilizer;
-          setItems(data);
-        }
-      } catch (error) {
-        if (error.message.includes('401')) {
-          console.log("AUTH EXPIRED")
-          localStorage.removeItem('token');
-          navigate('/');
-        } else {
-          console.log(error)
-        }
-      }
-    }
-    fetchData();
-
-
-    const getAnimals = async () => {
-      try {
-        if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
-          const response = await waitForServerResponse('allAnimals');
-          let data = response.body;
-          setBarn(data.barnResult);
-          setCoop(data.coopResult)
-        }
-
-
-      } catch (error) {
-        if (error.message.includes('401')) {
-          localStorage.removeItem('token');
-          navigate('/');
-        }
-      }
-    }
-
-    async function fetchProfile() {
-      try {
-        if (waitForServerResponse) {
-          const response = await waitForServerResponse('profileInfo');
-          let data = response.body;
-          setCapacities({ barnCapacity: data.BarnCapacity, coopCapacity: data.CoopCapacity })
-          setBalance(data.Balance);
-          setXP(data.XP);
-          setUsername(data.Username);
-          let upgrades = {};
-          for (const column in data) {
-            if (column.includes('Upgrade') || column.includes('Permit')) {
-              upgrades[column] = data[column];
-            }
-          }
-          setUpgrades(upgrades);
-
-        }
-      } catch (error) {
-        if (error.message.includes('401')) {
-          localStorage.removeItem('token');
-          navigate('/');
-        }
-      }
-    }
-    fetchProfile();
-    getAnimals();
   }, []);
 
-  const calcLevel = (XP) => {
-    const lvlThresholds = CONSTANTS.xpToLevel;
-    let level = 0;
-    let remainingXP = XP;
-    for (let i = 0; i < lvlThresholds.length; ++i) {
-      if (XP >= lvlThresholds[i]) {
-        level = i;
-        remainingXP = XP - lvlThresholds[i]
-      }
-    }
-    // If level is >= 15, and remainingXP is > 0, we calculate remaining levels (which are formulaic, each level is)
-    while (remainingXP >= 600) {
-      ++level;
-      remainingXP -= 600;
-    }
-    // find next threshold
-    return level
-  }
-
-  useEffect(() => {
-    console.log('xp updated')
-    setLevel(calcLevel(XP))
-  }, [XP])
-
-  useEffect(() => {
-    console.log('lvl updated')
-    console.log(newXP.current)
-    if (newXP.current && level in CONSTANTS.levelUnlocks) {
-      console.log('lvl updated bc of new')
-      setUnlockContents(CONSTANTS.levelUnlocks[level])
-      setNotificationBox(true)
-
-    }
-  }, [level])
-
-  const getXP = () => {
-    return XP;
-  }
-
-  const getBal = () => {
-    return Balance;
-  }
-
-  const getUser = () => {
-    if (Username) {
-      return Username;
-    }
-  }
-
-  const getUpgrades = () => {
-    if (upgrades) return upgrades;
-  }
-
-  const updateXP = (amount) => {
-    newXP.current = true;
-    setXP(prevXP => {
-      const newXP = prevXP + amount;
-      return newXP;
-    });
-  }
-
-  const updateBalance = (amount) => {
-    setBalance(oldBal => {
-      const newBal = oldBal + amount;
-      return newBal;
-    })
-  }
 
   const updateInventory = (itemName, quantity, preventAnimate) => {
     let newCount = 0;
-    setItems((prevItems) => {
+    setItemsData((prevItems) => {
       let invItems = { ...prevItems, [itemName]: (prevItems[itemName] || 0) + quantity };
       newCount = (prevItems[itemName] || 0) + quantity;
       const sortedKeys = Object.keys(invItems).sort((a, b) => invItems[b] - invItems[a]);
@@ -254,14 +100,13 @@ function AnimalScreen() {
 
   return (
     <div style={appStyle}>
-      {notificationBox && <NotificationBox close={() => setNotificationBox(false)} contents={unlockContents} />}
-      {manager && <div className='manage-animals'> <AnimalManagement capacities={capacities} coop={coop} setCoop={setCoop} barn={barn} setBarn={setBarn} setManager={setManager} /></div>}
+      {manager && <div className='manage-animals'> <AnimalManagement setAnimalsInfo={setAnimalsInfo} capacities={capacities} coop={coop} setCoop={setCoop} barn={barn} setBarn={setBarn} setManager={setManager} /></div>}
       <div className='left-column'>
         <div className='other-screensAn'><CompOtherScreens current={'animals'} /></div>
         <div className='pen-management'> <AnimalsTopBar setManager={setManager} /> </div>
         <div className="pens-wrapper" ref={componentRef}>
-          {renderPens && (<><div className="barn-container"><CompPen setEquippedFeed={setEquippedFeed} equippedFeed={equippedFeed} setOrderNotice={setOrderNotice} passedUpgrades={upgrades} getUpgrades={getUpgrades} className='barnPen' importedAnimals={barn} setAnimalsParent={setBarn} isBarn={true} key={1} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
-          {renderPens && (<><div className="coop-container"><CompPen setEquippedFeed={setEquippedFeed} equippedFeed={equippedFeed} setOrderNotice={setOrderNotice} passedUpgrades={upgrades} getUpgrades={getUpgrades} className='coopPen' importedAnimals={coop} setAnimalsParent={setCoop} isBarn={false} key={2} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
+          {renderPens && (<><div className="barn-container"><CompPen setEquippedFeed={setEquippedFeed} equippedFeed={equippedFeed} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} className='barnPen' importedAnimals={barn} setAnimalsParent={setBarn} isBarn={true} key={1} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
+          {renderPens && (<><div className="coop-container"><CompPen setEquippedFeed={setEquippedFeed} equippedFeed={equippedFeed} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} className='coopPen' importedAnimals={coop} setAnimalsParent={setCoop} isBarn={false} key={2} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
         </div>
 
       </div>
@@ -295,9 +140,6 @@ function AnimalScreen() {
             </a>
           </div>
         </div>
-      </div>
-      <div className="login-GUI">
-        {loginBox && <Complogin close={() => setLoginBox(false)} />}
       </div>
       <div className="order-GUI">
         {orderBox && <OrderBoard close={() => setOrderBox(false)} updateBalance={updateBalance} updateXP={updateXP} />}

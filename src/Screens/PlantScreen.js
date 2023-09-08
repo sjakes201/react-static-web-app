@@ -7,13 +7,9 @@ import CompOtherScreens from "../Components/GUI/CompOtherScreens";
 import CompProfile from "../Components/GUI/CompProfile";
 import Complogin from "../Components/GUI/CompLogin";
 import OrderBoard from "../Components/Orders/OrderBoard";
-import NotificationBox from "../Components/GUI/NotificationBox";
 import { useNavigate } from 'react-router-dom';
 
-import { useWebSocket } from "../WebSocketContext";
-
-function PlantScreen() {
-    const { waitForServerResponse } = useWebSocket();
+function PlantScreen({ itemsData, setItemsData, getUpgrades, getUser, getBal, updateBalance, getXP, updateXP, level, setLoginBox }) {
 
 
     const navigate = useNavigate();
@@ -26,153 +22,32 @@ function PlantScreen() {
     const [fertilizers, setFertilizers] = useState({})
     const [tool, setTool] = useState("")
 
-    // profile info
-    const [Balance, setBalance] = useState(0);
-    const [XP, setXP] = useState(0);
-    const [Username, setUsername] = useState("");
-    const [loginBox, setLoginBox] = useState(false);
     const [orderBox, setOrderBox] = useState(false);
-    const [upgrades, setUpgrades] = useState({});
     const [orderNotice, setOrderNotice] = useState(false);
 
     // level is just for level (pass to components that want to know unlocks)
     // The rest is for the level up notification system, create notification box only when the change in level is not from init mount (hence the ref)
-    const [unlockContents, setUnlockContents] = useState([])
-    const [notificationBox, setNotificationBox] = useState(false)
-    const [level, setLevel] = useState(0);
 
     const [equippedFert, setEquippedFert] = useState("");
 
-    let newXP = useRef(false)
-
-
     useEffect(() => {
-        const token = localStorage.getItem('token');
         sessionStorage.setItem('equipped', '')
-
-        async function fetchData() {
-            try {
-                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
-                    const response = await waitForServerResponse('inventoryAll');
-                    let data = response.body;
-                    setFertilizers({
-                        HarvestsFertilizer: data.HarvestsFertilizer,
-                        TimeFertilizer: data.TimeFertilizer,
-                        YieldsFertilizer: data.YieldsFertilizer,
-                    })
-                    let dataCopy = { ...data }
-                    delete dataCopy.HarvestsFertilizer; delete dataCopy.TimeFertilizer; delete dataCopy.YieldsFertilizer;
-                    setItems(dataCopy);
-                }
-            } catch (error) {
-                if (error.message.includes('401')) {
-                    console.log("AUTH EXPIRED")
-                    localStorage.removeItem('token');
-                    navigate('/');
-                } else {
-                    console.log(error)
-                }
-            }
-
-        }
-        fetchData();
-
-        async function fetchProfile() {
-            try {
-                if (waitForServerResponse) {
-                    const response = await waitForServerResponse('profileInfo');
-                    let data = response.body;
-                    setBalance(data.Balance);
-                    setXP(data.XP);
-                    setUsername(data.Username);
-                    let upgrades = {};
-                    for (const column in data) {
-                        if (column.includes('Upgrade') || column.includes('Permit')) {
-                            upgrades[column] = data[column];
-                        }
-                    }
-                    setUpgrades(upgrades);
-                }
-            } catch (error) {
-                if (error.message.includes('401')) {
-                    console.log("AUTH EXPIRED")
-                    localStorage.removeItem('token');
-                    navigate('/');
-                } else {
-                    console.log(error)
-                }
-            }
-        }
-        fetchProfile();
-    }, []);
-
-    const calcLevel = (XP) => {
-        const lvlThresholds = CONSTANTS.xpToLevel;
-        let level = 0;
-        let remainingXP = XP;
-        for (let i = 0; i < lvlThresholds.length; ++i) {
-            if (XP >= lvlThresholds[i]) {
-                level = i;
-                remainingXP = XP - lvlThresholds[i]
-            }
-        }
-        // If level is >= 15, and remainingXP is > 0, we calculate remaining levels (which are formulaic, each level is)
-        while (remainingXP >= 600) {
-            ++level;
-            remainingXP -= 600;
-        }
-        // find next threshold
-        return level
-    }
+    }, [])
 
     useEffect(() => {
-        setLevel(calcLevel(XP))
-    }, [XP])
-
-    useEffect(() => {
-        if (newXP.current && level in CONSTANTS.levelUnlocks) {
-            setUnlockContents(CONSTANTS.levelUnlocks[level])
-            setNotificationBox(true)
-
-        }
-    }, [level])
-
-    const getXP = () => {
-        return XP;
-    }
-
-    const getBal = () => {
-        return Balance;
-    }
-
-    const getUser = () => {
-        if (Username) {
-            return Username
-        }
-    }
-
-    const getUpgrades = () => {
-        if (upgrades) return upgrades;
-        // for all of these.. else return proper formatted data with default values?
-    }
-
-    const updateXP = (amount) => {
-        newXP.current = true;
-        setXP(prevXP => {
-            const newXP = prevXP + amount;
-            return newXP;
-        });
-    }
-
-    const updateBalance = (amount) => {
-        setBalance(oldBal => {
-            const newBal = oldBal + amount;
-            return newBal;
+        let data = {...itemsData}
+        setFertilizers({
+            HarvestsFertilizer: data.HarvestsFertilizer,
+            TimeFertilizer: data.TimeFertilizer,
+            YieldsFertilizer: data.YieldsFertilizer,
         })
-    }
+        delete data.HarvestsFertilizer; delete data.TimeFertilizer; delete data.YieldsFertilizer;
+        setItems(data);
+
+    }, [itemsData]);
 
     const updateInventory = (itemName, quantity, preventAnimate) => {
-        setItems((prevItems) => {
+        setItemsData((prevItems) => {
             let invItems = { ...prevItems, [itemName]: (prevItems[itemName] || 0) + quantity };
             const sortedKeys = Object.keys(invItems).sort((a, b) => invItems[b] - invItems[a]);
             const sortedObject = {};
@@ -207,14 +82,13 @@ function PlantScreen() {
 
     return (
         <div style={appStyle}>
-            {notificationBox && <NotificationBox close={() => setNotificationBox(false)} contents={unlockContents} />}
             <div className='left-column'>
                 <div className='other-screensPl'><CompOtherScreens current={'plants'} /></div>
                 <div className='plot'><CompPlot tool={tool} setFertilizers={setFertilizers} fertilizers={fertilizers} equippedFert={equippedFert} setEquippedFert={setEquippedFert} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} items={items} /></div>
             </div>
             <div className='right-column'>
                 <div className="userProfile"><CompProfile orderNotice={orderNotice} setOrderBox={setOrderBox} setLoginBox={setLoginBox} type={'tall'} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
-                <div className="inventoryPl"><CompInventory level={calcLevel(XP)} tool={tool} setTool={setTool} fertilizers={fertilizers} equippedFert={equippedFert} items={items} updateInventory={updateInventory} showFertilizer={true} setEquippedFert={setEquippedFert} /></div>
+                <div className="inventoryPl"><CompInventory level={level} tool={tool} setTool={setTool} fertilizers={fertilizers} equippedFert={equippedFert} items={items} updateInventory={updateInventory} showFertilizer={true} setEquippedFert={setEquippedFert} /></div>
                 <div className="settings">
                     {/* <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '60px', justifyContent: 'space-evenly', position: 'absolute', top: '0' }}>
                         <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
@@ -243,9 +117,6 @@ function PlantScreen() {
                         </a>
                     </div>
                 </div>
-            </div>
-            <div className="login-GUI">
-                {loginBox && <Complogin close={() => setLoginBox(false)} />}
             </div>
             <div className="order-GUI">
                 {orderBox && <OrderBoard close={() => setOrderBox(false)} setFertilizers={setFertilizers} updateBalance={updateBalance} updateXP={updateXP} />}

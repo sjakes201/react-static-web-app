@@ -3,25 +3,18 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './reset.css'
 import GameContainer from './GameContainer';
+import { WebSocketProvider } from './WebSocketContext'; // Make sure the path is correct
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <Router>
-        <div id='root' style={{ height: '100vh', width: '100vw' }}>
-            <GameContainer />
-            {/* <div style={{ background: 'var(--menu_light)', width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                Temporary down time for a<a target='_blank' href="/updateNotes.html" style={{marginLeft:'4px'}}> big update</a>!
-                <img
-                    src={`${process.env.PUBLIC_URL}/assets/images/chicken_collectible_walking_right.gif`}
-                    alt={'loading chicken'}
-                    style={{
-                        width: '5vw'
-                    }}
-                    draggable={false} />
+    <WebSocketProvider>
+        <Router>
+            <div id='root' style={{ height: '100vh', width: '100vw' }}>
+                <GameContainer />
+            </div>
+        </Router>
+    </WebSocketProvider>
 
-            </div> */}
-        </div>
-    </Router>
 );
 
 

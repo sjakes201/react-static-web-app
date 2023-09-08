@@ -1,3 +1,10 @@
+.loginBoxPagePos {
+    position: absolute;
+    left: 34vw;
+    top: 25.5vh;
+    z-index: 50;
+}
+
 .xClose {
     position: absolute;
     top: 2.2vh;

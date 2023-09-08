@@ -3,7 +3,7 @@ import UPGRADES from '../../UPGRADES';
 import React, { useState } from 'react';
 import AnimalCard from './AnimalCard';
 
-function AnimalManagement({ coop, setCoop, barn, setBarn, setManager, capacities }) {
+function AnimalManagement({ setAnimalsInfo, coop, setCoop, barn, setBarn, setManager, capacities }) {
 
     return (
         <div style={{
@@ -63,7 +63,7 @@ function AnimalManagement({ coop, setCoop, barn, setBarn, setManager, capacities
                     </div>
 
                     {barn.map((animal) => {
-                        return <AnimalCard key={animal.Animal_ID} animal={animal} coop={coop} setCoop={setCoop} setBarn={setBarn} />
+                        return <AnimalCard setAnimalsInfo={setAnimalsInfo} key={animal.Animal_ID} animal={animal} coop={coop} setCoop={setCoop} setBarn={setBarn} />
                     })}
                 </div>
             </div>
@@ -96,7 +96,7 @@ function AnimalManagement({ coop, setCoop, barn, setBarn, setManager, capacities
                     </div>
 
                     {coop.map((animal) => {
-                        return <AnimalCard key={animal.Animal_ID} animal={animal} coop={coop} setCoop={setCoop} setBarn={setBarn} />
+                        return <AnimalCard setAnimalsInfo={setAnimalsInfo} key={animal.Animal_ID} animal={animal} coop={coop} setCoop={setCoop} setBarn={setBarn} />
                     })}
                 </div>
             </div>

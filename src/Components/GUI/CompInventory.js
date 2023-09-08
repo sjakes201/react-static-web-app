@@ -108,6 +108,7 @@ function CompInventory({ level, tool, setTool, fertilizers, items, displayOnly, 
             setFerilizerMenu(false)
         }
     }
+    
     const toLoad = () => {
         let invItems = { ...items };
         if (displayOnly) {

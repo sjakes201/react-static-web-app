@@ -2,7 +2,7 @@ import MACHINESINFO from '../../MACHINESINFO';
 import '../CSS/MachineUnit.css'
 import React, { useState, useEffect } from 'react';
 
-function MachineUnit({ setItems, items, machineNum, machineInfo, buyMachine, startMachine, collectMachine, cancelMachine, sellMachine }) {
+function MachineUnit({ setItemsData, items, machineNum, machineInfo, buyMachine, startMachine, collectMachine, cancelMachine, sellMachine }) {
 
 
     // total info is constants machine type info
@@ -290,7 +290,7 @@ function MachineUnit({ setItems, items, machineNum, machineInfo, buyMachine, sta
                         setRunning(true)
                         setDone(false)
                         startMachine(machineNum, machineInfo.ID, ingredients);
-                        setItems((old) => {
+                        setItemsData((old) => {
                             let newItems = { ...old };
                             ingredientsKeys.forEach((e) => { newItems[e] -= ingredients[e] })
                             return newItems

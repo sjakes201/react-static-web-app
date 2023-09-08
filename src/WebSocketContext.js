@@ -8,11 +8,9 @@ export function useWebSocket() {
 
 export function WebSocketProvider({ children }) {
     const [ws, setWs] = useState(null);
-    const [isConnected, setIsConnected] = useState(false); // Track connection status
+    const [isConnected, setIsConnected] = useState(false);
 
-    // Connect to server
-    useEffect(() => {
- 
+    const connectToWebSocketServer = () => {
         let useLocal = false;
 
         const wsInstance = new WebSocket(useLocal ?
@@ -21,34 +19,28 @@ export function WebSocketProvider({ children }) {
             `wss://farmgameserver.azurewebsites.net?token=${localStorage.getItem('token')}`
         );
 
-
         wsInstance.addEventListener("open", () => {
             console.log("Connected to server");
-            setWs(wsInstance);  // Move this line inside the 'open' event callback
-            setIsConnected(true); // Update connection status
-
+            setWs(wsInstance);
+            setIsConnected(true);
         });
 
         wsInstance.addEventListener("message", (event) => {
             const parsedMessage = JSON.parse(event.data);
             if (parsedMessage.type === 'guest_auth' && parsedMessage.token) {
-                // Save the new guest token into local storage
                 localStorage.setItem('token', parsedMessage.token);
-
-                // Optionally, update your WebSocket connection here to use the new token,
-                // depending on how your server and client are configured.
             }
         });
 
         wsInstance.addEventListener('close', (event) => {
-            // Your code to notify the user here
-            alert('WebSocket connection closed. Please refresh the page to continue.');
-          });
+            alert('Connection to game server closed due to idle. Press OK to reconnect.');
+            setIsConnected(false);
+            connectToWebSocketServer();
+        });
+    };
 
-
-        return () => {
-            wsInstance.close();
-        };
+    useEffect(() => {
+        connectToWebSocketServer();
     }, []);
 
     const waitForServerResponse = async (action, params = {}, timeout = 10000) => {
@@ -57,7 +49,6 @@ export function WebSocketProvider({ children }) {
                 return reject(new Error('WebSocket is not open'));
             }
 
-            // Send the action to the server
             ws.send(JSON.stringify({ action, ...params }));
 
             const listener = (event) => {
@@ -78,11 +69,10 @@ export function WebSocketProvider({ children }) {
         });
     };
 
-    // Pass websocket and action functions to children
     const contextValue = {
         ws,
         isConnected,
-        waitForServerResponse // you can use this now to wait for server responses
+        waitForServerResponse
     };
 
     return (

@@ -5,14 +5,13 @@ import CompMarket from '../Components/Market/CompMarket';
 import CompOtherScreen from '../Components/GUI/CompOtherScreens'
 import CompInventory from '../Components/GUI/CompInventory';
 import CompMarketSelection from '../Components/Market/CompMarketSelection';
-import Complogin from '../Components/GUI/CompLogin';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import { useWebSocket } from "../WebSocketContext";
 
 
-function MarketScreen({ }) {
+function MarketScreen({ itemsData, setItemsData, prices, getUser, getBal, updateBalance, getXP, setLoginBox }) {
     const { waitForServerResponse } = useWebSocket();
 
     const navigate = useNavigate();
@@ -20,15 +19,8 @@ function MarketScreen({ }) {
         // no auth token present
         navigate('/');
     }
-    // Functions
 
-    // profile info
     const [items, setItems] = useState({});
-    const [Balance, setBalance] = useState(0);
-    const [XP, setXP] = useState(0);
-    const [Username, setUsername] = useState("");
-    const [loginBox, setLoginBox] = useState(false);
-    const [prices, setPrices] = useState(null);
     const [marketItems, setMarketItems] = useState([]);
     const [selected, setSelected] = useState({
         name: "",
@@ -36,55 +28,12 @@ function MarketScreen({ }) {
         oldPrice: 0,
         imgURL: "EMPTY.png"
     });
+
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        async function fetchData() {
-            try {
-                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
-                    const response = await waitForServerResponse('inventoryAll');
-                    delete response.body.HarvestsFertilizer; delete response.body.TimeFertilizer; delete response.body.YieldsFertilizer;
-                    setItems(response.body)
-                }
-            } catch (error) {
-                if (error.message.includes('401')) {
-                    console.log("AUTH EXPIRED")
-                    localStorage.removeItem('token');
-                    navigate('/');
-                } else {
-                    console.log(error)
-                }
-            }
-
-
-        }
-        async function fetchProfile() {
-            try {
-                if (waitForServerResponse) { 
-                    const response = await waitForServerResponse('profileInfo');
-                    setBalance(response.body.Balance);
-                    setXP(response.body.XP);
-                    setUsername(response.body.Username);
-                }
-                if (waitForServerResponse) { 
-                    const response = await waitForServerResponse('prices');
-                    setPrices(response.body);
-                }
-            } catch (error) {
-                if (error.message.includes('401')) {
-                    console.log("AUTH EXPIRED")
-                    localStorage.removeItem('token');
-                    navigate('/');
-                } else {
-                    console.log(error)
-                }
-            }
-
-
-
-        }
-        fetchData();
-        fetchProfile();
-    }, []);
+        let items = { ...itemsData };
+        delete items.HarvestsFertilizer; delete items.TimeFertilizer; delete items.YieldsFertilizer;
+        setItems(items)
+    }, [itemsData])
 
     useEffect(() => {
         getMarketItems()
@@ -94,29 +43,8 @@ function MarketScreen({ }) {
         if (prices) getMarketItems();
     }, [prices])
 
-    const getXP = () => {
-        return XP;
-    }
-
-    const getBal = () => {
-        return Balance;
-    }
-
-    const getUser = () => {
-        if (Username) {
-            return Username;
-        }
-    }
-
-    const updateBalance = (amount) => {
-        setBalance(oldBal => {
-            const newBal = oldBal + amount;
-            return newBal;
-        })
-    }
-
     const updateInventory = (itemName, quantity, preventAnimate) => {
-        setItems((prevItems) => {
+        setItemsData((prevItems) => {
             let invItems = { ...prevItems, [itemName]: (prevItems[itemName] || 0) + quantity };
             const sortedKeys = Object.keys(invItems).sort((a, b) => invItems[b] - invItems[a]);
             const sortedObject = {};
@@ -165,11 +93,10 @@ function MarketScreen({ }) {
             if (items[itemName] >= quantity) {
                 updateInventory(itemName, -1 * quantity, false);
                 updateBalance(prices.newPrices[itemName] * quantity);
-                // const token = localStorage.getItem('token');
-                if (waitForServerResponse) { 
-                    await waitForServerResponse('marketSell', {item: itemName, count: parseInt(quantity)});
+                if (waitForServerResponse) {
+                    await waitForServerResponse('marketSell', { item: itemName, count: parseInt(quantity) });
                 }
-            } 
+            }
         } else {
             console.log("INVALID ITEM");
         }
@@ -189,7 +116,6 @@ function MarketScreen({ }) {
                 <div className='market-select-info'><CompMarketSelection items={items} onSell={onSell} name={selected.name} newPrice={selected.newPrice} oldPrice={selected.oldPrice} imgURL={selected.imgURL} /></div>
                 <div className='market-inventory'><CompInventory items={items} displayOnly={true} setMarketSelected={setMarketSelected} /></div>
                 <div className='market-other'>
-
                     {/* <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
                         AD 120px x 60px
                     </div>
@@ -197,9 +123,6 @@ function MarketScreen({ }) {
                         AD 120px x 60px
                     </div> */}
                 </div>
-            </div>
-            <div className="login-GUI">
-                {loginBox && <Complogin close={() => setLoginBox(false)} />}
             </div>
 
 

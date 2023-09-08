@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import ANIMALINFO from '../../ANIMALINFO';
 import { useWebSocket } from "../../WebSocketContext";
 
-function CompPen({ importedAnimals, setAnimalsParent, passedUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP, setOrderNotice, setEquippedFeed }) {
+function CompPen({ importedAnimals, setAnimalsParent, getUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP, setOrderNotice, setEquippedFeed }) {
     const { waitForServerResponse } = useWebSocket();
 
     let xSlots = 6;
@@ -30,9 +30,9 @@ function CompPen({ importedAnimals, setAnimalsParent, passedUpgrades, penWidth, 
 
     // Load in profile info
     useEffect(() => {
-        if (Object.keys(passedUpgrades).length !== 0) {
+        if (Object.keys(getUpgrades()).length !== 0) {
             setXP(getXP())
-            setHasExotic(passedUpgrades.exoticPermit)
+            setHasExotic(getUpgrades().exoticPermit)
         }
     })
 
@@ -122,7 +122,7 @@ function CompPen({ importedAnimals, setAnimalsParent, passedUpgrades, penWidth, 
                 sessionStorage.setItem('equipped', '')
             }
             try {
-                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+                if (waitForServerResponse) {
                     const response = await waitForServerResponse('feedAnimal', {
                                 animalID: targetAnimal.Animal_ID,
                                 foodType: feed,
@@ -177,14 +177,14 @@ function CompPen({ importedAnimals, setAnimalsParent, passedUpgrades, penWidth, 
             let quantTableName;
             switch (CONSTANTS.AnimalTypes[type][0]) {
                 case 'barn':
-                    quantTableName = "AnimalProduceMap".concat(passedUpgrades.barnCollectQuantityUpgrade);
+                    quantTableName = "AnimalProduceMap".concat(getUpgrades().barnCollectQuantityUpgrade);
                     break;
                 case 'coop':
-                    quantTableName = "AnimalProduceMap".concat(passedUpgrades.coopCollectQuantityUpgrade);
+                    quantTableName = "AnimalProduceMap".concat(getUpgrades().coopCollectQuantityUpgrade);
                     break;
             }
             // FORCE REFRESH HERE
-            if (passedUpgrades.barnCollectQuantityUpgrade === undefined) quantTableName = 'AnimalProduceMap0'
+            if (getUpgrades().barnCollectQuantityUpgrade === undefined) quantTableName = 'AnimalProduceMap0'
 
 
             let qty = UPGRADES[quantTableName][type][1];
@@ -200,7 +200,7 @@ function CompPen({ importedAnimals, setAnimalsParent, passedUpgrades, penWidth, 
             updateXP(CONSTANTS.XP[UPGRADES[quantTableName][type][0]]);
 
             try {
-                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+                if (waitForServerResponse) { 
                     const response = await waitForServerResponse('collect', {
                         AnimalID: animal.Animal_ID
                     });
@@ -296,7 +296,7 @@ function CompPen({ importedAnimals, setAnimalsParent, passedUpgrades, penWidth, 
         let curTime = Date.now()
         let secsPassed = ((curTime - Last_produce) / 1000) - 0.1;
 
-        let level = isBarn ? (passedUpgrades.barnCollectTimeUpgrade) : (passedUpgrades.coopCollectTimeUpgrade)
+        let level = isBarn ? (getUpgrades().barnCollectTimeUpgrade) : (getUpgrades().coopCollectTimeUpgrade)
         let tableName = "AnimalCollectTimes".concat(level)
         if (tableName.includes('undefined')) tableName = 'AnimalCollectTimes0';
         let secsNeeded = UPGRADES[tableName][Animal_type];

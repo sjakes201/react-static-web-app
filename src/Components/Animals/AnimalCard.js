@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ANIMALINFO from '../../ANIMALINFO';
 import { useWebSocket } from "../../WebSocketContext";
 
-function AnimalCard({ animal, coop, setCoop, setBarn }) {
+function AnimalCard({ setAnimalsInfo, animal, coop, setCoop, setBarn }) {
     const { waitForServerResponse } = useWebSocket();
 
     const type = animal.Animal_type;
@@ -76,10 +76,20 @@ function AnimalCard({ animal, coop, setCoop, setBarn }) {
             setCoop((old) => {
                 return old.filter((animal) => animal.Animal_ID !== AnimalID)
             })
+            setAnimalsInfo((old) => {
+                let newInfo = {...old};
+                newInfo.coopCount -= 1;
+                return newInfo;
+            })
         } else {
             location = 'barn';
             setBarn((old) => {
                 return old.filter((animal) => animal.Animal_ID !== AnimalID)
+            })
+            setAnimalsInfo((old) => {
+                let newInfo = {...old};
+                newInfo.barnCount -= 1;
+                return newInfo;
             })
         }
         if (waitForServerResponse) {
@@ -87,7 +97,6 @@ function AnimalCard({ animal, coop, setCoop, setBarn }) {
                 AnimalID: AnimalID,
                 location: location
             });
-            console.log(response)
         }
     }
 

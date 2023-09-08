@@ -169,7 +169,7 @@ function Complogin({ close }) {
 
     const getLogin = () => {
         return (
-            <div>
+            <div  className='loginBoxPagePos'>
                 <div className='xClose' onClick={close}>X</div>
                 <div className="login-gui">
                     <div className='login-title-bar'><hr className='deco-bar-top bar-left' /><p>Login</p><hr className='deco-bar-top bar-right' /></div>
@@ -208,7 +208,7 @@ function Complogin({ close }) {
 
     const getForgot = () => {
         return (
-            <div>
+            <div className='loginBoxPagePos'>
                 <div className='xClose' onClick={close}>X</div>
                 <div className="login-gui">
                     <div className='login-title-bar'><hr className='deco-bar-top bar-left' /><p>Forgot password</p><hr className='deco-bar-top bar-right' /></div>
@@ -231,8 +231,8 @@ function Complogin({ close }) {
 
     const getRegister = () => {
         return (
-            <div style={{ position: 'relative' }}>
-                <span style={{ position: 'absolute', bottom: '1%', right: '5%', color: 'gray', fontSize: '.7vw', display: 'flex', flexDirection: 'column' }}>
+            <div className='loginBoxPagePos'>
+                <span style={{ position: 'absolute', bottom: '6%', right: '5%', color: 'gray', fontSize: '.7vw', display: 'flex', flexDirection: 'column' }}>
                     <span>*Email optional and exclusively</span>
                     <span>for 'forgot password'</span>
                 </span>

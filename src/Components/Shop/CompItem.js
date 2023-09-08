@@ -6,7 +6,7 @@ import { useWebSocket } from "../../WebSocketContext";
 
 const SEED_LIMIT = 100;
 
-function CompItem({ unlockInfo, updateAnimals, itemName, cost, unlocked, info, updateBalance, getBal, updateInventory, tier, updateUpgrades, items, hasSpace }) {
+function CompItem({ addAnimal, unlockInfo, updateAnimalsInfo, itemName, cost, unlocked, info, updateBalance, getBal, updateInventory, tier, updateUpgrades, items, hasSpace }) {
     const { waitForServerResponse } = useWebSocket();
 
     const [gif, setGif] = useState({ 1: null, 5: null, 25: null });
@@ -68,7 +68,7 @@ function CompItem({ unlockInfo, updateAnimals, itemName, cost, unlocked, info, u
         if (itemName in CONSTANTS.AnimalTypes) {
             if (getBal() >= (cost)) {
                 updateBalance(-1 * cost);
-                updateAnimals(itemName);
+                updateAnimalsInfo(itemName);
                 gifCopy[num] = 'success';
             } else {
                 gifCopy[num] = 'fail';
@@ -81,6 +81,7 @@ function CompItem({ unlockInfo, updateAnimals, itemName, cost, unlocked, info, u
                 const response = await waitForServerResponse('buyAnimal', {
                     type: itemName
                 });
+                addAnimal(response.body)
             }
         }
         if (itemName in UPGRADES.UpgradeCosts) {

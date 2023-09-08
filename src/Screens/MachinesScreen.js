@@ -8,14 +8,11 @@ import CompProfile from '../Components/GUI/CompProfile';
 import { useWebSocket } from "../WebSocketContext";
 
 
-function MachinesScreen() {
+function MachinesScreen({ artisanItems, setArtisanItems, itemsData, setItemsData, parts, setParts, machines, setMachines, getBal, updateBalance, getUser, getXP }) {
     const { waitForServerResponse } = useWebSocket();
 
     const navigate = useNavigate();
 
-    const [profile, setProfile] = useState({})
-    const [machines, setMachines] = useState({})
-    const [parts, setParts] = useState({})
     const [items, setItems] = useState({});
 
     const [helpGUI, setHelpGUI] = useState(false);
@@ -24,62 +21,20 @@ function MachinesScreen() {
     const [sellQty, setSellQty] = useState('')
 
     useEffect(() => {
-        async function fetchProfile() {
-            const token = localStorage.getItem('token');
-            // sessionStorage.setItem('equipped', '')
-
-            let artisanItems = {};
-
-            try {
-                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
-                    const response = await waitForServerResponse('getAllMachines');
-                    let data = response.body;
-                    setMachines(data.machinesData)
-                    setProfile(data.profileData)
-                    setParts(data.partsData)
-                    artisanItems = data.artisanData;
-                }
-            } catch (error) {
-                if (error.message.includes('401')) {
-                    console.log("AUTH EXPIRED")
-                    localStorage.removeItem('token');
-                    navigate('/');
-                } else {
-                    console.log(error)
-                }
+        let data = { ...itemsData };
+        delete data.HarvestsFertilizer; delete data.TimeFertilizer; delete data.YieldsFertilizer;
+        let keys = Object.keys(data);
+        keys.forEach((key) => {
+            if (key.includes('seeds') || !key.includes("_")) {
+                delete data[key];
             }
-
-            try {
-
-                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
-                    const response = await waitForServerResponse('inventoryAll');
-                    let data = response.body;
-                    delete data.HarvestsFertilizer; delete data.TimeFertilizer; delete data.YieldsFertilizer;
-                    let keys = Object.keys(data);
-                    keys.forEach((key) => {
-                        if (key.includes('seeds') || !key.includes("_")) {
-                            delete data[key];
-                        }
-                    })
-                    let artisanKeys = Object.keys(artisanItems);
-                    artisanKeys.forEach((key) => {
-                        data[key] = artisanItems[key];
-                    })
-                    setItems(data);
-                }
-            } catch (error) {
-                if (error.message.includes('401')) {
-                    console.log("AUTH EXPIRED")
-                    localStorage.removeItem('token');
-                    navigate('/');
-                } else {
-                    console.log(error)
-                }
-            }
-        }
-        fetchProfile();
-    }, [])
-
+        })
+        let artisanKeys = Object.keys(artisanItems);
+        artisanKeys.forEach((key) => {
+            data[key] = artisanItems[key];
+        })
+        setItems(data);
+    }, [itemsData, artisanItems])
 
     const sellArtisan = async (good, quantity) => {
         if (!Object.keys(items).includes(good)) { console.log(`invalid artisan good`); return; }
@@ -88,13 +43,9 @@ function MachinesScreen() {
         let goodPrices = MACHINESINFO.artisanPrices;
         let totalRevenue = goodPrices[good] * quantity;
 
-        setProfile((old) => {
-            let newProfile = { ...old };
-            newProfile.Balance += totalRevenue;
-            return newProfile
-        })
+        updateBalance(totalRevenue)
 
-        setItems((old) => {
+        setArtisanItems((old) => {
             let newItems = { ...old };
             newItems[good] -= quantity;
             return newItems
@@ -123,7 +74,7 @@ function MachinesScreen() {
 
         // check if they have the parts and the balance
         let costs = MACHINESINFO[`${type}MachineCost`][`tier${tier}`];
-        if (costs.Money > profile.Balance) {
+        if (costs.Money > getBal()) {
             console.log('Insufficient funds');
             return;
         }
@@ -131,11 +82,7 @@ function MachinesScreen() {
             console.log('Insufficient parts');
             return;
         }
-        setProfile((old) => {
-            let newProfile = { ...old };
-            newProfile.Balance -= costs.Money;
-            return newProfile;
-        })
+        updateBalance(costs.Money)
         setParts((old) => {
             let newParts = { ...old };
             newParts.Gears -= costs.Gears;
@@ -227,7 +174,6 @@ function MachinesScreen() {
             newMachines[`Slot${slot}StartTime`] = -1;
             return newMachines
         })
-        // TODO: Add to inventory and make fancy animation? but that would require waiting
         try {
 
             if (waitForServerResponse) {
@@ -236,7 +182,7 @@ function MachinesScreen() {
                 });
                 let data = response.body;
                 delete data.message;
-                setItems((old) => {
+                setArtisanItems((old) => {
                     let newItems = { ...old };
                     Object.keys(data).forEach((item) => {
                         newItems[item] += data[item];
@@ -315,7 +261,7 @@ function MachinesScreen() {
                 newMachines[`Slot${slot}ProduceReceived`] = 0;
                 return newMachines;
             })
-            
+
             if (waitForServerResponse) {
                 await waitForServerResponse('cancelMachine', {
                     slot: slot,
@@ -462,7 +408,7 @@ function MachinesScreen() {
                             id='machineDesk'
                         />
                         <div className='machinesProfile'>
-                            <CompProfile getBal={() => profile.Balance} getUser={() => profile.Username} getXP={() => profile.XP} type={'wide'} disableBorder={true} noPFP={true} />
+                            <CompProfile getBal={getBal} getUser={getUser} getXP={getXP} type={'wide'} disableBorder={true} noPFP={true} />
                         </div>
                     </div>
                     <div className='machinePartsInventory'>
@@ -578,12 +524,12 @@ function MachinesScreen() {
 
                 {Object.keys(machines).length !== 0 &&
                     <div id='machineArea'>
-                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={1} machineInfo={{ ID: machines.Slot1, level: machines.Slot1Level, produceReceived: machines.Slot1ProduceReceived, startTime: machines.Slot1StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
-                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={2} machineInfo={{ ID: machines.Slot2, level: machines.Slot2Level, produceReceived: machines.Slot2ProduceReceived, startTime: machines.Slot2StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
-                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={3} machineInfo={{ ID: machines.Slot3, level: machines.Slot3Level, produceReceived: machines.Slot3ProduceReceived, startTime: machines.Slot3StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
-                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={4} machineInfo={{ ID: machines.Slot4, level: machines.Slot4Level, produceReceived: machines.Slot4ProduceReceived, startTime: machines.Slot4StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
-                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={5} machineInfo={{ ID: machines.Slot5, level: machines.Slot5Level, produceReceived: machines.Slot5ProduceReceived, startTime: machines.Slot5StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
-                        <div className='machineUnit'> <MachineUnit setItems={setItems} items={items} machineNum={6} machineInfo={{ ID: machines.Slot6, level: machines.Slot6Level, produceReceived: machines.Slot6ProduceReceived, startTime: machines.Slot6StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
+                        <div className='machineUnit'> <MachineUnit setItemsData={setItemsData} items={items} machineNum={1} machineInfo={{ ID: machines.Slot1, level: machines.Slot1Level, produceReceived: machines.Slot1ProduceReceived, startTime: machines.Slot1StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
+                        <div className='machineUnit'> <MachineUnit setItemsData={setItemsData} items={items} machineNum={2} machineInfo={{ ID: machines.Slot2, level: machines.Slot2Level, produceReceived: machines.Slot2ProduceReceived, startTime: machines.Slot2StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
+                        <div className='machineUnit'> <MachineUnit setItemsData={setItemsData} items={items} machineNum={3} machineInfo={{ ID: machines.Slot3, level: machines.Slot3Level, produceReceived: machines.Slot3ProduceReceived, startTime: machines.Slot3StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
+                        <div className='machineUnit'> <MachineUnit setItemsData={setItemsData} items={items} machineNum={4} machineInfo={{ ID: machines.Slot4, level: machines.Slot4Level, produceReceived: machines.Slot4ProduceReceived, startTime: machines.Slot4StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
+                        <div className='machineUnit'> <MachineUnit setItemsData={setItemsData} items={items} machineNum={5} machineInfo={{ ID: machines.Slot5, level: machines.Slot5Level, produceReceived: machines.Slot5ProduceReceived, startTime: machines.Slot5StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
+                        <div className='machineUnit'> <MachineUnit setItemsData={setItemsData} items={items} machineNum={6} machineInfo={{ ID: machines.Slot6, level: machines.Slot6Level, produceReceived: machines.Slot6ProduceReceived, startTime: machines.Slot6StartTime }} sellMachine={sellMachine} cancelMachine={cancelMachine} buyMachine={buyMachine} startMachine={startMachine} collectMachine={collectMachine} /></div>
                     </div>
                 }
 

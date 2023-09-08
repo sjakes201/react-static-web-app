@@ -5,15 +5,14 @@ import CompItem from './CompItem'
 import CONSTANTS from '../../CONSTANTS'
 import UPGRADES from '../../UPGRADES'
 
-function CompShop({ updateAnimals, getAnimals, getXP, getLevel, updateUpgrades, updateBalance, getBal, updateInventory, getUpgrades, items }) {
+function CompShop({ addAnimal, updateAnimalsInfo, getAnimals, getXP, level, updateUpgrades, updateBalance, getBal, updateInventory, getUpgrades, items }) {
 
     const upgrades = getUpgrades();
     const animals = getAnimals();
 
-    let playerLevel = getLevel();
     let unlocked = [];
     for (let unlockLevel in CONSTANTS.levelUnlocks) {
-        if (playerLevel >= unlockLevel) {
+        if (level >= unlockLevel) {
             // if we have enough xp
 
             for (let i = 0; i < CONSTANTS.levelUnlocks[unlockLevel].length; ++i) {
@@ -88,12 +87,12 @@ function CompShop({ updateAnimals, getAnimals, getXP, getLevel, updateUpgrades, 
             let hasSpace = animals[`${(allAnimals[i][1][0])}Count`] < animals[`${(allAnimals[i][1][0])}Capacity`]
             if (unlockInfo[0]) {
                 if (hasSpace) {
-                    firstItems.push(<CompItem unlockInfo={unlockInfo} key={100 + i} updateAnimals={updateAnimals} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={allAnimals[i][1][1]} unlocked={true} info={`${(allAnimals[i][1][0]).toUpperCase()} ${unlockInfo[1]}`} hasSpace={hasSpace} />)
+                    firstItems.push(<CompItem addAnimal={addAnimal} unlockInfo={unlockInfo} key={100 + i} updateAnimalsInfo={updateAnimalsInfo} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={allAnimals[i][1][1]} unlocked={true} info={`${(allAnimals[i][1][0]).toUpperCase()} ${unlockInfo[1]}`} hasSpace={hasSpace} />)
                 } else {
-                    lastItems.push(<CompItem unlockInfo={unlockInfo} key={100 + i} updateAnimals={updateAnimals} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={allAnimals[i][1][1]} unlocked={true} info={`${(allAnimals[i][1][0]).toUpperCase()} ${unlockInfo[1]}`} hasSpace={hasSpace} />)
+                    lastItems.push(<CompItem addAnimal={addAnimal} unlockInfo={unlockInfo} key={100 + i} updateAnimalsInfo={updateAnimalsInfo} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={allAnimals[i][1][1]} unlocked={true} info={`${(allAnimals[i][1][0]).toUpperCase()} ${unlockInfo[1]}`} hasSpace={hasSpace} />)
                 }
             } else {
-                lastItems.push(<CompItem unlockInfo={unlockInfo} key={100 + i} updateAnimals={updateAnimals} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={allAnimals[i][1][1]} unlocked={false} info={`${(allAnimals[i][1][0]).toUpperCase()} ${unlockInfo[1]}`} hasSpace={hasSpace} />)
+                lastItems.push(<CompItem addAnimal={addAnimal} unlockInfo={unlockInfo} key={100 + i} updateAnimalsInfo={updateAnimalsInfo} updateInventory={updateInventory} updateBalance={updateBalance} getBal={getBal} itemName={name} cost={allAnimals[i][1][1]} unlocked={false} info={`${(allAnimals[i][1][0]).toUpperCase()} ${unlockInfo[1]}`} hasSpace={hasSpace} />)
             }
 
         }
