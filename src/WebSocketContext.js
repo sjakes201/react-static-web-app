@@ -40,6 +40,11 @@ export function WebSocketProvider({ children }) {
             }
         });
 
+        wsInstance.addEventListener('close', (event) => {
+            // Your code to notify the user here
+            alert('WebSocket connection closed. Please refresh the page to continue.');
+          });
+
 
         return () => {
             wsInstance.close();
