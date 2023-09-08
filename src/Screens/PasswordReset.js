@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { useWebSocket } from "../WebSocketContext";
 
 
 function PasswordReset() {
+    const { waitForServerResponse } = useWebSocket();
 
     const [code, setCode] = useState('');
     const [email, setEmail] = useState('');
@@ -31,19 +33,14 @@ function PasswordReset() {
             return;
         }
 
-        let result = await fetch('https://farm-api.azurewebsites.net/api/resetPassword', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify({
+        if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+            const response = await waitForServerResponse('resetPassword', {
                 email: email,
                 code: code,
                 newPass: newPass
-            })
-        });
-        console.log(result);
+            });
+            console.log(response);
+        }
 
         setCode('')
         setEmail('')

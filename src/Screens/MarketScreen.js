@@ -9,8 +9,11 @@ import Complogin from '../Components/GUI/CompLogin';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
+import { useWebSocket } from "../WebSocketContext";
+
 
 function MarketScreen({ }) {
+    const { waitForServerResponse } = useWebSocket();
 
     const navigate = useNavigate();
     if (localStorage.getItem('token') === null) {
@@ -36,24 +39,11 @@ function MarketScreen({ }) {
     useEffect(() => {
         const token = localStorage.getItem('token');
         async function fetchData() {
-
             try {
-                const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({})
-                });
-                if (!result.ok) {
-                    throw new Error(`HTTP error! status: ${result.status}`);
-
-                } else {
-                    let data = await result.json();
-                    delete data.HarvestsFertilizer; delete data.TimeFertilizer; delete data.YieldsFertilizer;
-                    setItems(data);
+                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+                    const response = await waitForServerResponse('inventoryAll');
+                    delete response.body.HarvestsFertilizer; delete response.body.TimeFertilizer; delete response.body.YieldsFertilizer;
+                    setItems(response.body)
                 }
             } catch (error) {
                 if (error.message.includes('401')) {
@@ -69,38 +59,15 @@ function MarketScreen({ }) {
         }
         async function fetchProfile() {
             try {
-                const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({})
-                });
-                if (!result.ok) {
-                } else {
-                    const data = await result.json();
-                    setBalance(data.Balance);
-                    setXP(data.XP);
-                    setUsername(data.Username);
-
+                if (waitForServerResponse) { 
+                    const response = await waitForServerResponse('profileInfo');
+                    setBalance(response.body.Balance);
+                    setXP(response.body.XP);
+                    setUsername(response.body.Username);
                 }
-
-                const prices = await fetch('https://farm-api.azurewebsites.net/api/prices', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({})
-                });
-                if (!prices.ok) {
-                    throw new Error(`HTTP error! status: ${prices.status}`);
-                } else {
-                    const pricesData = await prices.json()
-                    setPrices(pricesData);
+                if (waitForServerResponse) { 
+                    const response = await waitForServerResponse('prices');
+                    setPrices(response.body);
                 }
             } catch (error) {
                 if (error.message.includes('401')) {
@@ -198,25 +165,11 @@ function MarketScreen({ }) {
             if (items[itemName] >= quantity) {
                 updateInventory(itemName, -1 * quantity, false);
                 updateBalance(prices.newPrices[itemName] * quantity);
-                const token = localStorage.getItem('token');
-                let result = await fetch('https://farm-api.azurewebsites.net/api/marketSell', {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        item: itemName,
-                        count: parseInt(quantity),
-                    })
-                }).then((x) => x.json())
-                if (result.message !== 'SUCCESS') {
-                    // out of sync splash
-                    console.log("OUT OF SYNC MARKET SELL")
+                // const token = localStorage.getItem('token');
+                if (waitForServerResponse) { 
+                    await waitForServerResponse('marketSell', {item: itemName, count: parseInt(quantity)});
                 }
-            } else {
-            }
+            } 
         } else {
             console.log("INVALID ITEM");
         }

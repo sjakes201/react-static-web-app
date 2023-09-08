@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import '../CSS/CompLogin.css'
 
+import { useWebSocket } from "../../WebSocketContext";
+
 /*
 A popup that can appear anywhere
 Press account button and it appears
@@ -11,6 +13,7 @@ If loginLogged in, contains loginLog out
 
 
 function Complogin({ close }) {
+    const { waitForServerResponse } = useWebSocket();
 
     // type is login or register
     const [screenType, setScreenType] = useState('Login')
@@ -45,31 +48,23 @@ function Complogin({ close }) {
     const [resetEmail, setResetEmail] = useState('');
 
     const forgotLogin = async () => {
-        const response = await fetch('https://farm-api.azurewebsites.net/api/forgotPassEmail', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
+        if (waitForServerResponse) {
+            const response = await waitForServerResponse('forgotPassEmail', {
                 email: resetEmail
-            })
-        });
-        const data = await response.json()
-        setLog(data.message)
+            });
+            let data = response.body;
+            setLog(data.message)
+        }
     }
 
     const login = async (profile) => {
-        const response = await fetch('https://farm-api.azurewebsites.net/api/userLogin', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(profile)
-        });
-
-        const data = await response.json();
+        let data;
+        let response;
+        if (waitForServerResponse) {
+            response = await waitForServerResponse('userLogin', profile);
+            console.log(response)
+            data = response.body;
+        }
 
         if (data.auth) {
             localStorage.setItem('token', data.token);
@@ -79,7 +74,7 @@ function Complogin({ close }) {
             console.log("Login failed")
         }
 
-        switch (response?.status) {
+        switch (data?.status) {
             case 200:
                 setLog("login successful");
                 setInfo({
@@ -107,31 +102,23 @@ function Complogin({ close }) {
     }
 
     const createUser = async (profile) => {
-
-        const token = localStorage.getItem('token');
-        const response = await fetch('https://farm-api.azurewebsites.net/api/userRegister', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(profile)
-        });
-
-        const data = await response.json();
+        let data;
+        let response;
+        if (waitForServerResponse) {
+            response = await waitForServerResponse('userRegister', profile);
+            data = response.body;
+        }
 
         if (data.auth) {
             localStorage.setItem('token', data.token);
             console.log("Login success");
             window.location.reload(false)
-
         } else {
             console.log("Login failed")
         }
 
 
-        switch (response?.status) {
+        switch (data?.status) {
             case 200:
                 setLog("Account creation success");
                 setInfo({
@@ -144,7 +131,7 @@ function Complogin({ close }) {
                 setLog("Invalid username or password characters");
                 break;
             case 409:
-                if(data.message.includes('EMAIL')) {
+                if (data.message.includes('EMAIL')) {
                     setLog("Email already associated with an account")
                 } else {
                     setLog("Username not available");

@@ -189,6 +189,7 @@ function CompProfile({ getBal, getUser, getXP, type, setLoginBox, setOrderBox, o
                             <button onClick={() => {
                                 localStorage.removeItem("token");
                                 navigate('/');
+                                window.location.reload(false)
                             }}
                                 className='login-button'
                             >

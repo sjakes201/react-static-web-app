@@ -50,7 +50,7 @@ function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell, items }
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5%', fontSize: '1.3vw' }}>${newPrice} <small>/each</small> <img src={arrowURL} style={{ width: '12%' }} /></div>
                     <div style={{ fontSize: '0.7vw' }}>${oldPrice} /each previously</div>
                     <div style={{ marginTop: "10%", textAlign: 'center' }}>
-                        <form onSubmit={handleSubmit} autocomplete="off">
+                        <form onSubmit={handleSubmit} autoComplete="off">
                             <input
                                 style={{
                                     boxSizing: 'border-box',

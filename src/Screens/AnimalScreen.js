@@ -13,8 +13,10 @@ import NotificationBox from '../Components/GUI/NotificationBox';
 
 import { useNavigate } from 'react-router-dom';
 
+import { useWebSocket } from "../WebSocketContext";
 
 function AnimalScreen() {
+  const { waitForServerResponse } = useWebSocket();
 
   const navigate = useNavigate();
   if (localStorage.getItem('token') === null) {
@@ -81,28 +83,15 @@ function AnimalScreen() {
   })
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
     sessionStorage.setItem('equipped', '')
     async function fetchData() {
       try {
-        const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({})
-        });
-
-        if (!result.ok) {
-          throw new Error(`HTTP error! status: ${result.status}`);
-        } else {
-          let data = await result.json();
+        if (waitForServerResponse) { 
+          const response = await waitForServerResponse('inventoryAll');
+          let data = response.body;
           delete data.HarvestsFertilizer; delete data.TimeFertilizer; delete data.YieldsFertilizer;
           setItems(data);
         }
-
       } catch (error) {
         if (error.message.includes('401')) {
           console.log("AUTH EXPIRED")
@@ -118,24 +107,13 @@ function AnimalScreen() {
 
     const getAnimals = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const animalsData = await fetch('https://farm-api.azurewebsites.net/api/allAnimals', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({})
-        })
-
-        if (!animalsData.ok) {
-          throw new Error(`HTTP error! status: ${animalsData.status}`);
-        } else {
-          let animalsResult = await animalsData.json();
-          setBarn(animalsResult.barnResult);
-          setCoop(animalsResult.coopResult)
+        if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+          const response = await waitForServerResponse('allAnimals');
+          let data = response.body;
+          setBarn(data.barnResult);
+          setCoop(data.coopResult)
         }
+
 
       } catch (error) {
         if (error.message.includes('401')) {
@@ -147,19 +125,9 @@ function AnimalScreen() {
 
     async function fetchProfile() {
       try {
-        const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({})
-        });
-        if (!result.ok) {
-          throw new Error(`HTTP error! status: ${result.status}`);
-        } else {
-          const data = await result.json();
+        if (waitForServerResponse) {
+          const response = await waitForServerResponse('profileInfo');
+          let data = response.body;
           setCapacities({ barnCapacity: data.BarnCapacity, coopCapacity: data.CoopCapacity })
           setBalance(data.Balance);
           setXP(data.XP);
@@ -171,6 +139,7 @@ function AnimalScreen() {
             }
           }
           setUpgrades(upgrades);
+
         }
       } catch (error) {
         if (error.message.includes('401')) {

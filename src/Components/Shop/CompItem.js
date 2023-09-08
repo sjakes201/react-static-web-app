@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import '../CSS/CompItem.css'
 import CONSTANTS from "../../CONSTANTS";
 import UPGRADES from "../../UPGRADES";
+import { useWebSocket } from "../../WebSocketContext";
 
 const SEED_LIMIT = 100;
 
 function CompItem({ unlockInfo, updateAnimals, itemName, cost, unlocked, info, updateBalance, getBal, updateInventory, tier, updateUpgrades, items, hasSpace }) {
+    const { waitForServerResponse } = useWebSocket();
 
     const [gif, setGif] = useState({ 1: null, 5: null, 25: null });
     const [gifKey, setGifKey] = useState(0);
@@ -56,22 +58,11 @@ function CompItem({ unlockInfo, updateAnimals, itemName, cost, unlocked, info, u
             setGifKey(prevKey => prevKey + 1);
             if (gifCopy[desired] === 'fail') return;
 
-            const token = localStorage.getItem('token');
-            let res = await fetch('https://farm-api.azurewebsites.net/api/buy', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
+            if (waitForServerResponse) {
+                const response = await waitForServerResponse('buy', {
                     count: num,
                     item: itemName
-                })
-            }).then((x) => x.json());
-            if (res.message !== 'SUCCESS') {
-                // out of sync
-                // TODO: throw up 'server out of sync' splash
+                });
             }
         }
         if (itemName in CONSTANTS.AnimalTypes) {
@@ -86,21 +77,10 @@ function CompItem({ unlockInfo, updateAnimals, itemName, cost, unlocked, info, u
             setGifKey(prevKey => prevKey + 1);
             if (gifCopy[num] === 'fail') return;
 
-            const token = localStorage.getItem('token');
-            let res = await fetch('https://farm-api.azurewebsites.net/api/buyAnimal', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
+            if (waitForServerResponse) {
+                const response = await waitForServerResponse('buyAnimal', {
                     type: itemName
-                })
-            }).then((x) => x.json());
-            if (res.message !== 'SUCCESS') {
-                // out of sync
-                // TODO: throw up 'server out of sync' splash
+                });
             }
         }
         if (itemName in UPGRADES.UpgradeCosts) {
@@ -115,22 +95,12 @@ function CompItem({ unlockInfo, updateAnimals, itemName, cost, unlocked, info, u
             setGifKey(prevKey => prevKey + 1);
             if (gifCopy[num] === 'fail') return;
 
-            const token = localStorage.getItem('token');
-            let res = await fetch('https://farm-api.azurewebsites.net/api/buyUpgrade', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
+
+            if (waitForServerResponse) {
+                const response = await waitForServerResponse('buyUpgrade', {
                     upgrade: itemName,
                     tier: tier
-                })
-            })
-            if (res.message !== 'SUCCESS') {
-                // out of sync
-                // todo: throw up 'server out of sync' splash
+                });
             }
         }
     }
@@ -176,10 +146,10 @@ function CompItem({ unlockInfo, updateAnimals, itemName, cost, unlocked, info, u
                 </div>
                 <div id="name">
                     <p>{CONSTANTS.InventoryDescriptions[CONSTANTS.SeedCropMap[itemName][0]][0]}</p>
-                    <img src={`${process.env.PUBLIC_URL}/assets/images/info.png`} className='shopItemInfo' onMouseEnter={() => setItemInfo(true)} onMouseLeave={() => setItemInfo(false)}/>
+                    <img src={`${process.env.PUBLIC_URL}/assets/images/info.png`} className='shopItemInfo' onMouseEnter={() => setItemInfo(true)} onMouseLeave={() => setItemInfo(false)} />
                     {
                         itemInfo &&
-                        <div className='seedTooltip'> 
+                        <div className='seedTooltip'>
                             {CONSTANTS.InventoryDescriptions[itemName][1]}
                         </div>
                     }

@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import CONSTANTS from '../../CONSTANTS';
 import '../CSS/ScrollingText.css'
+import { useWebSocket } from "../../WebSocketContext";
 
 function ScrollingText() {
+    const { waitForServerResponse } = useWebSocket();
     const navigate = useNavigate();
 
     const [totals, setTotals] = useState({})
@@ -13,21 +15,9 @@ function ScrollingText() {
 
     const loadStats = async () => {
         try {
-            const token = localStorage.getItem('token');
-            let data;
-            const result = await fetch('https://farm-api.azurewebsites.net/api/getStats?', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({})
-            });
-            if (!result.ok) {
-                throw new Error(`HTTP error! status: ${result.status}`);
-            } else {
-                data = await result.json();
+            if (waitForServerResponse) {
+                const response = await waitForServerResponse('getStats');
+                let data = response.body;
                 setTotals(data.totals);
                 setLbPositions(data.lbPositions)
             }

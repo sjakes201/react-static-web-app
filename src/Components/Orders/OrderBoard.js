@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react'
 import Order from "./Order";
 import { useNavigate } from 'react-router-dom';
 import CONSTANTS from '../../CONSTANTS';
+import { useWebSocket } from "../../WebSocketContext";
 
 function OrderBoard({ close, updateBalance, updateXP, setFertilizers }) {
+    const { waitForServerResponse } = useWebSocket();
     const navigate = useNavigate();
 
     const [orders, setOrders] = useState([{}, {}, {}, {}]);
@@ -14,23 +16,12 @@ function OrderBoard({ close, updateBalance, updateXP, setFertilizers }) {
 
     useEffect(() => {
         const fetchOrders = async () => {
-            const token = localStorage.getItem('token');
 
             try {
-                const orders = await fetch('https://farm-api.azurewebsites.net/api/getAllOrders', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({})
-                });
-                if (!orders.ok) {
-                    throw new Error(`HTTP error! status: ${orders.status}`);
-                } else {
-                    let data = await orders.json();
-                    console.log(data)
+
+                if (waitForServerResponse) {
+                    const response = await waitForServerResponse('getAllOrders');
+                    let data = response.body;
                     setOrders(data.orders)
                     setLastRefresh(data.lastOrderRefresh.LastOrderRefresh)
                 }
@@ -61,36 +52,25 @@ function OrderBoard({ close, updateBalance, updateXP, setFertilizers }) {
             newFert[rewardInfo[0]] = parseInt(newFert[rewardInfo[0]]) + parseInt(rewardInfo[1]);
             return newFert;
         })
-        const token = localStorage.getItem('token');
-        const ordersQuery = await fetch('https://farm-api.azurewebsites.net/api/claimOrder', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                orderNum: orderNum
-            })
-        });
-        let data = await ordersQuery.json();
-        // animation ?
 
-        if (data.message === "SUCCESS") {
-            setOrders((old) => {
-                let newOrders = [...old]
-                newOrders[orderNum - 1] = {
-                    good: data.newGood,
-                    numNeeded: data.newNumNeeded,
-                    numHave: 0,
-                    reward: data.newReward
-                }
-                console.log(newOrders[orderNum-1])
-                return newOrders;
-            })
+
+        if (waitForServerResponse) {
+            const response = await waitForServerResponse('claimOrder', { orderNum: orderNum });
+            let data = response.body;
+            if (data.message === "SUCCESS") {
+                setOrders((old) => {
+                    let newOrders = [...old]
+                    newOrders[orderNum - 1] = {
+                        good: data.newGood,
+                        numNeeded: data.newNumNeeded,
+                        numHave: 0,
+                        reward: data.newReward
+                    }
+                    return newOrders;
+                })
+            }
+
         }
-
-        //replace orderNum in orders array
     }
 
     const refreshOrder = async (orderNumToRefresh) => {
@@ -100,23 +80,10 @@ function OrderBoard({ close, updateBalance, updateXP, setFertilizers }) {
         } else {
             // CAN REFRESH AGAIN
             try {
-                const token = localStorage.getItem('token');
 
-                const orders = await fetch('https://farm-api.azurewebsites.net/api/refreshOrder', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        orderNum: orderNumToRefresh
-                    })
-                });
-                if (!orders.ok) {
-                    throw new Error(`HTTP error! status: ${orders.status}`);
-                } else {
-                    let data = await orders.json();
+                if (waitForServerResponse) {
+                    const response = await waitForServerResponse('refreshOrder', { orderNum: orderNumToRefresh });
+                    let data = response.body;
                     setOrders((old) => {
                         let newOrders = [...old]
                         newOrders[orderNumToRefresh - 1] = {

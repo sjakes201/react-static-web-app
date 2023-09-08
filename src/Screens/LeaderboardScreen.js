@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import CompLeaderboard from '../Components/Leaderboard/CompLeaderboard';
 import './CSS/LeaderboardScreen.css'
 import { useNavigate } from 'react-router-dom';
+import { useWebSocket } from "../WebSocketContext";
 
 function LeaderboardScreen({ }) {
+    const { waitForServerResponse } = useWebSocket();
 
     const navigate = useNavigate();
     if (localStorage.getItem('token') === null) {
@@ -20,23 +22,13 @@ function LeaderboardScreen({ }) {
         const token = localStorage.getItem('token');
         const getLeaderboards = async () => {
             try {
-
-                let data = await fetch('https://farm-api.azurewebsites.net/api/leaderboard', {
-                    method: "GET",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                if (!data.ok) {
-                    throw new Error(`HTTP error! status: ${data.status}`);
-                } else {
-                    let res = await data.json();
-                    console.log(res)
-                    setLeadersAll(res.allTimeLeaderboard);
-                    setleadersWeekly(res.tempLeaderboard);
-                }
+                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+                    const response = await waitForServerResponse('leaderboard');
+                    let data = response.body;
+                        setLeadersAll(data.allTimeLeaderboard);
+                        setleadersWeekly(data.tempLeaderboard);
+                    
+                  }
             } catch (error) {
                 if (error.message.includes('401')) {
                     console.log("AUTH EXPIRED")

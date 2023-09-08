@@ -10,8 +10,11 @@ import OrderBoard from "../Components/Orders/OrderBoard";
 import NotificationBox from "../Components/GUI/NotificationBox";
 import { useNavigate } from 'react-router-dom';
 
+import { useWebSocket } from "../WebSocketContext";
 
 function PlantScreen() {
+    const { waitForServerResponse } = useWebSocket();
+
 
     const navigate = useNavigate();
     if (localStorage.getItem('token') === null) {
@@ -49,19 +52,9 @@ function PlantScreen() {
 
         async function fetchData() {
             try {
-                const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({})
-                });
-                if (!result.ok) {
-                    throw new Error(`HTTP error! status: ${result.status}`);
-                } else {
-                    let data = await result.json();
+                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+                    const response = await waitForServerResponse('inventoryAll');
+                    let data = response.body;
                     setFertilizers({
                         HarvestsFertilizer: data.HarvestsFertilizer,
                         TimeFertilizer: data.TimeFertilizer,
@@ -86,20 +79,9 @@ function PlantScreen() {
 
         async function fetchProfile() {
             try {
-                let data;
-                const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({})
-                });
-                if (!result.ok) {
-                    throw new Error(`HTTP error! status: ${result.status}`);
-                } else {
-                    data = await result.json();
+                if (waitForServerResponse) {
+                    const response = await waitForServerResponse('profileInfo');
+                    let data = response.body;
                     setBalance(data.Balance);
                     setXP(data.XP);
                     setUsername(data.Username);
@@ -148,10 +130,7 @@ function PlantScreen() {
     }, [XP])
 
     useEffect(() => {
-        console.log('lvl updated')
-        console.log(newXP.current)
         if (newXP.current && level in CONSTANTS.levelUnlocks) {
-            console.log('lvl updated bc of new')
             setUnlockContents(CONSTANTS.levelUnlocks[level])
             setNotificationBox(true)
 

@@ -4,9 +4,11 @@ import CONSTANTS from '../../CONSTANTS';
 import CROPINFO from "../../CROPINFO";
 import UPGRADES from "../../UPGRADES";
 import { useNavigate } from 'react-router-dom';
-import { isLabelWithInternallyDisabledControl } from "@testing-library/user-event/dist/utils";
+import ANIMALINFO from '../../ANIMALINFO';
+import { useWebSocket } from "../../WebSocketContext";
 
 function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquippedFert, getUpgrades, updateInventory, updateXP, getXP, setOrderNotice, items }) {
+    const { waitForServerResponse } = useWebSocket();
 
     const [tiles, setTiles] = useState([]);
     const [growthTable, setGrowthTable] = useState("")
@@ -91,23 +93,12 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
                 })
                 return newTiles;
             })
-            const token = localStorage.getItem('token');
             try {
-                let fertilizeQuery = await fetch('https://farm-api.azurewebsites.net/api/fertilizeTile', {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
+                if (waitForServerResponse) {
+                    await waitForServerResponse('fertilizeTile', {
                         tileID: tileID,
                         fertilizerType: desiredFertilizer
-                    })
-                })
-                if (!fertilizeQuery.ok) {
-                    throw new Error(`HTTP error! status: ${fertilizeQuery.status}`);
-                } else {
+                    });
                 }
             } catch (error) {
                 if (error.message.includes('401')) {
@@ -227,21 +218,11 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
         console.log(allSimRes)
         try {
             let queryTiles = allSimRes.map((sim) => { return { tileID: sim.TileID } })
-            const token = localStorage.getItem('token');
-            let multiplantQuery = await fetch('https://farm-api.azurewebsites.net/api/multiPlant', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
+            if (waitForServerResponse) {
+                const response = await waitForServerResponse('multiPlant', {
                     tiles: queryTiles,
                     seedName: seedName
-                })
-            })
-            if (!multiplantQuery.ok) {
-                throw new Error(`HTTP error! status: ${multiplantQuery.status}`);
+                });
             }
         } catch (error) {
             if (error.message.includes('401')) {
@@ -265,21 +246,11 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
         if (simRes.message === 'SUCCESS') {
             // only put request through if frontend validates
             try {
-                let plantQuery = await fetch('https://farm-api.azurewebsites.net/api/plant', {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
+                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+                    const response = await waitForServerResponse('plant', {
                         seedName: seedName,
                         tileID: tileID
-                    })
-                })
-                if (!plantQuery.ok) {
-                    console.log(await plantQuery.json())
-                    throw new Error(`HTTP error! status: ${plantQuery.status}`);
+                    });
                 }
             } catch (error) {
                 if (error.message.includes('401')) {
@@ -312,21 +283,11 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
         const token = localStorage.getItem('token');
         if (simRes.message === 'SUCCESS') {
             try {
-                let harvestQuery = await fetch('https://farm-api.azurewebsites.net/api/harvest', {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
+                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+                    const response = await waitForServerResponse('harvest', {
                         tileID: tileID
-                    })
-                })
-                if (!harvestQuery.ok) {
-                    throw new Error(`HTTP error! status: ${harvestQuery.status}`);
-                } else {
-                    let data = await harvestQuery.json()
+                    });
+                    let data = response.body;
                     setTiles(prevTiles => prevTiles.map((tile) => {
                         if (tile.TileID === data.TileID) {
                             const newTile = {
@@ -412,26 +373,11 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
         })
 
         try {
-            const token = localStorage.getItem('token');
-
-            let multiResult = await fetch('https://farm-api.azurewebsites.net/api/multiHarvest', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
+            if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+                const response = await waitForServerResponse('multiHarvest', {
                     tiles: idObjects
-                })
-            })
-            if (!multiResult.ok) {
-                console.log(await multiResult.json())
-                throw new Error(`HTTP error! status: ${multiResult.status}`);
-
-            } else {
-                let tilesResult = await multiResult.json();
-
+                });
+                let tilesResult = response.body;
                 setTiles(prevTiles => prevTiles.map((tile) => {
                     let thisTile = tilesResult.updatedTiles.filter((udTile) => udTile.TileID === tile.TileID)
                     if (thisTile.length !== 0) {
@@ -469,7 +415,6 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
                         return newParts;
                     })
                 }
-
             }
             // Compute the stage for each tile and include it in the tile object.
         } catch (error) {
@@ -610,21 +555,9 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
 
     const createTiles = async () => {
         try {
-            const token = localStorage.getItem('token');
-            let dbData = await fetch('https://farm-api.azurewebsites.net/api/tilesAll', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({})
-            })
-            if (!dbData.ok) {
-                throw new Error(`HTTP error! status: ${dbData.status}`);
-
-            } else {
-                let dbTiles = await dbData.json();
+            if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+                const response = await waitForServerResponse('tilesAll');
+                let dbTiles = response.body;
                 let updatedTiles = dbTiles.map((tile) => {
                     let hasTimeFertilizer = tile.TimeFertilizer !== -1
                     let stage = getStage(tile.PlantTime, tile.CropID, hasTimeFertilizer);
@@ -637,7 +570,6 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
                 });
                 setTiles(updatedTiles);
             }
-
             // Compute the stage for each tile and include it in the tile object.
         } catch (error) {
             if (error.message.includes('401')) {

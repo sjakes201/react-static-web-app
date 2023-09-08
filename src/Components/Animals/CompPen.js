@@ -4,8 +4,11 @@ import CONSTANTS from '../../CONSTANTS';
 import UPGRADES from '../../UPGRADES';
 import { useNavigate } from 'react-router-dom';
 import ANIMALINFO from '../../ANIMALINFO';
+import { useWebSocket } from "../../WebSocketContext";
 
 function CompPen({ importedAnimals, setAnimalsParent, passedUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP, setOrderNotice, setEquippedFeed }) {
+    const { waitForServerResponse } = useWebSocket();
+
     let xSlots = 6;
     let ySlots = 9;
     let animalWidth = Math.floor(penWidth / xSlots);
@@ -119,24 +122,11 @@ function CompPen({ importedAnimals, setAnimalsParent, passedUpgrades, penWidth, 
                 sessionStorage.setItem('equipped', '')
             }
             try {
-                const token = localStorage.getItem('token');
-                let feedCall = await fetch('https://farm-api.azurewebsites.net/api/feedAnimal', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        animalID: targetAnimal.Animal_ID,
-                        foodType: feed,
-                    })
-                });
-                if (!feedCall.ok) {
-                    throw new Error(`HTTP error! status: ${feedCall.status}`);
-                } else {
-                    let data = await feedCall.json()
-
+                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+                    const response = await waitForServerResponse('feedAnimal', {
+                                animalID: targetAnimal.Animal_ID,
+                                foodType: feed,
+                            });
                 }
             } catch (error) {
                 if (error.message.includes('401')) {
@@ -208,24 +198,13 @@ function CompPen({ importedAnimals, setAnimalsParent, passedUpgrades, penWidth, 
 
             updateInventory(UPGRADES[quantTableName][type][0], qty);
             updateXP(CONSTANTS.XP[UPGRADES[quantTableName][type][0]]);
-            const token = localStorage.getItem('token');
 
             try {
-                let collectCall = await fetch('https://farm-api.azurewebsites.net/api/collect', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
+                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+                    const response = await waitForServerResponse('collect', {
                         AnimalID: animal.Animal_ID
-                    })
-                });
-                if (!collectCall.ok) {
-                    throw new Error(`HTTP error! status: ${collectCall.status}`);
-                } else {
-                    let data = await collectCall.json()
+                    });
+                    let data = response.body;
                     let finished = data.finishedOrder;
                     if (finished) {
                         setOrderNotice(true);

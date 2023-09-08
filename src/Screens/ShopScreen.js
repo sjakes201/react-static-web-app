@@ -7,11 +7,13 @@ import CompOtherScreens from '../Components/GUI/CompOtherScreens'
 import CONSTANTS from "../CONSTANTS";
 import UPGRADES from "../UPGRADES";
 import { useNavigate } from 'react-router-dom';
+import { useWebSocket } from "../WebSocketContext";
 
 
 
 
 function ShopScreen() {
+    const { waitForServerResponse } = useWebSocket();
 
     const navigate = useNavigate();
     if (localStorage.getItem('token') === null) {
@@ -36,22 +38,11 @@ function ShopScreen() {
     const [loginBox, setLoginBox] = useState(false);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
         async function fetchData() {
             try {
-                const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({})
-                });
-                if (!result.ok) {
-                    throw new Error(`HTTP error! status: ${result.status}`);
-                } else {
-                    let data = await result.json();
+                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+                    const response = await waitForServerResponse('inventoryAll');
+                    let data = response.body;
                     delete data.HarvestsFertilizer; delete data.TimeFertilizer; delete data.YieldsFertilizer;
                     setItems(data);
                 }
@@ -67,19 +58,9 @@ function ShopScreen() {
         async function fetchProfile() {
 
             try {
-                const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({})
-                });
-                if (!result.ok) {
-                    throw new Error(`HTTP error! status: ${result.status}`);
-                } else {
-                    const data = await result.json();
+                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+                    const response = await waitForServerResponse('profileInfo');
+                    let data = response.body;
                     setBalance(data.Balance);
                     setXP(data.XP);
                     setUsername(data.Username);

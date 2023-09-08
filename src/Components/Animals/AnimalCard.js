@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import ANIMALINFO from '../../ANIMALINFO';
+import { useWebSocket } from "../../WebSocketContext";
 
 function AnimalCard({ animal, coop, setCoop, setBarn }) {
+    const { waitForServerResponse } = useWebSocket();
+
     const type = animal.Animal_type;
     const Animal_ID = animal.Animal_ID;
     const name = animal.Name;
@@ -9,11 +12,11 @@ function AnimalCard({ animal, coop, setCoop, setBarn }) {
     // Generate heart images (make this less ratchet, better ways to do it with mod)
     const hearts = [0, 0, 0, 0, 0]
     let happiness = animal.Happiness;
-    for(let i = 0; i < 5; ++i) {
-        if(happiness >= 0.2) {
+    for (let i = 0; i < 5; ++i) {
+        if (happiness >= 0.2) {
             hearts[i] = 1
             happiness -= 0.2;
-        } else if(happiness < 0.2 && happiness > 0.08) {
+        } else if (happiness < 0.2 && happiness > 0.08) {
             hearts[i] = 0.5
             happiness = 0;
         } else {
@@ -56,20 +59,13 @@ function AnimalCard({ animal, coop, setCoop, setBarn }) {
                 })
             })
         }
-        await fetch('https://farm-api.azurewebsites.net/api/nameAnimal', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
+
+        if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+            const response = await waitForServerResponse('nameAnimal', {
                 name: newName,
                 Animal_ID: Animal_ID
-            })
-        })
-        // call rename
-        console.log(`New name: ${newName}`)
+            });
+        }
         setNewName('')
     }
 
@@ -86,19 +82,13 @@ function AnimalCard({ animal, coop, setCoop, setBarn }) {
                 return old.filter((animal) => animal.Animal_ID !== AnimalID)
             })
         }
-        const token = localStorage.getItem('token');
-        await fetch('https://farm-api.azurewebsites.net/api/deleteAnimal', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
+        if (waitForServerResponse) {
+            const response = await waitForServerResponse('deleteAnimal', {
                 AnimalID: AnimalID,
                 location: location
-            })
-        }).then((x) => x.json());
+            });
+            console.log(response)
+        }
     }
 
 

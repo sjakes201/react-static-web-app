@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react'
 import './CSS/AccountScreen.css'
 import CONSTANTS from '../CONSTANTS';
 import { useNavigate } from 'react-router-dom';
+import { useWebSocket } from "../WebSocketContext";
 
 
 
 function AccountScreen() {
+    const { waitForServerResponse } = useWebSocket();
+
     const navigate = useNavigate();
 
     const [profileData, setProfileData] = useState({});
@@ -19,19 +22,9 @@ function AccountScreen() {
         const fetchData = async () => {
 
             try {
-                const result = await fetch('https://farm-api.azurewebsites.net/api/profileInfo', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({})
-                });
-                if (!result.ok) {
-                    throw new Error(`HTTP error! status: ${result.status}`);
-                } else {
-                    const data = await result.json();
+                if (waitForServerResponse) {
+                    const response = await waitForServerResponse('profileInfo');
+                    let data = response.body;
                     setProfileData(data)
                     const allGoods = Object.keys(CONSTANTS.Init_Market_Prices);
                     let allCrops = {};

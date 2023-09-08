@@ -63,34 +63,17 @@ function InitLoading({ }) {
     }
 
     const checkAuth = async () => {
-        const token = localStorage.getItem('token')
-        if (token === null) {
-            try {
-                const tempLogin = await fetch('https://farm-api.azurewebsites.net/api/tempAuth', {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: {}
-                })
-                if (tempLogin.ok) {
-                    const data = await tempLogin.json();
-                    if (data.auth) {
-                        localStorage.setItem('token', data.token);
-                        setAuthorized(true)
-                    } else {
-                        setLog("Loading failed :( try clearing cookies and reloading")
-                    }
+        const checkToken = () => {
+            setTimeout(() => {
+                const token = localStorage.getItem('token')
+                if(token !== null) {
+                    setAuthorized(true)
                 } else {
-                    throw new Error(`HTTP error! status: ${tempLogin.status}`);
+                    checkToken()
                 }
-            } catch (error) {
-                setLog("Servers down! Please try again later.")
-            }
-        } else {
-            setAuthorized(true)
+            }, 100)
         }
+        checkToken();
     }
 
     const finishLoading = () => {

@@ -5,8 +5,12 @@ import CompInventory from '../Components/GUI/CompInventory';
 import { useNavigate } from 'react-router-dom';
 import MACHINESINFO from '../MACHINESINFO';
 import CompProfile from '../Components/GUI/CompProfile';
+import { useWebSocket } from "../WebSocketContext";
+
 
 function MachinesScreen() {
+    const { waitForServerResponse } = useWebSocket();
+
     const navigate = useNavigate();
 
     const [profile, setProfile] = useState({})
@@ -22,25 +26,14 @@ function MachinesScreen() {
     useEffect(() => {
         async function fetchProfile() {
             const token = localStorage.getItem('token');
-            sessionStorage.setItem('equipped', '')
+            // sessionStorage.setItem('equipped', '')
 
             let artisanItems = {};
 
             try {
-                let data;
-                const result = await fetch('https://farm-api.azurewebsites.net/api/getAllMachines', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({})
-                });
-                if (!result.ok) {
-                    throw new Error(`HTTP error! status: ${result.status}`);
-                } else {
-                    data = await result.json();
+                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+                    const response = await waitForServerResponse('getAllMachines');
+                    let data = response.body;
                     setMachines(data.machinesData)
                     setProfile(data.profileData)
                     setParts(data.partsData)
@@ -57,20 +50,10 @@ function MachinesScreen() {
             }
 
             try {
-                const result = await fetch('https://farm-api.azurewebsites.net/api/inventoryAll', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({})
-                });
 
-                if (!result.ok) {
-                    throw new Error(`HTTP error! status: ${result.status}`);
-                } else {
-                    let data = await result.json();
+                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+                    const response = await waitForServerResponse('inventoryAll');
+                    let data = response.body;
                     delete data.HarvestsFertilizer; delete data.TimeFertilizer; delete data.YieldsFertilizer;
                     let keys = Object.keys(data);
                     keys.forEach((key) => {
@@ -84,7 +67,6 @@ function MachinesScreen() {
                     })
                     setItems(data);
                 }
-
             } catch (error) {
                 if (error.message.includes('401')) {
                     console.log("AUTH EXPIRED")
@@ -118,26 +100,8 @@ function MachinesScreen() {
             return newItems
         })
         try {
-            const token = localStorage.getItem('token');
-            let data;
-            const result = await fetch('https://farm-api.azurewebsites.net/api/sellArtisanGood', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    good: good,
-                    quantity: quantity
-                })
-            });
-            if (!result.ok) {
-                data = await result.json();
-                console.log(data)
-                throw new Error(`HTTP error! status: ${result.status}`);
-            } else {
-                data = await result.json();
+            if (waitForServerResponse) {
+                await waitForServerResponse('sellArtisanGood', { good: good, quantity: quantity });
             }
         } catch (error) {
             if (error.message.includes('401')) {
@@ -190,27 +154,13 @@ function MachinesScreen() {
 
 
         try {
-            const token = localStorage.getItem('token');
-            let data;
-            const result = await fetch('https://farm-api.azurewebsites.net/api/buyMachine', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
+            if (waitForServerResponse) {
+                await waitForServerResponse('buyMachine', {
                     type: type,
                     slot: slot,
                     tier: tier,
-                })
-            });
-            if (!result.ok) {
-                data = await result.json();
-                console.log(data)
-                throw new Error(`HTTP error! status: ${result.status}`);
-            } else {
-                data = await result.json();
+                });
+
             }
         } catch (error) {
             if (error.message.includes('401')) {
@@ -249,27 +199,12 @@ function MachinesScreen() {
         let machineTypeName = MACHINESINFO.machineTypeFromIDS[machineTypeID];
         // ingredients should be object of animal produce, keys are produce values are count
         try {
-            const token = localStorage.getItem('token');
-            let data;
-            const result = await fetch('https://farm-api.azurewebsites.net/api/useMachine', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
+            if (waitForServerResponse) {
+                await waitForServerResponse('useMachine', {
                     slot: slot,
                     machineType: machineTypeName,
                     ingredients: ingredients
-                })
-            });
-            if (!result.ok) {
-                data = await result.json();
-                console.log(data)
-                throw new Error(`HTTP error! status: ${result.status}`);
-            } else {
-                data = await result.json();
+                });
             }
         } catch (error) {
             if (error.message.includes('401')) {
@@ -294,27 +229,13 @@ function MachinesScreen() {
         })
         // TODO: Add to inventory and make fancy animation? but that would require waiting
         try {
-            const token = localStorage.getItem('token');
-            let data;
-            const result = await fetch('https://farm-api.azurewebsites.net/api/collectMachine', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
+
+            if (waitForServerResponse) {
+                let response = await waitForServerResponse('collectMachine', {
                     slot: slot,
-                })
-            });
-            if (!result.ok) {
-                data = await result.json();
-                console.log(data)
-                throw new Error(`HTTP error! status: ${result.status}`);
-            } else {
-                data = await result.json();
+                });
+                let data = response.body;
                 delete data.message;
-                // TODO: FLASH ITEMS IN INVENTORY?
                 setItems((old) => {
                     let newItems = { ...old };
                     Object.keys(data).forEach((item) => {
@@ -330,7 +251,6 @@ function MachinesScreen() {
                     })
                     return newItems
                 })
-
             }
         } catch (error) {
             if (error.message.includes('401')) {
@@ -369,23 +289,10 @@ function MachinesScreen() {
             return newMachines;
         })
         try {
-            const token = localStorage.getItem('token');
-            let data;
-            const result = await fetch('https://farm-api.azurewebsites.net/api/sellMachine', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
+            if (waitForServerResponse) {
+                let response = await waitForServerResponse('sellMachine', {
                     slot: slot,
-                })
-            });
-            if (!result.ok) {
-                throw new Error(`HTTP error! status: ${result.status}`);
-            } else {
-                data = await result.json();
+                });
             }
         } catch (error) {
             if (error.message.includes('401')) {
@@ -408,24 +315,11 @@ function MachinesScreen() {
                 newMachines[`Slot${slot}ProduceReceived`] = 0;
                 return newMachines;
             })
-
-            const token = localStorage.getItem('token');
-            let data;
-            const result = await fetch('https://farm-api.azurewebsites.net/api/cancelMachine', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
+            
+            if (waitForServerResponse) {
+                await waitForServerResponse('cancelMachine', {
                     slot: slot,
-                })
-            });
-            if (!result.ok) {
-                throw new Error(`HTTP error! status: ${result.status}`);
-            } else {
-                data = await result.json();
+                });
             }
         } catch (error) {
             if (error.message.includes('401')) {
@@ -547,7 +441,7 @@ function MachinesScreen() {
                         onClick={() => navigate('/animals')}
                         style={{ width: '10%', marginLeft: '1%', cursor: 'pointer', objectFit: 'contain' }}
                     />
-                    <div style={{display: 'none', position: 'relative', width: '728px', height: '90px', zIndex: '2000', backgroundColor: 'orange'}}>
+                    <div style={{ display: 'none', position: 'relative', width: '728px', height: '90px', zIndex: '2000', backgroundColor: 'orange' }}>
                         AD 728px x 90px
                     </div>
                     <img
@@ -665,15 +559,15 @@ function MachinesScreen() {
                                 // automatically equip next artisan good
                                 let allKeys = Object.keys(items)
                                 let foundNew = false;
-                                for(let i = 0; i < allKeys.length; ++i) {
-                                    if(allKeys[i].includes("Q") && items[allKeys[i]] !== 0) {
+                                for (let i = 0; i < allKeys.length; ++i) {
+                                    if (allKeys[i].includes("Q") && items[allKeys[i]] !== 0) {
                                         setSelected(allKeys[i]);
                                         setSellQty(items[allKeys[i]])
                                         foundNew = true;
                                         break;
                                     }
                                 }
-                                if(!foundNew) {
+                                if (!foundNew) {
                                     setSelected("")
                                     setSellQty('')
                                 }
