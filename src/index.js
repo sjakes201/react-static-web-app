@@ -1,9 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import ReactGA from 'react-ga';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './reset.css'
 import GameContainer from './GameContainer';
 import { WebSocketProvider } from './WebSocketContext'; // Make sure the path is correct
+
+ReactGA.initialize('G-SW9XV2PGLR');
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,7 +20,6 @@ root.render(
     </WebSocketProvider>
 
 );
-
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

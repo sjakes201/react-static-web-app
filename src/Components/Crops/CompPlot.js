@@ -215,7 +215,6 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
                 }
             }
         })
-        console.log(allSimRes)
         try {
             let queryTiles = allSimRes.map((sim) => { return { tileID: sim.TileID } })
             if (waitForServerResponse) {
@@ -283,7 +282,7 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
         const token = localStorage.getItem('token');
         if (simRes.message === 'SUCCESS') {
             try {
-                if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+                if (waitForServerResponse) {
                     const response = await waitForServerResponse('harvest', {
                         tileID: tileID
                     });
@@ -293,7 +292,7 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
                             const newTile = {
                                 ...tile,
                                 hasTimeFertilizer: data.hasTimeFertilizer,
-                                stage: getStage(tile.PlantTime, tile.CropID, tile.hasTimeFertilizer)
+                                // stage: getStage(tile.PlantTime, tile.CropID, tile.hasTimeFertilizer)
 
                             };
                             return newTile;
@@ -382,10 +381,10 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
                     let thisTile = tilesResult.updatedTiles.filter((udTile) => udTile.TileID === tile.TileID)
                     if (thisTile.length !== 0) {
                         thisTile = thisTile[0]
-                        let stage = getStage(thisTile.PlantTime, thisTile.CropID, thisTile.hasTimeFertilizer);
+                        // let stage = getStage(thisTile.PlantTime, thisTile.CropID, thisTile.hasTimeFertilizer);
                         const newTile = {
                             ...tile,
-                            stage: stage,
+                            // stage: stage,
                             hasTimeFertilizer: thisTile.hasTimeFertilizer,
                         };
                         return newTile;
@@ -451,7 +450,6 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
             let curTime = Date.now();
 
             let secsPassed = (curTime - plantedTime) / 1000;
-            // buffer for less 400's
             let secsNeeded = growthTimes.reduce((sum, e) => sum + e, 0)
             if (simRes.hasTimeFertilizer) {
                 secsPassed *= 2;
@@ -555,7 +553,7 @@ function CompPlot({ tool, setFertilizers, fertilizers, equippedFert, setEquipped
 
     const createTiles = async () => {
         try {
-            if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+            if (waitForServerResponse) { 
                 const response = await waitForServerResponse('tilesAll');
                 let dbTiles = response.body;
                 let updatedTiles = dbTiles.map((tile) => {
