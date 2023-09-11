@@ -14,6 +14,9 @@ import NotificationBox from "./Components/GUI/NotificationBox";
 import Complogin from "./Components/GUI/CompLogin";
 import GoogleAnalyticsReporter from './GoogleAnalyticsReporter';
 
+import TownInterface from './Components/Towns/TownInterface';
+import TownGoals from './Components/Towns/TownGoals';
+
 import { useWebSocket } from './WebSocketContext'; // Replace with your actual import path
 
 import CONSTANTS from "./CONSTANTS";
@@ -59,7 +62,7 @@ function GameContainer() {
     useEffect(() => {
         let fetchData = async () => {
 
-            if (waitForServerResponse) { 
+            if (waitForServerResponse) {
                 const response = await waitForServerResponse('tilesAll');
                 let dbTiles = response.body;
                 let updatedTiles = dbTiles.map((tile) => {
@@ -302,6 +305,11 @@ function GameContainer() {
                 <Route path="/machines" element={<MachinesScreen artisanItems={artisanItems} setArtisanItems={setArtisanItems} getUser={getUser} getXP={getXP} updateBalance={updateBalance} getBal={getBal} itemsData={itemsData} setItemsData={setItemsData} parts={parts} machines={machines} setParts={setParts} setMachines={setMachines} />} />
             </Routes>
         </div>
+        // <div style={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        //     <div style={{ width: '60%', height: '80%' }}>
+        //         <TownGoals />
+        //     </div>
+        // </div>
     );
 }
 

@@ -18,12 +18,14 @@ function CompItem({ addAnimal, unlockInfo, updateAnimalsInfo, itemName, cost, un
             case 'BARN':
                 return {
                     color: 'brown',
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    fontSize: '.9vw'
                 }
             case 'COOP':
                 return {
                     color: 'yellow',
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    fontSize: '.9vw'
                 }
         }
     }
@@ -145,7 +147,7 @@ function CompItem({ addAnimal, unlockInfo, updateAnimalsInfo, itemName, cost, un
                 <div className="itemImg">
                     <img src={`${process.env.PUBLIC_URL}/assets/images/${itemName}.png`} />
                 </div>
-                <div id="name">
+                <div id="shopCardName">
                     <p>{CONSTANTS.InventoryDescriptions[CONSTANTS.SeedCropMap[itemName][0]][0]}</p>
                     <img src={`${process.env.PUBLIC_URL}/assets/images/info.png`} className='shopItemInfo' onMouseEnter={() => setItemInfo(true)} onMouseLeave={() => setItemInfo(false)} />
                     {
@@ -202,7 +204,6 @@ function CompItem({ addAnimal, unlockInfo, updateAnimalsInfo, itemName, cost, un
                         }
                     </div>
                 )}
-
                 {(unlockInfo[0] && !hasSpace) &&
                     <p className='content'>
                         MAX CAPACITY
@@ -211,7 +212,7 @@ function CompItem({ addAnimal, unlockInfo, updateAnimalsInfo, itemName, cost, un
                 <div className="itemImg">
                     <img src={`${process.env.PUBLIC_URL}/assets/images/${itemName}_standing_right.png`} />
                 </div>
-                <div id="name">
+                <div id="shopCardName">
                     <p>{CONSTANTS.InventoryDescriptions[itemName][0]}</p>
                 </div>
                 <div id="info">
@@ -222,7 +223,8 @@ function CompItem({ addAnimal, unlockInfo, updateAnimalsInfo, itemName, cost, un
                         <p style={getLocationStyle()}>{info.split(" ")[0]}</p>
                         <p style={{
                             color: 'purple',
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            fontSize: '.9vw'
                         }}>{info.split(" ")[1]}</p>
                     </div>
                 </div>
@@ -248,7 +250,7 @@ function CompItem({ addAnimal, unlockInfo, updateAnimalsInfo, itemName, cost, un
                 <div className="itemImg">
                     <img id='upgradeImg' src={`${process.env.PUBLIC_URL}/assets/images/${itemName}.png`} />
                 </div>
-                <div id="name">
+                <div id="shopCardName">
                     <p>{(UPGRADES.UpgradeDescriptions[itemName][0])}</p>
 
                 </div>
@@ -263,7 +265,7 @@ function CompItem({ addAnimal, unlockInfo, updateAnimalsInfo, itemName, cost, un
                 <div id="buyButtons">
                     <div className='buyButton' id='adopt'>
                         <small>TIER {tier + 1}</small>
-                        <button onClick={() => handleClick(1)}>{itemName.includes('Permit') ? "BUY" : "UPGRADE"}</button>
+                        <button id='adoptButton' onClick={() => handleClick(1)}>{itemName.includes('Permit') ? "BUY" : "UPGRADE"}</button>
                         {gif[1] && <img key={gifKey} src={`${process.env.PUBLIC_URL}/assets/images/${gif[1]}.gif`} className="gif" />}
                     </div>
 

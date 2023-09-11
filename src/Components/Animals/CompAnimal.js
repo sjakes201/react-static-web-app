@@ -46,9 +46,8 @@ function CompAnimal({ type, onCollect, onFeed, sizeWidth, sizeHeight, walkingInf
         }
     };
 
-
-    const left = (walkingInfo?.coordinates[0] ? walkingInfo.coordinates[0] : 0);
-    const top = (walkingInfo?.coordinates[1] ? walkingInfo.coordinates[1] : 0);
+    const left = (walkingInfo?.coordinates?.[0] ? walkingInfo.coordinates?.[0] : 0);
+    const top = (walkingInfo?.coordinates?.[1] ? walkingInfo.coordinates?.[1] : 0);
 
     let imgStyle = {
         height: '100%',
@@ -87,6 +86,9 @@ function CompAnimal({ type, onCollect, onFeed, sizeWidth, sizeHeight, walkingInf
         divStyle.transitionTimingFunction = 'linear'
     }
 
+    if(Object.keys(walkingInfo).length === 0) {
+        return(<div></div>)
+    }
     return (
         <div style={divStyle}
             onMouseEnter={() => { setHover(true) }}

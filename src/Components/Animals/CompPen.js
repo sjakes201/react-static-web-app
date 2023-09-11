@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import ANIMALINFO from '../../ANIMALINFO';
 import { useWebSocket } from "../../WebSocketContext";
 
-function CompPen({ importedAnimals, setAnimalsParent, getUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP, setOrderNotice, setEquippedFeed }) {
+function CompPen({ animalsParent, setAnimalsParent, getUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP, setOrderNotice, setEquippedFeed }) {
     const { waitForServerResponse } = useWebSocket();
 
     let xSlots = 6;
@@ -21,9 +21,14 @@ function CompPen({ importedAnimals, setAnimalsParent, getUpgrades, penWidth, pen
     const [xp, setXP] = useState(0);
 
     // The three animal state arrays: for their info, whether they are collectible, and whether they are walking
-    const [animals, setAnimals] = useState([]);
+    // const [animals, setAnimals] = useState([]);
     const [collectible, setCollectible] = useState([]);
     const [walking, setWalking] = useState([]);
+
+    // useEffect(() => {
+    //     console.log(`imported animals:`, animalsParent)
+    //     console.log('animals:', animals)
+    // }, [animalsParent, animals])
 
     // this is for triggering order button animation
     const [orderTimer, setOrderTimer] = useState(null)
@@ -42,24 +47,24 @@ function CompPen({ importedAnimals, setAnimalsParent, getUpgrades, penWidth, pen
     */
     const firstRender = useRef(true)
     useEffect(() => {
-        if (firstRender.current && importedAnimals.length > 0) {
+        if (firstRender.current && animalsParent.length > 0) {
             // First render and animals exist, generate random positionds
             createAnimals();
             firstRender.current = false;
-        } else if (importedAnimals.length > 0) {
+        } else if (animalsParent.length > 0) {
             // Not the first render, if anything was removed, remove it from all states
 
-            // Filter animals in current states for only ones present in importedAnimals
+            // Filter animals in current states for only ones present in animalsParent
             let currentIDs = [];
-            for (let i = 0; i < importedAnimals.length; ++i) {
-                currentIDs.push(importedAnimals[i].Animal_ID);
+            for (let i = 0; i < animalsParent.length; ++i) {
+                currentIDs.push(animalsParent[i].Animal_ID);
             }
             setWalking((old) => old.filter((a) => currentIDs.includes(a.Animal_ID)))
             setCollectible((old) => old.filter((a) => currentIDs.includes(a.Animal_ID)))
-            setAnimals((old) => old.filter((a) => currentIDs.includes(a.Animal_ID)))
+            setAnimalsParent((old) => old.filter((a) => currentIDs.includes(a.Animal_ID)))
 
         }
-    }, [importedAnimals])
+    }, [animalsParent])
 
 
     // Can you collect on this animal?
@@ -78,7 +83,7 @@ function CompPen({ importedAnimals, setAnimalsParent, getUpgrades, penWidth, pen
 
     // Feed animal function
     const handleFeed = async (Animal_ID, feed) => {
-        let targetAnimal = animals.filter((a) => a.Animal_ID === Animal_ID)[0];
+        let targetAnimal = animalsParent.filter((a) => a.Animal_ID === Animal_ID)[0];
 
         const lastFed = targetAnimal.Last_fed;
         let timePassedMS = Date.now() - lastFed;
@@ -104,7 +109,7 @@ function CompPen({ importedAnimals, setAnimalsParent, getUpgrades, penWidth, pen
                     }
                 })
             })
-            setAnimals((old) => {
+            setAnimalsParent((old) => {
                 return old.map((a) => {
                     if (a.Animal_ID === targetAnimal.Animal_ID) {
                         // set last fed and new happiness
@@ -145,7 +150,7 @@ function CompPen({ importedAnimals, setAnimalsParent, getUpgrades, penWidth, pen
 
     // Collect produce function
     const handleCollect = async (Animal_ID, type) => {
-        let animal = animals.filter((a) => a.Animal_ID === Animal_ID)[0];
+        let animal = animalsParent.filter((a) => a.Animal_ID === Animal_ID)[0];
         if (!isUnlocked(animal.Animal_type)) {
             console.log("NOT UNLOCKED");
             return false;
@@ -165,7 +170,7 @@ function CompPen({ importedAnimals, setAnimalsParent, getUpgrades, penWidth, pen
                     return a;
                 })
             })
-            setAnimals((prevAnimals) => {
+            setAnimalsParent((prevAnimals) => {
                 return prevAnimals.map((a) => {
                     if (a.Animal_ID === newAnimal.Animal_ID) {
                         return newAnimal;
@@ -216,7 +221,7 @@ function CompPen({ importedAnimals, setAnimalsParent, getUpgrades, penWidth, pen
                         }, 500)
                         setOrderTimer(id)
                     }
-                    setAnimals((old) => {
+                    setAnimalsParent((old) => {
                         return old.map((a) => {
                             if (a.Animal_ID === data.Animal_ID) {
                                 let updatedRandom = { ...a };
@@ -244,10 +249,10 @@ function CompPen({ importedAnimals, setAnimalsParent, getUpgrades, penWidth, pen
 
     // Initialize all animals, with random positions
     const createAnimals = async () => {
-        if (importedAnimals.length === 0) {
+        if (animalsParent.length === 0) {
             return;
         }
-        let dbAnimals = importedAnimals;
+        let dbAnimals = animalsParent;
 
         // init animals state array to objects with ID, type, last collect
         let animalsState = [];
@@ -281,7 +286,7 @@ function CompPen({ importedAnimals, setAnimalsParent, getUpgrades, penWidth, pen
         walkingState = randomStarting(walkingState);
 
 
-        setAnimals(animalsState);
+        setAnimalsParent(animalsState);
         setWalking(walkingState);
         setCollectible(collectibleState);
 
@@ -305,7 +310,7 @@ function CompPen({ importedAnimals, setAnimalsParent, getUpgrades, penWidth, pen
 
     // Generate random starting coords, takes array of animal objects
     const randomStarting = (walkingState) => {
-        if (animals?.message === "No auth token present") return {};
+        if (animalsParent?.message === "No auth token present") return {};
         let newCoords = [...walkingState];
         newCoords.forEach((a) => {
             a.coordinates = [-1, -1]
@@ -348,7 +353,7 @@ function CompPen({ importedAnimals, setAnimalsParent, getUpgrades, penWidth, pen
 
     useEffect(() => {
         updateCollectible()
-    }, [animals])
+    }, [animalsParent])
 
     useEffect(() => {
         let interval;
@@ -362,7 +367,7 @@ function CompPen({ importedAnimals, setAnimalsParent, getUpgrades, penWidth, pen
     }, [walking]);
 
     const updateMovement = () => {
-        if (importedAnimals.length === 0) {
+        if (animalsParent.length === 0) {
             return
         }
         let random = Math.random();
@@ -482,7 +487,7 @@ function CompPen({ importedAnimals, setAnimalsParent, getUpgrades, penWidth, pen
             msUserSelect: "none",
             userSelect: "none",
         }}>
-            {animals.map((animal) => {
+            {animalsParent.map((animal) => {
                 return <CompAnimal
                     key={animal.Animal_ID}
                     Animal_ID={animal.Animal_ID}

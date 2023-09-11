@@ -1,0 +1,84 @@
+/* This styling sheet serves both TownGoals.js and GoalCard.js */
+
+.townGoalsContainer {
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+}
+
+/* Styles for top bar of goals screen */
+.goalsTopBar {
+    height: 12%;
+    border-bottom: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.goalsListContainer {
+    height: 88%;
+    display: flex;
+    overflow-y: auto;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#goalsBackArrow {
+    cursor: pointer;
+    height: 60%;
+    object-fit: contain;
+    margin: 1%;
+}
+
+.goalsTownName {
+    margin-left: 3.2%;
+    font-size: 1.4vw;
+}
+
+
+/* Styles for goal cards */
+.goalCardContainer {
+    height: 7vh;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 0 1%;
+
+}
+
+.goalCardIcon {
+    height: 100%;
+    max-width: 10%;
+}
+
+.goalCardInfo {
+    height: 100%;
+    width: 90%;
+}
+
+.infoTopHalf {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-transform: capitalize;
+    padding: 1% 2% 0 1%;
+    font-size: 1.5vh;
+}
+
+
+.cardProgressBarShell {
+    height: 20%;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid black;
+    position: relative;
+}
