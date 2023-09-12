@@ -9,6 +9,7 @@ export function useWebSocket() {
 export function WebSocketProvider({ children }) {
     const [ws, setWs] = useState(null);
     const [isConnected, setIsConnected] = useState(false);
+    const [auth, setAuth] = useState(1)
 
     const connectToWebSocketServer = () => {
         let useLocal = false;
@@ -29,6 +30,8 @@ export function WebSocketProvider({ children }) {
             const parsedMessage = JSON.parse(event.data);
             if (parsedMessage.type === 'guest_auth' && parsedMessage.token) {
                 localStorage.setItem('token', parsedMessage.token);
+                console.log("triggering remount due to auth init")
+                setAuth(2)
             }
         });
 
@@ -76,7 +79,7 @@ export function WebSocketProvider({ children }) {
     };
 
     return (
-        <WebSocketContext.Provider value={contextValue}>
+        <WebSocketContext.Provider value={contextValue} key={auth}>
             {isConnected ? children : null}
         </WebSocketContext.Provider>
     );

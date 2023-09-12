@@ -399,9 +399,8 @@ function CompPlot({ tiles, setTiles, tool, setFertilizers, fertilizers, equipped
                     }, 500)
                     setOrderTimer(id)
                 }
-
-                console.log(tilesResult)
-                if (true) {
+                console.log(tilesResult.updatedTiles.some((tile) => tile.randomPart !== null))
+                if (tilesResult.updatedTiles.some((tile) => tile.randomPart !== null)) {
                     setParts((oldArr) => {
                         let newParts = [...oldArr];
                         tilesResult.updatedTiles.forEach((tile) => {
