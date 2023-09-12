@@ -67,7 +67,7 @@ function TownInterface({ townName, backArrow }) {
             //     }
             // }
         }
-        fetchData()
+        // fetchData()
     }, [joinedTown])
 
     // Interface action functions

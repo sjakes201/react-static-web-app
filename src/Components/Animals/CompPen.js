@@ -25,11 +25,6 @@ function CompPen({ animalsParent, setAnimalsParent, getUpgrades, penWidth, penHe
     const [collectible, setCollectible] = useState([]);
     const [walking, setWalking] = useState([]);
 
-    // useEffect(() => {
-    //     console.log(`imported animals:`, animalsParent)
-    //     console.log('animals:', animals)
-    // }, [animalsParent, animals])
-
     // this is for triggering order button animation
     const [orderTimer, setOrderTimer] = useState(null)
 
@@ -61,8 +56,6 @@ function CompPen({ animalsParent, setAnimalsParent, getUpgrades, penWidth, penHe
             }
             setWalking((old) => old.filter((a) => currentIDs.includes(a.Animal_ID)))
             setCollectible((old) => old.filter((a) => currentIDs.includes(a.Animal_ID)))
-            setAnimalsParent((old) => old.filter((a) => currentIDs.includes(a.Animal_ID)))
-
         }
     }, [animalsParent])
 
