@@ -97,15 +97,18 @@ function PlantScreen({ tiles, setTiles, itemsData, setItemsData, getUpgrades, ge
         document.body.appendChild(script);
 
         if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
-          window.aiptag.cmd.display.push(function () {
-            if (typeof window.aipDisplayTag.display === 'function') {
-              window.aipDisplayTag.display('farmgame-live_120x60');
-            }
-          });
+            window.aiptag.cmd.display.push(function () {
+                if (typeof window.aipDisplayTag.display === 'function') {
+                    window.aipDisplayTag.display('farmgame-live_120x60');
+                }
+            });
         }
-
         return () => {
             document.body.removeChild(script);
+            // if (window.googletag && window.googletag.apiReady) {
+            //     const slots = [window.googletag.slot_manager_instance.l.find(s => s.getSlotElementId() === 'farmgame-live_120x60')];
+            //     window.googletag.destroySlots(slots);
+            // }
         };
     }, []);
 
@@ -120,7 +123,7 @@ function PlantScreen({ tiles, setTiles, itemsData, setItemsData, getUpgrades, ge
                 <div className="inventoryPl"><CompInventory level={level} tool={tool} setTool={setTool} fertilizers={fertilizers} equippedFert={equippedFert} items={items} updateInventory={updateInventory} showFertilizer={true} setEquippedFert={setEquippedFert} /></div>
                 <div className="settings">
                     <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '60px', justifyContent: 'space-evenly', position: 'absolute', top: '0' }}>
-                        <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000', border: '1px solid black' }}>
+                        <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000' }}>
                             <div id="farmgame-live_120x60"></div>
                         </div>
                         {/* <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
