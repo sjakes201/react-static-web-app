@@ -98,7 +98,7 @@ function PlantScreen({ tiles, setTiles, itemsData, setItemsData, getUpgrades, ge
 
         if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
           window.aiptag.cmd.display.push(function () {
-            if (typeof window.aipDisplayTag === 'function') {
+            if (typeof window.aipDisplayTag.display === 'function') {
               window.aipDisplayTag.display('farmgame-live_120x60');
             }
           });
@@ -120,7 +120,7 @@ function PlantScreen({ tiles, setTiles, itemsData, setItemsData, getUpgrades, ge
                 <div className="inventoryPl"><CompInventory level={level} tool={tool} setTool={setTool} fertilizers={fertilizers} equippedFert={equippedFert} items={items} updateInventory={updateInventory} showFertilizer={true} setEquippedFert={setEquippedFert} /></div>
                 <div className="settings">
                     <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '60px', justifyContent: 'space-evenly', position: 'absolute', top: '0' }}>
-                        <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000' }}>
+                        <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000', border: '1px solid black' }}>
                             <div id="farmgame-live_120x60"></div>
                         </div>
                         {/* <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>

@@ -24,7 +24,7 @@ function AnimalsTopBar({ setManager }) {
         // Add ad refresh here, within the same useEffect
         if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
             window.aiptag.cmd.display.push(function () {
-                if (typeof window.aipDisplayTag === 'function') {
+                if (typeof window.aipDisplayTag.display === 'function') {
                     window.aipDisplayTag.display('farmgame-live_728x90');
                 }
             });
@@ -54,7 +54,7 @@ function AnimalsTopBar({ setManager }) {
                 height: '100%',
             }}>
                 {window.innerWidth >= 1022 &&
-                    <div style={{ position: 'relative', width: '728px', height: '90px', zIndex: '20000' }}>
+                    <div style={{ position: 'relative', width: '728px', height: '90px', zIndex: '20000', border: '1px solid black' }}>
                         <div id="farmgame-live_728x90"></div>
                     </div>
                 }

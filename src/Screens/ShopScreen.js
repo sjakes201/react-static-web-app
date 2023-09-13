@@ -83,7 +83,7 @@ function ShopScreen({ addAnimal, itemsData, setItemsData, animalsInfo, updateAni
 
         if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
             window.aiptag.cmd.display.push(function () {
-                if (typeof window.aipDisplayTag.display === 'function') {
+                if (typeof window.aipDisplayTag.display.display === 'function') {
                     window.aipDisplayTag.display('farmgame-live_160x600');
                 }
             });

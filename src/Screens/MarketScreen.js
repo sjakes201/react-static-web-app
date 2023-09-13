@@ -121,7 +121,7 @@ function MarketScreen({ itemsData, setItemsData, prices, getUser, getBal, update
 
         if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
             window.aiptag.cmd.display.push(function () {
-                if (typeof window.aipDisplayTag === 'function') {
+                if (typeof window.aipDisplayTag.display === 'function') {
                     window.aipDisplayTag.display('farmgame-live_120x60');
                 }
             });
@@ -146,7 +146,7 @@ function MarketScreen({ itemsData, setItemsData, prices, getUser, getBal, update
                 <div className='market-select-info'><CompMarketSelection items={items} onSell={onSell} name={selected.name} newPrice={selected.newPrice} oldPrice={selected.oldPrice} imgURL={selected.imgURL} /></div>
                 <div className='market-inventory'><CompInventory items={items} displayOnly={true} setMarketSelected={setMarketSelected} /></div>
                 <div className='market-other'>
-                    <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000' }}>
+                    <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000', border: '1px solid black' }}>
                         <div id="farmgame-live_120x60"></div>
                     </div>
                     {/* <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
