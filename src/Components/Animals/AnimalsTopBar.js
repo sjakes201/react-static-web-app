@@ -54,7 +54,7 @@ function AnimalsTopBar({ setManager }) {
                 height: '100%',
             }}>
                 {window.innerWidth >= 1022 &&
-                    <div style={{ position: 'relative', width: '728px', height: '90px', zIndex: '20000', border: '1px solid black' }}>
+                    <div style={{ position: 'relative', width: '728px', height: '90px', zIndex: '20000' }}>
                         <div id="farmgame-live_728x90"></div>
                     </div>
                 }
