@@ -180,7 +180,6 @@ function CompShop({ addAnimal, updateAnimalsInfo, getAnimals, getXP, level, upda
         };
     }, []);
 
-
     return (
         <div className='shop'>
             <section id='Seeds' className='shopRow' >

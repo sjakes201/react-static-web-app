@@ -30,12 +30,12 @@
 
 .pens-wrapper {
     display: flex;
-    height: 80vh;
+    height: calc(90vh - 90px);
     background-color: var(--menu_dark);
 }
 
 .pen-management {
-    height: 10vh;
+    height: 90px;
 }
 
 .barn-container {

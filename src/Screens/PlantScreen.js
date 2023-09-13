@@ -34,7 +34,7 @@ function PlantScreen({ tiles, setTiles, itemsData, setItemsData, getUpgrades, ge
     }, [])
 
     useEffect(() => {
-        let data = {...itemsData}
+        let data = { ...itemsData }
         setFertilizers({
             HarvestsFertilizer: data.HarvestsFertilizer,
             TimeFertilizer: data.TimeFertilizer,
@@ -79,6 +79,36 @@ function PlantScreen({ tiles, setTiles, itemsData, setItemsData, getUpgrades, ge
         appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/${equippedFert}.png) 16 16, auto`
     }
 
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
+        script.async = true;
+
+        script.onload = () => {
+            if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
+                window.aiptag.cmd.display.push(function () {
+                    if (typeof window.aipDisplayTag.display === 'function') {
+                        window.aipDisplayTag.display('farmgame-live_120x60');
+                    }
+                });
+            }
+        };
+
+        document.body.appendChild(script);
+
+        // if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
+        //   window.aiptag.cmd.display.push(function () {
+        //     if (typeof window.aipDisplayTag === 'function') {
+        //       window.aipDisplayTag.display('farmgame-live_120x60');
+        //     }
+        //   });
+        // }
+
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
+
     return (
         <div style={appStyle}>
             <div className='left-column'>
@@ -89,15 +119,15 @@ function PlantScreen({ tiles, setTiles, itemsData, setItemsData, getUpgrades, ge
                 <div className="userProfile"><CompProfile orderNotice={orderNotice} setOrderBox={setOrderBox} setLoginBox={setLoginBox} type={'tall'} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
                 <div className="inventoryPl"><CompInventory level={level} tool={tool} setTool={setTool} fertilizers={fertilizers} equippedFert={equippedFert} items={items} updateInventory={updateInventory} showFertilizer={true} setEquippedFert={setEquippedFert} /></div>
                 <div className="settings">
-                    {/* <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '60px', justifyContent: 'space-evenly', position: 'absolute', top: '0' }}>
-                        <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
-                            AD 120px x 60px
+                    <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '60px', justifyContent: 'space-evenly', position: 'absolute', top: '0' }}>
+                        <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000' }}>
+                            <div id="farmgame-live_120x60"></div>
                         </div>
-                        <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
+                        {/* <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
                             AD 120px x 60px
-                        </div>
+                        </div> */}
 
-                    </div> */}
+                    </div>
                     {/* <a target='_blank' href="/updateNotes.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>update notes </a> */}
                     <a target='_blank' href="/privacy.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>Privacy Policy </a>
 

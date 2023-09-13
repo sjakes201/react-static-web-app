@@ -193,11 +193,11 @@
 }
 
 #questionMark {
-    width: 8%;
+    width: 4%;
     object-fit: contain;
     position: absolute;
-    right: 3%;
-    top: 15%;
+    right: 1%;
+    bottom: 5%;
     cursor: pointer;
 }
 

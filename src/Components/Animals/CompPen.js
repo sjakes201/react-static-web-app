@@ -474,7 +474,7 @@ function CompPen({ animalsParent, setAnimalsParent, getUpgrades, penWidth, penHe
             backgroundRepeat: 'repeat, repeat',
 
             width: `40vw`,
-            height: `80vh`,
+            height: `calc(90vh - 90px)`,
             WebkitUserSelect: "none",
             MozUserSelect: "none",
             msUserSelect: "none",

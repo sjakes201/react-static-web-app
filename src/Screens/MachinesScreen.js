@@ -277,6 +277,56 @@ function MachinesScreen({ artisanItems, setArtisanItems, itemsData, setItemsData
             }
         }
     }
+
+    useEffect(() => {
+        let loaded = ''; // Moved it here so it's accessible within the entire useEffect block
+
+        const script = document.createElement('script');
+        script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
+        script.async = true;
+
+        script.onload = () => {
+            if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
+                if (window.innerWidth >= 1515) {
+                    window.aiptag.cmd.display.push(function () {
+                        if (typeof window.aipDisplayTag.display === 'function') {
+                            window.aipDisplayTag.display('farmgame-live_970x90');
+                        }
+                    });
+                    loaded = '970';
+                } else if (window.innerWidth >= 1137 && window.innerWidth < 1515) {
+                    window.aiptag.cmd.display.push(function () {
+                        if (typeof window.aipDisplayTag.display === 'function') {
+                            window.aipDisplayTag.display('farmgame-live_728x90');
+                        }
+                    });
+                    loaded = '728';
+                } else {
+                    window.aiptag.cmd.display.push(function () {
+                        if (typeof window.aipDisplayTag.display === 'function') {
+                            window.aipDisplayTag.display('farmgame-live_120x60');
+                        }
+                    });
+                    loaded = '120';
+                }
+            }
+        };
+
+        document.body.appendChild(script);
+
+        return () => {
+            document.body.removeChild(script);
+            // if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
+            //     const refreshId = `farmgame-live_${loaded}x${loaded === 120 ? '60' : '90'}}`;
+            //     window.aiptag.cmd.display.push(function () {
+            //         if (typeof window.aipDisplayTag === 'function') {
+            //             window.aipDisplayTag.display(refreshId);
+            //         }
+            //     });
+            // }
+        };
+    }, []);
+
     return (
         <div className='machineScreen'>
             {helpGUI &&
@@ -371,11 +421,6 @@ function MachinesScreen({ artisanItems, setArtisanItems, itemsData, setItemsData
                             </div>
                         </div>
                     </div>
-
-                    <div className='artisanRightColumn'>
-                        <div className='artisanSellGrid'> </div>
-                    </div>
-
                 </div>
             }
             <div className='machineGrid'>
@@ -384,12 +429,19 @@ function MachinesScreen({ artisanItems, setArtisanItems, itemsData, setItemsData
                     <img
                         src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_light.png`}
                         alt='back-arrow'
-                        onClick={() => navigate('/animals')}
-                        style={{ width: '10%', marginLeft: '1%', cursor: 'pointer', objectFit: 'contain' }}
+                        onClick={() => window.history.back()}
+                        style={{ width: '5%', marginLeft: '1%', marginBottom: '5%', cursor: 'pointer', objectFit: 'contain' }}
                     />
-                    <div style={{ display: 'none', position: 'relative', width: '728px', height: '90px', zIndex: '2000', backgroundColor: 'orange' }}>
-                        AD 728px x 90px
-                    </div>
+                    {(window.innerWidth >= 1137 && window.innerWidth < 1515) &&
+                        <div style={{ position: 'relative', width: '728px', height: '90px', zIndex: '20000' }}>
+                            <div id="farmgame-live_728x90"></div>
+                        </div>
+                    }
+                    {(window.innerWidth >= 1515) &&
+                        <div style={{ position: 'relative', width: '970px', height: '90px', zIndex: '20000' }}>
+                            <div id="farmgame-live_970x90"></div>
+                        </div>
+                    }
                     <img
                         src={`${process.env.PUBLIC_URL}/assets/images/questionmark.png`}
                         alt='info'

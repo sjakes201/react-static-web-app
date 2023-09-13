@@ -44,7 +44,7 @@ function AnimalScreen({ setAnimalsInfo, barn, coop, setBarn, setCoop, itemsData,
   }, [componentWidth, componentHeight]);
 
   const renderPens = componentWidth !== null && componentHeight !== null;
-
+  
   const [items, setItems] = useState({});
 
   const [orderBox, setOrderBox] = useState(false);
@@ -102,24 +102,32 @@ function AnimalScreen({ setAnimalsInfo, barn, coop, setBarn, setCoop, itemsData,
     const script = document.createElement('script');
     script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
     script.async = true;
-  
+
     script.onload = () => {
       if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
-        window.aiptag.cmd.display.push(function() {
-          if (typeof window.aipDisplayTag === 'function') {
+        window.aiptag.cmd.display.push(function () {
+          if (typeof window.aipDisplayTag.display === 'function') {
             window.aipDisplayTag.display('farmgame-live_120x60');
           }
         });
       }
     };
-  
+
     document.body.appendChild(script);
-  
+
+    // if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
+    //   window.aiptag.cmd.display.push(function () {
+    //     if (typeof window.aipDisplayTag.display === 'function') {
+    //       window.aipDisplayTag.display('farmgame-live_120x60');
+    //     }
+    //   });
+    // }
+
     return () => {
       document.body.removeChild(script);
     };
   }, []);
-  
+
 
   return (
     <div style={appStyle}>
@@ -142,7 +150,7 @@ function AnimalScreen({ setAnimalsInfo, barn, coop, setBarn, setCoop, itemsData,
 
 
             <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000' }}>
-            <div id="farmgame-live_120x60"></div>
+              <div id="farmgame-live_120x60"></div>
             </div>
 
             {/* <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>

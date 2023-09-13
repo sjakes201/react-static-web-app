@@ -2,11 +2,18 @@ import React, { useEffect, useState, useRef, useContext } from 'react'
 import '../CSS/CompOtherScreens.css'
 import { Link } from 'react-router-dom';
 
+import { useNavigate } from 'react-router-dom';
 
 // pass parameter for what screen you are at right now
 
 function CompOtherScreens({ current }) {
   const [otherScreens, setOtherScreens] = useState([]);
+
+  const navigate = useNavigate();
+  if (localStorage.getItem('token') === null) {
+    // no auth token present
+    navigate('/');
+  }
 
   const renderScreenButton = (imageSrc, altText, whereTo) => {
     return (
@@ -51,6 +58,18 @@ function CompOtherScreens({ current }) {
   return (
     <div className='buttons-container bottom-bar'>
       {otherScreens}
+      <div style={{
+        height: '100%',
+        boxSizing: 'border-box',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        cursor: 'pointer',
+      }}
+        onClick={() => navigate('/machines')}
+      >
+        <img src={`${process.env.PUBLIC_URL}/assets/images/machines/deskClickable.png`} style={{ height: '100%', objectFit: 'contain' }} />
+      </div>
     </div>
   )
 }
