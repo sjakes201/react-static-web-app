@@ -96,13 +96,13 @@ function PlantScreen({ tiles, setTiles, itemsData, setItemsData, getUpgrades, ge
 
         document.body.appendChild(script);
 
-        // if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
-        //   window.aiptag.cmd.display.push(function () {
-        //     if (typeof window.aipDisplayTag === 'function') {
-        //       window.aipDisplayTag.display('farmgame-live_120x60');
-        //     }
-        //   });
-        // }
+        if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
+          window.aiptag.cmd.display.push(function () {
+            if (typeof window.aipDisplayTag === 'function') {
+              window.aipDisplayTag.display('farmgame-live_120x60');
+            }
+          });
+        }
 
         return () => {
             document.body.removeChild(script);
