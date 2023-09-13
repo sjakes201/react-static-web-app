@@ -9,6 +9,8 @@ export function useWebSocket() {
 export function WebSocketProvider({ children }) {
     const [ws, setWs] = useState(null);
     const [isConnected, setIsConnected] = useState(false);
+    
+    // We need to re-call the initial GameContainer mount functions after receiving guest auth, force a remount by changing the key
     const [auth, setAuth] = useState(1)
 
     const connectToWebSocketServer = () => {

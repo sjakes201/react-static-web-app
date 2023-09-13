@@ -55,7 +55,7 @@ function AnimalScreen({ setAnimalsInfo, barn, coop, setBarn, setCoop, itemsData,
   const [equippedFeed, setEquippedFeed] = useState("")
 
   useEffect(() => {
-    let data = {...itemsData};
+    let data = { ...itemsData };
     delete data.HarvestsFertilizer; delete data.TimeFertilizer; delete data.YieldsFertilizer;
     setItems(data);
   }, [itemsData]);
@@ -98,6 +98,29 @@ function AnimalScreen({ setAnimalsInfo, barn, coop, setBarn, setCoop, itemsData,
     appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/${equippedFeed}32.png) 16 16, auto`
   }
 
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
+    script.async = true;
+  
+    script.onload = () => {
+      if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
+        window.aiptag.cmd.display.push(function() {
+          if (typeof window.aipDisplayTag === 'function') {
+            window.aipDisplayTag.display('farmgame-live_120x60');
+          }
+        });
+      }
+    };
+  
+    document.body.appendChild(script);
+  
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+  
+
   return (
     <div style={appStyle}>
       {manager && <div className='manage-animals'> <AnimalManagement setAnimalsInfo={setAnimalsInfo} capacities={capacities} coop={coop} setCoop={setCoop} barn={barn} setBarn={setBarn} setManager={setManager} /></div>}
@@ -114,15 +137,19 @@ function AnimalScreen({ setAnimalsInfo, barn, coop, setBarn, setCoop, itemsData,
         <div className="userProfile"><CompProfile orderNotice={orderNotice} type={'tall'} setLoginBox={setLoginBox} setOrderBox={setOrderBox} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
         <div className="inventory"><CompInventory items={items} updateInventory={updateInventory} isAnimalScreen={true} setEquippedFeed={setEquippedFeed} /></div>
         <div className="settings">
-          {/* <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '60px', justifyContent: 'space-evenly', position: 'absolute', top: '0' }}>
-            <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
-              AD 120px x 60px
-            </div>
-            <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
-              AD 120px x 60px
+          <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '60px', justifyContent: 'space-evenly', position: 'absolute', top: '0' }}>
+
+
+
+            <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000' }}>
+            <div id="farmgame-live_120x60"></div>
             </div>
 
-          </div> */}
+            {/* <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
+              
+            </div> */}
+
+          </div>
           {/* <a target='_blank' href="/updateNotes.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>update notes </a> */}
           <a target='_blank' href="/privacy.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>Privacy Policy </a>
           <div style={{ width: '70%', height: '3vh', position: 'absolute', bottom: '4vh', left: '0', fontSize: '1vw' }}>
