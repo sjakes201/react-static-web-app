@@ -3,14 +3,17 @@ import './TownInterface.css'
 import PlayerCard from './PlayerCard';
 import { useWebSocket } from "../../WebSocketContext";
 import TOWNSINFO from '../../TOWNSINFO';
-import { wait } from '@testing-library/user-event/dist/utils';
-import { set } from 'react-ga';
+import TownGoals from './TownGoals';
 
+// townName is string for town name, backArrow is optional function to be called when back arrow pressed
 function TownInterface({ townName, backArrow }) {
-    townName = "ogJakeTown"; backArrow = true;
+
     const { waitForServerResponse } = useWebSocket();
 
-    /* The townInfo query will return data based on who requested it. If you are not in the town, it will return data only needed for justViewing */
+    // Which screen to show ("MAIN" or "GOALS")
+    const [townScreen, setTownScreen] = useState("MAIN")
+
+    /* The townInfo query will return data based on who requested it */
     const [townInfo, setTownInfo] = useState({})
     // GUI useStates
     const [perksPopup, setPerksPopup] = useState(false);
@@ -43,14 +46,12 @@ function TownInterface({ townName, backArrow }) {
     };
 
     // Use this to refresh town info call once the press join button
-    const [joinedTown, setJoinedTown] = useState(false)
-    const [justViewing, setJustViewing] = useState(true)
+    const [refreshData, setRefreshData] = useState(1)
 
     useEffect(() => {
         const fetchData = async () => {
             if (waitForServerResponse) {
                 let data = await waitForServerResponse('getTownInfo', { townName: townName });
-                if (data.myControls !== 'visitor') { setJustViewing(false) }
                 data.body.playersData.sort((a, b) => b.xp - a.xp)
                 console.log(data)
                 setTownInfo(data.body)
@@ -60,15 +61,9 @@ function TownInterface({ townName, backArrow }) {
                     status: data.body.status,
                 })
             }
-            // for (let i = 0; i < 20; ++i) {
-            //     if (waitForServerResponse) {
-            //         let data = await waitForServerResponse('joinTown', { });
-            //         console.log(data)
-            //     }
-            // }
         }
-        // fetchData()
-    }, [joinedTown])
+        fetchData()
+    }, [refreshData])
 
     // Interface action functions
 
@@ -119,9 +114,19 @@ function TownInterface({ townName, backArrow }) {
             let response = await waitForServerResponse('joinTown', { townName: townInfo.townName });
             console.log(response)
             if (response.body.message === 'SUCCESS') {
-                setJoinedTown((old) => !old);
+                setRefreshData((old) => old+1);
             }
         }
+    }
+
+    const leaveTown = async() => {
+        if (waitForServerResponse) {
+            let response = await waitForServerResponse('leaveTown', { });
+            if (response.body.message === 'SUCCESS') {
+                setRefreshData((old) => old+1);
+            }
+        }
+
     }
 
     // Info for when player clicks level button
@@ -195,7 +200,7 @@ function TownInterface({ townName, backArrow }) {
                             onClick={() => setSettingsData((old) => { let newData = { ...old }; newData.status = 'CLOSED'; return newData })}>
                             Closed</button>
                     </div>
-                    <button type="submit">Save</button>
+                    <button type="submit" id='descSubmitButton'>Save</button>
                 </form>
             </div>
         </div>)
@@ -207,60 +212,75 @@ function TownInterface({ townName, backArrow }) {
                 <div className='loadingIconAnimation'></div>
             </div>) : (
                 <>
-                    {settingsGUI && settings()}
-                    <div className='townInfoBar'>
-                        <div className='townLeftBar'>
-                            {backArrow && <img id='townBackArrow' src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_dark.png`} />}
-                            {townInfo.myControls === 'leader' && <img id='townSettingsButton' src={`${process.env.PUBLIC_URL}/assets/images/Gears.png`} onClick={() => setSettingsGUI(true)} />}
-                        </div>
-                        <div className='townLogo basicCenter'>
-                            <img src={`${process.env.PUBLIC_URL}/assets/images/townIcons/${TOWNSINFO.townIcons[townInfo.townLogoNum]}.png`} />
-                        </div>
-                        <div className='townTextInfo'>
-                            <p id='townName'>
-                                {townInfo.townName}
-                            </p>
-                            <p id='townDescription'>
-                                {townInfo.description}
-                            </p>
-                        </div>
-                        <div className='townLevel basicCenter'>
-                            <img src={`${process.env.PUBLIC_URL}/assets/images/XP.png`} onClick={() => setPerksPopup(true)} />
-                            {perksPopup && levelPerks()}
-                        </div>
-                        <div className='townGap'></div>
-                        <div className='townInfoSection'>
-                            <div className='townStatuses basicCenter'>
-                                <p>{townInfo.memberCount}/25 members</p>
-                                <p style={{ color: townInfo.status === 'OPEN' ? '#36e04d' : 'gray' }}>{townInfo.status}</p>
-                            </div>
-                            {townInfo.myControls !== 'visitor' && (townInfo.myControls !== 'leader' ?
-                                <div className='leaveContainer basicCenter townInfoLowerRight'>
-                                    <div className='townLeaveButton basicCenter'>
-                                        Leave
+                    {
+                        townScreen === "MAIN" &&
+                        <>
+                            {settingsGUI && settings()}
+                            <div className='townInfoBar'>
+                                <div className='townLeftBar'>
+                                    {backArrow && <img id='townBackArrow' src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_dark.png`} onClick={backArrow}/>}
+                                    {townInfo.myControls === 'leader' && <img id='townSettingsButton' src={`${process.env.PUBLIC_URL}/assets/images/Gears.png`} onClick={() => setSettingsGUI(true)} />}
+                                </div>
+                                <div className='townLogo basicCenter'>
+                                    <img src={`${process.env.PUBLIC_URL}/assets/images/townIcons/${TOWNSINFO.townIcons[townInfo.townLogoNum]}.png`} />
+                                </div>
+                                <div className='townTextInfo'>
+                                    <p id='townName'>
+                                        {townInfo.townName}
+                                    </p>
+                                    <p id='townDescription'>
+                                        {townInfo.description}
+                                    </p>
+                                </div>
+                                <div className='townLevel'>
+                                    <img src={`${process.env.PUBLIC_URL}/assets/images/XP.png`} onClick={() => setPerksPopup(true)} />
+                                    {perksPopup && levelPerks()}
+                                    { townInfo.myControls !== 'visitor' &&
+                                    <div className='showGoalsButton basicCenter'
+                                        onClick={() => {
+                                            setTownScreen("GOALS")
+                                        }}
+                                    >GOALS</div>}
+                                </div>
+                                <div className='townGap'></div>
+                                <div className='townInfoSection'>
+                                    <div className='townStatuses basicCenter'>
+                                        <p>{townInfo.memberCount}/25 members</p>
+                                        <p style={{ color: townInfo.status === 'OPEN' ? '#36e04d' : 'gray' }}>{townInfo.status}</p>
                                     </div>
+                                    {townInfo.myControls !== 'visitor' && (townInfo.myControls === 'member' ?
+                                        <div className='leaveContainer basicCenter townInfoLowerRight'>
+                                            <div className='townLeaveButton basicCenter' onClick={() => leaveTown()}>
+                                                Leave
+                                            </div>
+                                        </div>
+                                        :
+                                        <p className='promoteWarn basicCenter townInfoLowerRight'>
+                                            Must promote new leader before leaving
+                                        </p>
+                                    )}
+                                    {(townInfo.myControls === 'visitor' && townInfo.status === "OPEN" && townInfo.memberCount < 25 && !townInfo.imInTown) &&
+                                        <div className='townJoinContainer basicCenter'>
+                                            <div className='joinButton basicCenter' onClick={() => joinTown()}>Join</div>
+                                        </div>
+                                    }
                                 </div>
-                                :
-                                <p className='promoteWarn basicCenter townInfoLowerRight'>
-                                    Must promote new leader before leaving
-                                </p>
-                            )}
-                            {(townInfo.myControls === 'visitor' && townInfo.status === "OPEN" && townInfo.memberCount < 25) &&
-                                <div className='townJoinContainer basicCenter'>
-                                    <div className='joinButton basicCenter' onClick={() => { joinTown() }}>Join</div>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                    <div className='townPlayers'>
-                        {townInfo.playersData.map((player, index) =>
-                            <div key={index * 100} className='playerInfo'>
-                                <PlayerCard key={index} username={player.username} xp={player.xp} role={player.role} contributions={player.contributions} myControls={townInfo.myControls} managementAction={managementAction} justViewing={justViewing} />
                             </div>
-                        )}
-                    </div>
-                </>
-            )}
+                            <div className='townPlayers'>
+                                {townInfo.playersData.map((player, index) =>
+                                    <div key={index * 100} className='playerInfo'>
+                                        <PlayerCard key={index} username={player.username} xp={player.xp} role={player.role} contributions={player.contributions} myControls={townInfo.myControls} managementAction={managementAction} />
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    }
+                    {
+                        townScreen === "GOALS" && (
+                            <TownGoals setTownInfo={setTownInfo} setTownScreen={setTownScreen} townName={townInfo.townName} goals={townInfo.goalsData} role={townInfo.myControls} myUnclaimed={townInfo.myUnclaimed} remount={() => setRefreshData((old) => old+1)}/>
+                        )
+                    }
+                </>)}
         </div>
     )
 }

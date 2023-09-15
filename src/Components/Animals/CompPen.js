@@ -80,7 +80,6 @@ function CompPen({ animalsParent, setAnimalsParent, getUpgrades, penWidth, penHe
 
         const lastFed = targetAnimal.Last_fed;
         let timePassedMS = Date.now() - lastFed;
-        console.log(timePassedMS)
         if (timePassedMS >= ANIMALINFO.VALUES.FEED_COOLDOWN) {
             let newCount = updateInventory(feed, -1);
             let happinessAdd = ANIMALINFO.FoodHappinessYields[feed];

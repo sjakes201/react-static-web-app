@@ -1,8 +1,35 @@
 .townInterfaceContainer {
     height: 100%;
     width: 100%;
-    border: 1px solid black;
     font-size: 1vw;
+    background-color: var(--menu_light);
+    box-shadow:
+        0 0 0 2px var(--black),
+        0 0 0 5px var(--border_yellow),
+        0 0 0 7px var(--border_shadow_yellow),
+        0 0 0 9px var(--black);
+
+    /* Scrollbar */
+    /* width */
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 2px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 3px grey;
+        border-radius: 10px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: var(--menu_lighter);
+        border-radius: 10px;
+        border: 1px solid rgb(0, 0, 0);
+    }
+
+
 }
 
 .townLoadingScreen {
@@ -46,16 +73,25 @@
     align-items: center;
 }
 
+
 /* Town info bar and it's children */
 .townInfoBar {
-    height: 18%;
+    height: calc(18% - 8px);
     width: 100%;
-    border-bottom: 1px solid black;
     display: flex;
     flex-direction: row;
     align-items: center;
     box-sizing: border-box;
     position: relative;
+    box-sizing: border-box;
+    margin: 0 0 8px 0;
+    box-shadow:
+        0 2px 0 0 var(--black),
+        0 4px 0 0 var(--border_yellow),
+        0 6px 0 0 var(--border_shadow_yellow),
+        0 8px 0 0 var(--black);
+    background-color: var(--menu_lighter);
+
 }
 
 .townLeftBar {
@@ -64,18 +100,22 @@
 }
 
 #townBackArrow {
-    width: 5%;
+    max-width: 5%;
+    height: 45%;
     cursor: pointer;
     position: absolute;
+    object-fit: contain;
     top: 0;
 }
 
 #townSettingsButton {
     position: absolute;
     cursor: pointer;
-    width: 5%;
+    max-width: 5%;
+    height: 45%;
     bottom: 5%;
     left: 5px;
+    object-fit: contain;
 }
 
 .townLogo {
@@ -89,6 +129,7 @@
     object-fit: contain;
     border: 1px solid black;
     border-radius: 50%;
+    background-color: var(--menu_lightest);
 }
 
 .townTextInfo {
@@ -116,18 +157,32 @@
     overflow: hidden;
     border: 1px solid black;
     padding: 2% 0 0 2.5%;
+    background-color: var(--menu_lightest);
 }
 
 .townLevel {
     width: 15%;
     height: 100%;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .townLevel>img {
     object-fit: contain;
     height: 50%;
     cursor: pointer;
+}
+
+.showGoalsButton {
+    width: 55%;
+    height: 25%;
+    border: 1px solid black;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: var(--menu_lightest);
 }
 
 .townGap {
@@ -163,17 +218,16 @@
     height: 100%;
     width: 100%;
     grid-row: 2/3;
-    grid-column: 1/2;
+    grid-column: 2/3;
 }
 
 .joinButton {
     border: 1px solid black;
     border-radius: 12%;
-    background-color: rgb(127, 187, 244);
+    background-color: var(--menu_lightest);
     width: 60%;
     height: 70%;
     cursor: pointer;
-
 }
 
 .leaveContainer {
@@ -216,30 +270,31 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    gap: 2%
+    gap: 2%;
+    background-color: var(--menu_light);
 }
 
 .playerInfo {
     width: 100%;
-    min-height: 15%;
-    border: 1px solid black;
+    min-height: 16%;
 }
 
 /*  Farm level perks popup */
 .levelPerksContainer {
     position: absolute;
-    top: 23%;
+    top: 15%;
     left: 33%;
     width: 20vw;
     min-height: 50%;
     border: 1px solid black;
     border-radius: 1%;
-    background-color: white;
+    background-color: var(--menu_lightest);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     padding: 1.5vh 3vh;
+    z-index: 20;
 }
 
 .perkPercent {
@@ -265,19 +320,24 @@
     z-index: 50;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background-color: rgba(22, 22, 22, 0.692);
 }
 
 .settingsGUI {
     position: absolute;
-    width: 30%;
-    height: 40%;
+    width: calc(30% - 11px);
+    height: calc(40% - 11px);
     z-index: 51;
-    background-color: blanchedalmond;
-    border: 1px solid black;
-    border-radius: 2%;
+    background-color: var(--menu_lighter);
+    
+    margin: 11px;
+    box-shadow:
+        0 0 0 3px var(--black),
+        0 0 0 6px var(--border_yellow),
+        0 0 0 8px var(--border_shadow_yellow),
+        0 0 0 11px var(--black);
 }
 
 .upperRightX {
@@ -316,6 +376,7 @@
     resize: none;
     max-width: 80%;
     padding: 1%;
+    background-color: white;
 }
 
 .setNewStatus {
@@ -329,20 +390,20 @@
 
 
 .selectedButton {
-    width: 16%;
-    height: 52%;
+    padding: 2%;
     margin: 1%;
     border: 2px solid black;
     border-radius: 6%;
+    background-color: white;
 }
 
 .unselectedButton {
-    width: 14%;
-    height: 48%;
+    padding: 2%;
     margin: 1%;
     border: 1px solid black;
     border-radius: 6%;
     opacity: 0.7;
+    background-color: white;
 }
 
 #name {
@@ -367,12 +428,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
 }
 
 .townIconSelection {
     width: 80%;
-
     display: grid;
     grid-template-rows: 50% 50%;
     grid-template-columns: 25% 25% 25% 25%;
@@ -396,4 +456,9 @@
     max-height: 95%;
     opacity: 1;
     filter: none;
+}
+
+#descSubmitButton {
+    background-color: white;
+    padding: 2px;
 }

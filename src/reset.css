@@ -10,11 +10,12 @@
   --menu_dark: rgb(94, 70, 40);
   --menu_light: rgb(212, 179, 116);
   --menu_lighter: #FFEBCD;
+  --menu_lightest: #fffbeb;
   --border_yellow: rgb(255, 228, 82);
   --border_shadow_yellow: rgb(214, 192, 69);
   --border_gray: lightgray;
   --border_shadow_gray: gray;
-  --soft_red: rgb(238, 146, 146)
+  --soft_red: rgb(238, 146, 146);
 }
 
 /* Box sizing */

@@ -1,28 +1,54 @@
 import './TownGoals.css'
 import GoalCard from './GoalCard';
+import { useWebSocket } from "../../WebSocketContext";
+import { waitFor } from '@testing-library/react';
 
-function TownGoals({ goals,townName }) {
-    townName='BestTownEver'
-    goals = [
-        { good: 'corn', numNeeded: '200', numHave: 0 },
-        { good: 'carrot', numNeeded: '100', numHave: 0 },
-        { good: 'sheep_wool', numNeeded: '25', numHave: 0 },
-        { good: 'cow_milk', numNeeded: '50', numHave: 0 },
-        { good: 'ostrich_egg', numNeeded: '5', numHave: 0 },
-        { good: 'hops', numNeeded: '500', numHave: 0 },
-        { good: 'melon', numNeeded: '20', numHave: 0 },
-        { good: 'oats', numNeeded: '500', numHave: 0 }
-    ];
+// Goals is array of objects { good: string, numNeeded: int, numHave: int}
+// townName is string
+// remount recalls getTownInfo
+// role is string ("leader", "member")
+function TownGoals({ setTownInfo, goals, townName, myUnclaimed, role, setTownScreen, remount }) {
+    const { waitForServerResponse } = useWebSocket();
 
+    const changeGoal = async(newGoal, goalSlot) => {
+        if(waitForServerResponse) {
+            await waitForServerResponse('setTownGoal', {
+                newGoal: newGoal,
+                goalSlot: goalSlot
+            })
+            remount()
+        }
+    }
+
+    const claimUnclaimedGoal = async(slotNum) => {
+        if(waitForServerResponse) {
+            setTownInfo((old) => {
+                let newInfo = {...old};
+                newInfo.myUnclaimed[`unclaimed_${slotNum}`] = null;
+                return newInfo;
+            })
+            let result = await waitForServerResponse('claimTownGoal', {
+                slotNum: slotNum
+            })
+            console.log(result)
+            
+        }
+    }
+
+    // When this component is initialized, call something to get new unclaimed goals
     return (
         <div className='townGoalsContainer'>
             <div className='goalsTopBar'>
-                <img id='goalsBackArrow' src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_dark.png`} />
+                <img
+                id='goalsBackArrow'
+                src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_dark.png`} 
+                onClick={() => setTownScreen("MAIN")}
+                />
                 <p className='goalsTownName'>{townName} town goals</p>
             </div>
             <div className='goalsListContainer'>
                 {goals.map((goal, index) => {
-                    return <GoalCard key={index} good={goal.good} numNeeded={goal.numNeeded} numHave={goal.numHave}/>
+                    return <GoalCard key={index} good={goal.good} numNeeded={goal.numNeeded} numHave={goal.numHave} role={role} unclaimedData={myUnclaimed[`unclaimed_${index+1}`]} claimUnclaimedGoal={claimUnclaimedGoal} index={index} changeGoal={changeGoal}/>
                 })}
             </div>
         </div>

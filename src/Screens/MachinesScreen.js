@@ -317,7 +317,7 @@ function MachinesScreen({ artisanItems, setArtisanItems, itemsData, setItemsData
         return () => {
             document.body.removeChild(script);
             if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
-                const refreshId = `farmgame-live_${loaded}x${loaded === 120 ? '60' : '90'}}`;
+                const refreshId = `farmgame-live_${loaded}x${loaded === 120 ? '60' : '90'}`;
                 window.aiptag.cmd.display.push(function () {
                     if (typeof window.aipDisplayTag.display === 'function') {
                         window.aipDisplayTag.display(refreshId);

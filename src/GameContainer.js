@@ -16,6 +16,7 @@ import GoogleAnalyticsReporter from './GoogleAnalyticsReporter';
 
 import TownInterface from './Components/Towns/TownInterface';
 import TownGoals from './Components/Towns/TownGoals';
+import TownSearch from './Components/Towns/TownSearch';
 
 import { useWebSocket } from './WebSocketContext'; // Replace with your actual import path
 
@@ -307,7 +308,7 @@ function GameContainer() {
         </div>
         // <div style={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         //     <div style={{ width: '60%', height: '80%' }}>
-        //         <TownInterface />
+        //         <TownSearch />
         //     </div>
         // </div>
     );

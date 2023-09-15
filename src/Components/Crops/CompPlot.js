@@ -22,9 +22,6 @@ function CompPlot({ tiles, setTiles, tool, setFertilizers, fertilizers, equipped
 
     const navigate = useNavigate();
 
-    // Semaphore for multiplant items count
-    let lockItems = useRef(false)
-
     // Logic for multi action hovering
     const setHovering = (tileID) => {
         if (tool === "") {

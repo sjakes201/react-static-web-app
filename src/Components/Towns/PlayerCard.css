@@ -10,9 +10,17 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 100%;
-    height: 100%;
-    border: 1px solid navy;
+    width: calc(100% - 12px);
+    height: calc(100% - 12px);
+    background-color: var(--menu_lightest);
+    
+    box-sizing: border-box;
+    margin: 6px;
+    box-shadow:
+        0 0 0 1px var(--black),
+        0 0 0 3px var(--border_yellow),
+        0 0 0 4px var(--border_shadow_yellow),
+        0 0 0 6px var(--black);
 }
 
 .playerLevel {
@@ -71,7 +79,6 @@
 
 
 .playerMoreButton {
-    border: 1px solid navy;
     height: 35%;
     width: 3%;
     margin: 0 2.5%;
@@ -98,7 +105,7 @@
     z-index: 5;
     width: 20vw;
     height: 23vh;
-    background-color: white;
+    background-color: var(--menu_lightest);
     border: 1px solid black;
     border-radius: 4%;
     padding: 1.4vh;
@@ -136,21 +143,10 @@
 
 /* Level icon fancies */
 
-.outer,
-.outer:after,
-.outer:before {
-    background: rgb(143, 151, 152);
-    background: rgb(143, 151, 152);
-    z-index: 10;
-    width: 5.3vh;
-    height: 5.3vh;
-}
-
 .inner,
 .inner:after,
 .inner:before {
-    background: rgb(148, 228, 245);
-    background: rgb(148, 228, 245);
+    background: rgb(153, 213, 255);
     z-index: 20;
     width: 5vh;
     height: 5vh;

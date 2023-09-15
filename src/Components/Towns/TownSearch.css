@@ -1,0 +1,141 @@
+.townSearchContainer {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    box-shadow:
+        0 0 0 2px var(--black),
+        0 0 0 5px var(--border_orange),
+        0 0 0 7px var(--border_shadow_orange),
+        0 0 0 9px var(--black);
+
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 2px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 3px grey;
+        border-radius: 10px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: var(--menu_lighter);
+        border-radius: 10px;
+        border: 1px solid rgb(0, 0, 0);
+    }
+}
+
+.searchTopBar {
+    width: 100%;
+    height: calc(13% - 8px);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 2%;
+    border: 1px solid black;
+    background-color: var(--menu_lighter);
+
+    box-sizing: border-box;
+    margin: 0 0 8px 0;
+    box-shadow:
+        0 2px 0 0 var(--black),
+        0 4px 0 0 var(--border_orange),
+        0 6px 0 0 var(--border_shadow_orange),
+        0 8px 0 0 var(--black);
+}
+
+.searchResults {
+    width: 100%;
+    height: 87%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    justify-content: flex-start;
+    padding: 2% 0;
+    gap: 3%;
+    align-items: center;
+    border: 1px solid black;
+    background-color: var(--menu_light);
+}
+
+.searchViewInterface {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Styles for town top bar */
+.townSearchBar {
+    width: 80%;
+    height: 50%;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding-left: 1%;
+}
+
+.searchGo {
+    height: 50%;
+    cursor: pointer;
+}
+
+/* Styles for town cards */
+.townCard {
+    width: 95%;
+    height: 10vh;
+    font-size: 1vw;
+    border: 1px solid black;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    padding: 0 1% 0 3%;
+    cursor: pointer;
+    background-color: var(--menu_lightest);
+}
+
+.townCardLeft {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 4%;
+    height: 100%;
+    width: 47%;
+
+}
+
+.townCardRight {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 4%;
+    height: 100%;
+    width: 49%;
+}
+
+.searchTownLogo {
+    height: 90%;
+    object-fit: contain;
+    border: 1px solid black;
+    border-radius: 50%;
+}
+
+.searchTownName {
+    font-size: 1.1vw;
+
+}
+
+.searchTownLevel {
+    color: gray;
+    font-size: .7vw;
+
+}
+
+.searchTownStatus {
+    color: #36e04d;
+}

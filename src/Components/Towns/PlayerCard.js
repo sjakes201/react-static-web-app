@@ -2,7 +2,7 @@ import './PlayerCard.css'
 import CONSTANTS from '../../CONSTANTS';
 import React, { useState, useEffect, useRef } from 'react'
 
-function PlayerCard({ username, xp, role, contributions, myControls, managementAction, justViewing }) {
+function PlayerCard({ username, xp, role, contributions, myControls, managementAction }) {
 
     const [kickConfirm, setKickConfirm] = useState(false);
     const kickTimer = useRef(null);
@@ -85,15 +85,15 @@ function PlayerCard({ username, xp, role, contributions, myControls, managementA
             <div className='playerGap'></div>
             <div className='playerRole'>
                 <p>{role === 'leader' ? role : 'member'}</p>
-                {(myControls === 'leader' && role !== 'leader' && !justViewing) &&
+                {(myControls === 'leader') &&
                     <div className='townAuthControls'>
-                        <div className='authButton promoteButton basicCenter' onClick={() => buttonControl('PROMOTE')}>{promoteConfirm ? 'CONFIRM?' : 'PROMOTE'}</div>
+                        <div className='authButton promoteButton basicCenter' onClick={() => buttonControl('PROMOTE')}>{promoteConfirm ? 'CONFIRM?' : 'LEADER'}</div>
                         <div className='authButton kickButton basicCenter' onClick={() => buttonControl('KICK')}>{kickConfirm ? 'CONFIRM?' : 'KICK'}</div>
                     </div>
                 }
             </div>
-            {!justViewing &&
-                <div className='playerMoreButton' onClick={() => {if(!moreButton) setMoreButton((old) => !old)}}>
+            {myControls !== 'visitor' &&
+                <div className='playerMoreButton' onClick={() => { if (!moreButton) setMoreButton((old) => !old) }}>
                     <div className='buttonBar'></div>
                     <div className='buttonBar'></div>
                     <div className='buttonBar'></div>
