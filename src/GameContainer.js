@@ -279,6 +279,38 @@ function GameContainer() {
         }
     }
 
+    const scriptLoaded = useRef(false)
+    // Init ad slots
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
+        script.async = true;
+
+        script.onload = () => {
+            scriptLoaded.current = true;
+        };
+        document.body.appendChild(script);
+
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, [])
+
+    const rendered = useRef([])
+
+    const initDisplaySlot = (AIPPlacementID) => {
+        if (scriptLoaded.current) {
+            if (!rendered.current.includes(AIPPlacementID)) {
+                window.aiptag.cmd.display.push(function () {
+                    if (typeof window.aipDisplayTag.display === 'function') {
+                        window.aipDisplayTag.display(AIPPlacementID);
+                        rendered.current.push(AIPPlacementID)
+                    }
+                });
+            }
+        }
+    }
+
     if (!isConnected) {
         // If not connected yet, return a loading or connecting message
         return (
@@ -295,9 +327,9 @@ function GameContainer() {
             <GoogleAnalyticsReporter />
             <Routes>
                 <Route path="/" element={<InitLoading />} />
-                <Route path="/plants" element={<PlantScreen tiles={tiles} setTiles={setTiles} itemsData={itemsData} setItemsData={setItemsData} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
+                <Route path="/plants" element={<PlantScreen initDisplaySlot={initDisplaySlot} tiles={tiles} setTiles={setTiles} itemsData={itemsData} setItemsData={setItemsData} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
                 <Route path="/animals" element={<AnimalScreen setAnimalsInfo={setAnimalsInfo} barn={barn} coop={coop} setBarn={setBarn} setCoop={setCoop} itemsData={itemsData} setItemsData={setItemsData} capacities={capacities} upgrades={upgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
-                <Route path="/shop" element={<ShopScreen addAnimal={addAnimal} itemsData={itemsData} setItemsData={setItemsData} animalsInfo={animalsInfo} updateAnimalsInfo={updateAnimalsInfo} deluxePermit={deluxePermit} exoticPermit={exoticPermit} updateUpgrades={updateUpgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} newXP={newXP} XP={XP} />} />
+                <Route path="/shop" element={<ShopScreen initDisplaySlot={initDisplaySlot} addAnimal={addAnimal} itemsData={itemsData} setItemsData={setItemsData} animalsInfo={animalsInfo} updateAnimalsInfo={updateAnimalsInfo} deluxePermit={deluxePermit} exoticPermit={exoticPermit} updateUpgrades={updateUpgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} newXP={newXP} XP={XP} />} />
                 <Route path="/market" element={<MarketScreen itemsData={itemsData} setItemsData={setItemsData} prices={prices} setLoginBox={setLoginBox} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} newXP={newXP} XP={XP} />} />
                 <Route path="/leaderboard" element={<LeaderboardScreen />} />
                 <Route path="/account" element={<AccountScreen />} />

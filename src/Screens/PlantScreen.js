@@ -8,7 +8,7 @@ import CompProfile from "../Components/GUI/CompProfile";
 import OrderBoard from "../Components/Orders/OrderBoard";
 import { useNavigate } from 'react-router-dom';
 
-function PlantScreen({ tiles, setTiles, itemsData, setItemsData, getUpgrades, getUser, getBal, updateBalance, getXP, updateXP, level, setLoginBox }) {
+function PlantScreen({ initDisplaySlot, tiles, setTiles, itemsData, setItemsData, getUpgrades, getUser, getBal, updateBalance, getXP, updateXP, level, setLoginBox }) {
 
 
     const navigate = useNavigate();
@@ -31,6 +31,7 @@ function PlantScreen({ tiles, setTiles, itemsData, setItemsData, getUpgrades, ge
 
     useEffect(() => {
         sessionStorage.setItem('equipped', '')
+        initDisplaySlot('farmgame-live_120x60')
     }, [])
 
     useEffect(() => {
@@ -78,47 +79,6 @@ function PlantScreen({ tiles, setTiles, itemsData, setItemsData, getUpgrades, ge
         console.log(equippedFert)
         appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/${equippedFert}.png) 16 16, auto`
     }
-
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
-        script.async = true;
-
-        if (window.googletag && window.googletag.apiReady && typeof window.googletag.getSlots === 'function') {
-            const slots = window.googletag.getSlots();
-            const existingSlot = slots.find(s => s.getSlotElementId() === 'farmgame-live_120x60');
-            if (existingSlot) {
-                window.googletag.destroySlots([existingSlot]);
-            }
-        }
-
-        script.onload = () => {
-            if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
-                window.aiptag.cmd.display.push(function () {
-                    if (typeof window.aipDisplayTag.display === 'function') {
-                        window.aipDisplayTag.display('farmgame-live_120x60');
-                    }
-                });
-            }
-        };
-
-        document.body.appendChild(script);
-
-        // if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
-        //     window.aiptag.cmd.display.push(function () {
-        //         if (typeof window.aipDisplayTag.display === 'function') {
-        //             window.aipDisplayTag.display('farmgame-live_120x60');
-        //         }
-        //     });
-        // }
-        return () => {
-            document.body.removeChild(script);
-            // if (window.googletag && window.googletag.apiReady) {
-            //     const slots = [window.googletag.slot_manager_instance.l.find(s => s.getSlotElementId() === 'farmgame-live_120x60')];
-            //     window.googletag.destroySlots(slots);
-            // }
-        };
-    }, []);
 
     return (
         <div style={appStyle}>

@@ -102,35 +102,35 @@ function MarketScreen({ itemsData, setItemsData, prices, getUser, getBal, update
         }
     }
     
-    // useEffect(() => {
-    //     const script = document.createElement('script');
-    //     script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
-    //     script.async = true;
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
+        script.async = true;
 
-    //     script.onload = () => {
-    //         if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
-    //             window.aiptag.cmd.display.push(function () {
-    //                 if (typeof window.aipDisplayTag.display === 'function') {
-    //                     window.aipDisplayTag.display('farmgame-live_120x60');
-    //                 }
-    //             });
-    //         }
-    //     };
+        script.onload = () => {
+            if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
+                window.aiptag.cmd.display.push(function () {
+                    if (typeof window.aipDisplayTag.display === 'function') {
+                        window.aipDisplayTag.display('farmgame-live_120x60');
+                    }
+                });
+            }
+        };
 
-    //     document.body.appendChild(script);
+        document.body.appendChild(script);
 
-    //     if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
-    //         window.aiptag.cmd.display.push(function () {
-    //             if (typeof window.aipDisplayTag.display === 'function') {
-    //                 window.aipDisplayTag.display('farmgame-live_120x60');
-    //             }
-    //         });
-    //     }
+        if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
+            window.aiptag.cmd.display.push(function () {
+                if (typeof window.aipDisplayTag.display === 'function') {
+                    window.aipDisplayTag.display('farmgame-live_120x60');
+                }
+            });
+        }
 
-    //     return () => {
-    //         document.body.removeChild(script);
-    //     };
-    // }, []);
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
 
 
     return (

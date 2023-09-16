@@ -12,7 +12,7 @@ import { useWebSocket } from "../WebSocketContext";
 
 
 
-function ShopScreen({ addAnimal, itemsData, setItemsData, animalsInfo, updateAnimalsInfo, deluxePermit, exoticPermit, getUpgrades, getUser, getBal, updateBalance, getXP, level, setLoginBox, updateUpgrades }) {
+function ShopScreen({ initDisplaySlot, addAnimal, itemsData, setItemsData, animalsInfo, updateAnimalsInfo, deluxePermit, exoticPermit, getUpgrades, getUser, getBal, updateBalance, getXP, level, setLoginBox, updateUpgrades }) {
     const { waitForServerResponse } = useWebSocket();
 
     const navigate = useNavigate();
@@ -65,43 +65,10 @@ function ShopScreen({ addAnimal, itemsData, setItemsData, animalsInfo, updateAni
     }
 
     useEffect(() => {
-        const script = document.createElement('script');
-        script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
-        script.async = true;
-
-        if (window.googletag && window.googletag.apiReady && typeof window.googletag.getSlots === 'function') {
-            const slots = window.googletag.getSlots();
-            const existingSlot = slots.find(s => s.getSlotElementId() === 'farmgame-live_160x600');
-            if (existingSlot) {
-                window.googletag.destroySlots([existingSlot]);
-            }
+        if(window.innerHeight > 698) {
+            initDisplaySlot('farmgame-live_160x600')
         }
-
-        script.onload = () => {
-            if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
-                window.aiptag.cmd.display.push(function () {
-                    if (typeof window.aipDisplayTag.display === 'function') {
-                        window.aipDisplayTag.display('farmgame-live_160x600');
-                    }
-                });
-            }
-        };
-
-        document.body.appendChild(script);
-
-        // if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
-        //     window.aiptag.cmd.display.push(function () {
-        //         if (typeof window.aipDisplayTag.display.display === 'function') {
-        //             window.aipDisplayTag.display('farmgame-live_160x600');
-        //         }
-        //     });
-        // }
-
-        return () => {
-            document.body.removeChild(script);
-        };
-    }, []);
-
+    }, [])
 
     return (
         <div>
