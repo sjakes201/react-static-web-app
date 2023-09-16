@@ -9,10 +9,9 @@ import UPGRADES from "../UPGRADES";
 import { useNavigate } from 'react-router-dom';
 import { useWebSocket } from "../WebSocketContext";
 
+import AdinPlayAd from "../AdinPlayAd";
 
-
-
-function ShopScreen({ initDisplaySlot, addAnimal, itemsData, setItemsData, animalsInfo, updateAnimalsInfo, deluxePermit, exoticPermit, getUpgrades, getUser, getBal, updateBalance, getXP, level, setLoginBox, updateUpgrades }) {
+function ShopScreen({ addAnimal, itemsData, setItemsData, animalsInfo, updateAnimalsInfo, deluxePermit, exoticPermit, getUpgrades, getUser, getBal, updateBalance, getXP, level, setLoginBox, updateUpgrades }) {
     const { waitForServerResponse } = useWebSocket();
 
     const navigate = useNavigate();
@@ -64,12 +63,6 @@ function ShopScreen({ initDisplaySlot, addAnimal, itemsData, setItemsData, anima
         invItem.classList.add('flash');
     }
 
-    useEffect(() => {
-        if(window.innerHeight > 698) {
-            initDisplaySlot('farmgame-live_160x600')
-        }
-    }, [])
-
     return (
         <div>
             <div style={{
@@ -91,7 +84,7 @@ function ShopScreen({ initDisplaySlot, addAnimal, itemsData, setItemsData, anima
                     updateBalance={updateBalance} getBal={getBal} updateAnimalsInfo={updateAnimalsInfo}
                     items={items} />
                 <div style={{ position: 'relative', background: 'var(--menu_light)', borderLeft: '1px solid black', width: '164px', minHeight: '100%', zIndex: '2000', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                    {window.innerHeight > 698 && <div id="farmgame-live_160x600"></div>}
+                    {window.innerHeight > 698 && <AdinPlayAd placementId="farmgame-live_160x600" />}
                     {/* <img src={`${process.env.PUBLIC_URL}/assets/images/goat_standing_right.png`} style={{ width: '50%', margin: '0 25% 0 25%', position: 'absolute', bottom: '0%' }} /> */}
                 </div>
             </div>

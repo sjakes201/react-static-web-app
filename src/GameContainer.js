@@ -278,50 +278,35 @@ function GameContainer() {
 
         }
     }
-
-    const scriptLoaded = useRef(false)
-    // Init ad slots
+    
     useEffect(() => {
-        const script = document.createElement('script');
-        script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
-        script.async = true;
-
-        // script.onload = () => {
-        //     scriptLoaded.current = true;
-        // };
-        document.body.appendChild(script);
-
-        return () => {
-            document.body.removeChild(script);
+        // Initialize AdinPlay Ads
+        window.aiptag = window.aiptag || {};
+        window.aiptag.cmd = window.aiptag.cmd || [];
+        window.aiptag.cmd.display = window.aiptag.cmd.display || [];
+        window.aiptag.cmd.player = window.aiptag.cmd.player || [];
+      
+        window.aiptag.cmp = {
+          show: true,
+          position: "centered",  //centered or bottom
+          button: true,
+          buttonText: "Privacy settings",
+          buttonPosition: "bottom-left" //bottom-left, bottom-right, top-left, top-right
         };
-    }, [])
-
-    const rendered = useRef([])
-
-    const initDisplaySlot = (AIPPlacementID) => {
-
-        const loadSlot = () => {
-            window.aiptag.cmd.display.push(function () {
-                if (typeof window.aipDisplayTag.display === 'function') {
-                    window.aipDisplayTag.display(AIPPlacementID);
-                    rendered.current.push(AIPPlacementID)
-                }
-            });
-        }
-
-        if (scriptLoaded.current) {
-            if (!rendered.current.includes(AIPPlacementID)) {
-                loadSlot()
-            } else {
-                if (window.googletag && typeof window.googletag.destroySlots === 'function') {
-                    window.googletag.cmd.push(function () {
-                        window.googletag.destroySlots();
-                        loadSlot();
-                    });
-                }
-            }
-        }
-    }
+      
+        // Load AdinPlay Ads script
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js"; // Replace 'XXXXX' with your AIP ID
+        document.head.appendChild(script);
+      
+        return () => {
+          // Cleanup: Remove the script if needed
+          if (script.parentNode) {
+            script.parentNode.removeChild(script);
+          }
+        };
+      }, []);
 
     if (!isConnected) {
         // If not connected yet, return a loading or connecting message
@@ -339,15 +324,15 @@ function GameContainer() {
             <GoogleAnalyticsReporter />
             <Routes>
                 <Route path="/" element={<InitLoading />} />
-                <Route path="/plants" element={<PlantScreen initDisplaySlot={initDisplaySlot} tiles={tiles} setTiles={setTiles} itemsData={itemsData} setItemsData={setItemsData} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
-                <Route path="/animals" element={<AnimalScreen initDisplaySlot={initDisplaySlot} setAnimalsInfo={setAnimalsInfo} barn={barn} coop={coop} setBarn={setBarn} setCoop={setCoop} itemsData={itemsData} setItemsData={setItemsData} capacities={capacities} upgrades={upgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
-                <Route path="/shop" element={<ShopScreen initDisplaySlot={initDisplaySlot} addAnimal={addAnimal} itemsData={itemsData} setItemsData={setItemsData} animalsInfo={animalsInfo} updateAnimalsInfo={updateAnimalsInfo} deluxePermit={deluxePermit} exoticPermit={exoticPermit} updateUpgrades={updateUpgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} newXP={newXP} XP={XP} />} />
+                <Route path="/plants" element={<PlantScreen tiles={tiles} setTiles={setTiles} itemsData={itemsData} setItemsData={setItemsData} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
+                <Route path="/animals" element={<AnimalScreen setAnimalsInfo={setAnimalsInfo} barn={barn} coop={coop} setBarn={setBarn} setCoop={setCoop} itemsData={itemsData} setItemsData={setItemsData} capacities={capacities} upgrades={upgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
+                <Route path="/shop" element={<ShopScreen addAnimal={addAnimal} itemsData={itemsData} setItemsData={setItemsData} animalsInfo={animalsInfo} updateAnimalsInfo={updateAnimalsInfo} deluxePermit={deluxePermit} exoticPermit={exoticPermit} updateUpgrades={updateUpgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} newXP={newXP} XP={XP} />} />
                 <Route path="/market" element={<MarketScreen itemsData={itemsData} setItemsData={setItemsData} prices={prices} setLoginBox={setLoginBox} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} newXP={newXP} XP={XP} />} />
                 <Route path="/leaderboard" element={<LeaderboardScreen />} />
                 <Route path="/account" element={<AccountScreen />} />
                 <Route path="/passwordReset" element={<PasswordReset />} />
                 <Route path="/howtoplay" element={<HowToPlay />} />
-                <Route path="/machines" element={<MachinesScreen initDisplaySlot={initDisplaySlot} artisanItems={artisanItems} setArtisanItems={setArtisanItems} getUser={getUser} getXP={getXP} updateBalance={updateBalance} getBal={getBal} itemsData={itemsData} setItemsData={setItemsData} parts={parts} machines={machines} setParts={setParts} setMachines={setMachines} />} />
+                <Route path="/machines" element={<MachinesScreen artisanItems={artisanItems} setArtisanItems={setArtisanItems} getUser={getUser} getXP={getXP} updateBalance={updateBalance} getBal={getBal} itemsData={itemsData} setItemsData={setItemsData} parts={parts} machines={machines} setParts={setParts} setMachines={setMachines} />} />
             </Routes>
         </div>
         // <div style={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

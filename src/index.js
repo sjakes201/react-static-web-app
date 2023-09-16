@@ -1,13 +1,12 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import ReactGA from 'react-ga';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './reset.css'
 import GameContainer from './GameContainer';
 import { WebSocketProvider } from './WebSocketContext'; // Make sure the path is correct
+import React from 'react';
 
 ReactGA.initialize('G-SW9XV2PGLR');
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

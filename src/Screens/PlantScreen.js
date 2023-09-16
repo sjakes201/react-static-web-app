@@ -8,6 +8,8 @@ import CompProfile from "../Components/GUI/CompProfile";
 import OrderBoard from "../Components/Orders/OrderBoard";
 import { useNavigate } from 'react-router-dom';
 
+import AdinPlayAd from "../AdinPlayAd";
+
 function PlantScreen({ initDisplaySlot, tiles, setTiles, itemsData, setItemsData, getUpgrades, getUser, getBal, updateBalance, getXP, updateXP, level, setLoginBox }) {
 
 
@@ -77,8 +79,6 @@ function PlantScreen({ initDisplaySlot, tiles, setTiles, itemsData, setItemsData
 
     useEffect(() => {
         sessionStorage.setItem('equipped', '')
-        // initDisplaySlot('farmgame-live_120x60')
-
     }, [])
 
     return (
@@ -94,10 +94,8 @@ function PlantScreen({ initDisplaySlot, tiles, setTiles, itemsData, setItemsData
                     <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '60px', justifyContent: 'space-evenly', position: 'absolute', top: '0' }}>
                         <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000' }}>
                             {/* <div id="farmgame-live_120x60"></div> */}
-                            <div id='farmgame-live_120x60'>
-                                <script type='text/javascript'>
-                                    aiptag.cmd.display.push(function() {window.aipDisplayTag.display('farmgame-live_120x60') });
-                                </script>
+                            <div>
+                                <AdinPlayAd placementId="farmgame-live_120x60" />
                             </div>
                         </div>
                     </div>

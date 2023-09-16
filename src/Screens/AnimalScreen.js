@@ -11,7 +11,9 @@ import OrderBoard from "../Components/Orders/OrderBoard";
 
 import { useNavigate } from 'react-router-dom';
 
-function AnimalScreen({ initDisplaySlot, setAnimalsInfo, barn, coop, setBarn, setCoop, itemsData, setItemsData, getUpgrades, getUser, getBal, updateBalance, getXP, updateXP, setLoginBox, capacities }) {
+import AdinPlayAd from "../AdinPlayAd";
+
+function AnimalScreen({ setAnimalsInfo, barn, coop, setBarn, setCoop, itemsData, setItemsData, getUpgrades, getUser, getBal, updateBalance, getXP, updateXP, setLoginBox, capacities }) {
 
   const navigate = useNavigate();
   if (localStorage.getItem('token') === null) {
@@ -98,11 +100,6 @@ function AnimalScreen({ initDisplaySlot, setAnimalsInfo, barn, coop, setBarn, se
     appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/${equippedFeed}32.png) 16 16, auto`
   }
 
-  useEffect(() => {
-
-  }, []);
-
-
   return (
     <div style={appStyle}>
       {manager && <div className='manage-animals'> <AnimalManagement setAnimalsInfo={setAnimalsInfo} capacities={capacities} coop={coop} setCoop={setCoop} barn={barn} setBarn={setBarn} setManager={setManager} /></div>}
@@ -124,7 +121,7 @@ function AnimalScreen({ initDisplaySlot, setAnimalsInfo, barn, coop, setBarn, se
 
 
             <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000' }}>
-              <div id="farmgame-live_120x60"></div>
+              {/* <div id="farmgame-live_120x60"></div> */}
             </div>
 
             {/* <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>

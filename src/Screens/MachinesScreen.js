@@ -7,8 +7,9 @@ import MACHINESINFO from '../MACHINESINFO';
 import CompProfile from '../Components/GUI/CompProfile';
 import { useWebSocket } from "../WebSocketContext";
 
+import AdinPlayAd from "../AdinPlayAd";
 
-function MachinesScreen({ initDisplaySlot, artisanItems, setArtisanItems, itemsData, setItemsData, parts, setParts, machines, setMachines, getBal, updateBalance, getUser, getXP }) {
+function MachinesScreen({ artisanItems, setArtisanItems, itemsData, setItemsData, parts, setParts, machines, setMachines, getBal, updateBalance, getUser, getXP }) {
     const { waitForServerResponse } = useWebSocket();
 
     const navigate = useNavigate();
@@ -278,16 +279,6 @@ function MachinesScreen({ initDisplaySlot, artisanItems, setArtisanItems, itemsD
         }
     }
 
-    useEffect(() => {
-        if(window.innerWidth >= 1137 && window.innerWidth < 1515) {
-            initDisplaySlot('farmgame-live_728x90')
-        } else if(window.innerWidth >= 1515) {
-            initDisplaySlot("farmgame-live_970x90")
-        }  else if(window.innerWidth < 1137) {
-            initDisplaySlot('farmgame-live_120x60')
-        }
-    }, []);
-
     return (
         <div className='machineScreen'>
             {helpGUI &&
@@ -395,19 +386,21 @@ function MachinesScreen({ initDisplaySlot, artisanItems, setArtisanItems, itemsD
                     />
                     {(window.innerWidth >= 1137 && window.innerWidth < 1515) &&
                         <div style={{ position: 'relative', width: '728px', height: '90px', zIndex: '20000' }}>
-                            <div id="farmgame-live_728x90"></div>
+                            {/* <div id="farmgame-live_728x90"></div> */}
+                            <AdinPlayAd placementId="farmgame-live_728x90" />
+
                         </div>
                     }
                     {(window.innerWidth >= 1515) &&
                         <div style={{ position: 'relative', width: '970px', height: '90px', zIndex: '20000' }}>
-                            <div id="farmgame-live_970x90"></div>
+                            <AdinPlayAd placementId="farmgame-live_970x90" />
                         </div>
                     }
-                    {(window.innerWidth < 1137) &&
+                    {/* {(window.innerWidth < 1137) &&
                         <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '20000' }}>
-                            <div id="farmgame-live_120x60"></div>
+                            <AdinPlayAd placementId="XXXXX_placement" />
                         </div>
-                    }
+                    } */}
                     <img
                         src={`${process.env.PUBLIC_URL}/assets/images/questionmark.png`}
                         alt='info'
