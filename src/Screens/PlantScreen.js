@@ -84,6 +84,14 @@ function PlantScreen({ tiles, setTiles, itemsData, setItemsData, getUpgrades, ge
         script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
         script.async = true;
 
+        if (window.googletag && window.googletag.apiReady && typeof window.googletag.getSlots === 'function') {
+            const slots = window.googletag.getSlots();
+            const existingSlot = slots.find(s => s.getSlotElementId() === 'farmgame-live_120x60');
+            if (existingSlot) {
+                window.googletag.destroySlots([existingSlot]);
+            }
+        }
+
         script.onload = () => {
             if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
                 window.aiptag.cmd.display.push(function () {
