@@ -102,35 +102,35 @@ function MarketScreen({ itemsData, setItemsData, prices, getUser, getBal, update
         }
     }
     
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
-        script.async = true;
+    // useEffect(() => {
+    //     const script = document.createElement('script');
+    //     script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
+    //     script.async = true;
 
-        script.onload = () => {
-            if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
-                window.aiptag.cmd.display.push(function () {
-                    if (typeof window.aipDisplayTag.display === 'function') {
-                        window.aipDisplayTag.display('farmgame-live_120x60');
-                    }
-                });
-            }
-        };
+    //     script.onload = () => {
+    //         if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
+    //             window.aiptag.cmd.display.push(function () {
+    //                 if (typeof window.aipDisplayTag.display === 'function') {
+    //                     window.aipDisplayTag.display('farmgame-live_120x60');
+    //                 }
+    //             });
+    //         }
+    //     };
 
-        document.body.appendChild(script);
+    //     document.body.appendChild(script);
 
-        if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
-            window.aiptag.cmd.display.push(function () {
-                if (typeof window.aipDisplayTag.display === 'function') {
-                    window.aipDisplayTag.display('farmgame-live_120x60');
-                }
-            });
-        }
+    //     if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
+    //         window.aiptag.cmd.display.push(function () {
+    //             if (typeof window.aipDisplayTag.display === 'function') {
+    //                 window.aipDisplayTag.display('farmgame-live_120x60');
+    //             }
+    //         });
+    //     }
 
-        return () => {
-            document.body.removeChild(script);
-        };
-    }, []);
+    //     return () => {
+    //         document.body.removeChild(script);
+    //     };
+    // }, []);
 
 
     return (
@@ -146,9 +146,9 @@ function MarketScreen({ itemsData, setItemsData, prices, getUser, getBal, update
                 <div className='market-select-info'><CompMarketSelection items={items} onSell={onSell} name={selected.name} newPrice={selected.newPrice} oldPrice={selected.oldPrice} imgURL={selected.imgURL} /></div>
                 <div className='market-inventory'><CompInventory items={items} displayOnly={true} setMarketSelected={setMarketSelected} /></div>
                 <div className='market-other'>
-                    <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000' }}>
+                    {/* <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000' }}>
                         <div id="farmgame-live_120x60"></div>
-                    </div>
+                    </div> */}
                     {/* <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
                         AD 120px x 60px
                     </div> */}

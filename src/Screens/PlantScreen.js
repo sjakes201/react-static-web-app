@@ -96,13 +96,13 @@ function PlantScreen({ tiles, setTiles, itemsData, setItemsData, getUpgrades, ge
 
         document.body.appendChild(script);
 
-        if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
-            window.aiptag.cmd.display.push(function () {
-                if (typeof window.aipDisplayTag.display === 'function') {
-                    window.aipDisplayTag.display('farmgame-live_120x60');
-                }
-            });
-        }
+        // if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
+        //     window.aiptag.cmd.display.push(function () {
+        //         if (typeof window.aipDisplayTag.display === 'function') {
+        //             window.aipDisplayTag.display('farmgame-live_120x60');
+        //         }
+        //     });
+        // }
         return () => {
             document.body.removeChild(script);
             // if (window.googletag && window.googletag.apiReady) {
@@ -126,10 +126,6 @@ function PlantScreen({ tiles, setTiles, itemsData, setItemsData, getUpgrades, ge
                         <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000' }}>
                             <div id="farmgame-live_120x60"></div>
                         </div>
-                        {/* <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
-                            AD 120px x 60px
-                        </div> */}
-
                     </div>
                     {/* <a target='_blank' href="/updateNotes.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>update notes </a> */}
                     <div style={{ width: '70%', height: '3vh', position: 'absolute', bottom: '4vh', left: '0', fontSize: '1vw' }}>
