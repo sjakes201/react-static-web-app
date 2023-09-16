@@ -102,7 +102,7 @@ function MarketScreen({ itemsData, setItemsData, prices, getUser, getBal, update
             console.log("INVALID ITEM");
         }
     }
-    
+
     return (
         <div className='market-container'>
 
@@ -117,7 +117,7 @@ function MarketScreen({ itemsData, setItemsData, prices, getUser, getBal, update
                 <div className='market-inventory'><CompInventory items={items} displayOnly={true} setMarketSelected={setMarketSelected} /></div>
                 <div className='market-other'>
                     {/* <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000' }}>
-                        <div id="farmgame-live_120x60"></div>
+                        <AdinPlayAd placementId="farmgame-live_120x60" />
                     </div> */}
                     {/* <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
                         AD 120px x 60px

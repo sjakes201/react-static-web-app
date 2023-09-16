@@ -1,40 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect } from 'react'
 
+import AdinPlayAd from '../../AdinPlayAd';
+
 function AnimalsTopBar({ setManager }) {
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
-        script.async = true;
-
-        script.onload = () => {
-            if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
-                window.aiptag.cmd.display.push(function () {
-                    if (typeof window.aipDisplayTag === 'function') {
-                        window.aipDisplayTag.display('farmgame-live_728x90');
-                    }
-                });
-            }
-        };
-
-        document.body.appendChild(script);
-
-        // if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
-        //     window.aiptag.cmd.display.push(function () {
-        //         if (typeof window.aipDisplayTag.display === 'function') {
-        //             window.aipDisplayTag.display('farmgame-live_728x90');
-        //         }
-        //     });
-        // }
-
-        return () => {
-            document.body.removeChild(script);
-        };
-    }, []);
-
-
+    
     return (
         <div style={{
             width: '80vw',
@@ -54,7 +25,7 @@ function AnimalsTopBar({ setManager }) {
             }}>
                 {window.innerWidth >= 1022 &&
                     <div style={{ position: 'relative', width: '728px', height: '90px', zIndex: '20000' }}>
-                        <div id="farmgame-live_728x90"></div>
+                        <AdinPlayAd placementId="farmgame-live_728x90" />
                     </div>
                 }
             </div>
