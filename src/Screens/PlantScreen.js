@@ -92,7 +92,7 @@ function PlantScreen({ initDisplaySlot, tiles, setTiles, itemsData, setItemsData
                 <div className="settings">
                     <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '60px', justifyContent: 'space-evenly', position: 'absolute', top: '0' }}>
                         <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000' }}>
-                            <div id="farmgame-live_120x60" key={Math.floor(Math.random() * 1000)}></div>
+                            <div id="farmgame-live_120x60"></div>
                         </div>
                     </div>
                     {/* <a target='_blank' href="/updateNotes.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>update notes </a> */}

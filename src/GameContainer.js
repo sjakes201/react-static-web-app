@@ -299,15 +299,31 @@ function GameContainer() {
     const rendered = useRef([])
 
     const initDisplaySlot = (AIPPlacementID) => {
+
+        const loadSlot = () => {
+            window.aiptag.cmd.display.push(function () {
+                if (typeof window.aipDisplayTag.display === 'function') {
+                    window.aipDisplayTag.display(AIPPlacementID);
+                    rendered.current.push(AIPPlacementID)
+                }
+            });
+        }
+
         if (scriptLoaded.current) {
             if (!rendered.current.includes(AIPPlacementID)) {
-                window.aiptag.cmd.display.push(function () {
-                    if (typeof window.aipDisplayTag.display === 'function') {
-                        window.aipDisplayTag.display(AIPPlacementID);
-                        rendered.current.push(AIPPlacementID)
-                    }
-                });
-            } 
+                loadSlot()
+            } else {
+                if (window.googletag && typeof window.googletag.destroySlots === 'function') {
+                    window.googletag.cmd.push(function () {
+                        const slot = window.googletag.slot_manager_instance.l[AIPPlacementID];
+                        if (slot) {
+                            window.googletag.destroySlots([slot]);
+                            console.log('in here reloading')
+                            loadSlot();
+                        }
+                    });
+                }
+            }
         }
     }
 
