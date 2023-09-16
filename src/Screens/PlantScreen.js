@@ -30,11 +30,6 @@ function PlantScreen({ initDisplaySlot, tiles, setTiles, itemsData, setItemsData
     const [equippedFert, setEquippedFert] = useState("");
 
     useEffect(() => {
-        sessionStorage.setItem('equipped', '')
-        initDisplaySlot('farmgame-live_120x60')
-    }, [])
-
-    useEffect(() => {
         let data = { ...itemsData }
         setFertilizers({
             HarvestsFertilizer: data.HarvestsFertilizer,
@@ -80,6 +75,11 @@ function PlantScreen({ initDisplaySlot, tiles, setTiles, itemsData, setItemsData
         appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/${equippedFert}.png) 16 16, auto`
     }
 
+    useEffect(() => {
+        sessionStorage.setItem('equipped', '')
+        initDisplaySlot('farmgame-live_120x60')
+    }, [])
+
     return (
         <div style={appStyle}>
             <div className='left-column'>
@@ -92,7 +92,7 @@ function PlantScreen({ initDisplaySlot, tiles, setTiles, itemsData, setItemsData
                 <div className="settings">
                     <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '60px', justifyContent: 'space-evenly', position: 'absolute', top: '0' }}>
                         <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000' }}>
-                            <div id="farmgame-live_120x60"></div>
+                            <div id="farmgame-live_120x60" key={Math.floor(Math.random() * 1000)}></div>
                         </div>
                     </div>
                     {/* <a target='_blank' href="/updateNotes.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>update notes </a> */}

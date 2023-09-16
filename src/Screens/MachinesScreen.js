@@ -8,7 +8,7 @@ import CompProfile from '../Components/GUI/CompProfile';
 import { useWebSocket } from "../WebSocketContext";
 
 
-function MachinesScreen({ artisanItems, setArtisanItems, itemsData, setItemsData, parts, setParts, machines, setMachines, getBal, updateBalance, getUser, getXP }) {
+function MachinesScreen({ initDisplaySlot, artisanItems, setArtisanItems, itemsData, setItemsData, parts, setParts, machines, setMachines, getBal, updateBalance, getUser, getXP }) {
     const { waitForServerResponse } = useWebSocket();
 
     const navigate = useNavigate();
@@ -279,53 +279,13 @@ function MachinesScreen({ artisanItems, setArtisanItems, itemsData, setItemsData
     }
 
     useEffect(() => {
-        // let loaded = '';
-
-        const script = document.createElement('script');
-        script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
-        script.async = true;
-
-        script.onload = () => {
-            if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
-                if (window.innerWidth >= 1515) {
-                    window.aiptag.cmd.display.push(function () {
-                        if (typeof window.aipDisplayTag.display === 'function') {
-                            window.aipDisplayTag.display('farmgame-live_970x90');
-                        }
-                    });
-                    // loaded = '970';
-                } 
-                //  if (window.innerWidth >= 1137 && window.innerWidth < 1515) {
-                //     window.aiptag.cmd.display.push(function () {
-                //         if (typeof window.aipDisplayTag.display === 'function') {
-                //             window.aipDisplayTag.display('farmgame-live_728x90');
-                //         }
-                //     });
-                //     loaded = '728';
-                // } else {
-                //     window.aiptag.cmd.display.push(function () {
-                //         if (typeof window.aipDisplayTag.display === 'function') {
-                //             window.aipDisplayTag.display('farmgame-live_120x60');
-                //         }
-                //     });
-                //     loaded = '120';
-                // }
-            }
-        };
-
-        document.body.appendChild(script);
-
-        return () => {
-            document.body.removeChild(script);
-            if (window.aiptag && window.aiptag.cmd && window.aiptag.cmd.display) {
-                const refreshId = `farmgame-live_970x90`;
-                window.aiptag.cmd.display.push(function () {
-                    if (typeof window.aipDisplayTag.display === 'function') {
-                        window.aipDisplayTag.display(refreshId);
-                    }
-                });
-            }
-        };
+        if(window.innerWidth >= 1137 && window.innerWidth < 1515) {
+            initDisplaySlot('farmgame-live_728x90')
+        } else if(window.innerWidth >= 1515) {
+            initDisplaySlot("farmgame-live_970x90")
+        }  else if(window.innerWidth < 1137) {
+            initDisplaySlot('farmgame-live_120x60')
+        }
     }, []);
 
     return (
@@ -433,21 +393,21 @@ function MachinesScreen({ artisanItems, setArtisanItems, itemsData, setItemsData
                         onClick={() => window.history.back()}
                         style={{ width: '5%', marginLeft: '1%', marginBottom: '5%', cursor: 'pointer', objectFit: 'contain' }}
                     />
-                    {/* {(window.innerWidth >= 1137 && window.innerWidth < 1515) &&
+                    {(window.innerWidth >= 1137 && window.innerWidth < 1515) &&
                         <div style={{ position: 'relative', width: '728px', height: '90px', zIndex: '20000' }}>
                             <div id="farmgame-live_728x90"></div>
                         </div>
-                    } */}
+                    }
                     {(window.innerWidth >= 1515) &&
                         <div style={{ position: 'relative', width: '970px', height: '90px', zIndex: '20000' }}>
                             <div id="farmgame-live_970x90"></div>
                         </div>
                     }
-                    {/* {(window.innerWidth < 1137) &&
+                    {(window.innerWidth < 1137) &&
                         <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '20000' }}>
                             <div id="farmgame-live_120x60"></div>
                         </div>
-                    } */}
+                    }
                     <img
                         src={`${process.env.PUBLIC_URL}/assets/images/questionmark.png`}
                         alt='info'
