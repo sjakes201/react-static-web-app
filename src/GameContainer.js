@@ -286,9 +286,9 @@ function GameContainer() {
         script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
         script.async = true;
 
-        script.onload = () => {
-            scriptLoaded.current = true;
-        };
+        // script.onload = () => {
+        //     scriptLoaded.current = true;
+        // };
         document.body.appendChild(script);
 
         return () => {
@@ -315,12 +315,8 @@ function GameContainer() {
             } else {
                 if (window.googletag && typeof window.googletag.destroySlots === 'function') {
                     window.googletag.cmd.push(function () {
-                        const slot = window.googletag.slot_manager_instance.l[AIPPlacementID];
-                        if (slot) {
-                            window.googletag.destroySlots([slot]);
-                            console.log('in here reloading')
-                            loadSlot();
-                        }
+                        window.googletag.destroySlots();
+                        loadSlot();
                     });
                 }
             }
