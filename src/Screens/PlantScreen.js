@@ -100,18 +100,11 @@ function PlantScreen({ initDisplaySlot, tiles, setTiles, itemsData, setItemsData
                         </div>
                     </div>
                     {/* <a target='_blank' href="/updateNotes.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>update notes </a> */}
-                    <div style={{ width: '70%', height: '3vh', position: 'absolute', bottom: '4vh', left: '0', fontSize: '1vw' }}>
+                    <div style={{ width: '70%', height: '3vh', position: 'absolute', bottom: '1vh', left: '0', fontSize: '1vw' }}>
                         <a target='_black' href="https://discord.gg/jrxWrgNCHw" style={{ fontSize: '.6vw', textDecoration: 'underline', height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ height: '50%', marginRight: '2%' }}></img>
                             Community Discord
                             <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ height: '50%', marginLeft: '2%' }}></img>
-                        </a>
-                    </div>
-                    <div style={{ width: '70%', height: '3vh', position: 'absolute', bottom: '1vh', left: '0', fontSize: '1vw' }}>
-                        <a target='_black' href="https://www.buymeacoffee.com/farmgame" style={{ fontSize: '.6vw', textDecoration: 'underline', height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                            <img src={`${process.env.PUBLIC_URL}/assets/images/goat_standing_right.png`} style={{ width: '20%' }}></img>
-                            Buy me a coffee
-                            <img src={`${process.env.PUBLIC_URL}/assets/images/goat_standing_right.png`} style={{ width: '20%' }}></img>
                         </a>
                     </div>
                 </div>
