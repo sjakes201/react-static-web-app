@@ -78,14 +78,15 @@ function TownInterface({ townName, backArrow }) {
                         newTownInfo.playersData = newTownInfo.playersData.filter((player) => player.username !== targetUser);
                         return newTownInfo;
                     })
-                    await waitForServerResponse('kickTownMember', { kickedMember: targetUser });
-
+                    let response = await waitForServerResponse('kickTownMember', { kickedMember: targetUser });
+                    console.log(response)
                 }
             }
             if (action === 'PROMOTE') {
                 console.log(`promoting ${targetUser}`)
                 if (waitForServerResponse) {
-                    await waitForServerResponse('promoteTownMember', { newLeader: targetUser });
+                    let response = await waitForServerResponse('promoteTownMember', { newLeader: targetUser });
+                    console.log(response)
                     setTownInfo((old) => {
                         let newTownInfo = { ...old };
                         newTownInfo.myControls = 'member';
@@ -125,6 +126,7 @@ function TownInterface({ townName, backArrow }) {
             if (response.body.message === 'SUCCESS') {
                 setRefreshData((old) => old+1);
             }
+            console.log(response)
         }
 
     }
@@ -218,7 +220,7 @@ function TownInterface({ townName, backArrow }) {
                             {settingsGUI && settings()}
                             <div className='townInfoBar'>
                                 <div className='townLeftBar'>
-                                    {backArrow && <img id='townBackArrow' src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_dark.png`} onClick={backArrow}/>}
+                                    {backArrow && <img id='townBackArrow' src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_dark.png`} onClick={() => backArrow(true)}/>}
                                     {townInfo.myControls === 'leader' && <img id='townSettingsButton' src={`${process.env.PUBLIC_URL}/assets/images/Gears.png`} onClick={() => setSettingsGUI(true)} />}
                                 </div>
                                 <div className='townLogo basicCenter'>
@@ -248,9 +250,9 @@ function TownInterface({ townName, backArrow }) {
                                         <p>{townInfo.memberCount}/25 members</p>
                                         <p style={{ color: townInfo.status === 'OPEN' ? '#36e04d' : 'gray' }}>{townInfo.status}</p>
                                     </div>
-                                    {townInfo.myControls !== 'visitor' && (townInfo.myControls === 'member' ?
+                                    {townInfo.myControls !== 'visitor' && (townInfo.myControls === 'member' || townInfo.memberCount === 1 ?
                                         <div className='leaveContainer basicCenter townInfoLowerRight'>
-                                            <div className='townLeaveButton basicCenter' onClick={() => leaveTown()}>
+                                            <div className='townLeaveButton basicCenter' onClick={() => {leaveTown(); backArrow()}}>
                                                 Leave
                                             </div>
                                         </div>

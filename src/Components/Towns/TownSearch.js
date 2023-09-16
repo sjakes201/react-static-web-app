@@ -14,6 +14,9 @@ function TownSearch() {
     const [searchString, setSearchString] = useState("")
     const [noResults, setNoResults] = useState(false)
 
+    const [createTown, setCreateTown] = useState(false)
+    const [townName, setTownName] = useState("")
+
     const fetchTowns = async () => {
         if (waitForServerResponse) {
             let result = await waitForServerResponse('getRandomTowns', { townName: searchString === "" ? undefined : searchString })
@@ -33,6 +36,13 @@ function TownSearch() {
     useEffect(() => {
         fetchTowns();
     }, [])
+
+    const submitCreateTown = async () => {
+        if (waitForServerResponse) {
+            let result = await waitForServerResponse('createTown', { townName: townName })
+            console.log(result)
+        }
+    }
 
     const townCard = (townName, memberCount, townLogoNum, townXP, status) => {
         let level = 0;
@@ -55,13 +65,50 @@ function TownSearch() {
         )
     }
 
+    useEffect(() => {
+        const handleEscapeKey = (event) => {
+            if (event.key === 'Escape') {
+                setCreateTown(false);
+            }
+        };
+        document.addEventListener('keydown', handleEscapeKey);
+        return () => {
+            document.removeEventListener('keydown', handleEscapeKey);
+        };
+    }, []);
+
+    const createTownGUI = () => {
+        return (
+            <div className='createTown'>
+                <div className='createGUI'>
+                    <input className='townNameBox' value={townName}
+                        onChange={(e) => {
+                            const isValid = /^[A-Za-z0-9._]{0,32}$/.test(e.target.value);
+                            if (isValid) {
+                                setTownName(e.target.value)
+                            }
+                        }} />
+                    <div className={`townCreateButton ${/^[A-Za-z0-9._]{4,32}$/.test(townName) ? 'validButton' : ''}`}
+                        onClick={() => {
+                            submitCreateTown()
+                        }}
+                    >Create</div>
+                    <p onClick={() => setCreateTown(false)}>X</p>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className='townSearchContainer'>
             {viewingTown &&
                 <div className='searchViewInterface'>
-                    <TownInterface townName={viewingTown} backArrow={() => setViewingTown("")} />
+                    <TownInterface townName={viewingTown}
+                        backArrow={(deleted) => { setViewingTown(""); if (deleted) { fetchTowns() } }
+                        } />
                 </div>
             }
+            {createTown && createTownGUI()}
             <div className='searchTopBar'>
                 <input className='townSearchBar' type='text' value={searchString}
                     onChange={(e) => {
@@ -73,6 +120,7 @@ function TownSearch() {
                     onKeyDown={(e) => { if (e.key === 'Enter') fetchTowns(); }}
                 />
                 <img className='searchGo' src={`${process.env.PUBLIC_URL}/assets/images/refresh.png`} onClick={fetchTowns} />
+                <div className='createTownButton' onClick={() => setCreateTown(true)}>Create town</div>
             </div>
             <div className='searchResults'>
                 {
@@ -82,7 +130,9 @@ function TownSearch() {
                         towns.map((town) => townCard(town.townName, town.memberCount, town.townLogoNum, town.townXP, town.status))
                     )
                 }
-
+                {!noResults &&
+                    <p id='townResultsInfo'>{towns.length} random result{towns.length === 1 ? '' : 's'} shown</p>
+                }
             </div>
         </div>
     )

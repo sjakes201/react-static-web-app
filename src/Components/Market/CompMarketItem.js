@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import CONSTANTS from "../../CONSTANTS";
 
 // imgURL is img for icon, name is itemName, price is current price per unit, 
 // priceDirection is change from previous time interval: UP, DOWN, NEUTRAL
@@ -28,7 +29,7 @@ function CompMarketItem({ imgURL, name, newPrice, oldPrice }) {
                     height: '15%',
                     width: '100%',
                     fontSize: '2vh'
-                }}>{name}</p>
+                }}>{CONSTANTS.InventoryDescriptions[name][0]}</p>
             <div
                 id="market-img-container"
                 style={{

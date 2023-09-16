@@ -85,7 +85,7 @@ function PlayerCard({ username, xp, role, contributions, myControls, managementA
             <div className='playerGap'></div>
             <div className='playerRole'>
                 <p>{role === 'leader' ? role : 'member'}</p>
-                {(myControls === 'leader') &&
+                {(myControls === 'leader' && role !== 'leader') &&
                     <div className='townAuthControls'>
                         <div className='authButton promoteButton basicCenter' onClick={() => buttonControl('PROMOTE')}>{promoteConfirm ? 'CONFIRM?' : 'LEADER'}</div>
                         <div className='authButton kickButton basicCenter' onClick={() => buttonControl('KICK')}>{kickConfirm ? 'CONFIRM?' : 'KICK'}</div>

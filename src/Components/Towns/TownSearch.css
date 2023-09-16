@@ -47,6 +47,15 @@
         0 8px 0 0 var(--black);
 }
 
+.searchViewInterface {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Styles for search results area */
 .searchResults {
     width: 100%;
     height: 87%;
@@ -61,12 +70,13 @@
     background-color: var(--menu_light);
 }
 
-.searchViewInterface {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+#townResultsInfo {
+    font-size: 0.7vw;
+    color: gray;
+    bottom: 0;
+    width: 95%;
+    text-align: right;
+    margin-right: 5%;
 }
 
 /* Styles for town top bar */
@@ -81,6 +91,14 @@
 .searchGo {
     height: 50%;
     cursor: pointer;
+    width: 6%;
+    object-fit: contain;
+    justify-self: flex-start;
+    transition: all 0.2s;
+}
+
+.searchGo:hover {
+    height: 54%;
 }
 
 /* Styles for town cards */
@@ -127,7 +145,6 @@
 
 .searchTownName {
     font-size: 1.1vw;
-
 }
 
 .searchTownLevel {
@@ -138,4 +155,83 @@
 
 .searchTownStatus {
     color: #36e04d;
+}
+
+/* Styles for create town GUI */
+.createTownButton {
+    font-size: 1vw;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    width: 12%;
+    text-align: center;
+    margin-left: 2%;
+    cursor: pointer;
+    background-color: var(--menu_lightest);
+    transition: all 0.2s;
+}
+
+.createTownButton:hover {
+    padding: 6px;
+}
+
+/* Styles for create town GUI */
+.createTown {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(22, 22, 22, 0.692);
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.createGUI {
+    position: relative;
+    padding: 2% 5% 2% 4%;
+    z-index: 51;
+    background-color: var(--menu_lightest);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 0 0 2px var(--black),
+        0 0 0 4px var(--border_orange),
+        0 0 0 6px var(--border_shadow_orange),
+        0 0 0 8px var(--black);    
+}
+
+.createGUI > p {
+    position: absolute;
+    top: 5%;
+    right: 2.5%;
+    font-size: .9vw;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.townNameBox {
+    padding-left: 4%;
+    font-size: 1vw;
+}
+
+.townCreateButton {
+    border: 2px dotted gray;
+    border-radius: 3px;
+    font-size: .9vw;
+    padding: 2%;
+    background-color: var(--menu_light);
+    opacity: 0.5;
+    margin-left: 5%;
+    width: auto;
+}
+
+.validButton {
+    opacity: 1;
+    border: 2px solid black;
+    cursor: pointer;
 }
