@@ -247,7 +247,8 @@ function CompInventory({ level, tool, setTool, fertilizers, items, displayOnly, 
 
                                         onClick={() => {
                                             if (level < MULTIHARVESTLEVEL) return;
-                                            setTool("multiharvest")
+                                            setTool("multiharvest");
+                                            handleMouseOut(1);
                                         }}
                                         onMouseOver={() => handleMouseOver(1)}
                                         onMouseOut={() => handleMouseOut(1)} />
@@ -271,6 +272,7 @@ function CompInventory({ level, tool, setTool, fertilizers, items, displayOnly, 
                                         onClick={() => {
                                             if (level < MULTIPLANTLEVEL) return;
                                             setTool("multiplant")
+                                            handleMouseOut(2)
                                         }}
                                         onMouseOver={() => handleMouseOver(2)}
                                         onMouseOut={() => handleMouseOut(2)} />
