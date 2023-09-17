@@ -4,9 +4,10 @@ import CONSTANTS from '../../CONSTANTS';
 import UPGRADES from '../../UPGRADES';
 import { useNavigate } from 'react-router-dom';
 import ANIMALINFO from '../../ANIMALINFO';
+import TOWNSINFO from '../../TOWNSINFO';
 import { useWebSocket } from "../../WebSocketContext";
 
-function CompPen({ animalsParent, setAnimalsParent, getUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP, setOrderNotice, setEquippedFeed }) {
+function CompPen({ townPerks, animalsParent, setAnimalsParent, getUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP, setOrderNotice, setEquippedFeed }) {
     const { waitForServerResponse } = useWebSocket();
 
     let xSlots = 6;
@@ -297,6 +298,12 @@ function CompPen({ animalsParent, setAnimalsParent, getUpgrades, penWidth, penHe
         let tableName = "AnimalCollectTimes".concat(level)
         if (tableName.includes('undefined')) tableName = 'AnimalCollectTimes0';
         let secsNeeded = UPGRADES[tableName][Animal_type];
+        if(townPerks.animalPerkLevel) {
+            let boostPercent = TOWNSINFO.upgradeBoosts.animalPerkLevel[townPerks.animalPerkLevel];
+            let boostChange = 1 - boostPercent;
+            secsNeeded *= boostChange;
+        }
+
         return secsPassed >= secsNeeded
     }
 

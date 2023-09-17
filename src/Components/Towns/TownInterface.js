@@ -133,22 +133,24 @@ function TownInterface({ townName, backArrow }) {
 
     // Info for when player clicks level button
     const levelPerks = () => {
+        let noPerks = !townInfo.growthPerkLevel && !townInfo.partsPerkLevel && !townInfo.animalPerkLevel && !townInfo.orderRefreshPerkLevel
         return (
             <div className='levelPerksContainer'>
                 <span className='perksPopupX' onClick={() => setPerksPopup(false)}>X</span>
                 <p id='perksLabel'>Town Perks</p>
                 {townInfo.growthPerkLevel !== 0 && <li>
-                    <span className='perkPercent'>{TOWNSINFO.perksInfo.growth[townInfo.growthPerkLevel]}%</span> faster crop growth
+                    <span className='perkPercent'>{TOWNSINFO.upgradeBoosts.growthPerkLevel[townInfo.growthPerkLevel]}%</span> faster crop growth
                 </li>}
                 {townInfo.animalPerkLevel !== 0 && <li>
-                    <span className='perkPercent'>{TOWNSINFO.perksInfo.animals[townInfo.animalPerkLevel]}%</span> faster animal production
+                    <span className='perkPercent'>{TOWNSINFO.upgradeBoosts.animalsPerkLevel[townInfo.animalPerkLevel]}%</span> faster animal production
                 </li>}
                 {townInfo.partsPerkLevel !== 0 && <li>
-                    <span className='perkPercent'>{TOWNSINFO.perksInfo.parts[townInfo.partsPerkLevel]}%</span> higher chance of parts
+                    <span className='perkPercent'>{TOWNSINFO.upgradeBoosts.partsPerkLevel[townInfo.partsPerkLevel]}%</span> higher chance of parts
                 </li>}
                 {townInfo.orderRefreshPerkLevel !== 0 && <li>
-                    <span className='perkPercent'>{TOWNSINFO.perksInfo.orderRefresh[townInfo.orderRefreshPerkLevel]}%</span> lower order refresh cooldown
+                    <span className='perkPercent'>{TOWNSINFO.upgradeBoosts.orderRefreshPerkLevel[townInfo.orderRefreshPerkLevel]}%</span> lower order refresh cooldown
                 </li>}
+                {noPerks && <span style={{color: 'gray', marginTop: '5%'}}>First perk at town level 1</span>}
             </div>
         )
     }

@@ -5,10 +5,11 @@ import CROPINFO from "../../CROPINFO";
 import UPGRADES from "../../UPGRADES";
 import { useNavigate } from 'react-router-dom';
 import { useWebSocket } from "../../WebSocketContext";
+import TOWNSINFO from "../../TOWNSINFO";
 
-function CompPlot({ tiles, setTiles, tool, setFertilizers, fertilizers, equippedFert, setEquippedFert, getUpgrades, updateInventory, updateXP, getXP, setOrderNotice, items }) {
+function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizers, equippedFert, setEquippedFert, getUpgrades, updateInventory, updateXP, getXP, setOrderNotice, items }) {
     const { waitForServerResponse } = useWebSocket();
-    
+
     const [growthTable, setGrowthTable] = useState("")
     const [numHarvestTable, setNumHarvestTable] = useState("NumHarvests0")
     const [quantityYieldTable, setQuantityYieldTable] = useState("PlantQuantityYields0")
@@ -234,8 +235,6 @@ function CompPlot({ tiles, setTiles, tool, setFertilizers, fertilizers, equipped
         let tileID = targetTile.TileID;
         let simRes = frontendPlant(seedName, targetTile)
 
-        const token = localStorage.getItem('token');
-
         if (simRes.message === 'SUCCESS') {
             // only put request through if frontend validates
             try {
@@ -446,6 +445,12 @@ function CompPlot({ tiles, setTiles, tool, setFertilizers, fertilizers, equipped
             if (simRes.hasTimeFertilizer) {
                 secsPassed *= 2;
             }
+            if (townPerks?.growthPerkLevel) {
+                let boostPercent = TOWNSINFO.upgradeBoosts.growthPerkLevel[townPerks.growthPerkLevel];
+                let boostChange = 1 - boostPercent;
+                secsNeeded *= boostChange;
+            }
+
             if (secsPassed >= secsNeeded) {
                 if (targetTile.HarvestsRemaining === 1) {
                     // last harvest
@@ -466,6 +471,12 @@ function CompPlot({ tiles, setTiles, tool, setFertilizers, fertilizers, equipped
                     timeSkip *= 1000; // seconds to ms
                     if (simRes.hasTimeFertilizer) {
                         timeSkip /= 2;
+                    }
+
+                    if (townPerks?.growthPerkLevel) {
+                        let boostPercent = TOWNSINFO.upgradeBoosts.growthPerkLevel[townPerks.growthPerkLevel];
+                        let boostChange = 1 - boostPercent;
+                        timeSkip *= boostChange;
                     }
                     // ms since epoch
                     let newPlantTime = Date.now();
@@ -511,6 +522,11 @@ function CompPlot({ tiles, setTiles, tool, setFertilizers, fertilizers, equipped
             let secsPassed = (curTime - date) / (1000);
             if (hasTimeFertilizer) {
                 secsPassed = secsPassed * 2;
+            }
+            if (townPerks?.growthPerkLevel) {
+                let boostPercent = TOWNSINFO.upgradeBoosts.growthPerkLevel[townPerks.growthPerkLevel];
+                let boostChange = 1 - boostPercent;
+                secsPassed /= boostChange;
             }
             // Use secs passed to find out what stage you are in by summing growth in constants
             let growth = UPGRADES["GrowthTimes".concat(getUpgrades().plantGrowthTimeUpgrade)][CROPINFO.seedsFromID[CropID]];

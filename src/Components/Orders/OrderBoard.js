@@ -3,8 +3,9 @@ import Order from "./Order";
 import { useNavigate } from 'react-router-dom';
 import CONSTANTS from '../../CONSTANTS';
 import { useWebSocket } from "../../WebSocketContext";
+import TOWNSINFO from '../../TOWNSINFO';
 
-function OrderBoard({ close, updateBalance, updateXP, setFertilizers }) {
+function OrderBoard({ townPerks, close, updateBalance, updateXP, setFertilizers }) {
     const { waitForServerResponse } = useWebSocket();
     const navigate = useNavigate();
 
@@ -12,7 +13,7 @@ function OrderBoard({ close, updateBalance, updateXP, setFertilizers }) {
     const [lastRefresh, setLastRefresh] = useState(0);
 
     const timePassedMS = Date.now() - lastRefresh;
-    const timePassedMins = timePassedMS * (1 / 1000) * (1 / 60)
+    let timePassedMins = timePassedMS * (1 / 1000) * (1 / 60)
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -75,6 +76,12 @@ function OrderBoard({ close, updateBalance, updateXP, setFertilizers }) {
 
     const refreshOrder = async (orderNumToRefresh) => {
         let timePassedMS = Date.now() - lastRefresh;
+        
+        if(townPerks.orderRefreshLevel) {
+            let boostPercent = TOWNSINFO.upgradeBoosts.orderRefreshPerkLevel[townPerks.orderRefreshLevel];
+            let boostChange = 1 + boostPercent;
+            timePassedMS *= boostChange;
+        }
         if (timePassedMS < CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN) {
             // NOT READY
         } else {
@@ -108,6 +115,13 @@ function OrderBoard({ close, updateBalance, updateXP, setFertilizers }) {
         }
     }
 
+    let refreshTimeNeeded = CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN * (1 / 1000) * (1 / 60);
+    if(townPerks.orderRefreshLevel) {
+        let boostPercent = TOWNSINFO.upgradeBoosts.orderRefreshPerkLevel[townPerks.orderRefreshLevel];
+        let boostChange = 1 + boostPercent;
+        refreshTimeNeeded /= boostChange;
+    }
+
     return (
         <div id="order-screen" style={{
             width: '60vw',
@@ -130,11 +144,11 @@ function OrderBoard({ close, updateBalance, updateXP, setFertilizers }) {
                 textShadow: '1px 1px 1px var(--black)',
             }}>
                 <p>ORDER BOARD</p>
-                {(timePassedMS < CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN) &&
+                {(timePassedMins < refreshTimeNeeded) &&
                     <span style={{ position: 'absolute', right: '6%', fontSize: '0.8vw', color: 'lightgrey' }}>
                         <span style={{ textDecoration: 'underline' }}>Refresh cooldown:</span>
                         <span> </span>
-                        {(Math.ceil(CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN * (1 / 1000) * (1 / 60) - timePassedMins))} {(Math.ceil(CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN * (1 / 1000) * (1 / 60) - timePassedMins)) === 1 ? 'minute' : 'minutes'}
+                        {(Math.ceil(refreshTimeNeeded - timePassedMins))} {(Math.ceil(refreshTimeNeeded - timePassedMins)) === 1 ? 'minute' : 'minutes'}
                     </span>
                 }
             </div>
@@ -145,10 +159,10 @@ function OrderBoard({ close, updateBalance, updateXP, setFertilizers }) {
                 gridTemplateColumns: 'repeat(2, 1fr)',
                 gridTemplateRows: 'repeat(2, 1fr)',
             }}>
-                {orders[1].good !== undefined && <Order orderNum={1} good={orders[0].good} reward={orders[0].reward} numHave={orders[0].numHave} numNeeded={orders[0].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMS > CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN} />}
-                {orders[1].good !== undefined && <Order orderNum={2} good={orders[1].good} reward={orders[1].reward} numHave={orders[1].numHave} numNeeded={orders[1].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMS > CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN} />}
-                {orders[1].good !== undefined && <Order orderNum={3} good={orders[2].good} reward={orders[2].reward} numHave={orders[2].numHave} numNeeded={orders[2].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMS > CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN} />}
-                {orders[1].good !== undefined && <Order orderNum={4} good={orders[3].good} reward={orders[3].reward} numHave={orders[3].numHave} numNeeded={orders[3].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMS > CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN} />}
+                {orders[1].good !== undefined && <Order orderNum={1} good={orders[0].good} reward={orders[0].reward} numHave={orders[0].numHave} numNeeded={orders[0].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMins > refreshTimeNeeded} />}
+                {orders[1].good !== undefined && <Order orderNum={2} good={orders[1].good} reward={orders[1].reward} numHave={orders[1].numHave} numNeeded={orders[1].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMins > refreshTimeNeeded} />}
+                {orders[1].good !== undefined && <Order orderNum={3} good={orders[2].good} reward={orders[2].reward} numHave={orders[2].numHave} numNeeded={orders[2].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMins > refreshTimeNeeded} />}
+                {orders[1].good !== undefined && <Order orderNum={4} good={orders[3].good} reward={orders[3].reward} numHave={orders[3].numHave} numNeeded={orders[3].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMins > refreshTimeNeeded} />}
 
             </div>
         </div >

@@ -54,6 +54,8 @@ function GameContainer() {
 
     const [tiles, setTiles] = useState([]);
 
+    const [townPerks, setTownPerks] = useState({})
+
     let newXP = useRef(false)
 
     const [prices, setPrices] = useState(null);
@@ -129,6 +131,15 @@ function GameContainer() {
                 setParts(data.partsData)
                 setArtisanItems(data.artisanData);
             }
+
+            
+            if (waitForServerResponse) {
+                const response = await waitForServerResponse('getTownPerks');
+                let data = response.body;
+                console.log(data)
+                setTownPerks(data)
+                
+            }
         }
         fetchData();
     }, [])
@@ -144,6 +155,16 @@ function GameContainer() {
 
         }
     }, [level])
+
+    const reloadTownPerks = async() => {
+        if (waitForServerResponse) {
+            const response = await waitForServerResponse('getTownPerks');
+            let data = response.body;
+            console.log(data)
+            setTownPerks(data)
+            
+        }
+    }
 
     const getStage = (PlantTime, CropID, hasTimeFertilizer) => {
         if (PlantTime !== null && CropID !== -1 && Object.keys(getUpgrades()).length !== 0) {
@@ -315,7 +336,6 @@ function GameContainer() {
             </div>
         );
     }
-
     // If connected, render the main game content
     return (
         <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
@@ -324,8 +344,8 @@ function GameContainer() {
             <GoogleAnalyticsReporter />
             <Routes>
                 <Route path="/" element={<InitLoading />} />
-                <Route path="/plants" element={<PlantScreen tiles={tiles} setTiles={setTiles} itemsData={itemsData} setItemsData={setItemsData} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
-                <Route path="/animals" element={<AnimalScreen setAnimalsInfo={setAnimalsInfo} barn={barn} coop={coop} setBarn={setBarn} setCoop={setCoop} itemsData={itemsData} setItemsData={setItemsData} capacities={capacities} upgrades={upgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
+                <Route path="/plants" element={<PlantScreen townPerks={townPerks} tiles={tiles} setTiles={setTiles} itemsData={itemsData} setItemsData={setItemsData} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
+                <Route path="/animals" element={<AnimalScreen townPerks={townPerks} setAnimalsInfo={setAnimalsInfo} barn={barn} coop={coop} setBarn={setBarn} setCoop={setCoop} itemsData={itemsData} setItemsData={setItemsData} capacities={capacities} upgrades={upgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
                 <Route path="/shop" element={<ShopScreen addAnimal={addAnimal} itemsData={itemsData} setItemsData={setItemsData} animalsInfo={animalsInfo} updateAnimalsInfo={updateAnimalsInfo} deluxePermit={deluxePermit} exoticPermit={exoticPermit} updateUpgrades={updateUpgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} newXP={newXP} XP={XP} />} />
                 <Route path="/market" element={<MarketScreen itemsData={itemsData} setItemsData={setItemsData} prices={prices} setLoginBox={setLoginBox} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} newXP={newXP} XP={XP} />} />
                 <Route path="/leaderboard" element={<LeaderboardScreen />} />

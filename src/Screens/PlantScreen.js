@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 import AdinPlayAd from "../AdinPlayAd";
 
-function PlantScreen({ initDisplaySlot, tiles, setTiles, itemsData, setItemsData, getUpgrades, getUser, getBal, updateBalance, getXP, updateXP, level, setLoginBox }) {
+function PlantScreen({ townPerks, tiles, setTiles, itemsData, setItemsData, getUpgrades, getUser, getBal, updateBalance, getXP, updateXP, level, setLoginBox }) {
 
 
     const navigate = useNavigate();
@@ -85,7 +85,7 @@ function PlantScreen({ initDisplaySlot, tiles, setTiles, itemsData, setItemsData
         <div style={appStyle}>
             <div className='left-column'>
                 <div className='other-screensPl'><CompOtherScreens current={'plants'} /></div>
-                <div className='plot'><CompPlot tiles={tiles} setTiles={setTiles} tool={tool} setFertilizers={setFertilizers} fertilizers={fertilizers} equippedFert={equippedFert} setEquippedFert={setEquippedFert} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} items={items} /></div>
+                <div className='plot'><CompPlot townPerks={townPerks} tiles={tiles} setTiles={setTiles} tool={tool} setFertilizers={setFertilizers} fertilizers={fertilizers} equippedFert={equippedFert} setEquippedFert={setEquippedFert} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} items={items} /></div>
             </div>
             <div className='right-column'>
                 <div className="userProfile"><CompProfile orderNotice={orderNotice} setOrderBox={setOrderBox} setLoginBox={setLoginBox} type={'tall'} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
@@ -110,7 +110,7 @@ function PlantScreen({ initDisplaySlot, tiles, setTiles, itemsData, setItemsData
                 </div>
             </div>
             <div className="order-GUI">
-                {orderBox && <OrderBoard close={() => setOrderBox(false)} setFertilizers={setFertilizers} updateBalance={updateBalance} updateXP={updateXP} />}
+                {orderBox && <OrderBoard townPerks={townPerks} close={() => setOrderBox(false)} setFertilizers={setFertilizers} updateBalance={updateBalance} updateXP={updateXP} />}
             </div>
         </div>
     )
