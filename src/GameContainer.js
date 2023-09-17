@@ -133,13 +133,13 @@ function GameContainer() {
             }
 
             
-            if (waitForServerResponse) {
-                const response = await waitForServerResponse('getTownPerks');
-                let data = response.body;
-                console.log(data)
-                setTownPerks(data)
+            // if (waitForServerResponse) {
+            //     const response = await waitForServerResponse('getTownPerks');
+            //     let data = response.body;
+            //     console.log(data)
+            //     setTownPerks(data)
                 
-            }
+            // }
         }
         fetchData();
     }, [])
