@@ -45,7 +45,8 @@ function CompMarketItem({ imgURL, name, newPrice, oldPrice }) {
                         width: '100%',
                         height: '100%',
                         objectFit: 'contain',
-                        border: '1px solid navy'
+                        borderTop: '1px solid black',
+                        borderBottom: '1px solid black'
                     }} />
             </div>
             <div
