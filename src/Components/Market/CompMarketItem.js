@@ -12,7 +12,6 @@ function CompMarketItem({ imgURL, name, newPrice, oldPrice }) {
     } else {
         arrowURL = `${process.env.PUBLIC_URL}/assets/images/market-neutral.png`
     }
-
     return (
         <div id="market-item"
             style={{
