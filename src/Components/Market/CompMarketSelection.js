@@ -3,7 +3,7 @@ import CONSTANTS from '../../CONSTANTS';
 
 // pass it all price info
 function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell, items }) {
-
+    console.log(name)
     const autoSubmit = useRef(false);
 
     let arrowURL = `${process.env.PUBLIC_URL}/assets/images/market_direction_error.png`;
@@ -47,7 +47,7 @@ function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell, items }
                     <img src={`${process.env.PUBLIC_URL}/assets/images/`.concat(imgURL)} style={{ objectFit: 'contain', width: '100%', maxHeight: '100%' }} />
                 </div>
                 <div style={{ height: '100%', width: '40%', padding: "1.5vh 1vh", paddingTop: "10%" }}>
-                    <div style={{ textAlign: 'center', textTransform: 'uppercase', textDecoration: 'underline', fontSize: "clamp(12px, 1vw, 80px)", wordBreak: 'break-all' }}>{CONSTANTS.InventoryDescriptions[name][0]}</div>
+                    <div style={{ textAlign: 'center', textTransform: 'uppercase', textDecoration: 'underline', fontSize: "clamp(12px, 1vw, 80px)", wordBreak: 'break-all' }}>{CONSTANTS?.InventoryDescriptions?.[name]?.[0]}</div>
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5%', fontSize: '1.3vw' }}>${newPrice} <small>/each</small> <img src={arrowURL} style={{ width: '12%' }} /></div>
                     <div style={{ fontSize: '0.7vw' }}>${oldPrice} /each previously</div>
                     <div style={{ marginTop: "10%", textAlign: 'center' }}>
