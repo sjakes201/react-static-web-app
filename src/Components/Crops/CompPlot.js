@@ -65,6 +65,8 @@ function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizer
                 }
                 return newCounts
             })
+            updateInventory(desiredFertilizer, -1, true)
+            
             setTiles((old) => {
                 let newTiles = old.map((tile) => {
                     if (tile.TileID === tileID) {

@@ -73,7 +73,6 @@ function PlantScreen({ townPerks, tiles, setTiles, itemsData, setItemsData, getU
 
 
     if (equippedFert !== "") {
-        console.log(equippedFert)
         appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/${equippedFert}.png) 16 16, auto`
     }
 
