@@ -130,11 +130,11 @@ function AnimalScreen({ townPerks, setAnimalsInfo, barn, coop, setBarn, setCoop,
 
           </div>
           {/* <a target='_blank' href="/updateNotes.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>update notes </a> */}
-          <div style={{ width: '70%', height: '3vh', position: 'absolute', bottom: '1vh', left: '0', fontSize: '1vw' }}>
-            <a target='_black' href="https://discord.gg/jrxWrgNCHw" style={{ fontSize: '.6vw', textDecoration: 'underline', height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ height: '50%', marginRight: '2%' }}></img>
-              Community Discord
-              <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ height: '50%', marginLeft: '2%' }}></img>
+          <div style={{ width: '70%', height: '3vh', position: 'absolute', bottom: '1vh', left: '30%', fontSize: '1vw' }}>
+            <a target='_black' href="https://discord.gg/jrxWrgNCHw" style={{ fontSize: '.9vw', textDecoration: 'underline', height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ height: '65%', marginRight: '2%' }}></img>
+              Game Discord
+              <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ height: '65%', marginLeft: '2%' }}></img>
             </a>
           </div>
         </div>
