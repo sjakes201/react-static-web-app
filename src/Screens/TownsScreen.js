@@ -87,7 +87,7 @@ function TownsScreen({ playersTown, reloadTownPerks, updateXP, updateBalance }) 
                 </div>
                 <div className={`townsNavButton ${screen === 'TownSearch' ? 'activeButton' : ''}`}>
                     <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/gui/searchRed.png`}
+                        src={`${process.env.PUBLIC_URL}/assets/images/searchRed.png`}
                         onClick={() => setScreen("TownSearch")}
                         onMouseEnter={() => handleMouseEnter(2)}
                         onMouseLeave={() => handleMouseLeave(2)}
