@@ -15,7 +15,7 @@ import NotificationBox from "./Components/GUI/NotificationBox";
 import Complogin from "./Components/GUI/CompLogin";
 import GoogleAnalyticsReporter from './GoogleAnalyticsReporter';
 
-import { useWebSocket } from './WebSocketContext'; // Replace with your actual import path
+import { useWebSocket } from './WebSocketContext';
 
 import CONSTANTS from "./CONSTANTS";
 import CROPINFO from "./CROPINFO";
@@ -349,7 +349,6 @@ function GameContainer() {
                 <Route path="/howtoplay" element={<HowToPlay />} />
                 <Route path="/machines" element={<MachinesScreen artisanItems={artisanItems} setArtisanItems={setArtisanItems} getUser={getUser} getXP={getXP} updateBalance={updateBalance} getBal={getBal} itemsData={itemsData} setItemsData={setItemsData} parts={parts} machines={machines} setParts={setParts} setMachines={setMachines} />} />
                 <Route path="/towns" element={<TownsScreen updateBalance={updateBalance} updateXP={updateXP} reloadTownPerks={reloadTownPerks} playersTown={townPerks.townName} />} />
-
             </Routes>
         </div>
     );
