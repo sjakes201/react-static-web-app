@@ -14,7 +14,6 @@ let downTime = window.localStorage.getItem('downTime') === 'true';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-    !downTime ? (
         <WebSocketProvider>
             <Router>
                 <div id='root' style={{ height: '100vh', width: '100vw' }}>
@@ -22,25 +21,24 @@ root.render(
                 </div>
             </Router>
         </WebSocketProvider>
-    ) : (
-        <div
-            style={{
-                width: '100vw',
-                height: '100vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'beige'
-            }}>
-            <img
-                src={`${process.env.PUBLIC_URL}/assets/images/chicken_collectible_walking_right.gif`}
-                alt={'loading chicken'}
-                style={{
-                    width: '5vw'
-                }}
-                draggable={false} />
-            <p>Downtime for big update! Estimated: 20 minutes</p>
-        </div>)
+        // <div
+        //     style={{
+        //         width: '100vw',
+        //         height: '100vh',
+        //         display: 'flex',
+        //         justifyContent: 'center',
+        //         alignItems: 'center',
+        //         backgroundColor: 'beige'
+        //     }}>
+        //     <img
+        //         src={`${process.env.PUBLIC_URL}/assets/images/chicken_collectible_walking_right.gif`}
+        //         alt={'loading chicken'}
+        //         style={{
+        //             width: '5vw'
+        //         }}
+        //         draggable={false} />
+        //     <p>Downtime for big update! Estimated: 20 minutes</p>
+        // </div>
 
 );
 
