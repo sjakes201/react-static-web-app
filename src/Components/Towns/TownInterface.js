@@ -53,8 +53,8 @@ function TownInterface({ updateBalance, updateXP, townName, backArrow, reloadTow
         const fetchData = async () => {
             if (waitForServerResponse) {
                 let data = await waitForServerResponse('getTownInfo', { townName: townName });
-                data.body.playersData.sort((a, b) => b.xp - a.xp)
                 console.log(data)
+                data.body.playersData.sort((a, b) => b.xp - a.xp)
                 setTownInfo(data.body)
                 setSettingsData({
                     description: data.body.description,

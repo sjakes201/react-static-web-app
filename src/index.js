@@ -9,7 +9,8 @@ import React from 'react';
 ReactGA.initialize('G-SW9XV2PGLR');
 
 let downTime = window.localStorage.getItem('downTime') === 'true';
-downTime = false;
+downTime = true;
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -39,7 +40,7 @@ root.render(
                     width: '5vw'
                 }}
                 draggable={false} />
-            <p>Downtime for big update! Estimated: 10 minutes</p>
+            <p>Downtime for big update! Estimated: 20 minutes</p>
         </div>)
 
 );
