@@ -1,0 +1,92 @@
+/* Styles for top level components */
+
+.townsScreenContainer {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--menu_dark);
+}
+
+.townsScreenCenter {
+    width: 70%;
+    height: 80%;
+}
+
+.townsScreenBackArrow {
+    position: absolute;
+    height: 5vw;
+    top: 2vh;
+    left: 2vh;
+    cursor: pointer;
+}
+
+/* Styles for general use */
+.basicCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styles for screen nav buttons */
+
+.townsNavButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 7%;
+    width: 12%;
+    margin-bottom: 12px;
+
+}
+
+.townsNavButton {
+    height: calc(100% - 12px);
+    max-width: calc(33% - 12px);
+    object-fit: contain;
+    cursor: pointer;
+    filter: grayscale(0.5);
+    box-sizing: border-box;
+    margin: 6px;
+    border-radius: 5px;
+    box-shadow:
+        0 0 0 1px var(--black),
+        0 0 0 2px var(--border_orange),
+        0 0 0 4px var(--border_shadow_orange),
+        0 0 0 6px var(--black);
+    background-color: var(--menu_lighter);
+    position: relative;
+}
+
+.townsNavButton > img {
+    object-fit: contain;
+    height: 100%;
+    max-width: 100%;
+}
+
+.lockedButton {
+    cursor: default;
+    opacity: 0.5;
+    filter: grayscale(1);
+}
+
+.activeButton {
+    filter: none !important;
+    opacity: 1 !important;
+}
+
+.townNavTip {
+    position: absolute;
+    top: 0;
+    opacity: 1;
+    filter: none;
+    pointer-events: none;
+    background-color: whitesmoke;
+    border: 1px solid black;
+    padding: 3px;
+    font-size: .9vw;
+
+}

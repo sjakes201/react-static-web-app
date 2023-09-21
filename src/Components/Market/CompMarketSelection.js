@@ -3,7 +3,6 @@ import CONSTANTS from '../../CONSTANTS';
 
 // pass it all price info
 function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell, items }) {
-    console.log(name)
     const autoSubmit = useRef(false);
 
     let arrowURL = `${process.env.PUBLIC_URL}/assets/images/market_direction_error.png`;

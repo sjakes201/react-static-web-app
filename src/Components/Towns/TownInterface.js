@@ -4,9 +4,10 @@ import PlayerCard from './PlayerCard';
 import { useWebSocket } from "../../WebSocketContext";
 import TOWNSINFO from '../../TOWNSINFO';
 import TownGoals from './TownGoals';
+import { calcTownLevel } from '../../townHelpers';
 
 // townName is string for town name, backArrow is optional function to be called when back arrow pressed
-function TownInterface({ townName, backArrow }) {
+function TownInterface({ updateBalance, updateXP, townName, backArrow, reloadTownPerks, setTown, setScreen }) {
 
     const { waitForServerResponse } = useWebSocket();
 
@@ -115,42 +116,50 @@ function TownInterface({ townName, backArrow }) {
             let response = await waitForServerResponse('joinTown', { townName: townInfo.townName });
             console.log(response)
             if (response.body.message === 'SUCCESS') {
-                setRefreshData((old) => old+1);
+                setRefreshData((old) => old + 1);
+                if (reloadTownPerks) reloadTownPerks();
+                if (setTown) setTown(townInfo.townName);
+                if (setScreen) setScreen("TownInterface");
+
             }
         }
     }
 
-    const leaveTown = async() => {
+    const leaveTown = async () => {
         if (waitForServerResponse) {
-            let response = await waitForServerResponse('leaveTown', { });
+            let response = await waitForServerResponse('leaveTown', {});
             if (response.body.message === 'SUCCESS') {
-                setRefreshData((old) => old+1);
+                setRefreshData((old) => old + 1);
+                if (setTown) setTown("");
+                if (setScreen) setScreen("TownSearch");
+                if (reloadTownPerks) reloadTownPerks();
             }
-            console.log(response)
         }
 
     }
 
     // Info for when player clicks level button
     const levelPerks = () => {
+        const townLevelInfo = calcTownLevel(townInfo.townXP)
         let noPerks = !townInfo.growthPerkLevel && !townInfo.partsPerkLevel && !townInfo.animalPerkLevel && !townInfo.orderRefreshPerkLevel
         return (
             <div className='levelPerksContainer'>
                 <span className='perksPopupX' onClick={() => setPerksPopup(false)}>X</span>
                 <p id='perksLabel'>Town Perks</p>
                 {townInfo.growthPerkLevel !== 0 && <li>
-                    <span className='perkPercent'>{TOWNSINFO.upgradeBoosts.growthPerkLevel[townInfo.growthPerkLevel]}%</span> faster crop growth
+                    <span className='perkPercent'>{TOWNSINFO.upgradeBoosts.growthPerkLevel[townInfo.growthPerkLevel] * 100}%</span> faster crop growth
                 </li>}
                 {townInfo.animalPerkLevel !== 0 && <li>
-                    <span className='perkPercent'>{TOWNSINFO.upgradeBoosts.animalsPerkLevel[townInfo.animalPerkLevel]}%</span> faster animal production
+                    <span className='perkPercent'>{TOWNSINFO.upgradeBoosts.animalPerkLevel[townInfo.animalPerkLevel] * 100}%</span> faster animal production
                 </li>}
                 {townInfo.partsPerkLevel !== 0 && <li>
-                    <span className='perkPercent'>{TOWNSINFO.upgradeBoosts.partsPerkLevel[townInfo.partsPerkLevel]}%</span> higher chance of parts
+                    <span className='perkPercent'>{TOWNSINFO.upgradeBoosts.partsPerkLevel[townInfo.partsPerkLevel] * 100}%</span> higher chance of parts
                 </li>}
                 {townInfo.orderRefreshPerkLevel !== 0 && <li>
-                    <span className='perkPercent'>{TOWNSINFO.upgradeBoosts.orderRefreshPerkLevel[townInfo.orderRefreshPerkLevel]}%</span> lower order refresh cooldown
+                    <span className='perkPercent'>{TOWNSINFO.upgradeBoosts.orderRefreshPerkLevel[townInfo.orderRefreshPerkLevel] * 100}%</span> lower order refresh cooldown
                 </li>}
-                {noPerks && <span style={{color: 'gray', marginTop: '5%'}}>First perk at town level 1</span>}
+                {noPerks && <span style={{ color: 'gray', opacity: '0.65', marginTop: '5%', textAlign: 'center', width: '100%' }}>First perk at town level 1</span>}
+                {townLevelInfo[2] !== -1 && <p className='townXPIndicator'>{townLevelInfo[1]} / {townLevelInfo[2]} town xp to next level</p>}
             </div>
         )
     }
@@ -222,7 +231,7 @@ function TownInterface({ townName, backArrow }) {
                             {settingsGUI && settings()}
                             <div className='townInfoBar'>
                                 <div className='townLeftBar'>
-                                    {backArrow && <img id='townBackArrow' src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_dark.png`} onClick={() => backArrow(true)}/>}
+                                    {backArrow && <img id='townBackArrow' src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_dark.png`} onClick={() => backArrow(true)} />}
                                     {townInfo.myControls === 'leader' && <img id='townSettingsButton' src={`${process.env.PUBLIC_URL}/assets/images/Gears.png`} onClick={() => setSettingsGUI(true)} />}
                                 </div>
                                 <div className='townLogo basicCenter'>
@@ -237,14 +246,20 @@ function TownInterface({ townName, backArrow }) {
                                     </p>
                                 </div>
                                 <div className='townLevel'>
-                                    <img src={`${process.env.PUBLIC_URL}/assets/images/XP.png`} onClick={() => setPerksPopup(true)} />
+                                    <div className='burst-12 outerClick' onClick={() => setPerksPopup(true)}>
+                                        <div className='burst-12 middleClick' onClick={() => setPerksPopup(true)}>
+                                            <div className='burst-12 innerClick' onClick={() => setPerksPopup(true)}>
+                                                <p className='townLevelNum'>LVL {calcTownLevel(townInfo.townXP)[0]}</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                     {perksPopup && levelPerks()}
-                                    { townInfo.myControls !== 'visitor' &&
-                                    <div className='showGoalsButton basicCenter'
-                                        onClick={() => {
-                                            setTownScreen("GOALS")
-                                        }}
-                                    >GOALS</div>}
+                                    {townInfo.myControls !== 'visitor' &&
+                                        <div className='showGoalsButton basicCenter'
+                                            onClick={() => {
+                                                setTownScreen("GOALS")
+                                            }}
+                                        >GOALS</div>}
                                 </div>
                                 <div className='townGap'></div>
                                 <div className='townInfoSection'>
@@ -254,7 +269,7 @@ function TownInterface({ townName, backArrow }) {
                                     </div>
                                     {townInfo.myControls !== 'visitor' && (townInfo.myControls === 'member' || townInfo.memberCount === 1 ?
                                         <div className='leaveContainer basicCenter townInfoLowerRight'>
-                                            <div className='townLeaveButton basicCenter' onClick={() => {leaveTown(); backArrow()}}>
+                                            <div className='townLeaveButton basicCenter' onClick={() => { leaveTown(); if (backArrow) backArrow() }}>
                                                 Leave
                                             </div>
                                         </div>
@@ -281,7 +296,7 @@ function TownInterface({ townName, backArrow }) {
                     }
                     {
                         townScreen === "GOALS" && (
-                            <TownGoals setTownInfo={setTownInfo} setTownScreen={setTownScreen} townName={townInfo.townName} goals={townInfo.goalsData} role={townInfo.myControls} myUnclaimed={townInfo.myUnclaimed} remount={() => setRefreshData((old) => old+1)}/>
+                            <TownGoals updateBalance={updateBalance} updateXP={updateXP} setTownInfo={setTownInfo} setTownScreen={setTownScreen} townName={townInfo.townName} goals={townInfo.goalsData} role={townInfo.myControls} myUnclaimed={townInfo.myUnclaimed} remount={() => setRefreshData((old) => old + 1)} />
                         )
                     }
                 </>)}

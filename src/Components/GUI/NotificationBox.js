@@ -24,7 +24,7 @@ function NotificationBox({ close, contents }) {
 
                         return (
                             <div className='unlockedItemCard'>
-                                <img className='unlockImage' src={`${process.env.PUBLIC_URL}/assets/images/${imgLink}`} />
+                                <img draggable={false} className='unlockImage' src={`${process.env.PUBLIC_URL}/assets/images/${imgLink}`} />
                                 <p className='unlockName'>{CONSTANTS.InventoryDescriptionsPlural[unlock][0]}</p>
                             </div>
                         )

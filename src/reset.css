@@ -16,6 +16,8 @@
   --border_gray: lightgray;
   --border_shadow_gray: gray;
   --soft_red: rgb(238, 146, 146);
+  --blue_light: #3AB4FC;
+  --blue_dark: #0072B5;
 }
 
 /* Box sizing */

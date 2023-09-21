@@ -7,7 +7,7 @@ import { waitFor } from '@testing-library/react';
 // townName is string
 // remount recalls getTownInfo
 // role is string ("leader", "member")
-function TownGoals({ setTownInfo, goals, townName, myUnclaimed, role, setTownScreen, remount }) {
+function TownGoals({ setTownInfo, goals, townName, myUnclaimed, role, setTownScreen, remount, updateXP, updateBalance }) {
     const { waitForServerResponse } = useWebSocket();
 
     const changeGoal = async(newGoal, goalSlot) => {
@@ -31,6 +31,8 @@ function TownGoals({ setTownInfo, goals, townName, myUnclaimed, role, setTownScr
                 slotNum: slotNum
             })
             console.log(result)
+            updateXP(result.body.personalRewards.xp)
+            updateBalance(result.body.personalRewards.gold)
             
         }
     }

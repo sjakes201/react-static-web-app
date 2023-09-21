@@ -48,6 +48,7 @@
 }
 
 .searchViewInterface {
+    z-index: 2;
     position: absolute;
     top: 0;
     left: 0;
@@ -157,6 +158,10 @@
     color: #36e04d;
 }
 
+.searchMemberCount {
+    font-size: .8vw;
+}
+
 /* Styles for create town GUI */
 .createTownButton {
     font-size: 1vw;
@@ -169,6 +174,20 @@
     cursor: pointer;
     background-color: var(--menu_lightest);
     transition: all 0.2s;
+}
+
+.disabledCreateButton {
+    opacity: .5;
+    border: 1px dotted gray;
+    border-radius: 5px;
+    cursor: default;
+    color: gray;
+    font-size: 1vw;
+    padding: 5px;
+    width: 12%;
+    text-align: center;
+    margin-left: 2%;
+    background-color: var(--menu_lightest);
 }
 
 .createTownButton:hover {

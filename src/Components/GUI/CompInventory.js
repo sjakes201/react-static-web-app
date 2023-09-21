@@ -3,8 +3,8 @@ import '../CSS/CompInventory.css'
 import CONSTANTS from '../../CONSTANTS';
 import ANIMALINFO from '../../ANIMALINFO';
 
-const MULTIPLANTLEVEL = 25;
-const MULTIHARVESTLEVEL = 25;
+const MULTIPLANTLEVEL = 20;
+const MULTIHARVESTLEVEL = 20;
 
 function CompInventory({ level, tool, setTool, fertilizers, items, displayOnly, setMarketSelected, isAnimalScreen, setEquippedFeed, showBottomBar, showFertilizer, setEquippedFert, equippedFert }) {
 
@@ -254,7 +254,7 @@ function CompInventory({ level, tool, setTool, fertilizers, items, displayOnly, 
                                         onMouseOut={() => handleMouseOut(1)} />
                                     {
                                         tip1 && <div className='toolTipInv'>
-                                            Multiharvest {level < MULTIHARVESTLEVEL && '(Lvl 25)'}
+                                            Multiharvest {level < MULTIHARVESTLEVEL && `(Lvl ${MULTIHARVESTLEVEL})`}
                                         </div>
                                     }
                                 </div>
@@ -278,7 +278,7 @@ function CompInventory({ level, tool, setTool, fertilizers, items, displayOnly, 
                                         onMouseOut={() => handleMouseOut(2)} />
                                     {
                                         tip2 && <div className='toolTipInv'>
-                                            Multiplant {level < MULTIPLANTLEVEL && '(Lvl 25)'}
+                                            Multiplant {level < MULTIPLANTLEVEL && `(Lvl ${MULTIPLANTLEVEL})`}
                                         </div>
                                     }
                                 </div>

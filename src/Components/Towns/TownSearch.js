@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react'
 import './TownSearch.css'
 import TOWNSINFO from "../../TOWNSINFO";
 import TownInterface from "./TownInterface";
+import { calcTownLevel, calcPerkLevels } from '../../townHelpers.js'
 
 
-function TownSearch() {
+function TownSearch({ updateXP, updateBalance, playerInTown, reloadTownPerks, setScreen, setTown }) {
     const { waitForServerResponse } = useWebSocket();
 
     const [towns, setTowns] = useState([]);
@@ -40,27 +41,30 @@ function TownSearch() {
     const submitCreateTown = async () => {
         if (waitForServerResponse) {
             let result = await waitForServerResponse('createTown', { townName: townName })
-            console.log(result)
-            if(result.body.message === 'SUCCESS') {
+            if (result.body.message === 'SUCCESS') {
                 setCreateTown(false)
-                setViewingTown(townName)
+                setTown(townName)
+                setScreen("TownInterface")
+                reloadTownPerks();
             }
         }
     }
 
     const townCard = (townName, memberCount, townLogoNum, townXP, status) => {
-        let level = 0;
-        TOWNSINFO.townLevels.forEach((threshold, index) => { if (townXP > threshold) { level = index } })
+        let townLevel = calcTownLevel(townXP)[0]
+
         return (
-            <div className='townCard'
+            <div
+                className='townCard'
                 onClick={() => {
                     setViewingTown(townName)
                 }}
+                key={townName}
             >
                 <div className='townCardLeft'>
                     <img className='searchTownLogo' src={`${process.env.PUBLIC_URL}/assets/images/townIcons/${TOWNSINFO.townIcons[townLogoNum]}.png`} />
                     <p className='searchTownName'>{townName}</p>
-                    <p className='searchTownLevel'>town lvl {level}</p>
+                    <p className='searchTownLevel'>town lvl {townLevel}</p>
                 </div>
                 <div className='townCardRight'>
                     <p className={status === 'OPEN' ? 'searchTownStatus' : ''}>{status}</p>
@@ -107,7 +111,7 @@ function TownSearch() {
         <div className='townSearchContainer'>
             {viewingTown &&
                 <div className='searchViewInterface'>
-                    <TownInterface townName={viewingTown}
+                    <TownInterface updateBalance={updateBalance} updateXP={updateXP} townName={viewingTown} reloadTownPerks={reloadTownPerks} setScreen={setScreen}
                         backArrow={(deleted) => { setViewingTown(""); if (deleted) { fetchTowns() } }
                         } />
                 </div>
@@ -124,7 +128,7 @@ function TownSearch() {
                     onKeyDown={(e) => { if (e.key === 'Enter') fetchTowns(); }}
                 />
                 <img className='searchGo' src={`${process.env.PUBLIC_URL}/assets/images/refresh.png`} onClick={fetchTowns} />
-                <div className='createTownButton' onClick={() => setCreateTown(true)}>Create town</div>
+                <div className={`${!playerInTown ? 'createTownButton' : 'disabledCreateButton'}`} onClick={() => { if (!playerInTown) setCreateTown(true) }}>Create town</div>
             </div>
             <div className='searchResults'>
                 {

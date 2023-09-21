@@ -2,7 +2,7 @@ import './PlayerCard.css'
 import CONSTANTS from '../../CONSTANTS';
 import React, { useState, useEffect, useRef } from 'react'
 
-function PlayerCard({ username, xp, role, contributions, myControls, managementAction }) {
+function PlayerCard({ username, xp, role, contributions, myControls, managementAction, reportedTimePassed }) {
 
     const [kickConfirm, setKickConfirm] = useState(false);
     const kickTimer = useRef(null);
@@ -75,11 +75,9 @@ function PlayerCard({ username, xp, role, contributions, myControls, managementA
     return (
         <div className='playerCardContainer'>
             <div className='playerLevel basicCenter'>
-                {/* <div id='burst-12' className='outer'> */}
                 <div id='burst-12' className='inner'>
                     <p className='levelNum'>{calcLevel(xp)}</p>
                 </div>
-                {/* </div> */}
             </div>
             <div className='playerUser'>{username}</div>
             <div className='playerGap'></div>

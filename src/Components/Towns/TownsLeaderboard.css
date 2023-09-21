@@ -1,0 +1,142 @@
+.townsLeaderboardContainer {
+    width: 100%;
+    height: 100%;
+    box-shadow:
+        0 0 0 2px var(--black),
+        0 0 0 5px var(--border_orange),
+        0 0 0 7px var(--border_shadow_orange),
+        0 0 0 9px var(--black);
+    position: relative;
+    background-color: var(--menu_light);
+
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 2px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 3px grey;
+        border-radius: 10px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: var(--menu_lighter);
+        border-radius: 10px;
+        border: 1px solid rgb(0, 0, 0);
+    }
+}
+
+.searchViewInterface {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.townSlotList {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    gap: 1vh;
+    padding: 1vh 0;
+}
+
+/* Styles for leaderboard slots */
+.townLeaderboardSlot {
+    width: 100%;
+    min-height: 12vh;
+    max-height: 12vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.townPos {
+    font-size: 1.1vw;
+    width: 2vw;
+    height: 2vw;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow:
+        0 0 0 1px var(--border_yellow),
+        0 0 0 2px var(--border_shadow_yellow),
+        0 0 0 3px var(--black);
+}
+
+.townFirst {
+    color: orange;
+}
+
+.townSecond {
+    color: rgb(124, 124, 124);
+}
+
+.townThird {
+    color: brown;
+}
+
+.townLeaderboardCard {
+    height: 100%;
+    width: 91%;
+    border: 1px solid black;
+    margin-left: 1%;
+    border-radius: 5px;
+    background-color: var(--menu_lighter);
+    display: flex;
+    flex-direction: row;
+    padding-left: 2%;
+    cursor: pointer;
+}
+
+.lbCardLeft {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 4%;
+    height: 100%;
+    width: 47%;
+
+}
+
+.lbCardRight {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 4%;
+    height: 100%;
+    width: 49%;
+}
+
+.lbTownLogo {
+    height: 90%;
+    object-fit: contain;
+    border: 1px solid black;
+    border-radius: 50%;
+}
+
+.lbTownName {
+    font-size: 1.1vw;
+}
+
+.lbTownLevel {
+    color: gray;
+    font-size: .7vw;
+
+}
+
+.lbTownStatus {
+    color: #36e04d;
+}
+.lbMemberCount {
+    font-size: .8vw;
+}

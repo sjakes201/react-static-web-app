@@ -5,6 +5,7 @@ import AnimalScreen from './Screens/AnimalScreen';
 import PlantScreen from './Screens/PlantScreen';
 import ShopScreen from './Screens/ShopScreen';
 import MarketScreen from './Screens/MarketScreen';
+import TownsScreen from './Screens/TownsScreen';
 import LeaderboardScreen from './Screens/LeaderboardScreen';
 import AccountScreen from './Screens/AccountScreen';
 import PasswordReset from './Screens/PasswordReset';
@@ -13,10 +14,6 @@ import MachinesScreen from './Screens/MachinesScreen';
 import NotificationBox from "./Components/GUI/NotificationBox";
 import Complogin from "./Components/GUI/CompLogin";
 import GoogleAnalyticsReporter from './GoogleAnalyticsReporter';
-
-import TownInterface from './Components/Towns/TownInterface';
-import TownGoals from './Components/Towns/TownGoals';
-import TownSearch from './Components/Towns/TownSearch';
 
 import { useWebSocket } from './WebSocketContext'; // Replace with your actual import path
 
@@ -55,7 +52,7 @@ function GameContainer() {
     const [tiles, setTiles] = useState([]);
 
     const [townPerks, setTownPerks] = useState({})
-
+    
     let newXP = useRef(false)
 
     const [prices, setPrices] = useState(null);
@@ -133,13 +130,12 @@ function GameContainer() {
             }
 
             
-            // if (waitForServerResponse) {
-            //     const response = await waitForServerResponse('getTownPerks');
-            //     let data = response.body;
-            //     console.log(data)
-            //     setTownPerks(data)
-                
-            // }
+            if (waitForServerResponse) {
+                // For now, getTownPerks also returns the player's town info. Rename to 'player town info' or something
+                const response = await waitForServerResponse('getTownPerks');
+                let data = response.body;
+                setTownPerks(data)
+            }
         }
         fetchData();
     }, [])
@@ -318,11 +314,10 @@ function GameContainer() {
         // Load AdinPlay Ads script
         const script = document.createElement('script');
         script.async = true;
-        script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js"; // Replace 'XXXXX' with your AIP ID
+        script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
         document.head.appendChild(script);
       
         return () => {
-          // Cleanup: Remove the script if needed
           if (script.parentNode) {
             script.parentNode.removeChild(script);
           }
@@ -353,13 +348,10 @@ function GameContainer() {
                 <Route path="/passwordReset" element={<PasswordReset />} />
                 <Route path="/howtoplay" element={<HowToPlay />} />
                 <Route path="/machines" element={<MachinesScreen artisanItems={artisanItems} setArtisanItems={setArtisanItems} getUser={getUser} getXP={getXP} updateBalance={updateBalance} getBal={getBal} itemsData={itemsData} setItemsData={setItemsData} parts={parts} machines={machines} setParts={setParts} setMachines={setMachines} />} />
+                <Route path="/towns" element={<TownsScreen updateBalance={updateBalance} updateXP={updateXP} reloadTownPerks={reloadTownPerks} playersTown={townPerks.townName} />} />
+
             </Routes>
         </div>
-        // <div style={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        //     <div style={{ width: '60%', height: '80%' }}>
-        //         <TownSearch />
-        //     </div>
-        // </div>
     );
 }
 

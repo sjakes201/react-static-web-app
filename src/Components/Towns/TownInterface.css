@@ -116,6 +116,8 @@
     bottom: 5%;
     left: 5px;
     object-fit: contain;
+    filter: grayscale(1);
+    opacity: 0.8;
 }
 
 .townLogo {
@@ -153,10 +155,9 @@
     width: 100%;
     padding: 1.4%;
     font-size: .8vw;
-    text-wrap: balance;
     overflow: hidden;
     border: 1px solid black;
-    padding: 2% 0 0 2.5%;
+    padding: 1% 2%;
     background-color: var(--menu_lightest);
 }
 
@@ -170,10 +171,18 @@
     align-items: center;
 }
 
-.townLevel>img {
-    object-fit: contain;
-    height: 50%;
-    cursor: pointer;
+
+.townLevelNum {
+    font-size: .9vw;
+    line-height: .9vw;
+    z-index: 22;
+    text-align: center;
+}
+
+.townXPIndicator {
+    color: rgb(77, 77, 77);
+    font-size: .9vw;
+    margin-top: 5px;
 }
 
 .showGoalsButton {
@@ -282,9 +291,9 @@
 /*  Farm level perks popup */
 .levelPerksContainer {
     position: absolute;
-    top: 15%;
-    left: 33%;
-    width: 20vw;
+    top: 5%;
+    left: 20%;
+    width: 24vw;
     min-height: 50%;
     border: 1px solid black;
     border-radius: 1%;
@@ -331,7 +340,7 @@
     height: calc(40% - 11px);
     z-index: 51;
     background-color: var(--menu_lighter);
-    
+
     margin: 11px;
     box-shadow:
         0 0 0 3px var(--black),
@@ -432,7 +441,7 @@
 }
 
 .townIconSelection {
-    width: 80%;
+    width: 50%;
     display: grid;
     grid-template-rows: 50% 50%;
     grid-template-columns: 25% 25% 25% 25%;
@@ -443,6 +452,7 @@
 .townIconOption {
     object-fit: contain;
     max-height: 90%;
+    max-width: 100%;
     border: 1px solid black;
     border-radius: 50%;
     background-color: white;
@@ -461,4 +471,57 @@
 #descSubmitButton {
     background-color: white;
     padding: 2px;
+}
+
+/* Level icon fancies */
+
+.innerClick,
+.innerClick:after,
+.innerClick:before {
+    background: rgb(176, 222, 255);
+    z-index: 21;
+    width: 3.5vh;
+    height: 3.5vh;
+}
+
+.outerClick,
+.outerClick:after,
+.outerClick:before {
+    background: rgb(42, 56, 131);
+    z-index: 19;
+    width: 4.8vh;
+    height: 4.8vh;
+}
+
+.middleClick,
+.middleClick:after,
+.middleClick:before {
+    background: rgb(199, 237, 255);
+    z-index: 20;
+    width: 4.2vh;
+    height: 4.2vh;
+}
+
+.burst-12 {
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.burst-12:before,
+.burst-12:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.burst-12:before {
+    transform: rotate(30deg);
+}
+
+.burst-12:after {
+    transform: rotate(60deg);
 }

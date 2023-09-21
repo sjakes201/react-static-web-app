@@ -24,9 +24,23 @@
         0 0 0 8px var(--black);
 }
 
+.townsButton {
+    box-shadow:
+        0 0 0 2px var(--black),
+        0 0 0 4px var(--blue_light),
+        0 0 0 6px var(--blue_dark),
+        0 0 0 8px var(--black);
+    max-height: calc(6vh - 8px);
+    margin: 8px;
+    width: 10vw;
+    object-fit: contain;
+    cursor: pointer;
+    background: var(--menu_light);
+}
+
 .nav-button>img {
     width: 10vw;
-    max-height: 10vh;
+    max-height: 6vh;
     object-fit: contain;
 }
 

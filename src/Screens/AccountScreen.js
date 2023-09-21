@@ -17,8 +17,6 @@ function AccountScreen() {
 
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-
         const fetchData = async () => {
 
             try {
@@ -125,7 +123,7 @@ function AccountScreen() {
                         </div>
                         <div className='acc-bottom'>
                             <p id='acc-contact-info'>Contact: livefarmgame.service@gmail.com</p>
-                            <div id='acc-bottom-ad'> PLACEHOLDER </div>
+                            {/* <div id='acc-bottom-ad'> PLACEHOLDER </div> */}
                             {/* <p id='acc-privacy-policy'>Privacy policy</p> */}
                         </div>
                     </div>

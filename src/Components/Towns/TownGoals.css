@@ -70,6 +70,7 @@
 
 .customGoal {
     border: 2px solid black;
+    box-shadow: 0 0 1px 2px rgba(7, 138, 246, 0.759);
 }
 
 .clickable {
@@ -140,6 +141,20 @@
     cursor: pointer;
 }
 
+.goalToolTip {
+    position: absolute;
+    border: 1px solid black;
+    background-color: white;
+    font-size: .9vw;
+    width: 4vw;
+    top: 40%;
+    padding: .05vw;
+    left: 4%;
+    z-index: 6;
+    text-wrap: wrap;
+    pointer-events: none;
+}
+
 .cancelGoalIcon {
     height: 100%;
     padding: 5px;
@@ -156,6 +171,20 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+.unconfirmGoalGUI {
+    color: white;
+    position: absolute;
+    left: 3%;
+    cursor: pointer;
+    font-size: 1.3vw;
+}
+
+.goalConfirmGUI > small {
+    font-size: .7vw;
+    color: rgb(233, 233, 233);
+    margin-left: 2%;
 }
 
 .setGoalButton {
@@ -202,4 +231,12 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+
+.townXPFromGoal {
+    color: gray;
+    font-size: 0.7vw;
+    margin-left: 1vw;
+    text-transform: none;
 }

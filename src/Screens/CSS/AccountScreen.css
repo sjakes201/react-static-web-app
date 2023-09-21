@@ -6,6 +6,24 @@
     align-items: center;
     background-color: var(--menu_light);
     position: absolute;
+    /* width */
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 10px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: rgb(226, 202, 141);
+        border-radius: 10px;
+        border: 1px solid rgb(66, 48, 10);
+    }
 }
 
 .acc-container {

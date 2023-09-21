@@ -2,16 +2,21 @@ import './TownGoals.css'
 import CONSTANTS from '../../CONSTANTS'
 import TOWNSINFO from '../../TOWNSINFO'
 import React, { useState, useEffect, useRef } from 'react'
+import { personalRewards } from '../../townHelpers'
 
 // Good is string for good name, numNeeded and numHave are int for goal quantities, customGoal is boolean for whether this is one the four chosen by town leader
 function GoalCard({ good, numNeeded, numHave, index, unclaimedData, role, changeGoal, claimUnclaimedGoal }) {
 
     let setByLeader = index < 4;
     let percentCompletion = numHave >= numNeeded ? 100 : Math.floor((numHave / numNeeded) * 100);
+    if (numHave > 0 && percentCompletion === 0) percentCompletion = 1;
     // Unclaimed data is either an empty string or string for what was unclaimed: ex 'CORN 100' to know what to display
     const [goalSelect, setGoalSelect] = useState(false);
     const [newGoal, setNewGoal] = useState("")
     const [confirmGUI, setConfirmGUI] = useState(false)
+
+    const toolTip = useRef(null)
+    const [tool, setTool] = useState(false)
 
     const goalSelectGuiRef = useRef(null);
     useEffect(() => {
@@ -35,11 +40,13 @@ function GoalCard({ good, numNeeded, numHave, index, unclaimedData, role, change
         };
     }, [goalSelect])
 
-    // If unclaimed reward, calculate reward same as backend. 5x the order reward per person
     const unclaimedButton = () => {
-        const [unclaimedGood, unclaimedQty] = unclaimedData.split(" ");
-        const goldReward = (Math.floor(CONSTANTS.Init_Market_Prices[unclaimedGood] * (2 / 3) * unclaimedQty)) * 5;
-        const xpReward = (Math.floor(CONSTANTS.XP[unclaimedGood] * (2 / 3) * unclaimedQty)) * 5;
+        let [unclaimedGood, unclaimedQty] = unclaimedData.split(" ");
+        unclaimedQty = parseInt(unclaimedQty)
+        // Gold reward is 
+        let rewards = personalRewards(unclaimedGood, unclaimedQty)
+        const goldReward = rewards.gold;
+        const xpReward = rewards.xp;
 
         return (
             <div
@@ -104,6 +111,7 @@ function GoalCard({ good, numNeeded, numHave, index, unclaimedData, role, change
             {
                 confirmGUI &&
                 (<div className='goalConfirmGUI'>
+                    <div className='unconfirmGoalGUI' onClick={() => setConfirmGUI(false)}>X</div>
                     <img
                         className='selectGoalIcon'
                         src={`${process.env.PUBLIC_URL}/assets/images/${newGoal}.png`}
@@ -116,20 +124,29 @@ function GoalCard({ good, numNeeded, numHave, index, unclaimedData, role, change
                         className='setGoalButton'>
                         SET
                     </div>
+                    <small>*Progress for this goal will be reset</small>
                 </div>)
             }
 
             <img
-                className={`goalCardIcon ${setByLeader ? 'customGoal' : ''} ${role === 'leader' ? 'clickable' : ''}`}
+                className={`goalCardIcon ${setByLeader ? 'customGoal' : ''} ${role === 'leader' && setByLeader ? 'clickable' : ''}`}
                 src={`${process.env.PUBLIC_URL}/assets/images/${good}.png`}
                 onClick={() => {
-                    if ((setByLeader < 4) && role === 'leader') { setGoalSelect(true) }
+                    if ((setByLeader) && role === 'leader') { setGoalSelect(true) }
+                }}
+                onMouseEnter={() => {
+                    toolTip.current = setTimeout(() => { setTool(true) }, role === 'leader' ? 800 : 500)
+                }}
+                onMouseLeave={() => {
+                    clearTimeout(toolTip.current)
+                    setTool(false);
                 }}
             />
+            {(tool && setByLeader) && <p className='goalToolTip'>Goal set by leader</p>}
 
             <div className='goalCardInfo'>
                 <div className='infoTopHalf'>
-                    <p>{CONSTANTS.InventoryDescriptionsPlural[good][0]}</p>
+                    <p>{CONSTANTS.InventoryDescriptionsPlural[good][0]}<small className='townXPFromGoal'>{good.includes("_") ? 1200 : 1000} town xp</small></p>
                     <p>{numHave}/{numNeeded}</p>
                 </div>
                 <div className='cardProgressBarShell'>

@@ -58,18 +58,8 @@ function CompOtherScreens({ current }) {
   return (
     <div className='buttons-container bottom-bar'>
       {otherScreens}
-      <div style={{
-        height: '100%',
-        boxSizing: 'border-box',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        cursor: 'pointer',
-      }}
-        onClick={() => navigate('/machines')}
-      >
-        <img src={`${process.env.PUBLIC_URL}/assets/images/machines/deskClickable.png`} style={{ height: '100%', objectFit: 'contain' }} />
-      </div>
+      {current !== 'shop' && <img src={`${process.env.PUBLIC_URL}/assets/images/townButton2.png`} className='townsButton' onClick={() => navigate('/towns')} />}
+      {current !== 'shop' && <img src={`${process.env.PUBLIC_URL}/assets/images/machines/deskClickable.png`} style={{ height: '100%', objectFit: 'contain', cursor: 'pointer' }} onClick={() => navigate('/machines')} />}
     </div>
   )
 }
