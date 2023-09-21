@@ -41,6 +41,7 @@ function TownSearch({ updateXP, updateBalance, playerInTown, reloadTownPerks, se
     const submitCreateTown = async () => {
         if (waitForServerResponse) {
             let result = await waitForServerResponse('createTown', { townName: townName })
+            console.log(result)
             if (result.body.message === 'SUCCESS') {
                 setCreateTown(false)
                 setTown(townName)

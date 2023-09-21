@@ -8,12 +8,13 @@ import React from 'react';
 
 ReactGA.initialize('G-SW9XV2PGLR');
 
-const isTesting = window.localStorage.getItem('testMode') === 'true';
+let downTime = window.localStorage.getItem('downTime') === 'true';
+downTime = false;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-    isTesting ? (
+    !downTime ? (
         <WebSocketProvider>
             <Router>
                 <div id='root' style={{ height: '100vh', width: '100vw' }}>
