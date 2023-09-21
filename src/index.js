@@ -9,7 +9,6 @@ import React from 'react';
 ReactGA.initialize('G-SW9XV2PGLR');
 
 let downTime = window.localStorage.getItem('downTime') === 'true';
-downTime = true;
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
