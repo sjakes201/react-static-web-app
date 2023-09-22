@@ -52,7 +52,7 @@ function GameContainer() {
     const [tiles, setTiles] = useState([]);
 
     const [townPerks, setTownPerks] = useState({})
-    
+
     let newXP = useRef(false)
 
     const [prices, setPrices] = useState(null);
@@ -129,7 +129,7 @@ function GameContainer() {
                 setArtisanItems(data.artisanData);
             }
 
-            
+
             if (waitForServerResponse) {
                 // For now, getTownPerks also returns the player's town info. Rename to 'player town info' or something
                 const response = await waitForServerResponse('getTownPerks');
@@ -152,13 +152,13 @@ function GameContainer() {
         }
     }, [level])
 
-    const reloadTownPerks = async() => {
+    const reloadTownPerks = async () => {
         if (waitForServerResponse) {
             const response = await waitForServerResponse('getTownPerks');
             let data = response.body;
             console.log(data)
             setTownPerks(data)
-            
+
         }
     }
 
@@ -295,34 +295,88 @@ function GameContainer() {
 
         }
     }
-    
+
     useEffect(() => {
-        // Initialize AdinPlay Ads
+        // Initialize 
         window.aiptag = window.aiptag || {};
         window.aiptag.cmd = window.aiptag.cmd || [];
         window.aiptag.cmd.display = window.aiptag.cmd.display || [];
         window.aiptag.cmd.player = window.aiptag.cmd.player || [];
-      
+
         window.aiptag.cmp = {
-          show: true,
-          position: "centered",  //centered or bottom
-          button: true,
-          buttonText: "Privacy settings",
-          buttonPosition: "bottom-left" //bottom-left, bottom-right, top-left, top-right
+            show: true,
+            position: "centered",  //centered or bottom
+            button: true,
+            buttonText: "Privacy settings",
+            buttonPosition: "bottom-left" //bottom-left, bottom-right, top-left, top-right
         };
-      
+
         // Load AdinPlay Ads script
         const script = document.createElement('script');
         script.async = true;
         script.src = "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
         document.head.appendChild(script);
-      
+
         return () => {
-          if (script.parentNode) {
-            script.parentNode.removeChild(script);
-          }
+            if (script.parentNode) {
+                script.parentNode.removeChild(script);
+            }
         };
-      }, []);
+    }, []);
+
+    const [sad, setSad] = useState(false)
+
+    useEffect(() => {
+        const checkScript = (src) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = () => {
+                if (src === "/ads.js") {
+                    if (typeof canRunAds === "undefined" || typeof adsReceived === "undefined" || typeof gotTheAds === "undefined") {
+                        setSad(true);
+                    }
+                }
+                if (src === "/prebid-ads.js") {
+                    if (typeof canRunAds2 === "undefined" || typeof adsReceived2 === "undefined" || typeof gotTheAds2 === "undefined") {
+                        setSad(true);
+                    }
+
+                }
+            };
+            script.onerror = () => {
+                // console.log(`Failed to load script: ${src}`);
+                setSad(true);
+            };
+            document.body.appendChild(script);
+            return script;
+        };
+
+        const img = new Image();
+        img.src = "/ad.jpg";
+        img.onload = () => {
+            // console.log('Image loaded successfully');
+        };
+        img.onerror = () => {
+            // console.log('Failed to load image');
+            setSad(true);
+        };
+
+        document.body.appendChild(img);
+
+        const adsScript = checkScript("/ads.js");
+        const prebidAdsScript = checkScript("/prebid-ads.js");
+
+        return () => {
+            document.body.removeChild(adsScript);
+            document.body.removeChild(prebidAdsScript);
+            document.body.removeChild(img)
+        };
+    }, []);
+
+    useEffect(() => {
+        console.log(`Is sad? ${sad}`)
+    }, [sad])
+
 
     if (!isConnected) {
         // If not connected yet, return a loading or connecting message
