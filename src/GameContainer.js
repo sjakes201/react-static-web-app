@@ -353,6 +353,7 @@ function GameContainer() {
 
         const img = new Image();
         img.src = "/ad.jpg";
+        img.style.display = 'none';
         img.onload = () => {
             // console.log('Image loaded successfully');
         };
