@@ -117,16 +117,11 @@ function AnimalScreen({ townPerks, setAnimalsInfo, barn, coop, setBarn, setCoop,
         <div className="inventory"><CompInventory items={items} updateInventory={updateInventory} isAnimalScreen={true} setEquippedFeed={setEquippedFeed} /></div>
         <div className="settings">
           <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '60px', justifyContent: 'space-evenly', position: 'absolute', top: '0' }}>
-
-
-
             <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000' }}>
-              {/* <div id="farmgame-live_120x60"></div> */}
+              <div>
+                <AdinPlayAd placementId="farmgame-live_120x60_2" />
+              </div>
             </div>
-
-            {/* <div style={{ position: 'relative', background: 'orange', width: '120px', height: '60px', zIndex: '2000', border: '2px solid purple' }}>
-              
-            </div> */}
 
           </div>
           {/* <a target='_blank' href="/updateNotes.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>update notes </a> */}

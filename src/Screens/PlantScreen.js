@@ -92,7 +92,6 @@ function PlantScreen({ townPerks, tiles, setTiles, itemsData, setItemsData, getU
                 <div className="settings">
                     <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '60px', justifyContent: 'space-evenly', position: 'absolute', top: '0' }}>
                         <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000' }}>
-                            {/* <div id="farmgame-live_120x60"></div> */}
                             <div>
                                 <AdinPlayAd placementId="farmgame-live_120x60" />
                             </div>

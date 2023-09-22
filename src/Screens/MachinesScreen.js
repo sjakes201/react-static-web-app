@@ -384,12 +384,12 @@ function MachinesScreen({ artisanItems, setArtisanItems, itemsData, setItemsData
                         onClick={() => window.history.back()}
                         style={{ width: '5%', marginLeft: '1%', marginBottom: '5%', cursor: 'pointer', objectFit: 'contain' }}
                     />
-                    {/* {(window.innerWidth >= 1137 && window.innerWidth < 1515) &&
+                    {(window.innerWidth >= 1137 && window.innerWidth < 1515) &&
                         <div style={{ position: 'relative', width: '728px', height: '90px', zIndex: '20000' }}>
-                            <AdinPlayAd placementId="farmgame-live_728x90" />
+                            <AdinPlayAd placementId="farmgame-live_728x90_2" />
 
                         </div>
-                    } */}
+                    }
                     {(window.innerWidth >= 1515) &&
                         <div style={{ position: 'relative', width: '970px', height: '90px', zIndex: '20000' }}>
                             <AdinPlayAd placementId="farmgame-live_970x90" />
