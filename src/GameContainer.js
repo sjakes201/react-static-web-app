@@ -332,37 +332,27 @@ function GameContainer() {
             script.src = src;
             script.onload = () => {
                 if (src === "/ads.js") {
-                    if (typeof canRunAds === "undefined" || typeof adsReceived === "undefined" || typeof gotTheAds === "undefined") {
+                    if (typeof window.canRunAds === "undefined" || typeof window.adsReceived === "undefined" || typeof window.gotTheAds === "undefined") {
+                        console.log(window.canRunAds, window.adsReceived, window.gotTheAds)
+                        console.log('setting sad')
                         setSad(true);
                     }
                 }
                 if (src === "/prebid-ads.js") {
-                    if (typeof canRunAds2 === "undefined" || typeof adsReceived2 === "undefined" || typeof gotTheAds2 === "undefined") {
+                    if (typeof window.canRunAds2 === "undefined" || typeof window.adsReceived2 === "undefined" || typeof window.gotTheAds2 === "undefined") {
+                        console.log(window.canRunAds2, window.adsReceived2, window.gotTheAds2)
+                        console.log('setting sad')
                         setSad(true);
                     }
 
                 }
             };
             script.onerror = () => {
-                // console.log(`Failed to load script: ${src}`);
                 setSad(true);
             };
             document.body.appendChild(script);
             return script;
         };
-
-        const img = new Image();
-        img.src = "/ad.jpg";
-        img.style.display = 'none';
-        img.onload = () => {
-            // console.log('Image loaded successfully');
-        };
-        img.onerror = () => {
-            // console.log('Failed to load image');
-            setSad(true);
-        };
-
-        document.body.appendChild(img);
 
         const adsScript = checkScript("/ads.js");
         const prebidAdsScript = checkScript("/prebid-ads.js");
@@ -370,7 +360,6 @@ function GameContainer() {
         return () => {
             document.body.removeChild(adsScript);
             document.body.removeChild(prebidAdsScript);
-            document.body.removeChild(img)
         };
     }, []);
 

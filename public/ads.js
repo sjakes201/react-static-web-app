@@ -1,3 +1,3 @@
-let canRunAds = true;
-let adsReceived = true;
-let gotTheAds = true;
+window.canRunAds = true;
+window.adsReceived = true;
+window.gotTheAds = true;
