@@ -324,50 +324,6 @@ function GameContainer() {
         };
     }, []);
 
-    const [sad, setSad] = useState(false)
-
-    useEffect(() => {
-        const checkScript = (src) => {
-            const script = document.createElement('script');
-            script.src = src;
-            script.onload = () => {
-                if (src === "/ads.js") {
-                    if (typeof window.canRunAds === "undefined" || typeof window.adsReceived === "undefined" || typeof window.gotTheAds === "undefined") {
-                        console.log(window.canRunAds, window.adsReceived, window.gotTheAds)
-                        console.log('setting sad')
-                        setSad(true);
-                    }
-                }
-                if (src === "/prebid-ads.js") {
-                    if (typeof window.canRunAds2 === "undefined" || typeof window.adsReceived2 === "undefined" || typeof window.gotTheAds2 === "undefined") {
-                        console.log(window.canRunAds2, window.adsReceived2, window.gotTheAds2)
-                        console.log('setting sad')
-                        setSad(true);
-                    }
-
-                }
-            };
-            script.onerror = () => {
-                setSad(true);
-            };
-            document.body.appendChild(script);
-            return script;
-        };
-
-        const adsScript = checkScript("/ads.js");
-        const prebidAdsScript = checkScript("/prebid-ads.js");
-
-        return () => {
-            document.body.removeChild(adsScript);
-            document.body.removeChild(prebidAdsScript);
-        };
-    }, []);
-
-    useEffect(() => {
-        console.log(`Is sad? ${sad}`)
-    }, [sad])
-
-
     if (!isConnected) {
         // If not connected yet, return a loading or connecting message
         return (

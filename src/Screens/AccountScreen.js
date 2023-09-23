@@ -4,9 +4,20 @@ import CONSTANTS from '../CONSTANTS';
 import { useNavigate } from 'react-router-dom';
 import { useWebSocket } from "../WebSocketContext";
 
+const DISCORD_REDIRECT = 'https://discord.com/api/oauth2/authorize?client_id=1143367795682320434&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Faccount&response_type=code&scope=identify'
 
 
 function AccountScreen() {
+    let url = new URL(window.location.href);
+    let code = url.searchParams.get("code");
+    
+    if (code) {
+        // Send the code to your backend or handle as necessary
+        console.log("Received code:", code);
+    } else {
+        console.error("No code found in URL");
+    }
+
     const { waitForServerResponse } = useWebSocket();
 
     const navigate = useNavigate();
@@ -69,7 +80,7 @@ function AccountScreen() {
                     src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_dark.png`}
                     alt='profile/stats'
                     onClick={() => window.history.back()}
-                    
+
                 />
             </div>
             {(Object.keys(profileData).length !== 0) &&
@@ -81,13 +92,14 @@ function AccountScreen() {
                             <p>XP: {profileData.XP}</p>
                             <p>Balance: {profileData.Balance}</p>
                         </div>
-                        {/* <div id='acc-permit-holder'>
-                            <p id='acc-permits-label'>Permits:</p>
-                            <div id='acc-permits-status'>
-                                <p>Deluxe Crops: </p>
-                                <p>Exotic Animals: </p>
-                            </div>
-                        </div> */}
+
+                        {/* <a href={DISCORD_REDIRECT}> */}
+                        <div className='discordAuthBox' onClick={() => window.location.href = DISCORD_REDIRECT}>
+                            <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} id='discordAccIcon' />
+                            Link account
+                        </div>
+                        {/* </a> */}
+
                     </div>
 
                     <div className='acc-row' id='acc-stats'>

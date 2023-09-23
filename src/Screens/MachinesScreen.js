@@ -83,7 +83,7 @@ function MachinesScreen({ artisanItems, setArtisanItems, itemsData, setItemsData
             console.log('Insufficient parts');
             return;
         }
-        updateBalance(costs.Money)
+        updateBalance(-1*costs.Money)
         setParts((old) => {
             let newParts = { ...old };
             newParts.Gears -= costs.Gears;

@@ -277,9 +277,13 @@ function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizer
         if (simRes.message === 'SUCCESS') {
             try {
                 if (waitForServerResponse) {
+
+
                     const response = await waitForServerResponse('harvest', {
                         tileID: tileID
                     });
+
+                    
                     let data = response.body;
                     setTiles(prevTiles => prevTiles.map((tile) => {
                         if (tile.TileID === data.TileID) {

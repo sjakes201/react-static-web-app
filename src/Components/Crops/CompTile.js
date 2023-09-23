@@ -20,9 +20,11 @@ function CompTile({ tool, partResult, setHovering, highlighted, tile, stage, til
             id: Date.now(),
             src: `${process.env.PUBLIC_URL}/assets/images/scythe.gif`
         })
-
-        setTimeout(() => setGif(null), 300)
     }
+
+    useEffect(() => {
+        setTimeout(() => setGif(null), 300)
+    }, [gif])
 
     const onTileClick = async (e) => {
         if (equippedFert !== '') {

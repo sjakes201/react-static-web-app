@@ -46,6 +46,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    position: relative;
 }
 
 .back-arrow-acc {
@@ -114,6 +115,28 @@
 #acc-permits-label {
     text-decoration: underline;
     text-align: center;
+}
+
+.discordAuthBox {
+    position: absolute;
+    right: 4%;
+    height: 3vw;
+    border: 2px solid #36393e;
+    border-radius: 5px;
+    background-color: whitesmoke;
+    padding: 6px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    font-size: .9vw;
+    cursor: pointer;
+} 
+
+#discordAccIcon {
+    max-height: 80%;
+    object-fit: contain;
+    margin-right: 4px;
 }
 
 /*
