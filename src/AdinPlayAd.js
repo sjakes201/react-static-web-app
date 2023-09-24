@@ -8,7 +8,6 @@ const AdinPlayAd = ({ placementId }) => {
         window.aipDisplayTag.display(placementId);
       });
     }
-    console.log("ran this code")
   }, [placementId]);
 
   return <div id={placementId}></div>;

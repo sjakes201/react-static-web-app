@@ -317,6 +317,7 @@ function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizer
                             return newParts;
                         })
                     }
+                    return true;
                 }
             } catch (error) {
                 if (error.message.includes('401')) {
@@ -327,6 +328,8 @@ function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizer
                     console.log(error)
                 }
             }
+        } else {
+            return false;
         }
     }
 
@@ -346,8 +349,8 @@ function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizer
         })
 
         if (allSimRes.length === 0) {
-            console.log("No tiles harvestable in multiharvest")
-            return;
+            // No tiles harvestable in multiharvest
+            return false;
         }
 
         setTiles(prevTiles => prevTiles.map((tile) => {
@@ -375,6 +378,11 @@ function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizer
                     tiles: idObjects
                 });
                 let tilesResult = response.body;
+                if(Array.isArray(!tilesResult?.body?.updatedTiles)) {
+                    console.log("ERROR: Did not receive array back");
+                    window.location.reload(false);
+
+                }
                 setTiles(prevTiles => prevTiles.map((tile) => {
                     let thisTile = tilesResult.updatedTiles.filter((udTile) => udTile.TileID === tile.TileID)
                     if (thisTile.length !== 0) {
@@ -401,7 +409,6 @@ function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizer
                     }, 500)
                     setOrderTimer(id)
                 }
-                console.log(tilesResult.updatedTiles.some((tile) => tile.randomPart !== null))
                 if (tilesResult.updatedTiles.some((tile) => tile.randomPart !== null)) {
                     setParts((oldArr) => {
                         let newParts = [...oldArr];
@@ -411,6 +418,7 @@ function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizer
                         return newParts;
                     })
                 }
+                return true;
             }
             // Compute the stage for each tile and include it in the tile object.
         } catch (error) {
