@@ -94,10 +94,10 @@ function AccountScreen() {
                         </div>
 
                         {/* <a href={DISCORD_REDIRECT}> */}
-                        <div className='discordAuthBox' onClick={() => window.location.href = DISCORD_REDIRECT}>
+                        {/* <div className='discordAuthBox' onClick={() => window.location.href = DISCORD_REDIRECT}>
                             <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} id='discordAccIcon' />
                             Link account
-                        </div>
+                        </div> */}
                         {/* </a> */}
 
                     </div>
