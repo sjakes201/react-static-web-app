@@ -72,13 +72,15 @@ function MachineUnit({ setItemsData, items, machineNum, machineInfo, buyMachine,
     useEffect(() => {
         if (!machineDone) {
             let changeWidth = () => {
-                setWidth((old) => {
-                    if (old === widthA) {
-                        return widthB
-                    } else {
-                        return widthA;
-                    }
-                })
+                setTimeout(() => {
+                    setWidth((old) => {
+                        if (old === widthA) {
+                            return widthB
+                        } else {
+                            return widthA;
+                        }
+                    })
+                }, 100)
             }
             changeWidth()
             let interval = setInterval(() => {
@@ -191,7 +193,7 @@ function MachineUnit({ setItemsData, items, machineNum, machineInfo, buyMachine,
         return (<div className='runningGUI machineGUIDefault'>
             <div
                 className='machineCloseX'
-                onClick={() => { setMainGUI(false);}}>X</div>
+                onClick={() => { setMainGUI(false); }}>X</div>
             {sellGUI()}
             {running && runningLeftColumn()}
             {!running && idleLeftColumn()}
