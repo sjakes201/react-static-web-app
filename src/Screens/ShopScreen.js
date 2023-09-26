@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
 
 import CompShop from '../Components/Shop/CompShop'
-import Complogin from "../Components/GUI/CompLogin";
 import CompProfile from '../Components/GUI/CompProfile'
 import CompOtherScreens from '../Components/GUI/CompOtherScreens'
-import CONSTANTS from "../CONSTANTS";
-import UPGRADES from "../UPGRADES";
 import { useNavigate } from 'react-router-dom';
 import { useWebSocket } from "../WebSocketContext";
 
 import AdinPlayAd from "../AdinPlayAd";
 
 function ShopScreen({ addAnimal, itemsData, setItemsData, animalsInfo, updateAnimalsInfo, deluxePermit, exoticPermit, getUpgrades, getUser, getBal, updateBalance, getXP, level, setLoginBox, updateUpgrades }) {
-    const { waitForServerResponse } = useWebSocket();
-
     const navigate = useNavigate();
     if (localStorage.getItem('token') === null) {
         // no auth token present
@@ -83,7 +78,7 @@ function ShopScreen({ addAnimal, itemsData, setItemsData, animalsInfo, updateAni
                     getUpgrades={getUpgrades} updateInventory={updateInventory} permits={{ 'deluxePermit': deluxePermit, 'exoticPermit': exoticPermit }}
                     updateBalance={updateBalance} getBal={getBal} updateAnimalsInfo={updateAnimalsInfo}
                     items={items} />
-                <div style={{ position: 'relative', background: 'var(--menu_light)', borderLeft: '1px solid black', width: '160px', minHeight: '100%', zIndex: '2000', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div style={{ position: 'relative', background: 'var(--menu_light)', borderLeft: '1px solid black', width: '161px', minHeight: '100%', zIndex: '2000', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                     {window.innerHeight > 698 && <AdinPlayAd placementId="farmgame-live_160x600" />}
                 </div>
             </div>
