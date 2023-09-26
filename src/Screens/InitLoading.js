@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-function InitLoading({ }) {
+function InitLoading({ setDoneLoading }) {
 
     /*
     To finish loading need both init imgs loaded and at least 800ms to pass
@@ -12,7 +11,6 @@ function InitLoading({ }) {
     const [loadTimePassed, setTimePassed] = useState(false);
     const [authorized, setAuthorized] = useState(false);
     const [log, setLog] = useState("")
-    const navigate = useNavigate();
 
     // Images on the plant screen or that could be used immediately
     const FIRST_IMAGES = ["dirt.png", "homie.png", "oats_seeds.png", "corn_seeds.png", "corn_stage_0.png", "oats_stage_0.png", "corn.png", "oats.png", "chicken_standing_right.png", "questionmark.png", "accounticon.png", "leaderboard.png", "order-icon.png"];
@@ -77,7 +75,7 @@ function InitLoading({ }) {
     }
 
     const finishLoading = () => {
-        navigate('/plants');
+        setDoneLoading(true)
     }
 
     setTimeout(() => {
@@ -97,7 +95,7 @@ function InitLoading({ }) {
 
 
         setTimeout(() => {
-            setLog("Servers taking a while to respond. They were probably asleep, and now waking up. ");
+            setLog("Servers taking a while to respond");
         }, 10000)
     }, [])
 

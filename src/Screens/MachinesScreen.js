@@ -237,7 +237,7 @@ function MachinesScreen({ artisanItems, setArtisanItems, itemsData, setItemsData
         })
         try {
             if (waitForServerResponse) {
-                let response = await waitForServerResponse('sellMachine', {
+                await waitForServerResponse('sellMachine', {
                     slot: slot,
                 });
             }

@@ -108,7 +108,22 @@ function MarketScreen({ itemsData, setItemsData, prices, getUser, getBal, update
 
             <div className='market-left'>
                 <div id="market-other-screens"><CompOtherScreen current={'market'} /></div>
-                <div id="CompMarket-container"><CompMarket marketItems={marketItems ? marketItems : []} setSelected={setSelected} /></div>
+                <div className='mainMarketContainer'>
+
+                    {/* <div style={{ width: '160px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        {window.innerHeight > 655 &&
+                            <div
+                                style={{ width: '160px', height: '600px', backgroundColor: 'red' }}
+                            >
+                            </div>
+                        }
+                    </div> */}
+
+                    <div id="CompMarket-container">
+                        <CompMarket marketItems={marketItems ? marketItems : []} setSelected={setSelected} />
+                    </div>
+                </div>
+
             </div>
 
             <div className='market-right'>
@@ -116,9 +131,11 @@ function MarketScreen({ itemsData, setItemsData, prices, getUser, getBal, update
                 <div className='market-select-info'><CompMarketSelection items={items} onSell={onSell} name={selected.name} newPrice={selected.newPrice} oldPrice={selected.oldPrice} imgURL={selected.imgURL} /></div>
                 <div className='market-inventory'><CompInventory items={items} displayOnly={true} setMarketSelected={setMarketSelected} /></div>
                 <div className='market-other'>
-                    <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '2000' }}>
+                    <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '20000' }}>
                         <AdinPlayAd placementId="farmgame-live_120x60_3" />
                     </div>
+                    {/* <div style={{ width: '300px', height: '250px', border: '1px solid black', zIndex: '30000', backgroundColor: 'orange', position: 'absolute', bottom: '0' }}>ad</div> */}
+
                 </div>
             </div>
 

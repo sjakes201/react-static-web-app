@@ -83,8 +83,24 @@ function PlantScreen({ townPerks, tiles, setTiles, itemsData, setItemsData, getU
     return (
         <div style={appStyle}>
             <div className='left-column'>
-                <div className='other-screensPl'><CompOtherScreens current={'plants'} /></div>
-                <div className='plot'><CompPlot townPerks={townPerks} tiles={tiles} setTiles={setTiles} tool={tool} setFertilizers={setFertilizers} fertilizers={fertilizers} equippedFert={equippedFert} setEquippedFert={setEquippedFert} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} items={items} /></div>
+                <div className='other-screensPl'>
+                    <CompOtherScreens current={'plants'} />
+                </div>
+                <div className='plot'>
+
+                    {/* <div style={{ width: '160px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        {window.innerHeight > 655 &&
+                            <div
+                                style={{ width: '160px', height: '600px', backgroundColor: 'red' }}
+                            >
+                            </div>
+                        }
+                    </div> */}
+
+                    <div className='farmArea'>
+                        <CompPlot townPerks={townPerks} tiles={tiles} setTiles={setTiles} tool={tool} setFertilizers={setFertilizers} fertilizers={fertilizers} equippedFert={equippedFert} setEquippedFert={setEquippedFert} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} items={items} />
+                    </div>
+                </div>
             </div>
             <div className='right-column'>
                 <div className="userProfile"><CompProfile orderNotice={orderNotice} setOrderBox={setOrderBox} setLoginBox={setLoginBox} type={'tall'} getBal={getBal} updateBalance={updateBalance} getUser={getUser} getXP={getXP} /></div>
@@ -97,7 +113,6 @@ function PlantScreen({ townPerks, tiles, setTiles, itemsData, setItemsData, getU
                             </div>
                         </div>
                     </div>
-                    {/* <a target='_blank' href="/updateNotes.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>update notes </a> */}
                     <div style={{ width: '70%', height: '3vh', position: 'absolute', bottom: '1vh', left: '30%', fontSize: '1vw' }}>
                         <a target='_black' href="https://discord.gg/jrxWrgNCHw" style={{ fontSize: '.9vw', textDecoration: 'underline', height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ height: '65%', marginRight: '2%' }}></img>
@@ -105,6 +120,7 @@ function PlantScreen({ townPerks, tiles, setTiles, itemsData, setItemsData, getU
                             <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} style={{ height: '65%', marginLeft: '2%' }}></img>
                         </a>
                     </div>
+                    {/* <div style={{width: '300px', height: '250px', border: '1px solid black', zIndex: '30000', backgroundColor: 'orange', position: 'absolute'}}>ad</div> */}
                 </div>
             </div>
             <div className="order-GUI">

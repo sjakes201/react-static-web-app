@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useRef } from "react";
+import InitLoading from "./Screens/InitLoading";
 
 const WebSocketContext = createContext(null);
 
@@ -9,7 +10,9 @@ export function useWebSocket() {
 export function WebSocketProvider({ children }) {
     const [ws, setWs] = useState(null);
     const [isConnected, setIsConnected] = useState(false);
-    
+
+    const [doneLoading, setDoneLoading] = useState(false)
+
     // We need to re-call the initial GameContainer mount functions after receiving guest auth, force a remount by changing the key
     const [auth, setAuth] = useState(1)
 
@@ -38,9 +41,11 @@ export function WebSocketProvider({ children }) {
         });
 
         wsInstance.addEventListener('close', (event) => {
-            alert('Connection to game server closed due to idle. Press OK to reconnect.');
+            console.log(event)
+            alert('Connection to game server closed. Press OK to reconnect.');
             setIsConnected(false);
             connectToWebSocketServer();
+
         });
     };
 
@@ -82,7 +87,7 @@ export function WebSocketProvider({ children }) {
 
     return (
         <WebSocketContext.Provider value={contextValue} key={auth}>
-            {isConnected ? children : null}
+            {isConnected && doneLoading ? children : <InitLoading setDoneLoading={setDoneLoading} />}
         </WebSocketContext.Provider>
     );
 }

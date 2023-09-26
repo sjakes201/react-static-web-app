@@ -64,7 +64,7 @@ function TownsScreen({ playersTown, reloadTownPerks, updateXP, updateBalance }) 
             setTown(playersTown)
         }
     }, [playersTown])
-
+    console.log(window.innerHeight)
     return (
         <div className='townsScreenContainer'>
             <img
@@ -74,6 +74,24 @@ function TownsScreen({ playersTown, reloadTownPerks, updateXP, updateBalance }) 
                 className='townsScreenBackArrow'
                 draggable={false}
             />
+
+            {/* <div style={{ width: '160px', height: '600px', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'absolute', left: '0', bottom: '0', zIndex: '20000' }}>
+                {window.innerHeight > 650 &&
+                    <div
+                        style={{ width: '160px', height: '600px', backgroundColor: 'red' }}
+                    >
+                    </div>
+                }
+            </div>
+
+            <div style={{ width: '160px', height: '600px', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'absolute', right: '0', bottom: '0', zIndex: '20000' }}>
+                {window.innerHeight > 650 &&
+                    <div
+                        style={{ width: '160px', height: '600px', backgroundColor: 'red' }}
+                    >
+                    </div>
+                }
+            </div> */}
 
             <div className='townsNavButtons'>
                 <div className={`townsNavButton ${town === "" ? 'lockedButton' : ''} ${screen === 'TownInterface' ? 'activeButton' : ''}`}>
@@ -110,7 +128,7 @@ function TownsScreen({ playersTown, reloadTownPerks, updateXP, updateBalance }) 
             <div className='townsScreenCenter basicCenter'>
                 {(screen === 'TownInterface' && town !== "") && <TownInterface updateBalance={updateBalance} updateXP={updateXP} reloadTownPerks={reloadTownPerks} townName={town} setScreen={setScreen} setTown={setTown} />}
                 {screen === 'TownSearch' && <TownSearch updateBalance={updateBalance} updateXP={updateXP} reloadTownPerks={reloadTownPerks} playerInTown={town} setScreen={setScreen} setTown={setTown} />}
-                {screen === 'TownLeaderboard' && <TownsLeaderboard updateBalance={updateBalance} updateXP={updateXP} reloadTownPerks={reloadTownPerks}/>}
+                {screen === 'TownLeaderboard' && <TownsLeaderboard updateBalance={updateBalance} updateXP={updateXP} reloadTownPerks={reloadTownPerks} />}
             </div>
         </div >
     )

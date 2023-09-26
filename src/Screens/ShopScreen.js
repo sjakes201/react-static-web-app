@@ -83,9 +83,8 @@ function ShopScreen({ addAnimal, itemsData, setItemsData, animalsInfo, updateAni
                     getUpgrades={getUpgrades} updateInventory={updateInventory} permits={{ 'deluxePermit': deluxePermit, 'exoticPermit': exoticPermit }}
                     updateBalance={updateBalance} getBal={getBal} updateAnimalsInfo={updateAnimalsInfo}
                     items={items} />
-                <div style={{ position: 'relative', background: 'var(--menu_light)', borderLeft: '1px solid black', width: '164px', minHeight: '100%', zIndex: '2000', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div style={{ position: 'relative', background: 'var(--menu_light)', borderLeft: '1px solid black', width: '160px', minHeight: '100%', zIndex: '2000', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                     {window.innerHeight > 698 && <AdinPlayAd placementId="farmgame-live_160x600" />}
-                    {/* <img src={`${process.env.PUBLIC_URL}/assets/images/goat_standing_right.png`} style={{ width: '50%', margin: '0 25% 0 25%', position: 'absolute', bottom: '0%' }} /> */}
                 </div>
             </div>
         </div>

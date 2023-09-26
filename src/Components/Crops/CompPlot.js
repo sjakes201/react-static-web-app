@@ -66,7 +66,7 @@ function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizer
                 return newCounts
             })
             updateInventory(desiredFertilizer, -1, true)
-            
+
             setTiles((old) => {
                 let newTiles = old.map((tile) => {
                     if (tile.TileID === tileID) {
@@ -215,7 +215,7 @@ function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizer
         try {
             let queryTiles = allSimRes.map((sim) => { return { tileID: sim.TileID } })
             if (waitForServerResponse) {
-                const response = await waitForServerResponse('multiPlant', {
+                await waitForServerResponse('multiPlant', {
                     tiles: queryTiles,
                     seedName: seedName
                 });
@@ -241,7 +241,7 @@ function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizer
             // only put request through if frontend validates
             try {
                 if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
-                    const response = await waitForServerResponse('plant', {
+                    await waitForServerResponse('plant', {
                         seedName: seedName,
                         tileID: tileID
                     });
@@ -277,14 +277,17 @@ function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizer
         if (simRes.message === 'SUCCESS') {
             try {
                 if (waitForServerResponse) {
-
-
                     const response = await waitForServerResponse('harvest', {
                         tileID: tileID
                     });
 
-                    
+
                     let data = response.body;
+
+                    if (data.TileID === undefined || data.hasTimeFertilizer === undefined) {
+                        window.location.reload(false);
+                        return false;
+                    }
                     setTiles(prevTiles => prevTiles.map((tile) => {
                         if (tile.TileID === data.TileID) {
                             const newTile = {
@@ -378,10 +381,11 @@ function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizer
                     tiles: idObjects
                 });
                 let tilesResult = response.body;
-                if(Array.isArray(!tilesResult?.body?.updatedTiles)) {
+
+                if (!Array.isArray(tilesResult?.updatedTiles)) {
                     console.log("ERROR: Did not receive array back");
                     window.location.reload(false);
-
+                    return;
                 }
                 setTiles(prevTiles => prevTiles.map((tile) => {
                     let thisTile = tilesResult.updatedTiles.filter((udTile) => udTile.TileID === tile.TileID)

@@ -27,7 +27,7 @@ function CompMarketItem({ imgURL, name, newPrice, oldPrice }) {
                     textAlign: 'center',
                     height: '15%',
                     width: '100%',
-                    fontSize: '2vh'
+                    fontSize: '1.05vw'
                 }}>{CONSTANTS.InventoryDescriptions[name][0]}</p>
             <div
                 id="market-img-container"
@@ -61,9 +61,9 @@ function CompMarketItem({ imgURL, name, newPrice, oldPrice }) {
                     columnGap: '2%'
                 }}>
                 <img style={{ width: '10%' }} src={arrowURL} />
-                <p style={{ fontSize: '2vh' }}>${newPrice}</p>
+                <p style={{ fontSize: '1vw' }}>${newPrice}</p>
                 <img style={{ width: '10%' }} src={arrowURL} />
-                <small style={{ fontSize: '1.25vh' }} >/each</small>
+                <small style={{ fontSize: '.8vw' }} >/each</small>
                 {/* <img style={{ width: '10%'}} src={arrowURL} /> */}
             </div>
 

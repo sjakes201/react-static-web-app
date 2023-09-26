@@ -25,10 +25,11 @@ function LeaderboardScreen({ }) {
                 if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
                     const response = await waitForServerResponse('leaderboard');
                     let data = response.body;
+                    if(data.allTimeLeaderboard && data.tempLeaderboard) {
                         setLeadersAll(data.allTimeLeaderboard);
                         setleadersWeekly(data.tempLeaderboard);
-                    
-                  }
+                    }
+                }
             } catch (error) {
                 if (error.message.includes('401')) {
                     console.log("AUTH EXPIRED")
