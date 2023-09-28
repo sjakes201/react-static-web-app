@@ -42,9 +42,11 @@ export function WebSocketProvider({ children }) {
 
         wsInstance.addEventListener('close', (event) => {
             console.log(event)
-            alert('Connection to game server closed. Press OK to reconnect.');
             setIsConnected(false);
-            connectToWebSocketServer();
+            alert('Connection to game server closed. Press OK or refresh reconnect.');
+            // connectToWebSocketServer();
+            window.location.reload(false);
+
 
         });
     };
