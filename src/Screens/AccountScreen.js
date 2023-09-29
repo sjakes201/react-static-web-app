@@ -4,7 +4,7 @@ import CONSTANTS from '../CONSTANTS';
 import { useNavigate } from 'react-router-dom';
 import { useWebSocket } from "../WebSocketContext";
 
-const DISCORD_REDIRECT = 'https://discord.com/api/oauth2/authorize?client_id=1143367795682320434&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Faccount&response_type=code&scope=identify'
+const DISCORD_REDIRECT = 'https://discord.com/api/oauth2/authorize?client_id=1143367795682320434&redirect_uri=https%3A%2F%2Ffarmgame.live%2Faccount&response_type=code&scope=identify'
 
 
 function AccountScreen() {
