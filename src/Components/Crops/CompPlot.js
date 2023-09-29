@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useWebSocket } from "../../WebSocketContext";
 import TOWNSINFO from "../../TOWNSINFO";
 
-function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizers, equippedFert, setEquippedFert, getUpgrades, updateInventory, updateXP, getXP, setOrderNotice, items }) {
+function CompPlot({ setParts, townPerks, tiles, setTiles, tool, setFertilizers, fertilizers, equippedFert, setEquippedFert, getUpgrades, updateInventory, updateXP, getXP, setOrderNotice, items }) {
     const { waitForServerResponse } = useWebSocket();
 
     const [growthTable, setGrowthTable] = useState("")
@@ -19,7 +19,7 @@ function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizer
 
     const [highlightedTiles, setHighlighted] = useState([]);
     // Controls machine part gifs
-    const [parts, setParts] = useState(Array.from({ length: 60 }, () => ''))
+    const [partsGifs, setPartsGifs] = useState(Array.from({ length: 60 }, () => ''))
 
     const navigate = useNavigate();
 
@@ -314,9 +314,14 @@ function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizer
                         setOrderTimer(id)
                     }
                     if (data.randomPart !== null) {
-                        setParts((oldArr) => {
-                            let newParts = [...oldArr];
-                            newParts[data.TileID - 1] = data.randomPart;
+                        setPartsGifs((oldArr) => {
+                            let newpartsGifs = [...oldArr];
+                            newpartsGifs[data.TileID - 1] = data.randomPart;
+                            return newpartsGifs;
+                        })
+                        setParts((oldParts) => {
+                            let newParts = {...oldParts}
+                            newParts[data.randomPart] += 1;
                             return newParts;
                         })
                     }
@@ -414,12 +419,21 @@ function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizer
                     setOrderTimer(id)
                 }
                 if (tilesResult.updatedTiles.some((tile) => tile.randomPart !== null)) {
-                    setParts((oldArr) => {
-                        let newParts = [...oldArr];
+                    setPartsGifs((oldArr) => {
+                        let newpartsGifs = [...oldArr];
                         tilesResult.updatedTiles.forEach((tile) => {
-                            if (tile.randomPart) newParts[tile.TileID - 1] = tile.randomPart;
+                            if (tile.randomPart) newpartsGifs[tile.TileID - 1] = tile.randomPart;
                         })
-                        return newParts;
+                        return newpartsGifs;
+                    })
+                    tilesResult.updatedTiles.forEach((tile) => {
+                        if (tile.randomPart) {
+                            setParts((oldParts) => {
+                                let newParts = {...oldParts}
+                                newParts[tile.randomPart] += 1;
+                                return newParts;
+                            })
+                        }
                     })
                 }
                 return true;
@@ -610,7 +624,7 @@ function CompPlot({ townPerks, tiles, setTiles, tool, setFertilizers, fertilizer
             userSelect: "none",
         }}>
             {tiles.map((tile, index) => {
-                return <CompTile tool={tool} partResult={parts[tile.TileID - 1]} setHovering={setHovering} highlighted={highlightedTiles.includes(tile.TileID)} fertilizeTile={fertilizeTile} equippedFert={equippedFert} key={tile.TileID} tile={tile} stage={tile.stage} tileAction={tileAction} />
+                return <CompTile tool={tool} partResult={partsGifs[tile.TileID - 1]} setHovering={setHovering} highlighted={highlightedTiles.includes(tile.TileID)} fertilizeTile={fertilizeTile} equippedFert={equippedFert} key={tile.TileID} tile={tile} stage={tile.stage} tileAction={tileAction} />
             })}
         </div>
     )

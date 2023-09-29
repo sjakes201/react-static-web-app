@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 import AdinPlayAd from "../AdinPlayAd";
 
-function PlantScreen({ townPerks, tiles, setTiles, itemsData, setItemsData, getUpgrades, getUser, getBal, updateBalance, getXP, updateXP, level, setLoginBox }) {
+function PlantScreen({ setParts,  townPerks, tiles, setTiles, itemsData, setItemsData, getUpgrades, getUser, getBal, updateBalance, getXP, updateXP, level, setLoginBox }) {
 
 
     const navigate = useNavigate();
@@ -98,7 +98,7 @@ function PlantScreen({ townPerks, tiles, setTiles, itemsData, setItemsData, getU
                     </div> */}
 
                     <div className='farmArea'>
-                        <CompPlot townPerks={townPerks} tiles={tiles} setTiles={setTiles} tool={tool} setFertilizers={setFertilizers} fertilizers={fertilizers} equippedFert={equippedFert} setEquippedFert={setEquippedFert} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} items={items} />
+                        <CompPlot setParts={setParts} townPerks={townPerks} tiles={tiles} setTiles={setTiles} tool={tool} setFertilizers={setFertilizers} fertilizers={fertilizers} equippedFert={equippedFert} setEquippedFert={setEquippedFert} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} items={items} />
                     </div>
                 </div>
             </div>
