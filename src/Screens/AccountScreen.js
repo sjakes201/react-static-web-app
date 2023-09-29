@@ -8,16 +8,6 @@ const DISCORD_REDIRECT = 'https://discord.com/api/oauth2/authorize?client_id=114
 
 
 function AccountScreen() {
-    let url = new URL(window.location.href);
-    let code = url.searchParams.get("code");
-    
-    if (code) {
-        // Send the code to your backend or handle as necessary
-        console.log("Received code:", code);
-    } else {
-        console.error("No code found in URL");
-    }
-
     const { waitForServerResponse } = useWebSocket();
 
     const navigate = useNavigate();
@@ -65,6 +55,31 @@ function AccountScreen() {
                 }
             }
 
+            let url = new URL(window.location.href);
+            let code = url.searchParams.get("code");
+
+            if (code) {
+                // Send the code to your backend or handle as necessary
+                let attempts = 0;
+                const sendCode = async () => {
+                    if (waitForServerResponse) {
+                        const response = await waitForServerResponse('linkDiscordAcc', {
+                            code: code
+                        })
+                        code = null;
+                    } else if (attempts < 20) {
+                        attempts++;
+                        setTimeout(() => {
+                            sendCode();
+                            console.log('failed attempt')
+                        }, 200)
+                    }
+                }
+                sendCode();
+            } else {
+                console.error("No code found in URL");
+            }
+
         }
 
         fetchData();
@@ -89,16 +104,17 @@ function AccountScreen() {
                         <img src={`${process.env.PUBLIC_URL}/assets/images/HIGHRESHOMIE.png`} id='acc-pfp' alt='profile pic' />
                         <div className='acc-user-info'>
                             <h3 id="acc-username">{profileData.Username}</h3>
-                            <p>XP: {profileData.XP}</p>
-                            <p>Balance: {profileData.Balance}</p>
+                            <p>XP: {(profileData.XP).toLocaleString()}</p>
+                            <p>Balance: ${(profileData.Balance).toLocaleString()}</p>
                         </div>
 
-                        {/* <a href={DISCORD_REDIRECT}> */}
-                        {/* <div className='discordAuthBox' onClick={() => window.location.href = DISCORD_REDIRECT}>
-                            <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} id='discordAccIcon' />
-                            Link account
-                        </div> */}
-                        {/* </a> */}
+                        <a href={DISCORD_REDIRECT}>
+                            <div className='discordAuthBox' onClick={() => window.location.href = DISCORD_REDIRECT}>
+                                <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} id='discordAccIcon' />
+                                Link account
+                            </div>
+                        </a>
+                        
 
                     </div>
 
@@ -132,11 +148,6 @@ function AccountScreen() {
                             {Array.from({ length: 21 }, (_, i) =>
                                 <img key={i} src={`${process.env.PUBLIC_URL}/assets/images/corn.png`} alt={'corn'} />)
                             }
-                        </div>
-                        <div className='acc-bottom'>
-                            <p id='acc-contact-info'>Contact: livefarmgame.service@gmail.com</p>
-                            {/* <div id='acc-bottom-ad'> PLACEHOLDER </div> */}
-                            {/* <p id='acc-privacy-policy'>Privacy policy</p> */}
                         </div>
                     </div>
 

@@ -41,17 +41,17 @@
 }
 
 .market-profile {
-    height: 18%;
+    height: 20%;
 }
 
 .market-select-info {
     background-color: var(--menu_dark);
-    height: 35%;
+    height: 40%;
 }
 
 .market-inventory {
     background-color: brown;
-    height: 29%;
+    height: 39%;
 }
 
 .market-other {

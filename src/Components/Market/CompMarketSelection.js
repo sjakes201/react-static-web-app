@@ -16,9 +16,9 @@ function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell, items }
         arrowURL = `${process.env.PUBLIC_URL}/assets/images/market-neutral.png`
     }
 
-
-
     const [quantity, setQuantity] = useState('')
+    // showPrice is the quantity to override display in price calculation
+    const [showPrice, setShowPrice] = useState(0)
 
     useEffect(() => {
         if (autoSubmit.current) {
@@ -27,11 +27,16 @@ function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell, items }
         }
     }, [quantity])
 
+    useEffect(() => {
+        setQuantity('')
+    }, [name])
+
     const handleSubmit = (e) => {
         e?.preventDefault();
         onSell(name, quantity)
         setQuantity('')
     }
+
     return (
         <div style={{
             height: '100%',
@@ -62,7 +67,11 @@ function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell, items }
                                 name="sellQuantity"
                                 placeholder="0"
                                 value={quantity}
-                                onChange={(e) => setQuantity(e.target.value)}
+                                onChange={(e) => {
+                                    if (/^(\d+)?$/.test(e.target.value)) {
+                                        setQuantity(e.target.value);
+                                    }
+                                }}
                             ></input>
                             <div style={{
                                 display: 'flex',
@@ -78,8 +87,9 @@ function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell, items }
                                         boxSizing: 'border-box',
                                         boxShadow: '0 0 0 1px var(--black), 0 0 0 2px var(--border_orange), 0 0 0 3px var(--border_shadow_orange), 0 0 0 4px var(--black)',
                                         width: 'calc(45% - 8px)',
-                                        height: 'calc(6vh - 8px)',
-                                        cursor: 'pointer'
+                                        height: 'calc(7vh - 8px)',
+                                        cursor: 'pointer',
+                                        fontSize: '1vw'
                                     }}>
 
                                 </input>
@@ -87,17 +97,20 @@ function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell, items }
                                     boxSizing: 'border-box',
                                     boxShadow: '0 0 0 1px var(--black), 0 0 0 2px var(--border_orange), 0 0 0 3px var(--border_shadow_orange), 0 0 0 4px var(--black)',
                                     width: 'calc(45% - 8px)',
-                                    height: 'calc(6vh - 8px)',
+                                    height: 'calc(7vh - 8px)',
                                     background: 'white',
                                     display: 'flex',
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    cursor: 'pointer'
+                                    cursor: 'pointer',
+                                    fontSize: '1vw'
                                 }}
                                     onClick={() => {
                                         autoSubmit.current = true;
                                         setQuantity(items[name]);
                                     }}
+                                    onMouseEnter={() => setShowPrice(items[name])}
+                                    onMouseLeave={() => setShowPrice(0)}
                                 >
                                     SELL ALL
                                 </div>
@@ -106,6 +119,7 @@ function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell, items }
                         </form>
 
                     </div>
+                    {(name !== '' && (quantity !== '' || showPrice !== 0)) && <div style={{ textAlign: 'center', marginTop: '8%', fontSize: '1vw', color: '#1a1a1a' }}><p>${newPrice} x {showPrice.toLocaleString() ? showPrice.toLocaleString() : quantity.toLocaleString()} =</p><p>${(newPrice * (showPrice ? showPrice : quantity)).toLocaleString()}</p></div>}
                 </div>
 
             </div>
