@@ -428,9 +428,11 @@ function CompPlot({ setParts, townPerks, tiles, setTiles, tool, setFertilizers, 
                     })
                     tilesResult.updatedTiles.forEach((tile) => {
                         if (tile.randomPart) {
+                            console.log(`got ${tile.randomPart}`)
                             setParts((oldParts) => {
                                 let newParts = {...oldParts}
                                 newParts[tile.randomPart] += 1;
+                                console.log(newParts)
                                 return newParts;
                             })
                         }
