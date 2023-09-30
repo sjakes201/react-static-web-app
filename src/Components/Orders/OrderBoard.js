@@ -5,10 +5,9 @@ import CONSTANTS from '../../CONSTANTS';
 import { useWebSocket } from "../../WebSocketContext";
 import TOWNSINFO from '../../TOWNSINFO';
 
-function OrderBoard({ townPerks, close, updateBalance, updateXP, setFertilizers }) {
+function OrderBoard({ setItemsData, itemsData, townPerks, close, updateBalance, updateXP, setFertilizers }) {
     const { waitForServerResponse } = useWebSocket();
     const navigate = useNavigate();
-
     const [orders, setOrders] = useState([{}, {}, {}, {}]);
     const [lastRefresh, setLastRefresh] = useState(0);
 
@@ -43,17 +42,12 @@ function OrderBoard({ townPerks, close, updateBalance, updateXP, setFertilizers 
     }, [])
 
     const claimOrder = async (orderNum, goldReward, xpReward, rewardInfo) => {
-        if (orders[orderNum - 1].numHave < orders[orderNum - 1].numNeeded) {
+        let goalGood = orders[orderNum - 1].good;
+        let numHave = itemsData[goalGood];
+        let numNeeded = orders[orderNum - 1].numNeeded
+        if (numHave < numNeeded) {
             return;
         }
-        updateBalance(goldReward)
-        updateXP(xpReward)
-        if (setFertilizers && rewardInfo[1] !== -1) setFertilizers((old) => {
-            let newFert = { ...old };
-            newFert[rewardInfo[0]] = parseInt(newFert[rewardInfo[0]]) + parseInt(rewardInfo[1]);
-            return newFert;
-        })
-
 
         if (waitForServerResponse) {
             const response = await waitForServerResponse('claimOrder', { orderNum: orderNum });
@@ -64,11 +58,23 @@ function OrderBoard({ townPerks, close, updateBalance, updateXP, setFertilizers 
                     newOrders[orderNum - 1] = {
                         good: data.newGood,
                         numNeeded: data.newNumNeeded,
-                        numHave: 0,
                         reward: data.newReward
                     }
                     return newOrders;
                 })
+                updateBalance(goldReward)
+                updateXP(xpReward)
+
+                setItemsData((old) => {
+                    let newItems = { ...old };
+                    if (rewardInfo[0] !== '') {
+                        newItems[rewardInfo[0]] = newItems[rewardInfo[0]] + parseInt(rewardInfo[1]);
+                    }
+                    newItems[goalGood] -= numNeeded;
+                    return newItems;
+                })
+            } else {
+                console.log(data)
             }
 
         }
@@ -177,10 +183,10 @@ function OrderBoard({ townPerks, close, updateBalance, updateXP, setFertilizers 
                     gridTemplateColumns: 'repeat(2, 1fr)',
                     gridTemplateRows: 'repeat(2, 1fr)',
                 }}>
-                    {orders[1].good !== undefined && <Order orderNum={1} good={orders[0].good} reward={orders[0].reward} numHave={orders[0].numHave} numNeeded={orders[0].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMins > refreshTimeNeeded} />}
-                    {orders[1].good !== undefined && <Order orderNum={2} good={orders[1].good} reward={orders[1].reward} numHave={orders[1].numHave} numNeeded={orders[1].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMins > refreshTimeNeeded} />}
-                    {orders[1].good !== undefined && <Order orderNum={3} good={orders[2].good} reward={orders[2].reward} numHave={orders[2].numHave} numNeeded={orders[2].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMins > refreshTimeNeeded} />}
-                    {orders[1].good !== undefined && <Order orderNum={4} good={orders[3].good} reward={orders[3].reward} numHave={orders[3].numHave} numNeeded={orders[3].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMins > refreshTimeNeeded} />}
+                    {orders[1].good !== undefined && <Order orderNum={1} good={orders[0].good} reward={orders[0].reward} itemsData={itemsData} numNeeded={orders[0].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMins > refreshTimeNeeded} />}
+                    {orders[1].good !== undefined && <Order orderNum={2} good={orders[1].good} reward={orders[1].reward} itemsData={itemsData} numNeeded={orders[1].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMins > refreshTimeNeeded} />}
+                    {orders[1].good !== undefined && <Order orderNum={3} good={orders[2].good} reward={orders[2].reward} itemsData={itemsData} numNeeded={orders[2].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMins > refreshTimeNeeded} />}
+                    {orders[1].good !== undefined && <Order orderNum={4} good={orders[3].good} reward={orders[3].reward} itemsData={itemsData} numNeeded={orders[3].numNeeded} claimOrder={claimOrder} refreshOrder={refreshOrder} refreshable={timePassedMins > refreshTimeNeeded} />}
 
                 </div>
             </div >

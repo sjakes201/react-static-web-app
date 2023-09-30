@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import CONSTANTS from '../../CONSTANTS';
 
 
-function Order({ good, reward, numNeeded, numHave, claimOrder, orderNum, refreshOrder, refreshable }) {
+function Order({ itemsData, good, reward, numNeeded, claimOrder, orderNum, refreshOrder, refreshable }) {
 
     const goldReward = Math.floor(CONSTANTS.Init_Market_Prices[good] * (2 / 3) * numNeeded);
     const xpReward = Math.floor(CONSTANTS.XP[good] * (2 / 3) * numNeeded);
@@ -45,7 +45,7 @@ function Order({ good, reward, numNeeded, numHave, claimOrder, orderNum, refresh
     useEffect(() => {
 
         let intervalID;
-        if (numHave >= numNeeded) {
+        if (itemsData[good] >= numNeeded) {
             const changeSizes = () => {
                 setProgressWidth((old) => old === '40%' ? '44%' : '40%')
                 setProgressHeight((old) => old === '60%' ? '68%' : '60%')
@@ -59,9 +59,9 @@ function Order({ good, reward, numNeeded, numHave, claimOrder, orderNum, refresh
             //cleanup
             clearInterval(intervalID)
         }
-    }, [numHave, numNeeded])
+    }, [itemsData, numNeeded])
 
-    let barStyle = numHave >= numNeeded ? completeStyle : progressStyle;
+    let barStyle = itemsData[good] >= numNeeded ? completeStyle : progressStyle;
 
     let rewardInfo = ['', -1]
     if (reward !== '') {
@@ -89,7 +89,7 @@ function Order({ good, reward, numNeeded, numHave, claimOrder, orderNum, refresh
             -15px 15px 6px -5px black /* Additional shadow for the bottom */
           `,
                 backgroundColor: 'var(--menu_lighter)',
-                cursor: numHave >= numNeeded ? 'pointer' : 'default'
+                cursor: itemsData[good] >= numNeeded ? 'pointer' : 'default'
             }}>
             <div style={{ ...dotStyling, top: '4%', left: '2%' }}></div>
             <div style={{ ...dotStyling, top: '4%', right: '2%' }}></div>
@@ -152,14 +152,14 @@ function Order({ good, reward, numNeeded, numHave, claimOrder, orderNum, refresh
                     alignItems: 'center',
                     backgroundColor: 'var(--menu_light)',
                     position: 'relative',
-                }}>{numHave}/{numNeeded} {CONSTANTS.InventoryDescriptions[good][0]}
+                }}>{itemsData[good]}/{numNeeded} {CONSTANTS.InventoryDescriptions[good][0]}
                     <div style={{
                         position: 'absolute',
                         right: '-32%',
                         top: '5%',
                         width: '20%',
                     }}>
-                        {numHave < numNeeded &&
+                        {itemsData[good] < numNeeded &&
                             <img src={`${process.env.PUBLIC_URL}/assets/images/${refreshable ? 'refresh' : 'refresh_disabled'}.png`} style={{
                                 cursor: refreshable ? 'pointer' : 'default',
                                 width: '100%',

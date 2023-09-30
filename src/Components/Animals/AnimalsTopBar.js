@@ -14,7 +14,6 @@ function AnimalsTopBar({ setManager }) {
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'center',
-            borderBottom: '1px solid black',
             position: 'relative'
         }}>
             <div style={{

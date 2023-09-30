@@ -93,7 +93,7 @@ function AnimalScreen({ townPerks, setAnimalsInfo, barn, coop, setBarn, setCoop,
     height: '100vh',
     display: 'grid',
     gridTemplateColumns: '80% 20%',
-    position: 'relative'
+    position: 'relative',
   }
 
   if (equippedFeed !== "") {
@@ -106,9 +106,9 @@ function AnimalScreen({ townPerks, setAnimalsInfo, barn, coop, setBarn, setCoop,
       <div className='left-column'>
         <div className='other-screensAn'><CompOtherScreens current={'animals'} /></div>
         <div className='pen-management'> <AnimalsTopBar setManager={setManager} /> </div>
-        <div className="pens-wrapper" ref={componentRef}>
-          {renderPens && (<><div className="barn-container"><CompPen townPerks={townPerks} setEquippedFeed={setEquippedFeed} equippedFeed={equippedFeed} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} className='barnPen' animalsParent={barn} setAnimalsParent={setBarn} isBarn={true} key={1} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
-          {renderPens && (<><div className="coop-container"><CompPen townPerks={townPerks} setEquippedFeed={setEquippedFeed} equippedFeed={equippedFeed} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} className='coopPen' animalsParent={coop} setAnimalsParent={setCoop} isBarn={false} key={2} penWidth={(1 / 2) * componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} /></div></>)}
+        <div className="pens-wrapper" >
+          <div className="barn-container" ref={componentRef}> {renderPens && <CompPen townPerks={townPerks} setEquippedFeed={setEquippedFeed} equippedFeed={equippedFeed} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} animalsParent={barn} setAnimalsParent={setBarn} isBarn={true} key={1} penWidth={componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} />}</div>
+          <div className="coop-container" ref={componentRef}>{renderPens && <CompPen townPerks={townPerks} setEquippedFeed={setEquippedFeed} equippedFeed={equippedFeed} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} animalsParent={coop} setAnimalsParent={setCoop} isBarn={false} key={2} penWidth={componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} />}</div>
         </div>
 
       </div>
@@ -135,7 +135,7 @@ function AnimalScreen({ townPerks, setAnimalsInfo, barn, coop, setBarn, setCoop,
         </div>
       </div>
       <div className="order-GUI">
-        {orderBox && <OrderBoard townPerks={townPerks} close={() => setOrderBox(false)} updateBalance={updateBalance} updateXP={updateXP} />}
+        {orderBox && <OrderBoard itemsData={itemsData} setItemsData={setItemsData} townPerks={townPerks} close={() => setOrderBox(false)} updateBalance={updateBalance} updateXP={updateXP} />}
       </div>
     </div>
 

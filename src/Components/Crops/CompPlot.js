@@ -611,13 +611,14 @@ function CompPlot({ setParts, townPerks, tiles, setTiles, tool, setFertilizers, 
     useEffect(() => {
         setHighlighted([])
     }, [tool])
+
     return (
         <div style={{
             width: '100%',
             height: '100%',
             display: 'grid',
             gridTemplateColumns: 'repeat(10, 10%)',
-            gridTemplateRows: 'repeat(6, 16.6%)',
+            gridTemplateRows: 'repeat(6, 16.666%)',
             justifyItems: 'center',
             alignItems: 'center',
             WebkitUserSelect: "none",
@@ -626,7 +627,7 @@ function CompPlot({ setParts, townPerks, tiles, setTiles, tool, setFertilizers, 
             userSelect: "none",
         }}>
             {tiles.map((tile, index) => {
-                return <CompTile tool={tool} partResult={partsGifs[tile.TileID - 1]} setHovering={setHovering} highlighted={highlightedTiles.includes(tile.TileID)} fertilizeTile={fertilizeTile} equippedFert={equippedFert} key={tile.TileID} tile={tile} stage={tile.stage} tileAction={tileAction} />
+                return <CompTile tool={tool} partResult={partsGifs[tile.TileID - 1]} setHovering={setHovering} highlighted={highlightedTiles.includes(tile.TileID)} fertilizeTile={fertilizeTile} equippedFert={equippedFert} key={index} tile={tile} stage={tile.stage} tileAction={tileAction} />
             })}
         </div>
     )

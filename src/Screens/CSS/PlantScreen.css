@@ -52,14 +52,17 @@
 
 .plot {
     height: 90vh;
-    background: var(--dirt);
     width: 100%;
     display: flex;
     flex-direction: row;
+    background: var(--dirt);
+    background-image: url("/public/assets/images/GUI/dirtBackground.png");
+    background-repeat: repeat;
 }
 
 .farmArea {
-    height: 100%;
+    max-height: 100%;
+    max-width: 100%;
     flex: 1;
 }
 

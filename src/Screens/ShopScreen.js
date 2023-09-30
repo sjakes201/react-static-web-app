@@ -61,7 +61,7 @@ function ShopScreen({ addAnimal, itemsData, setItemsData, animalsInfo, updateAni
     return (
         <div>
             <div style={{
-                height: '14vh',
+                height: '12vh',
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-evenly',
@@ -73,12 +73,12 @@ function ShopScreen({ addAnimal, itemsData, setItemsData, animalsInfo, updateAni
                     <CompProfile setLoginBox={setLoginBox} type={'short'} getBal={getBal} getUser={getUser} getXP={getXP} />
                 </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '88vh' }}>
                 <CompShop addAnimal={addAnimal} level={level} getXP={getXP} getAnimals={getAnimals} updateUpgrades={updateUpgrades}
                     getUpgrades={getUpgrades} updateInventory={updateInventory} permits={{ 'deluxePermit': deluxePermit, 'exoticPermit': exoticPermit }}
                     updateBalance={updateBalance} getBal={getBal} updateAnimalsInfo={updateAnimalsInfo}
                     items={items} />
-                <div style={{ position: 'relative', background: 'var(--menu_light)', borderLeft: '1px solid black', width: '161px', minHeight: '100%', zIndex: '2000', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div style={{ position: 'relative', background: '#fbf4b5ee', width: '161px', minHeight: '100%', zIndex: '2000', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                     {window.innerHeight > 698 && <AdinPlayAd placementId="farmgame-live_160x600" />}
                 </div>
             </div>

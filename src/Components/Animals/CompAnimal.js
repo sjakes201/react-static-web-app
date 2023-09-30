@@ -79,7 +79,7 @@ function CompAnimal({ type, onCollect, onFeed, sizeWidth, sizeHeight, walkingInf
         MozUserSelect: "none",
         msUserSelect: "none",
         userSelect: "none",
-        draggable: 'false'
+        draggable: 'false',
     }
     if(visible === 'visible') {
         divStyle.transition = 'all 3s'

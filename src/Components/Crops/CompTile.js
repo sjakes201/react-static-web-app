@@ -40,7 +40,7 @@ function CompTile({ tool, partResult, setHovering, highlighted, tile, stage, til
             // nothing equipped, harvest animation and attempt harvest
 
             let tileActionRes = await tileAction(tile.TileID, 'harvest', null, tile.CropID);
-            if(tileActionRes){
+            if (tileActionRes) {
                 createGif(e);
             }
 
@@ -101,16 +101,25 @@ function CompTile({ tool, partResult, setHovering, highlighted, tile, stage, til
         imgStyle.cursor = 'grab'
     }
 
+    if (highlighted) {
+        imgStyle.boxShadow = `0 0 3px 2px ${tool === 'multiharvest' ? 'gold' : 'lightblue'}`;
+    }
+
     return (
         <div
             style={{
-                width: '92%',
-                height: '92%',
+                width: '100%',
+                height: '100%',
                 position: 'relative',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-            }}>
+            }}
+            onMouseDown={(e) => {
+                onTileClick(e);
+            }}
+            onMouseEnter={() => setHovering(tile.TileID)}
+        >
             {gif && <img
                 key={gif.id}
                 style={{ position: 'absolute', left: gif.x, right: gif.y, width: '32px', height: '32px', zIndex: '15' }}
@@ -131,24 +140,8 @@ function CompTile({ tool, partResult, setHovering, highlighted, tile, stage, til
                 src={imgURL}
                 alt={`seed ID: ${tile.CropID} tile ID: ${tile.TileID}`}
                 draggable="false"
-                onMouseDown={(e) => {
-                    onTileClick(e);
-                }}
-                onMouseEnter={() => setHovering(tile.TileID)}
             />
 
-            {highlighted &&
-                <div style={{
-                    width: '100%',
-                    height: '100%',
-                    boxShadow: `0 0 3px 2px ${tool === 'multiharvest' ? 'gold' : 'lightblue'}`,
-                    position: 'absolute',
-                    top: '0',
-                    pointerEvents: 'none'
-                }}>
-
-                </div>
-            }
             <div style={{
                 position: 'absolute', bottom: '0', width: '100%', display: 'flex',
                 justifyContent: 'center', zIndex: '5', opacity: '0.75', pointerEvents: 'none',

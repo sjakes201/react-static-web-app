@@ -124,7 +124,7 @@ function PlantScreen({ setParts,  townPerks, tiles, setTiles, itemsData, setItem
                 </div>
             </div>
             <div className="order-GUI">
-                {orderBox && <OrderBoard townPerks={townPerks} close={() => setOrderBox(false)} setFertilizers={setFertilizers} updateBalance={updateBalance} updateXP={updateXP} />}
+                {orderBox && <OrderBoard itemsData={itemsData} setItemsData={setItemsData} townPerks={townPerks} close={() => setOrderBox(false)} setFertilizers={setFertilizers} updateBalance={updateBalance} updateXP={updateXP} />}
             </div>
         </div>
     )

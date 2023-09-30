@@ -7,8 +7,11 @@ import ANIMALINFO from '../../ANIMALINFO';
 import TOWNSINFO from '../../TOWNSINFO';
 import { useWebSocket } from "../../WebSocketContext";
 
-function CompPen({ townPerks, animalsParent, setAnimalsParent, getUpgrades, penWidth, penHeight, className, isBarn, updateInventory, updateXP, getXP, setOrderNotice, setEquippedFeed }) {
+function CompPen({ townPerks, animalsParent, setAnimalsParent, getUpgrades, penWidth, penHeight, isBarn, updateInventory, updateXP, getXP, setOrderNotice, setEquippedFeed }) {
     const { waitForServerResponse } = useWebSocket();
+    // 10 per border
+    penWidth -= 20;
+    penHeight -= 20;
 
     let xSlots = 6;
     let ySlots = 9;
@@ -469,18 +472,18 @@ function CompPen({ townPerks, animalsParent, setAnimalsParent, getUpgrades, penW
 
 
     return (
-        <div className={className} style={{
+        <div style={{
             position: 'absolute',
             display: 'grid',
             gridTemplateColumns: `repeat(${xSlots}, 1fr)`,
             gridTemplateRows: `repeat(${ySlots}, 1fr)`,
-            borderRight: isBarn ? '1px solid black' : '0px solid black',
+            
+            borderStyle: 'solid',
+            borderWidth: '10px',
+            borderImage: `url(${process.env.PUBLIC_URL}/assets/images/fence.png) 45 repeat`,
 
-            backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/grass1.png), url(${process.env.PUBLIC_URL}/assets/images/grass2.png)`,
-            backgroundRepeat: 'repeat, repeat',
-
-            width: `40vw`,
-            height: `calc(90vh - 90px)`,
+            width: `calc(40% - 10px)`,
+            height: `calc(90vh - 100px)`,
             WebkitUserSelect: "none",
             MozUserSelect: "none",
             msUserSelect: "none",
