@@ -87,9 +87,9 @@ function CompLeaderboardSlot({ item, data }) {
 
                     }}>
                     <p style={{ textAlign: 'center', textDecoration: 'underline', textTransform: 'uppercase', fontSize: "2.7vh" }}>{CONSTANTS.InventoryDescriptions[item][0]}</p>
-                    <p><span style={{ color: '#fec32d', padding: '0 5px' }}>1<sup>st</sup></span> {data.first.Username === '' ? 'Guest' : data.first.Username}: {data.first[item]}</p>
-                    <p><span style={{ color: 'silver', padding: '0 5px' }}>2<sup>nd</sup></span>{data.second.Username === '' ? 'Guest' : data.second.Username}: {data.second[item]}</p>
-                    <p><span style={{ color: 'brown', padding: '0 5px' }}>3<sup>rd</sup></span> {data.third.Username === '' ? 'Guest' : data.third.Username}: {data.third[item]}</p>
+                    <p><span style={{ color: '#fec32d', padding: '0 5px' }}>1<sup>st</sup></span> {data.first.Username === '' ? 'Guest' : data.first.Username}: {data?.first[item]?.toLocaleString()}</p>
+                    <p><span style={{ color: 'silver', padding: '0 5px' }}>2<sup>nd</sup></span>{data.second.Username === '' ? 'Guest' : data.second.Username}: {data?.second[item]?.toLocaleString()}</p>
+                    <p><span style={{ color: 'brown', padding: '0 5px' }}>3<sup>rd</sup></span> {data.third.Username === '' ? 'Guest' : data.third.Username}: {data?.third[item]?.toLocaleString()}</p>
                     <div style={{ textAlign: 'center', color: 'gray' }}><p>You: {data.you === -1 ? "" : data.you}<sup>{ordinalSuffix(data.you)}</sup></p></div>
 
                 </div>
