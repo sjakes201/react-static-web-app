@@ -163,7 +163,7 @@ function HowToPlay() {
                                 ORDERS
                             </div>
                             <p>
-                                The order board requests specific goods and can be filled by harvesting them. They reward gold, XP and fertilizer. You can keep the goods after you fill an order!
+                                The order board requests specific goods and can be filled by turning them in. They reward gold, XP and fertilizer. The fertilizer is great for growing lots of crops fast.
                             </p>
                             <hr />
                             <small>Find the Orders board button in your profile.</small>

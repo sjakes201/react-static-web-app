@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import '../../CONSTANTS'
-import CONSTANTS from "../../CONSTANTS";
 import CROPINFO from "../../CROPINFO";
 import UPGRADES from "../../UPGRADES";
 
