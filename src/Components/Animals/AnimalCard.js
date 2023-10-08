@@ -28,10 +28,10 @@ function AnimalCard({ setAnimalsInfo, animal, coop, setCoop, setBarn }) {
     const [renameAppear, setRenameAppear] = useState(false);
 
     const handleRename = async (e) => {
+        console.log('rename call')
         e.preventDefault();
         setRenameAppear(false);
 
-        const token = localStorage.getItem('token');
         if (coop.filter((a) => a.Animal_ID === Animal_ID).length > 0) {
             // is coop animal
             setCoop((old) => {
@@ -65,6 +65,7 @@ function AnimalCard({ setAnimalsInfo, animal, coop, setCoop, setBarn }) {
                 name: newName,
                 Animal_ID: Animal_ID
             });
+            console.log(response)
         }
         setNewName('')
     }
@@ -159,6 +160,7 @@ function AnimalCard({ setAnimalsInfo, animal, coop, setCoop, setBarn }) {
                                     width: '16px'
                                 }}
                                 alt={'submit'}
+                                onClick={handleRename}
                             />
                         </button>
                     </form>

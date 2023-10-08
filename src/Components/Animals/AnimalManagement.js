@@ -79,8 +79,8 @@ function AnimalManagement({ setAnimalsInfo, coop, setCoop, barn, setBarn, setMan
                             <p>Capacity: {barn.length} / {capacities.barnCapacity}</p>
                         </div>
 
-                        {barn.map((animal) => {
-                            return <AnimalCard setAnimalsInfo={setAnimalsInfo} key={animal.Animal_ID} animal={animal} coop={coop} setCoop={setCoop} setBarn={setBarn} />
+                        {barn.map((animal, index) => {
+                            return <AnimalCard key={index} setAnimalsInfo={setAnimalsInfo} animal={animal} coop={coop} setCoop={setCoop} setBarn={setBarn} />
                         })}
                     </div>
                 </div>

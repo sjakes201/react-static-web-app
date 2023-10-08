@@ -15,7 +15,7 @@ function AccountScreen() {
     const [profileData, setProfileData] = useState({});
     const [cropCounts, setCropCounts] = useState({});
     const [produceCounts, setProduceCounts] = useState({});
-
+    const [hasCode, setHasCode] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -59,6 +59,7 @@ function AccountScreen() {
             let code = url.searchParams.get("code");
 
             if (code) {
+                setHasCode(true)
                 // Send the code to your backend or handle as necessary
                 let attempts = 0;
                 const sendCode = async () => {
@@ -108,13 +109,18 @@ function AccountScreen() {
                             <p>Balance: ${(profileData.Balance).toLocaleString()}</p>
                         </div>
 
-                        <a href={DISCORD_REDIRECT}>
-                            <div className='discordAuthBox' onClick={() => window.location.href = DISCORD_REDIRECT}>
+                        {!hasCode ? (<a href={DISCORD_REDIRECT}>
+                            <div className={`discordAuthBox ${hasCode ? 'syncedDiscord' : ''}`} onClick={() => window.location.href = DISCORD_REDIRECT}>
                                 <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} id='discordAccIcon' />
-                                Link account
+                                Link Discord
                             </div>
-                        </a>
-                        
+                        </a>) : (
+                            <div className={`discordAuthBox ${hasCode ? 'syncedDiscord' : ''}`}>
+                                <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} id='discordAccIcon' />
+                                Discord Linked!
+                            </div>
+                        )}
+
 
                     </div>
 
@@ -152,9 +158,9 @@ function AccountScreen() {
                     </div>
 
 
-                </div>
+                </div >
             }
-        </div>
+        </div >
     )
 }
 

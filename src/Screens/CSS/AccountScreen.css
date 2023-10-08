@@ -134,6 +134,12 @@
     color: rgb(226, 224, 224);
 } 
 
+.syncedDiscord {
+    border: 1px dotted gray;
+    opacity: 0.6;
+    cursor: default;
+}
+
 #discordAccIcon {
     max-height: 80%;
     object-fit: contain;

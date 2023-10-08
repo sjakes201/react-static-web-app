@@ -39,7 +39,8 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 5%;
+    padding: 2% 5% 5% 5%;
+
 }
 
 
