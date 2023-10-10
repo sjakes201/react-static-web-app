@@ -15,7 +15,6 @@ function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell, items }
     } else {
         arrowURL = `${process.env.PUBLIC_URL}/assets/images/market-neutral.png`
     }
-
     const [quantity, setQuantity] = useState('')
     // showPrice is the quantity to override display in price calculation
     const [showPrice, setShowPrice] = useState(0)
@@ -119,7 +118,7 @@ function CompMarketSelection({ name, newPrice, oldPrice, imgURL, onSell, items }
                         </form>
 
                     </div>
-                    {(name !== '' && (quantity !== '' || showPrice !== 0)) && <div style={{ textAlign: 'center', marginTop: '8%', fontSize: '1vw', color: '#1a1a1a' }}><p>${newPrice} x {showPrice.toLocaleString() ? showPrice.toLocaleString() : quantity.toLocaleString()} =</p><p>${(newPrice * (showPrice ? showPrice : quantity)).toLocaleString()}</p></div>}
+                    {(name !== '' && (quantity !== '' || showPrice !== 0)) && <div style={{ textAlign: 'center', marginTop: '8%', fontSize: '1vw', color: '#1a1a1a', lineHeight: '1.15vw' }}><p>${newPrice} x {showPrice ? showPrice.toLocaleString() : Number.parseInt(quantity).toLocaleString()} =</p><p>${(newPrice * (showPrice ? showPrice : quantity)).toLocaleString()}</p></div>}
                 </div>
 
             </div>
