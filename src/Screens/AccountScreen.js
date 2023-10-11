@@ -95,7 +95,7 @@ function AccountScreen() {
                 <img
                     src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_dark.png`}
                     alt='profile/stats'
-                    onClick={() => window.history.back()}
+                    onClick={() => navigate('/plants')}
 
                 />
             </div>
