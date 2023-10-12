@@ -78,7 +78,7 @@ function ShopScreen({ addAnimal, itemsData, setItemsData, animalsInfo, updateAni
                     getUpgrades={getUpgrades} updateInventory={updateInventory} permits={{ 'deluxePermit': deluxePermit, 'exoticPermit': exoticPermit }}
                     updateBalance={updateBalance} getBal={getBal} updateAnimalsInfo={updateAnimalsInfo}
                     items={items} />
-                <div style={{ position: 'relative', background: '#fbf4b5ee', width: '161px', minHeight: '100%', zIndex: '2000', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div style={{ position: 'relative', background: 'var(--border_shadow_orange)', width: '161px', minHeight: '100%', zIndex: '2000', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                     {window.innerHeight > 698 && <AdinPlayAd placementId="farmgame-live_160x600" />}
                 </div>
             </div>

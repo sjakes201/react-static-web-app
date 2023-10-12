@@ -2,6 +2,8 @@ import TownInterface from "../Components/Towns/TownInterface";
 import TownSearch from "../Components/Towns/TownSearch"
 import TownsLeaderboard from "../Components/Towns/TownsLeaderboard";
 
+import AdinPlayAd from "../AdinPlayAd";
+
 import "./CSS/TownsScreen.css"
 import React, { useState, useEffect, useRef } from 'react'
 
@@ -75,11 +77,12 @@ function TownsScreen({ playersTown, reloadTownPerks, updateXP, updateBalance }) 
                 draggable={false}
             />
 
-            {/* <div style={{ width: '160px', height: '600px', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'absolute', left: '0', bottom: '0', zIndex: '20000' }}>
+            <div style={{ width: '160px', height: '600px', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'absolute', left: '0', bottom: '0', zIndex: '20000' }}>
                 {window.innerHeight > 650 &&
                     <div
-                        style={{ width: '160px', height: '600px', backgroundColor: 'red' }}
+                        style={{ width: '160px', height: '600px' }}
                     >
+                        <AdinPlayAd placementId="farmgame-live_160x600_4" />
                     </div>
                 }
             </div>
@@ -87,11 +90,12 @@ function TownsScreen({ playersTown, reloadTownPerks, updateXP, updateBalance }) 
             <div style={{ width: '160px', height: '600px', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'absolute', right: '0', bottom: '0', zIndex: '20000' }}>
                 {window.innerHeight > 650 &&
                     <div
-                        style={{ width: '160px', height: '600px', backgroundColor: 'red' }}
+                        style={{ width: '160px', height: '600px' }}
                     >
+                        <AdinPlayAd placementId="farmgame-live_160x600_5" />
                     </div>
                 }
-            </div> */}
+            </div>
 
             <div className='townsNavButtons'>
                 <div className={`townsNavButton ${town === "" ? 'lockedButton' : ''} ${screen === 'TownInterface' ? 'activeButton' : ''}`}>

@@ -2,9 +2,12 @@
     width: calc(100% - 161px);
     /* width: 100%; */
     height: 100%;
-    background-color: #fbf4b5ee;
+    background-color: var(--border_shadow_orange);
     display: flex;
     flex-direction: column;
+    gap: .8vh;
+    padding: .8vh;
+    box-sizing: border-box;
 
     /* width */
     ::-webkit-scrollbar {
@@ -19,7 +22,7 @@
 
     /* Handle */
     ::-webkit-scrollbar-thumb {
-        background: #A67C52;
+        background: var(--menu_dark);
         border-radius: 10px;
         border: 1px solid rgb(0, 0, 0);
     }
@@ -37,24 +40,23 @@
 }
 
 .shopRow {
-    height: 26.66vh;
+    height: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    background-color: var(--menu_light);
+    background-color: var(--menu_lighter);
     overflow-y: hidden;
-    margin: 1vh 1vw;
-    box-sizing: border-box;
-    border: 1px solid black;
 
+
+    margin: 1.02vh;
 
     box-sizing: border-box;
     box-shadow:
-        0 0 0 1px var(--black),
-        0 0 0 2px var(--menu_dark),
-        0 0 0 3px var(--border_shadow_orange),
-        0 0 0 4px var(--black);
+        0 0 0 .2vh var(--black),
+        0 0 0 .5vh var(--border_orange),
+        0 0 0 .7vh var(--border_shadow_orange),
+        0 0 0 1.02vh var(--black);
 }
 
 .items {
@@ -72,20 +74,20 @@
 }
 
 .label {
-    background-color: #A67C52;
+    background-color: var(--menu_dark);
     min-width: 4vw;
     width: 4vw;
+    margin-right: 5px;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-sizing: border-box;
-    
+
     box-shadow:
-        0 0 0 1px var(--black),
-        0 0 0 2px var(--menu_dark),
-        0 0 0 3px var(--border_shadow_orange),
-        0 0 0 4px var(--black);
+        0 0 0 2px var(--black),
+        0 0 0 5px var(--border_orange),
+        0 0 0 7px var(--border_shadow_orange),
+        0 0 0 9px var(--black);
 
 }
 
@@ -96,19 +98,4 @@
     font-size: 4vh;
     font-family: 'Trebuchet MS', sans-serif;
     text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
-}
-
-
-#Seeds {
-    margin-top: 2vh;
-}
-
-#Upgrades {
-    margin-bottom: 2vh;
-}
-
-.shelf {
-    height: 100%;
-    width: 6vw;
-    margin: 0px 2px;
 }

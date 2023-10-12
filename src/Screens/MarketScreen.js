@@ -110,14 +110,15 @@ function MarketScreen({ itemsData, setItemsData, prices, getUser, getBal, update
                 <div id="market-other-screens"><CompOtherScreen current={'market'} /></div>
                 <div className='mainMarketContainer'>
 
-                    {/* <div style={{ width: '160px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <div style={{ width: '160px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                         {window.innerHeight > 655 &&
                             <div
-                                style={{ width: '160px', height: '600px', backgroundColor: 'red' }}
+                                style={{ width: '160px', height: '600px' }}
                             >
+                                <AdinPlayAd placementId="farmgame-live_160x600_3" />
                             </div>
                         }
-                    </div> */}
+                    </div>
 
                     <div id="CompMarket-container">
                         <CompMarket marketItems={marketItems ? marketItems : []} setSelected={setSelected} />
@@ -131,10 +132,6 @@ function MarketScreen({ itemsData, setItemsData, prices, getUser, getBal, update
                 <div className='market-select-info'><CompMarketSelection items={items} onSell={onSell} name={selected.name} newPrice={selected.newPrice} oldPrice={selected.oldPrice} imgURL={selected.imgURL} /></div>
                 <div className='market-inventory'><CompInventory items={items} displayOnly={true} setMarketSelected={setMarketSelected} /></div>
                 {/* <div className='market-other'>
-                    <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '20000' }}>
-                        <AdinPlayAd placementId="farmgame-live_120x60_3" />
-                    </div>
-
                 </div> */}
             </div>
 

@@ -19,13 +19,15 @@ function CompItem({ addAnimal, unlockInfo, updateAnimalsInfo, itemName, cost, un
                 return {
                     color: 'brown',
                     fontWeight: 'bold',
-                    fontSize: '.9vw'
+                    fontSize: '.9vw',
+                    marginRight: '5%',
                 }
             case 'COOP':
                 return {
                     color: 'yellow',
                     fontWeight: 'bold',
-                    fontSize: '.9vw'
+                    fontSize: '.9vw',
+                    marginRight: '5%',
                 }
         }
     }
@@ -172,17 +174,17 @@ function CompItem({ addAnimal, unlockInfo, updateAnimalsInfo, itemName, cost, un
                     <div className='buyButton'>
                         <button onClick={() => handleClick(1)}>x1</button>
                         {gif[1] && <img key={gifKey} src={`${process.env.PUBLIC_URL}/assets/images/${gif[1]}.gif`} className="gif" />}
-                        <small>${cost || 'COST'}</small>
+                        {/* <small>${cost || 'COST'}</small> */}
                     </div>
                     <div className='buyButton'>
                         <button onClick={() => handleClick(5)}>x5</button>
                         {gif[5] && <img key={gifKey} src={`${process.env.PUBLIC_URL}/assets/images/${gif[5]}.gif`} className="gif" />}
-                        <small>${(5 * cost) || 'COST'}</small>
+                        {/* <small>${(5 * cost) || 'COST'}</small> */}
                     </div>
                     <div className='buyButton'>
                         <button onClick={() => handleClick(25)}>x25</button>
                         {gif[25] && <img key={gifKey} src={`${process.env.PUBLIC_URL}/assets/images/${gif[25]}.gif`} className="gif" />}
-                        <small>${(25 * cost) || 'COST'}</small>
+                        {/* <small>${(25 * cost) || 'COST'}</small> */}
                     </div>
                 </div>
             </div>
@@ -214,13 +216,13 @@ function CompItem({ addAnimal, unlockInfo, updateAnimalsInfo, itemName, cost, un
                 </div>
                 <div id="shopCardName">
                     <p>{CONSTANTS.InventoryDescriptions[itemName][0]}</p>
+                    <p style={getLocationStyle()}>{info.split(" ")[0]}</p>
                 </div>
                 <div id="info">
                     <div className='left-text'>
                         <p>${cost}</p><small></small>
                     </div>
                     <div className='right-text' >
-                        <p style={getLocationStyle()}>{info.split(" ")[0]}</p>
                         <p style={{
                             color: 'purple',
                             fontWeight: 'bold',
@@ -229,7 +231,7 @@ function CompItem({ addAnimal, unlockInfo, updateAnimalsInfo, itemName, cost, un
                     </div>
                 </div>
                 <div id="buyButtons">
-                    <div className='buyButton' id='adopt'>
+                    <div className='buyButton wideButton' >
                         <button onClick={() => handleClick(1)}>BUY</button>
                         {gif[1] && <img key={gifKey} src={`${process.env.PUBLIC_URL}/assets/images/${gif[1]}.gif`} className="gif" />}
                     </div>
@@ -263,9 +265,9 @@ function CompItem({ addAnimal, unlockInfo, updateAnimalsInfo, itemName, cost, un
                     </div>
                 </div>
                 <div id="buyButtons">
-                    <div className='buyButton' id='adopt'>
-                        <small>TIER {tier + 1}</small>
-                        <button id='adoptButton' onClick={() => handleClick(1)}>{itemName.includes('Permit') ? "BUY" : "UPGRADE"}</button>
+                    <div className='buyButton wideButton'>
+                        {/* <small>TIER {tier + 1}</small> */}
+                        <button onClick={() => handleClick(1)} id='upgradeFont' >{itemName.includes('Permit') ? (unlocked ? "BUY" : "OWNED") : (unlocked ? `UPGRADE TIER ${tier + 1}` : `MAXED`)}</button>
                         {gif[1] && <img key={gifKey} src={`${process.env.PUBLIC_URL}/assets/images/${gif[1]}.gif`} className="gif" />}
                     </div>
 

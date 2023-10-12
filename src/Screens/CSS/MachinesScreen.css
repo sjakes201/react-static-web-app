@@ -303,7 +303,8 @@
 }
 
 .artisanPriceSlot {
-    height: 100%;
+    margin-top: -10%;
+    height: 90%;
     width: 100%;
     display: flex;
     flex-direction: row;
