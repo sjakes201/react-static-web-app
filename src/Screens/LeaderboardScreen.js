@@ -4,7 +4,7 @@ import './CSS/LeaderboardScreen.css'
 import { useNavigate } from 'react-router-dom';
 import { useWebSocket } from "../WebSocketContext";
 
-function LeaderboardScreen({ userAlltimeTotals }) {
+function LeaderboardScreen({ Username, userAlltimeTotals }) {
     const { waitForServerResponse } = useWebSocket();
 
     const navigate = useNavigate();
@@ -63,7 +63,7 @@ function LeaderboardScreen({ userAlltimeTotals }) {
                         <h3>ALL TIME</h3>
                     </div>
                 </div>
-                <div className='leaderboard-container'> < CompLeaderboard userAlltimeTotals={userAlltimeTotals} type={type} leadersWeekly={leadersWeekly} leadersAll={leadersAll} /> </div>
+                <div className='leaderboard-container'> < CompLeaderboard Username={Username} userAlltimeTotals={userAlltimeTotals} type={type} leadersWeekly={leadersWeekly} leadersAll={leadersAll} /> </div>
             </div>
 
 

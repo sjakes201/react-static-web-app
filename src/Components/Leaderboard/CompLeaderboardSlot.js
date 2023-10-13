@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import CONSTANTS from '../../CONSTANTS';
 import TweetButton from '../External/TweetButton';
 
-function CompLeaderboardSlot({ item, data, userAlltimeTotals }) {
+function CompLeaderboardSlot({ Username, item, data, userAlltimeTotals }) {
 
     if (item === "Balance") {
         data.first.Balance = formatMoney(data.first.Balance);
@@ -40,15 +40,15 @@ function CompLeaderboardSlot({ item, data, userAlltimeTotals }) {
         let message = '';
         switch(item) {
             case 'Balance':
-                message = `I am the ${data.you}${ordinalSuffix(data.you)} richest farmgame farmer in the world!\nI have $${userAlltimeTotals[item].toLocaleString()}.\nCheck me out on the leaderboards at https://farmgame.live`
+                message = `I am the ${data.you}${ordinalSuffix(data.you)} richest farmgame farmer in the world!\nI have $${userAlltimeTotals[item].toLocaleString()}.\nCheck me out on the leaderboards at https://farmgame.live/profile/${Username}`
                 break;
             case 'XP':
-                message = `I am the ${data.you}${ordinalSuffix(data.you)} best farmgame farmer in the world!\nI have ${userAlltimeTotals[item].toLocaleString()} XP.\nCheck me out on the leaderboards at https://farmgame.live`
+                message = `I am the ${data.you}${ordinalSuffix(data.you)} best farmgame farmer in the world!\nI have ${userAlltimeTotals[item].toLocaleString()} XP.\nCheck me out on the leaderboards at https://farmgame.live/profile/${Username}`
                 break;
             default:
                 let itemName = item === 1 ? item : CONSTANTS.InventoryDescriptionsPlural[item][0];
                 itemName = itemName.toLowerCase();
-                message = `I am the ${data.you}${ordinalSuffix(data.you)} best ${item} farmer in the world!\nI have farmed ${userAlltimeTotals[item].toLocaleString()} ${itemName}.\nCheck me out on the leaderboards at https://farmgame.live`
+                message = `I am the ${data.you}${ordinalSuffix(data.you)} best ${item} farmer in the world!\nI have farmed ${userAlltimeTotals[item].toLocaleString()} ${itemName}.\nCheck me out on the leaderboards at https://farmgame.live/profile/${Username}`
                 break;
         }
         return message;

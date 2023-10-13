@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CompLeaderboardSlot from './CompLeaderboardSlot';
 
-function CompLeaderboard({ type, leadersWeekly, leadersAll, userAlltimeTotals }) {
+function CompLeaderboard({ Username, type, leadersWeekly, leadersAll, userAlltimeTotals }) {
     if (Object.keys(leadersAll).length === 0 || Object.keys(leadersWeekly).length === 0) {
         return (<div></div>)
     }
@@ -42,7 +42,7 @@ function CompLeaderboard({ type, leadersWeekly, leadersAll, userAlltimeTotals })
                                     style={{
                                         width: '100%',
                                     }}>
-                                    <div style={{ width: '100%', height: '20vh' }}><CompLeaderboardSlot userAlltimeTotals={userAlltimeTotals} key={key} item={key} data={leadersWeekly[key]} /> </div>
+                                    <div style={{ width: '100%', height: '20vh' }}><CompLeaderboardSlot Username={Username} userAlltimeTotals={userAlltimeTotals} key={key} item={key} data={leadersWeekly[key]} /> </div>
                                 </div>
                             )
                         })}
@@ -66,8 +66,8 @@ function CompLeaderboard({ type, leadersWeekly, leadersAll, userAlltimeTotals })
                         rowGap: '.4%',
                         columnGap: '1%',
                     }}>
-                        <div style={{ width: '100%', }}><CompLeaderboardSlot userAlltimeTotals={userAlltimeTotals} key={"Balance"} item={"Balance"} data={leadersAll.Balance} /></div>
-                        <div style={{ width: '100%' }}><CompLeaderboardSlot userAlltimeTotals={userAlltimeTotals} key={"XP"} item={"XP"} data={leadersAll.XP} /></div>
+                        <div style={{ width: '100%', }}><CompLeaderboardSlot Username={Username} userAlltimeTotals={userAlltimeTotals} key={"Balance"} item={"Balance"} data={leadersAll.Balance} /></div>
+                        <div style={{ width: '100%' }}><CompLeaderboardSlot Username={Username} userAlltimeTotals={userAlltimeTotals} key={"XP"} item={"XP"} data={leadersAll.XP} /></div>
                         {Object.keys(leadersAll).map(key => {
                             if (key === 'Balance' || key === 'XP') return;
                             return (
@@ -75,7 +75,7 @@ function CompLeaderboard({ type, leadersWeekly, leadersAll, userAlltimeTotals })
                                     style={{
                                         width: '100%',
                                     }}>
-                                    <div style={{ width: '100%', height: '20vh' }}><CompLeaderboardSlot userAlltimeTotals={userAlltimeTotals} key={key} item={key} data={leadersAll[key]} /> </div>
+                                    <div style={{ width: '100%', height: '20vh' }}><CompLeaderboardSlot Username={Username} userAlltimeTotals={userAlltimeTotals} key={key} item={key} data={leadersAll[key]} /> </div>
                                 </div>
                             )
                         })}
