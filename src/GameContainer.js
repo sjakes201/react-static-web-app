@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import InitLoading from './Screens/InitLoading';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import AnimalScreen from './Screens/AnimalScreen';
 import PlantScreen from './Screens/PlantScreen';
 import ShopScreen from './Screens/ShopScreen';
@@ -37,6 +36,8 @@ function GameContainer() {
     const [unlockContents, setUnlockContents] = useState([])
     const [loginBox, setLoginBox] = useState(false);
     const [capacities, setCapacities] = useState({ barnCapacity: 0, coopCapacity: 0 });
+
+    const [goodTotals, setGoodTotals] = useState({});
 
     const [machines, setMachines] = useState({})
     const [parts, setParts] = useState({})
@@ -94,11 +95,15 @@ function GameContainer() {
                     barnCapacity: data.BarnCapacity
                 });
                 let upgrades = {};
+                let totals = {};
                 for (const column in data) {
                     if (column.includes('Upgrade') || column.includes('Permit')) {
                         upgrades[column] = data[column];
+                    } else if (column in CONSTANTS.Init_Market_Prices) {
+                        totals[column] = data[column]
                     }
                 }
+                setGoodTotals(totals);
                 setUpgrades(upgrades);
             }
 
@@ -156,9 +161,7 @@ function GameContainer() {
         if (waitForServerResponse) {
             const response = await waitForServerResponse('getTownPerks');
             let data = response.body;
-            console.log(data)
             setTownPerks(data)
-
         }
     }
 
@@ -326,7 +329,7 @@ function GameContainer() {
 
     if (!isConnected) {
         return (
-            <div>  
+            <div>
             </div>
         );
     }
@@ -342,8 +345,10 @@ function GameContainer() {
                 <Route path="/animals" element={<AnimalScreen townPerks={townPerks} setAnimalsInfo={setAnimalsInfo} barn={barn} coop={coop} setBarn={setBarn} setCoop={setCoop} itemsData={itemsData} setItemsData={setItemsData} capacities={capacities} upgrades={upgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
                 <Route path="/shop" element={<ShopScreen addAnimal={addAnimal} itemsData={itemsData} setItemsData={setItemsData} animalsInfo={animalsInfo} updateAnimalsInfo={updateAnimalsInfo} deluxePermit={deluxePermit} exoticPermit={exoticPermit} updateUpgrades={updateUpgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} newXP={newXP} XP={XP} />} />
                 <Route path="/market" element={<MarketScreen itemsData={itemsData} setItemsData={setItemsData} prices={prices} setLoginBox={setLoginBox} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} newXP={newXP} XP={XP} />} />
-                <Route path="/leaderboard" element={<LeaderboardScreen />} />
-                <Route path="/account" element={<AccountScreen />} />
+                <Route path="/leaderboard" element={<LeaderboardScreen userAlltimeTotals={{ ...goodTotals, Balance: Balance, XP: XP }} />} />
+                <Route path="/account" element={<Navigate to={`/profile/${Username.replace(/#/g, '-')}`} />} />
+                <Route path="/profile" element={<Navigate to={`/profile/${Username.replace(/#/g, '-')}`} />} />
+                <Route path="/profile/:username" element={<AccountScreen />} />
                 <Route path="/passwordReset" element={<PasswordReset />} />
                 <Route path="/howtoplay" element={<HowToPlay />} />
                 <Route path="/machines" element={<MachinesScreen artisanItems={artisanItems} setArtisanItems={setArtisanItems} getUser={getUser} getXP={getXP} updateBalance={updateBalance} getBal={getBal} itemsData={itemsData} setItemsData={setItemsData} parts={parts} machines={machines} setParts={setParts} setMachines={setMachines} />} />

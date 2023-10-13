@@ -66,7 +66,7 @@ function TownsScreen({ playersTown, reloadTownPerks, updateXP, updateBalance }) 
             setTown(playersTown)
         }
     }, [playersTown])
-    console.log(window.innerHeight)
+
     return (
         <div className='townsScreenContainer'>
             <img

@@ -104,7 +104,6 @@ module.exports = {
         oats: 4,
         strawberry: 10,
 
-
         cow_milk: 35,
         chicken_egg: 25,
         duck_egg: 30,

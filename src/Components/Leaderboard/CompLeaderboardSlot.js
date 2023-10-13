@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import CONSTANTS from '../../CONSTANTS';
+import TweetButton from '../External/TweetButton';
 
-function CompLeaderboardSlot({ item, data }) {
+function CompLeaderboardSlot({ item, data, userAlltimeTotals }) {
 
     if (item === "Balance") {
         data.first.Balance = formatMoney(data.first.Balance);
@@ -10,13 +11,10 @@ function CompLeaderboardSlot({ item, data }) {
     }
 
     function formatMoney(amount) {
-        if(amount.toString().includes("$")) return amount;
+        if (amount.toString().includes("$")) return amount;
         const formatted = amount.toLocaleString('en-US');
         return "$" + formatted;
     }
-
-
-
 
     function ordinalSuffix(number) {
         const lastDigit = number % 10;
@@ -36,6 +34,24 @@ function CompLeaderboardSlot({ item, data }) {
             default:
                 return "th";
         }
+    }
+
+    const twitterMessageGenerator = () => {
+        let message = '';
+        switch(item) {
+            case 'Balance':
+                message = `I am the ${data.you}${ordinalSuffix(data.you)} richest farmgame farmer in the world!\nI have $${userAlltimeTotals[item].toLocaleString()}.\nCheck me out on the leaderboards at https://farmgame.live`
+                break;
+            case 'XP':
+                message = `I am the ${data.you}${ordinalSuffix(data.you)} best farmgame farmer in the world!\nI have ${userAlltimeTotals[item].toLocaleString()} XP.\nCheck me out on the leaderboards at https://farmgame.live`
+                break;
+            default:
+                let itemName = item === 1 ? item : CONSTANTS.InventoryDescriptionsPlural[item][0];
+                itemName = itemName.toLowerCase();
+                message = `I am the ${data.you}${ordinalSuffix(data.you)} best ${item} farmer in the world!\nI have farmed ${userAlltimeTotals[item].toLocaleString()} ${itemName}.\nCheck me out on the leaderboards at https://farmgame.live`
+                break;
+        }
+        return message;
     }
 
     return data === undefined ? (<div></div>) : (
@@ -90,7 +106,17 @@ function CompLeaderboardSlot({ item, data }) {
                     <p><span style={{ color: '#fec32d', padding: '0 5px' }}>1<sup>st</sup></span> {data.first.Username === '' ? 'Guest' : data.first.Username}: {data?.first[item]?.toLocaleString()}</p>
                     <p><span style={{ color: 'silver', padding: '0 5px' }}>2<sup>nd</sup></span>{data.second.Username === '' ? 'Guest' : data.second.Username}: {data?.second[item]?.toLocaleString()}</p>
                     <p><span style={{ color: 'brown', padding: '0 5px' }}>3<sup>rd</sup></span> {data.third.Username === '' ? 'Guest' : data.third.Username}: {data?.third[item]?.toLocaleString()}</p>
-                    <div style={{ textAlign: 'center', color: 'gray' }}><p>You: {data.you === -1 ? "" : data.you}<sup>{ordinalSuffix(data.you)}</sup></p></div>
+                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', color: 'gray' }}>
+                        <p>
+                            You: {data.you === -1 ? "" : data.you}
+                        </p>
+                        <sup>{ordinalSuffix(data.you)}</sup>
+                        <span style={{ marginLeft: '8px' }}>
+                            <TweetButton
+                                message={twitterMessageGenerator()} />
+                        </span>
+
+                    </div>
 
                 </div>
             </div>

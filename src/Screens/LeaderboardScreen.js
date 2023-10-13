@@ -4,7 +4,7 @@ import './CSS/LeaderboardScreen.css'
 import { useNavigate } from 'react-router-dom';
 import { useWebSocket } from "../WebSocketContext";
 
-function LeaderboardScreen({ }) {
+function LeaderboardScreen({ userAlltimeTotals }) {
     const { waitForServerResponse } = useWebSocket();
 
     const navigate = useNavigate();
@@ -25,7 +25,7 @@ function LeaderboardScreen({ }) {
                 if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
                     const response = await waitForServerResponse('leaderboard');
                     let data = response.body;
-                    if(data.allTimeLeaderboard && data.tempLeaderboard) {
+                    if (data.allTimeLeaderboard && data.tempLeaderboard) {
                         setLeadersAll(data.allTimeLeaderboard);
                         setleadersWeekly(data.tempLeaderboard);
                     }
@@ -63,7 +63,7 @@ function LeaderboardScreen({ }) {
                         <h3>ALL TIME</h3>
                     </div>
                 </div>
-                <div className='leaderboard-container'> < CompLeaderboard type={type} leadersWeekly={leadersWeekly} leadersAll={leadersAll} /> </div>
+                <div className='leaderboard-container'> < CompLeaderboard userAlltimeTotals={userAlltimeTotals} type={type} leadersWeekly={leadersWeekly} leadersAll={leadersAll} /> </div>
             </div>
 
 

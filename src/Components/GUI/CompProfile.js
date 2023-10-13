@@ -211,7 +211,7 @@ function CompProfile({ getBal, getUser, getXP, type, setLoginBox, setOrderBox, o
 
             {type === 'tall' &&
                 <div className="profileButtons">
-                    <Link className='profileLink' to={`/account`}
+                    <Link className='profileLink' to={`/profile`}
                         onMouseOver={() => handleMouseOver(1)}
                         onMouseOut={() => handleMouseOut(1)}>
                         {

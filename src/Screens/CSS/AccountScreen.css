@@ -6,6 +6,7 @@
     align-items: center;
     background-color: var(--menu_light);
     position: absolute;
+
     /* width */
     ::-webkit-scrollbar {
         width: 10px;
@@ -56,8 +57,8 @@
     cursor: pointer;
 }
 
-.back-arrow-acc > img {
-    width: 30%;
+.back-arrow-acc>img {
+    width: 5vw;
 }
 
 /*
@@ -78,13 +79,39 @@
 }
 
 .acc-user-info {
-    width: 25%;
+    width: 20%;
     padding: 2%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
+}
 
+.acc-poke-info {
+    width: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.acc-poke-info > img {
+    width: 4vw;
+    object-fit: contain;
+    margin-right: -.7vw;
+}
+
+.pokable {
+    cursor: pointer;
+}
+
+.poked {
+    opacity: 0.7;
+}
+
+.acc-poke-info > p {
+    margin-right: 2px;
+    margin-top: 5px;
 }
 
 #acc-username {
@@ -132,7 +159,7 @@
     font-size: .9vw;
     cursor: pointer;
     color: rgb(226, 224, 224);
-} 
+}
 
 .syncedDiscord {
     border: 1px dotted gray;
@@ -194,9 +221,10 @@
     justify-content: center;
     align-items: center;
     height: 10vh;
+    min-width: 90%;
 }
 
-.acc-goods-slot > img {
+.acc-goods-slot>img {
     width: 90%;
     height: 90%;
     object-fit: contain;
@@ -219,7 +247,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    
+
 }
 
 .acc-bottom {
@@ -232,7 +260,7 @@
     font-size: .9vw;
 }
 
-#acc-contact-info{
+#acc-contact-info {
     width: 25%;
     text-align: center;
 }
@@ -257,86 +285,125 @@
     cursor: pointer
 }
 
+.loadingIconAnimation {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+}
+
+.centerSelf {
+    align-self: center;
+    justify-self: center;
+    margin: 45vh 40vw;
+}
+
+.centerSelf > p {
+    font-size: 1vw;
+    width: 20vw;
+    text-align: center;
+}
+
+.loadingIconAnimation:after {
+    content: " ";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid black;
+    border-color: black transparent black transparent;
+    animation: loadingIconAnimation 1.2s linear infinite;
+}
+
+@keyframes loadingIconAnimation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 /*
     Corn decor line rotation
 */
-.acc-line-decor > img:nth-child(2) {
+.acc-line-decor>img:nth-child(2) {
     transform: rotate(18deg);
 }
 
-.acc-line-decor > img:nth-child(3) {
+.acc-line-decor>img:nth-child(3) {
     transform: rotate(36deg);
 }
 
-.acc-line-decor > img:nth-child(4) {
+.acc-line-decor>img:nth-child(4) {
     transform: rotate(54deg);
 }
 
-.acc-line-decor > img:nth-child(5) {
+.acc-line-decor>img:nth-child(5) {
     transform: rotate(72deg);
 }
 
-.acc-line-decor > img:nth-child(6) {
+.acc-line-decor>img:nth-child(6) {
     transform: rotate(90deg);
 }
 
-.acc-line-decor > img:nth-child(7) {
+.acc-line-decor>img:nth-child(7) {
     transform: rotate(108deg);
 }
 
-.acc-line-decor > img:nth-child(8) {
+.acc-line-decor>img:nth-child(8) {
     transform: rotate(126deg);
 }
 
-.acc-line-decor > img:nth-child(9) {
+.acc-line-decor>img:nth-child(9) {
     transform: rotate(144deg);
 }
 
-.acc-line-decor > img:nth-child(10) {
+.acc-line-decor>img:nth-child(10) {
     transform: rotate(162deg);
 }
 
-.acc-line-decor > img:nth-child(11) {
+.acc-line-decor>img:nth-child(11) {
     transform: rotate(180deg);
 }
 
-.acc-line-decor > img:nth-child(12) {
+.acc-line-decor>img:nth-child(12) {
     transform: rotate(198deg);
 }
 
-.acc-line-decor > img:nth-child(13) {
+.acc-line-decor>img:nth-child(13) {
     transform: rotate(216deg);
 }
 
-.acc-line-decor > img:nth-child(14) {
+.acc-line-decor>img:nth-child(14) {
     transform: rotate(234deg);
 }
 
-.acc-line-decor > img:nth-child(15) {
+.acc-line-decor>img:nth-child(15) {
     transform: rotate(252deg);
 }
 
-.acc-line-decor > img:nth-child(16) {
+.acc-line-decor>img:nth-child(16) {
     transform: rotate(270deg);
 }
 
-.acc-line-decor > img:nth-child(17) {
+.acc-line-decor>img:nth-child(17) {
     transform: rotate(288deg);
 }
 
-.acc-line-decor > img:nth-child(18) {
+.acc-line-decor>img:nth-child(18) {
     transform: rotate(306deg);
 }
 
-.acc-line-decor > img:nth-child(19) {
+.acc-line-decor>img:nth-child(19) {
     transform: rotate(324deg);
 }
 
-.acc-line-decor > img:nth-child(20) {
+.acc-line-decor>img:nth-child(20) {
     transform: rotate(342deg);
 }
 
-.acc-line-decor > img:nth-child(21) {
+.acc-line-decor>img:nth-child(21) {
     transform: rotate(360deg);
 }
-
