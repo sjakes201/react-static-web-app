@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 
 import AdinPlayAd from "../AdinPlayAd";
 
-function AnimalScreen({ townPerks, setAnimalsInfo, barn, coop, setBarn, setCoop, itemsData, setItemsData, getUpgrades, getUser, getBal, updateBalance, getXP, updateXP, setLoginBox, capacities }) {
+function AnimalScreen({ msgNotification, setTownChatBox, townPerks, setAnimalsInfo, barn, coop, setBarn, setCoop, itemsData, setItemsData, getUpgrades, getUser, getBal, updateBalance, getXP, updateXP, setLoginBox, capacities }) {
 
   const navigate = useNavigate();
   if (localStorage.getItem('token') === null) {
@@ -104,7 +104,7 @@ function AnimalScreen({ townPerks, setAnimalsInfo, barn, coop, setBarn, setCoop,
     <div style={appStyle}>
       {manager && <div className='manage-animals'> <AnimalManagement setAnimalsInfo={setAnimalsInfo} capacities={capacities} coop={coop} setCoop={setCoop} barn={barn} setBarn={setBarn} setManager={setManager} /></div>}
       <div className='left-column'>
-        <div className='other-screensAn'><CompOtherScreens current={'animals'} /></div>
+        <div className='other-screensAn'><CompOtherScreens msgNotification={msgNotification} setTownChatBox={setTownChatBox} current={'animals'} /></div>
         <div className='pen-management'> <AnimalsTopBar setManager={setManager} /> </div>
         <div className="pens-wrapper" >
           <div className="barn-container" ref={componentRef}> {renderPens && <CompPen townPerks={townPerks} setEquippedFeed={setEquippedFeed} equippedFeed={equippedFeed} setOrderNotice={setOrderNotice} getUpgrades={getUpgrades} animalsParent={barn} setAnimalsParent={setBarn} isBarn={true} key={1} penWidth={componentWidth} penHeight={(componentHeight)} updateInventory={updateInventory} updateXP={updateXP} getXP={getXP} />}</div>

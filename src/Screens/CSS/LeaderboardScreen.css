@@ -43,6 +43,7 @@
     padding-top: 1.4%;
     height: calc(5% - 22px);
     margin-bottom: 11px;
+    font-size: 1.3vw;
 }
 
 .type-button:hover {
@@ -54,7 +55,7 @@
 }
 
 .active {
-    font-size: 150%;
+    font-size: 1.6vw;
 }
 
 .inactive {

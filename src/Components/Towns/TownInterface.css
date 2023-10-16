@@ -99,6 +99,16 @@
     height: 100%;
 }
 
+.interfaceChatButton {
+    position: absolute;
+    top: 12%;
+    left: 1.3%;
+    height: 30%;
+    max-width: 5%;
+    object-fit: contain;
+    cursor: pointer;
+}
+
 #townBackArrow {
     max-width: 5%;
     height: 45%;
@@ -114,7 +124,7 @@
     max-width: 5%;
     height: 45%;
     bottom: 5%;
-    left: 5px;
+    left: .7%;
     object-fit: contain;
     filter: grayscale(1);
     opacity: 0.8;
@@ -259,7 +269,7 @@
     padding: 0 5%;
     font-size: .6vw;
     text-wrap: balance;
-    color: rgb(98, 98, 218);
+    color: black;
     text-align: center;
 }
 

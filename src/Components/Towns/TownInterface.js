@@ -7,12 +7,15 @@ import TownGoals from './TownGoals';
 import { calcTownLevel } from '../../townHelpers';
 
 // townName is string for town name, backArrow is optional function to be called when back arrow pressed
-function TownInterface({ updateBalance, updateXP, townName, backArrow, reloadTownPerks, setTown, setScreen }) {
+function TownInterface({ msgNotification, setTownChatBox, updateBalance, updateXP, townName, backArrow, reloadTownPerks, setTown, setScreen }) {
 
     const { waitForServerResponse } = useWebSocket();
 
     // Which screen to show ("MAIN" or "GOALS")
     const [townScreen, setTownScreen] = useState("MAIN")
+
+    // "PLAYERS" for town players list, "CHAT" for town chat
+    const [subScreen, setSubscreen] = useState("PLAYERS")
 
     /* The townInfo query will return data based on who requested it */
     const [townInfo, setTownInfo] = useState({})
@@ -32,7 +35,9 @@ function TownInterface({ updateBalance, updateXP, townName, backArrow, reloadTow
     };
 
     const setTownDetails = async (e) => {
-        e.preventDefault();
+        // console.log("in here for rel!")
+        // e.preventDefault();
+        // console.log("in here for rel!")
         if (waitForServerResponse) {
             let response = await waitForServerResponse('setTownDetails', { newData: settingsData });
             setTownInfo((old) => {
@@ -68,38 +73,72 @@ function TownInterface({ updateBalance, updateXP, townName, backArrow, reloadTow
 
     // Interface action functions
 
-    const managementAction = async (action, targetUser) => {
-        if (townInfo.myControls === 'leader') {
-            if (action === 'KICK') {
-                console.log(`kicking ${targetUser}`)
-                if (waitForServerResponse) {
-                    setTownInfo((old) => {
-                        let newTownInfo = { ...old };
-                        newTownInfo.memberCount -= 1;
-                        newTownInfo.playersData = newTownInfo.playersData.filter((player) => player.username !== targetUser);
-                        return newTownInfo;
-                    })
-                    let response = await waitForServerResponse('kickTownMember', { kickedMember: targetUser });
-                    console.log(response)
-                }
+    const managementAction = async (action, targetUser, roleID, myRoleID) => {
+        if (action === 'KICK' && myRoleID > roleID) {
+            if (waitForServerResponse) {
+                setTownInfo((old) => {
+                    let newTownInfo = { ...old };
+                    newTownInfo.memberCount -= 1;
+                    newTownInfo.playersData = newTownInfo.playersData.filter((player) => player.username !== targetUser);
+                    return newTownInfo;
+                })
+                let response = await waitForServerResponse('kickTownMember', { kickedMember: targetUser });
+                console.log(response)
             }
-            if (action === 'PROMOTE') {
-                console.log(`promoting ${targetUser}`)
-                if (waitForServerResponse) {
-                    let response = await waitForServerResponse('promoteTownMember', { newLeader: targetUser });
-                    console.log(response)
+        }
+        if (action === "DEMOTE" && myRoleID > roleID && roleID > 1) {
+            if (waitForServerResponse) {
+                let response = await waitForServerResponse('demoteTownMember', { targetUser: targetUser });
+                console.log(response)
+                setTownInfo((old) => {
+                    let newTownInfo = { ...old };
+                    newTownInfo.playersData = newTownInfo.playersData.map((player) => {
+                        if (player.username === targetUser) {
+                            let newPlayer = { ...player };
+                            newPlayer.roleID -= 1;
+                            return newPlayer;
+                        }
+                        return player;
+                    });
+                    return newTownInfo;
+                })
+            }
+
+        }
+        if (action === 'PROMOTE' && ((myRoleID > roleID + 1) || myRoleID === 4)) {
+            if (waitForServerResponse) {
+                let response = await waitForServerResponse('promoteTownMemberRole', { targetUser: targetUser });
+                console.log(townInfo)
+                let targetPlayerInfo = townInfo.playersData.filter((player) => player.username === targetUser)[0];
+                console.log(targetPlayerInfo)
+                if (targetPlayerInfo.roleID === 3) {
+                    // Transferring leadership
                     setTownInfo((old) => {
                         let newTownInfo = { ...old };
-                        newTownInfo.myControls = 'member';
                         newTownInfo.playersData = newTownInfo.playersData.map((player) => {
                             if (player.username === targetUser) {
                                 let newPlayer = { ...player };
-                                newPlayer.role = 'leader'
+                                newPlayer.roleID = 4;
                                 return newPlayer;
                             }
-                            if (player.role === 'leader') {
+                            if (player.roleID === 4) {
                                 let newPlayer = { ...player };
-                                newPlayer.role = 'member'
+                                newPlayer.roleID = 3
+                                return newPlayer;
+                            }
+                            return player;
+                        });
+                        newTownInfo.myRoleID = 3;
+                        return newTownInfo;
+                    })
+                } else {
+                    // regular promotion
+                    setTownInfo((old) => {
+                        let newTownInfo = { ...old };
+                        newTownInfo.playersData = newTownInfo.playersData.map((player) => {
+                            if (player.username === targetUser) {
+                                let newPlayer = { ...player };
+                                newPlayer.roleID += 1;
                                 return newPlayer;
                             }
                             return player;
@@ -107,7 +146,9 @@ function TownInterface({ updateBalance, updateXP, townName, backArrow, reloadTow
                         return newTownInfo;
                     })
                 }
+
             }
+
         }
     }
 
@@ -128,6 +169,7 @@ function TownInterface({ updateBalance, updateXP, townName, backArrow, reloadTow
     const leaveTown = async () => {
         if (waitForServerResponse) {
             let response = await waitForServerResponse('leaveTown', {});
+            console.log(response)
             if (response.body.message === 'SUCCESS') {
                 setRefreshData((old) => old + 1);
                 if (setTown) setTown("");
@@ -165,58 +207,85 @@ function TownInterface({ updateBalance, updateXP, townName, backArrow, reloadTow
     }
 
     const settings = () => {
-        return (<div className='settingsGUIContainer basicCenter'>
-            <div className='settingsGUI'>
-                <span className='upperRightX'
-                    onClick={() => {
+        return (
+            <div
+                className='settingsGUIContainer basicCenter'
+                onClick={(event) => {
+                    event.preventDefault();
+                    if (event.target === event.currentTarget) {
                         setSettingsGUI(false);
                         setSettingsData({
                             description: townInfo.description,
                             logoNum: townInfo.townLogoNum,
                             status: townInfo.status,
                         });
-                    }}>X</span>
-                <form className='settingsForm' onSubmit={setTownDetails}>
-                    <div className='setNewDescription'>
-                        <label htmlFor="description">Description:</label>
-                        <textarea
-                            type="text"
-                            id="name"
-                            name="description"
-                            value={settingsData.description}
-                            onChange={handleChange}
-                            maxLength={128}
-                        />
-                    </div>
-                    <div className='setTownIcon'>
-                        <p id='iconsLabel'>Town Icon:</p>
-                        <div className='townIconSelection'>
-                            {TOWNSINFO.townIcons.map((icon, index) => {
-                                return (
-                                    <img key={index} className={`townIconOption ${settingsData.logoNum === index ? 'selectedIcon' : ''}`} src={`${process.env.PUBLIC_URL}/assets/images/townIcons/${icon}.png`}
-                                        onClick={() => setSettingsData((old) => {
-                                            let newData = { ...old };
-                                            newData.logoNum = index;
-                                            return newData;
-                                        })}
-                                    />
-                                )
-                            })}
+                    }
+                }}
+            >
+                <div className='settingsGUI'>
+                    <span className='upperRightX'
+                        onClick={() => {
+                            setSettingsGUI(false);
+                            setSettingsData({
+                                description: townInfo.description,
+                                logoNum: townInfo.townLogoNum,
+                                status: townInfo.status,
+                            });
+                        }}>X</span>
+                    <form className='settingsForm' onSubmit={setTownDetails}>
+                        <div className='setNewDescription'>
+                            <label htmlFor="description">Description:</label>
+                            <textarea
+                                type="text"
+                                id="name"
+                                name="description"
+                                value={settingsData.description}
+                                onChange={handleChange}
+                                maxLength={128}
+                            />
                         </div>
-                    </div>
-                    <div className='setNewStatus'>
-                        <label htmlFor="status">Status:</label>
-                        <button type="button" className={settingsData.status === 'OPEN' ? 'selectedButton' : 'unselectedButton'}
-                            onClick={() => setSettingsData((old) => { let newData = { ...old }; newData.status = 'OPEN'; return newData })}>
-                            Open</button>
-                        <button type="button" className={settingsData.status === 'CLOSED' ? 'selectedButton' : 'unselectedButton'}
-                            onClick={() => setSettingsData((old) => { let newData = { ...old }; newData.status = 'CLOSED'; return newData })}>
-                            Closed</button>
-                    </div>
-                    <button type="submit" id='descSubmitButton'>Save</button>
-                </form>
+                        <div className='setTownIcon'>
+                            <p id='iconsLabel'>Town Icon:</p>
+                            <div className='townIconSelection'>
+                                {TOWNSINFO.townIcons.map((icon, index) => {
+                                    return (
+                                        <img key={index} className={`townIconOption ${settingsData.logoNum === index ? 'selectedIcon' : ''}`} src={`${process.env.PUBLIC_URL}/assets/images/townIcons/${icon}.png`}
+                                            onClick={() => setSettingsData((old) => {
+                                                let newData = { ...old };
+                                                newData.logoNum = index;
+                                                return newData;
+                                            })}
+                                        />
+                                    )
+                                })}
+                            </div>
+                        </div>
+                        <div className='setNewStatus'>
+                            <label htmlFor="status">Status:</label>
+                            <button type="button" className={settingsData.status === 'OPEN' ? 'selectedButton' : 'unselectedButton'}
+                                onClick={() => setSettingsData((old) => { let newData = { ...old }; newData.status = 'OPEN'; return newData })}>
+                                Open</button>
+                            <button type="button" className={settingsData.status === 'CLOSED' ? 'selectedButton' : 'unselectedButton'}
+                                onClick={() => setSettingsData((old) => { let newData = { ...old }; newData.status = 'CLOSED'; return newData })}>
+                                Closed</button>
+                        </div>
+                        <button type="submit" id='descSubmitButton' onClick={() => setTownDetails()}>Save</button>
+                    </form>
+                </div>
             </div>
-        </div>)
+        )
+    }
+
+    const townPlayersList = () => {
+        return (
+            <div className='townPlayers'>
+                {townInfo.playersData.map((player, index) =>
+                    <div key={index * 100} className='playerInfo'>
+                        <PlayerCard key={index} username={player.username} xp={player.xp} roleID={player.roleID} contributions={player.contributions} myRoleID={townInfo.myRoleID} managementAction={managementAction} />
+                    </div>
+                )}
+            </div>
+        )
     }
 
     return (
@@ -232,7 +301,14 @@ function TownInterface({ updateBalance, updateXP, townName, backArrow, reloadTow
                             <div className='townInfoBar'>
                                 <div className='townLeftBar'>
                                     {backArrow && <img id='townBackArrow' src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_dark.png`} onClick={() => backArrow(true)} />}
-                                    {townInfo.myControls === 'leader' && <img id='townSettingsButton' src={`${process.env.PUBLIC_URL}/assets/images/Gears.png`} onClick={() => setSettingsGUI(true)} />}
+                                    {setTownChatBox &&
+                                        <img
+                                            src={`${process.env.PUBLIC_URL}/assets/images/GUI/textbubble${msgNotification ? '_notify' : ''}.png`}
+                                            className='interfaceChatButton'
+                                            onClick={() => setTownChatBox((old) => !old)}
+                                        />
+                                    }
+                                    {townInfo.myRoleID === 4 && <img id='townSettingsButton' src={`${process.env.PUBLIC_URL}/assets/images/Gears.png`} onClick={() => setSettingsGUI(true)} />}
                                 </div>
                                 <div className='townLogo basicCenter'>
                                     <img src={`${process.env.PUBLIC_URL}/assets/images/townIcons/${TOWNSINFO.townIcons[townInfo.townLogoNum]}.png`} />
@@ -254,7 +330,7 @@ function TownInterface({ updateBalance, updateXP, townName, backArrow, reloadTow
                                         </div>
                                     </div>
                                     {perksPopup && levelPerks()}
-                                    {townInfo.myControls !== 'visitor' &&
+                                    {townInfo.myRoleID &&
                                         <div className='showGoalsButton basicCenter'
                                             onClick={() => {
                                                 setTownScreen("GOALS")
@@ -267,7 +343,7 @@ function TownInterface({ updateBalance, updateXP, townName, backArrow, reloadTow
                                         <p>{townInfo.memberCount}/25 members</p>
                                         <p style={{ color: townInfo.status === 'OPEN' ? '#36e04d' : 'gray' }}>{townInfo.status}</p>
                                     </div>
-                                    {townInfo.myControls !== 'visitor' && (townInfo.myControls === 'member' || townInfo.memberCount === 1 ?
+                                    {townInfo.myRoleID && (townInfo.myRoleID !== 4 || townInfo.memberCount === 1 ?
                                         <div className='leaveContainer basicCenter townInfoLowerRight'>
                                             <div className='townLeaveButton basicCenter' onClick={() => { leaveTown(); if (backArrow) backArrow() }}>
                                                 Leave
@@ -278,25 +354,20 @@ function TownInterface({ updateBalance, updateXP, townName, backArrow, reloadTow
                                             Must promote new leader before leaving
                                         </p>
                                     )}
-                                    {(townInfo.myControls === 'visitor' && townInfo.status === "OPEN" && townInfo.memberCount < 25 && !townInfo.imInTown) &&
+                                    {(!townInfo.myRoleID && townInfo.status === "OPEN" && townInfo.memberCount < 25 && !townInfo.imInTown) &&
                                         <div className='townJoinContainer basicCenter'>
                                             <div className='joinButton basicCenter' onClick={() => joinTown()}>Join</div>
                                         </div>
                                     }
                                 </div>
                             </div>
-                            <div className='townPlayers'>
-                                {townInfo.playersData.map((player, index) =>
-                                    <div key={index * 100} className='playerInfo'>
-                                        <PlayerCard key={index} username={player.username} xp={player.xp} role={player.role} contributions={player.contributions} myControls={townInfo.myControls} managementAction={managementAction} />
-                                    </div>
-                                )}
-                            </div>
+                            {subScreen === "PLAYERS" && townPlayersList()}
+
                         </>
                     }
                     {
                         townScreen === "GOALS" && (
-                            <TownGoals updateBalance={updateBalance} updateXP={updateXP} setTownInfo={setTownInfo} setTownScreen={setTownScreen} townName={townInfo.townName} goals={townInfo.goalsData} role={townInfo.myControls} myUnclaimed={townInfo.myUnclaimed} remount={() => setRefreshData((old) => old + 1)} />
+                            <TownGoals updateBalance={updateBalance} updateXP={updateXP} setTownInfo={setTownInfo} setTownScreen={setTownScreen} townName={townInfo.townName} goals={townInfo.goalsData} myRoleID={townInfo.myRoleID} myUnclaimed={townInfo.myUnclaimed} remount={() => setRefreshData((old) => old + 1)} />
                         )
                     }
                 </>)}

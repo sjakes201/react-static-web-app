@@ -24,6 +24,22 @@
         0 0 0 8px var(--black);
 }
 
+.townsButtonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.townChatButton {
+    position: absolute;
+    bottom: -1vh;
+    right: -3vh;
+    height: 4vh;
+    object-fit: contain;
+    cursor: pointer;
+}
+
 .townsButton {
     box-shadow:
         0 0 0 2px var(--black),
@@ -32,7 +48,6 @@
         0 0 0 8px var(--black);
     max-height: calc(6vh - 8px);
     margin: 8px;
-    width: 10vw;
     object-fit: contain;
     cursor: pointer;
     background: var(--menu_light);

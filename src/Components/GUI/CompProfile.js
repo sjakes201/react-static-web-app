@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import '../CSS/CompProfile.css'
 import CONSTANTS from "../../CONSTANTS";
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import ScrollingText from "./ScrollingText";
 
 function CompProfile({ getBal, getUser, getXP, type, setLoginBox, setOrderBox, orderNotice, disableBorder, noPFP }) {
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [bal, setBal] = useState(0);
     const [user, setUser] = useState("");
@@ -157,6 +157,8 @@ function CompProfile({ getBal, getUser, getXP, type, setLoginBox, setOrderBox, o
         )
     }
 
+    //location.pathname.substring(1, location.pathname.length)
+
     return (
         <div className={`user-profile ${disableBorder ? '' : 'orangeBorder'}`}>
             <div className="user-info">
@@ -211,9 +213,13 @@ function CompProfile({ getBal, getUser, getXP, type, setLoginBox, setOrderBox, o
 
             {type === 'tall' &&
                 <div className="profileButtons">
-                    <Link className='profileLink' to={`/profile`}
+                    <div className='profileLink'
                         onMouseOver={() => handleMouseOver(1)}
-                        onMouseOut={() => handleMouseOut(1)}>
+                        onMouseOut={() => handleMouseOut(1)}
+                        onClick={
+                            () => navigate('/profile', { state: { from: location.pathname.substring(1, location.pathname.length) } })
+                        }
+                    >
                         {
                             tool1 && <div className='toolTip'>
                                 Profile info
@@ -221,7 +227,7 @@ function CompProfile({ getBal, getUser, getXP, type, setLoginBox, setOrderBox, o
                         }
                         <img src={`${process.env.PUBLIC_URL}/assets/images/accounticon.png`} alt='profile/stats'
                         />
-                    </Link>
+                    </div>
                     <div className={orderNotice ? 'profileLink orderNotice' : 'profileLink'} id='orderboard-button'
                         onMouseOver={() => handleMouseOver(2)}
                         onMouseOut={() => handleMouseOut(2)}
@@ -233,28 +239,37 @@ function CompProfile({ getBal, getUser, getXP, type, setLoginBox, setOrderBox, o
                         }
                         <img src={`${process.env.PUBLIC_URL}/assets/images/order-icon.png`} alt='orders' />
                     </div>
-                    <Link className='profileLink' to={`/leaderboard`}
+                    <div className='profileLink'
                         onMouseOver={() => handleMouseOver(3)}
-                        onMouseOut={() => handleMouseOut(3)}>
+                        onMouseOut={() => handleMouseOut(3)}
+                        onClick={
+                            () => navigate('/leaderboard', { state: { from: location.pathname.substring(1, location.pathname.length) } })
+                        }
+                    >
                         {
                             tool3 && <div className='toolTip'>
                                 Leaderboard
                             </div>
                         }
                         <img src={`${process.env.PUBLIC_URL}/assets/images/leaderboard.png`} alt='leaderboard' />
-                    </Link>
-                    <Link className='profileLink' to={`/howtoplay`}
+                    </div>
+                    <div className='profileLink'
                         onMouseOver={() => handleMouseOver(4)}
-                        onMouseOut={() => handleMouseOut(4)}>
+                        onMouseOut={() => handleMouseOut(4)}
+                        onClick={
+                            () => navigate('/howtoplay', { state: { from: location.pathname.substring(1, location.pathname.length) } })
+                        }
+
+                    >
                         {
                             tool4 && <div className='toolTip'>
                                 How To Play
                             </div>
                         }
                         <img src={`${process.env.PUBLIC_URL}/assets/images/questionmark.png`} alt='info/how to play' />
-                    </Link>
+                    </div>
                 </div>}
-        </div>
+        </div >
     )
 }
 

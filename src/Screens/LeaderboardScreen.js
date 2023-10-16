@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import CompLeaderboard from '../Components/Leaderboard/CompLeaderboard';
 import './CSS/LeaderboardScreen.css'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useWebSocket } from "../WebSocketContext";
 
 function LeaderboardScreen({ Username, userAlltimeTotals }) {
     const { waitForServerResponse } = useWebSocket();
 
     const navigate = useNavigate();
+    const location = useLocation();
+
     if (localStorage.getItem('token') === null) {
         // no auth token present
         navigate('/');
@@ -15,11 +17,11 @@ function LeaderboardScreen({ Username, userAlltimeTotals }) {
 
     //ALLTIME, WEEKLY
     const [type, setType] = useState("WEEKLY")
-    const [leadersAll, setLeadersAll] = useState({});
-    const [leadersWeekly, setleadersWeekly] = useState({});
+    const [leadersAll, setLeadersAll] = useState(JSON.parse(sessionStorage.getItem("storedAllLb")) || {});
+    const [leadersWeekly, setLeadersTemp] = useState(JSON.parse(sessionStorage.getItem("storedTempLb")) || {});
+
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
         const getLeaderboards = async () => {
             try {
                 if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
@@ -27,7 +29,11 @@ function LeaderboardScreen({ Username, userAlltimeTotals }) {
                     let data = response.body;
                     if (data.allTimeLeaderboard && data.tempLeaderboard) {
                         setLeadersAll(data.allTimeLeaderboard);
-                        setleadersWeekly(data.tempLeaderboard);
+                        setLeadersTemp(data.tempLeaderboard);
+                        const stringifiedAll = JSON.stringify(data.allTimeLeaderboard);
+                        const stringifiedTemp = JSON.stringify(data.tempLeaderboard);
+                        sessionStorage.setItem("storedTempLb", stringifiedTemp)
+                        sessionStorage.setItem("storedAllLb", stringifiedAll)
                     }
                 }
             } catch (error) {
@@ -41,17 +47,31 @@ function LeaderboardScreen({ Username, userAlltimeTotals }) {
             }
         }
         getLeaderboards();
-    }, [navigate])
+    }, [])
 
-    return (
-        <div id="leaderboards" className="leaderboards" >
+    const backArrow = () => {
+        const backFunc = () => {
+            if (location?.state?.from === 'animals') {
+                return () => navigate('/animals')
+            } else {
+                return () => navigate('/plants')
+            }
+        }
+
+        return (
             <div className='back-arrow-leader'>
                 <img
                     src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_light.png`}
                     alt='profile/stats'
-                    onClick={() => window.history.back()}
+                    onClick={backFunc()}
                 />
             </div>
+        )
+    }
+
+    return (
+        <div id="leaderboards" className="leaderboards" >
+            {backArrow()}
             <div
                 className='main-board'>
                 <div className='buttons' style={{}}>

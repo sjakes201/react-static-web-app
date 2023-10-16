@@ -55,14 +55,15 @@
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    width: 100%;
-    height: 50%;
+    height: 4vh;
+    padding: .5vh;
     font-size: .7vw;
+    margin: .4vh 0 -.4vh 0;
 }
 
 .authButton {
     width: 40%;
-    height: 90%;
+    height: 100%;
     border: 1px solid black;
     border-radius: 5%;
     cursor: pointer;
@@ -103,17 +104,25 @@
     right: -2vh;
     font-size: 1vw;
     z-index: 5;
-    width: 20vw;
-    height: 23vh;
     background-color: var(--menu_lightest);
     border: 1px solid black;
     border-radius: 4%;
     padding: 1.4vh;
+}
+
+.individualContributions {
     display: grid;
-    grid-template-columns: repeat(4, 23.5%);
-    grid-template-rows: repeat(2, 49%);
-    gap: 2%;
+    grid-template-columns: repeat(4, 4.5vw);
+    grid-template-rows: repeat(2, 10vh);
+    gap: .1vw;
     cursor: default;
+}
+
+.contribution {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .onTop {
@@ -128,14 +137,8 @@
     cursor: pointer;
 }
 
-.contributionGoal {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-}
 
-.contributionGoal > img {
+.contribution > img {
     object-fit: contain;
     max-height: 75%;
     max-width: 100%;

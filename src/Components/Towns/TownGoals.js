@@ -7,7 +7,7 @@ import { waitFor } from '@testing-library/react';
 // townName is string
 // remount recalls getTownInfo
 // role is string ("leader", "member")
-function TownGoals({ setTownInfo, goals, townName, myUnclaimed, role, setTownScreen, remount, updateXP, updateBalance }) {
+function TownGoals({ setTownInfo, goals, townName, myUnclaimed, myRoleID, setTownScreen, remount, updateXP, updateBalance }) {
     const { waitForServerResponse } = useWebSocket();
 
     const changeGoal = async(newGoal, goalSlot) => {
@@ -50,7 +50,7 @@ function TownGoals({ setTownInfo, goals, townName, myUnclaimed, role, setTownScr
             </div>
             <div className='goalsListContainer'>
                 {goals.map((goal, index) => {
-                    return <GoalCard key={index} good={goal.good} numNeeded={goal.numNeeded} numHave={goal.numHave} role={role} unclaimedData={myUnclaimed[`unclaimed_${index+1}`]} claimUnclaimedGoal={claimUnclaimedGoal} index={index} changeGoal={changeGoal}/>
+                    return <GoalCard key={index} good={goal.good} numNeeded={goal.numNeeded} numHave={goal.numHave} myRoleID={myRoleID} unclaimedData={myUnclaimed[`unclaimed_${index+1}`]} claimUnclaimedGoal={claimUnclaimedGoal} index={index} changeGoal={changeGoal}/>
                 })}
             </div>
         </div>

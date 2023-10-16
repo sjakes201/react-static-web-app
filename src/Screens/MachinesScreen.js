@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './CSS/MachinesScreen.css'
 import MachineUnit from '../Components/Machines/MachineUnit';
 import CompInventory from '../Components/GUI/CompInventory';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import MACHINESINFO from '../MACHINESINFO';
 import CompProfile from '../Components/GUI/CompProfile';
 import { useWebSocket } from "../WebSocketContext";
@@ -13,6 +13,7 @@ function MachinesScreen({ artisanItems, setArtisanItems, itemsData, setItemsData
     const { waitForServerResponse } = useWebSocket();
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [items, setItems] = useState({});
 
@@ -83,7 +84,7 @@ function MachinesScreen({ artisanItems, setArtisanItems, itemsData, setItemsData
             console.log('Insufficient parts');
             return;
         }
-        updateBalance(-1*costs.Money)
+        updateBalance(-1 * costs.Money)
         setParts((old) => {
             let newParts = { ...old };
             newParts.Gears -= costs.Gears;
@@ -279,111 +280,97 @@ function MachinesScreen({ artisanItems, setArtisanItems, itemsData, setItemsData
         }
     }
 
-    return (
-        <div className='machineScreen'>
-            {helpGUI &&
-                <div className='artisanGUI'>
-                    <div
-                        className='artisanGUIX'
-                        onClick={() => setHelpGUI(false)}
-                    >X</div>
+    const buildHelpGUI = () => {
+        return (<div className='artisanGUI'>
+            <div
+                className='artisanGUIX'
+                onClick={() => setHelpGUI(false)}
+            >X</div>
 
-                    <div className='artisanLeftColumn'>
-                        <div className='artisanInfoGrid'>
+            <div className='artisanLeftColumn'>
+                <div className='artisanInfoGrid'>
 
-                            <div className='artisanInfoSpot'>
-                                <h3>Build</h3>
-                                <p>
-                                    Build up to 6 machines with money and parts.  Machines convert animal produce into
-                                    artisan goods. Each ingredient put into a machine will produce 1 of it's respective artisan good.
-                                </p>
-                            </div>
-                            <div className='artisanInfoSpot'>
-                                <h3>Upgrade</h3>
-                                <p>
-                                    Upgrade machines using parts and money to give them higher capacities, quicker processing times, and a higher chance of better artisan goods.
-                                </p>
-                            </div>
-                            <div className='artisanInfoSpot'>
-                                <h3>
-                                    {/* <img
-                                        src={`${process.env.PUBLIC_URL}/assets/images/Bolts.png`}
-                                        alt='bolts icon'
-                                        onClick={() => setHelpGUI((old) => !old)}
-                                        className='imgInfoGraphicLeft'
-                                    /> */}
-                                    Parts
-                                    {/* <img
-                                        src={`${process.env.PUBLIC_URL}/assets/images/Gears.png`}
-                                        alt='gears icon'
-                                        onClick={() => setHelpGUI((old) => !old)}
-                                        className='imgInfoGraphicRight'
-                                    /> */}
-                                </h3>
-                                <p>
-                                    Find machine parts in your field when harvesting crops. All crops have a small chance of giving you a random part (1-3%) when harvested. Quicker growth crops have lower drop chances.
-                                </p>
-                            </div>
-                            <div className='artisanInfoSpot'>
-                                <h3>
-                                    {/* <img
-                                        src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ1.png`}
-                                        alt='cheese icon'
-                                        onClick={() => setHelpGUI((old) => !old)}
-                                        className='imgInfoGraphicLeftArtisan'
-                                    /> */}
-                                    Artisan Goods
-                                    {/* <img
-                                        src={`${process.env.PUBLIC_URL}/assets/images/clothQ3.png`}
-                                        alt='cloth icon'
-                                        onClick={() => setHelpGUI((old) => !old)}
-                                        className='imgInfoGraphicRightArtisan'
-                                    /> */}
-                                </h3>
-                                <p>
-                                    Artisan goods can be sold for a fixed price. Higher quality artisan goods sell for more. There are normal, bronze, silver, and gold quality artisan goods.
-                                </p>
-                            </div>
-                            <div className='infoGUIDecoBottom'>
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
-                                    alt='deco icon'
-                                />
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
-                                    alt='deco icon'
-                                />
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
-                                    alt='deco icon'
-                                />
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
-                                    alt='deco icon'
-                                />
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
-                                    alt='deco icon'
-                                />
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
-                                    alt='deco icon'
-                                />
+                    <div className='artisanInfoSpot'>
+                        <h3>Build</h3>
+                        <p>
+                            Build up to 6 machines with money and parts.  Machines convert animal produce into
+                            artisan goods. Each ingredient put into a machine will produce 1 of it's respective artisan good.
+                        </p>
+                    </div>
+                    <div className='artisanInfoSpot'>
+                        <h3>Upgrade</h3>
+                        <p>
+                            Upgrade machines using parts and money to give them higher capacities, quicker processing times, and a higher chance of better artisan goods.
+                        </p>
+                    </div>
+                    <div className='artisanInfoSpot'>
+                        <h3>Parts</h3>
+                        <p>
+                            Find machine parts in your field when harvesting crops. All crops have a small chance of giving you a random part (1-3%) when harvested. Quicker growth crops have lower drop chances.
+                        </p>
+                    </div>
+                    <div className='artisanInfoSpot'>
+                        <h3>Artisan Goods</h3>
+                        <p>
+                            Artisan goods can be sold for a fixed price. Higher quality artisan goods sell for more. There are normal, bronze, silver, and gold quality artisan goods.
+                        </p>
+                    </div>
+                    <div className='infoGUIDecoBottom'>
+                        <img
+                            src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                            alt='deco icon'
+                        />
+                        <img
+                            src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                            alt='deco icon'
+                        />
+                        <img
+                            src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                            alt='deco icon'
+                        />
+                        <img
+                            src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                            alt='deco icon'
+                        />
+                        <img
+                            src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                            alt='deco icon'
+                        />
+                        <img
+                            src={`${process.env.PUBLIC_URL}/assets/images/cheeseQ0.png`}
+                            alt='deco icon'
+                        />
 
-                            </div>
-                        </div>
                     </div>
                 </div>
-            }
-            <div className='machineGrid'>
+            </div>
+        </div>)
+    }
 
+    const backArrow = () => {
+        const backFunc = () => {
+            if (location?.state?.from) {
+                return () => navigate(`/${location.state.from}`)
+            } else {
+                return () => navigate('/plants')
+            }
+        }
+        return (
+            <img
+                src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_light.png`}
+                alt='back-arrow'
+                onClick={backFunc()}
+                style={{ width: '5%', marginLeft: '1%', marginBottom: '5%', cursor: 'pointer', objectFit: 'contain' }}
+            />
+        )
+    }
+
+    return (
+        <div className='machineScreen'>
+            {helpGUI && buildHelpGUI()}
+            <div className='machineGrid'>
                 <div id='placeholderMachine'>
-                    <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_light.png`}
-                        alt='back-arrow'
-                        onClick={() => window.history.back()}
-                        style={{ width: '5%', marginLeft: '1%', marginBottom: '5%', cursor: 'pointer', objectFit: 'contain' }}
-                    />
+                    {backArrow()}
                     {(window.innerWidth >= 1137 && window.innerWidth < 1515) &&
                         <div style={{ position: 'relative', width: '728px', height: '90px', zIndex: '20000' }}>
                             <AdinPlayAd placementId="farmgame-live_728x90_2" />

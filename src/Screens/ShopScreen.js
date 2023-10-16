@@ -5,6 +5,7 @@ import CompProfile from '../Components/GUI/CompProfile'
 import CompOtherScreens from '../Components/GUI/CompOtherScreens'
 import { useNavigate } from 'react-router-dom';
 import { useWebSocket } from "../WebSocketContext";
+import './CSS/ShopScreen.css'
 
 import AdinPlayAd from "../AdinPlayAd";
 
@@ -78,7 +79,7 @@ function ShopScreen({ addAnimal, itemsData, setItemsData, animalsInfo, updateAni
                     getUpgrades={getUpgrades} updateInventory={updateInventory} permits={{ 'deluxePermit': deluxePermit, 'exoticPermit': exoticPermit }}
                     updateBalance={updateBalance} getBal={getBal} updateAnimalsInfo={updateAnimalsInfo}
                     items={items} />
-                <div style={{ position: 'relative', background: 'var(--border_shadow_orange)', width: '161px', minHeight: '100%', zIndex: '2000', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div className='shop-ad-box'>
                     {window.innerHeight > 698 && <AdinPlayAd placementId="farmgame-live_160x600" />}
                 </div>
             </div>

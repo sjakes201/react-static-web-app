@@ -1,0 +1,118 @@
+.chatContainer {
+    position: absolute;
+    z-index: 100;
+    width: 30vw;
+    height: 60vh;
+    left: 35vw;
+    top: 20vh;
+    background-color: whitesmoke;
+
+    box-shadow:
+        0 0 0 3px var(--black),
+        0 0 0 6px var(--border_yellow),
+        0 0 0 8px var(--border_shadow_yellow),
+        0 0 0 11px var(--black);
+
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    border-radius: 4px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--menu_light);
+    border-radius: 10px;
+    border: 1px solid rgb(0, 0, 0);
+}
+
+.chatTabBar {
+    height: 8%;
+    border-bottom: 1px solid black;
+    cursor: grab;
+
+    padding: 0 1.5% 0 3%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#chatx {
+    font-size: 1vw;
+    cursor: pointer;
+    text-align: center;
+    width: 1.8vw;
+    height: 3vh
+}
+
+.messageBox {
+    height: 82%;
+    padding: 3% 5%;
+    font-size: .9vw;
+    overflow-y: auto;
+    gap: 2%;
+    position: relative;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+
+.msgBubble {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.fromUser {
+    border: 1px solid rgb(185, 185, 185);
+    border-radius: 4px;
+    padding: 3px 3px 3px 5px;
+    margin-right: 5px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.messageText {
+    margin-top: 4px;
+    flex-grow: 1;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+
+.newMessageBox {
+    border-top: 1px solid black;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.chatInput {
+    width: 92%;
+    height: 100%;
+    border: none;
+    padding: 1%;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    resize: none;
+    display: flex;
+}
+
+#chatSend {
+    width: 8%;
+    text-align: center;
+    cursor: pointer;
+}

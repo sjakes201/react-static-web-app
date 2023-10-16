@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { personalRewards } from '../../townHelpers'
 
 // Good is string for good name, numNeeded and numHave are int for goal quantities, customGoal is boolean for whether this is one the four chosen by town leader
-function GoalCard({ good, numNeeded, numHave, index, unclaimedData, role, changeGoal, claimUnclaimedGoal }) {
+function GoalCard({ good, numNeeded, numHave, index, unclaimedData, myRoleID, changeGoal, claimUnclaimedGoal }) {
 
     let setByLeader = index < 4;
     let percentCompletion = numHave >= numNeeded ? 100 : Math.floor((numHave / numNeeded) * 100);
@@ -129,20 +129,20 @@ function GoalCard({ good, numNeeded, numHave, index, unclaimedData, role, change
             }
 
             <img
-                className={`goalCardIcon ${setByLeader ? 'customGoal' : ''} ${role === 'leader' && setByLeader ? 'clickable' : ''}`}
+                className={`goalCardIcon ${setByLeader ? 'customGoal' : ''} ${myRoleID > 2 && setByLeader ? 'clickable' : ''}`}
                 src={`${process.env.PUBLIC_URL}/assets/images/${good}.png`}
                 onClick={() => {
-                    if ((setByLeader) && role === 'leader') { setGoalSelect(true) }
+                    if ((setByLeader) && myRoleID > 2) { setGoalSelect(true) }
                 }}
                 onMouseEnter={() => {
-                    toolTip.current = setTimeout(() => { setTool(true) }, role === 'leader' ? 800 : 500)
+                    toolTip.current = setTimeout(() => { setTool(true) }, myRoleID > 2 ? 800 : 500)
                 }}
                 onMouseLeave={() => {
                     clearTimeout(toolTip.current)
                     setTool(false);
                 }}
             />
-            {(tool && setByLeader) && <p className='goalToolTip'>Goal set by leader</p>}
+            {(tool && setByLeader) && <p className='goalToolTip'>Goal set by leader or co-leader</p>}
 
             <div className='goalCardInfo'>
                 <div className='infoTopHalf'>

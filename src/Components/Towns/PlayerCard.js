@@ -2,10 +2,10 @@ import './PlayerCard.css'
 import CONSTANTS from '../../CONSTANTS';
 import React, { useState, useEffect, useRef } from 'react'
 
-function PlayerCard({ username, xp, role, contributions, myControls, managementAction, reportedTimePassed }) {
+function PlayerCard({ username, xp, roleID, contributions, myRoleID, managementAction, reportedTimePassed }) {
 
-    const [kickConfirm, setKickConfirm] = useState(false);
-    const kickTimer = useRef(null);
+    const [demoteConfirm, setDemoteConfirm] = useState(false);
+    const demoteTimer = useRef(null);
 
     const [promoteConfirm, setPromoteConfirm] = useState(false);
     const promoteTimer = useRef(null)
@@ -15,12 +15,12 @@ function PlayerCard({ username, xp, role, contributions, myControls, managementA
     const [moreButton, setMoreButton] = useState(false)
 
     useEffect(() => {
-        if (kickConfirm && kickTimer.current === null) {
-            clearTimeout(kickTimer);
-            kickTimer.current = null;
-            kickTimer.current = setTimeout(() => {
-                setKickConfirm(false)
-                kickTimer.current = null;
+        if (demoteConfirm && demoteTimer.current === null) {
+            clearTimeout(demoteTimer);
+            demoteTimer.current = null;
+            demoteTimer.current = setTimeout(() => {
+                setDemoteConfirm(false)
+                demoteTimer.current = null;
             }, 5000)
         }
         if (promoteConfirm && promoteTimer.current === null) {
@@ -31,7 +31,7 @@ function PlayerCard({ username, xp, role, contributions, myControls, managementA
                 promoteTimer.current = null;
             }, 5000)
         }
-    }, [kickConfirm, promoteConfirm])
+    }, [demoteConfirm, promoteConfirm])
 
     const calcLevel = (XP) => {
         const lvlThresholds = CONSTANTS.xpToLevel;
@@ -53,25 +53,64 @@ function PlayerCard({ username, xp, role, contributions, myControls, managementA
     }
 
     const buttonControl = (button) => {
-        if (button === 'KICK') {
-            if (kickConfirm) {
-                managementAction('KICK', username)
-                setKickConfirm(false)
+        if (button === 'KICK' || button === 'DEMOTE') {
+            if (demoteConfirm) {
+                managementAction(button, username, roleID, myRoleID)
+                setDemoteConfirm(false)
+                setMoreButton(false)
             } else {
-                setKickConfirm(true)
+                setDemoteConfirm(true)
             }
         }
-
         if (button === 'PROMOTE') {
             if (promoteConfirm) {
-                managementAction('PROMOTE', username)
+                managementAction('PROMOTE', username, roleID, myRoleID)
                 setPromoteConfirm(false)
+                setMoreButton(false)
             } else {
                 setPromoteConfirm(true)
             }
         }
     }
 
+    const playerInfoCard = () => {
+        return (
+            <div className={`playerMoreInfo ${hover ? 'onTop' : ''}`} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+                <span className='playerMoreX' onClick={() => setMoreButton(false)}>X</span>
+                <div className='individualContributions'>
+                    {
+                        Object.keys(contributions).map((good, index) => {
+                            return (
+                                <div className='contribution' key={index}>
+                                    <img src={`${process.env.PUBLIC_URL}/assets/images/${good}.png`} />
+                                    <p>{contributions[good].toLocaleString()}</p>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+                {(myRoleID > roleID) &&
+                    <div className='townAuthControls'>
+                        {((myRoleID > (roleID + 1)) || (myRoleID === 4)) && <div className='authButton promoteButton basicCenter' onClick={() => buttonControl('PROMOTE')}>{promoteConfirm ? 'CONFIRM?' : 'PROMOTE'}</div>}
+                        {myRoleID > roleID && <div className='authButton kickButton basicCenter'
+                            onClick={() => {
+                                if(roleID === 1) {
+                                    buttonControl('KICK')
+                                } else {
+                                    buttonControl('DEMOTE')
+                                }
+                            }}>
+                            {demoteConfirm ? 'CONFIRM?' : `${roleID === 1 ? 'KICK' : 'DEMOTE'}`}
+                        </div>
+                        }
+                    </div>
+                }
+            </div>
+        )
+    }
+
+    const roles = ['member', 'elder', 'co-leader', 'leader']
+    console.log(roleID)
     return (
         <div className='playerCardContainer'>
             <div className='playerLevel basicCenter'>
@@ -82,34 +121,14 @@ function PlayerCard({ username, xp, role, contributions, myControls, managementA
             <div className='playerUser'>{username}</div>
             <div className='playerGap'></div>
             <div className='playerRole'>
-                <p>{role === 'leader' ? role : 'member'}</p>
-                {(myControls === 'leader' && role !== 'leader') &&
-                    <div className='townAuthControls'>
-                        <div className='authButton promoteButton basicCenter' onClick={() => buttonControl('PROMOTE')}>{promoteConfirm ? 'CONFIRM?' : 'LEADER'}</div>
-                        <div className='authButton kickButton basicCenter' onClick={() => buttonControl('KICK')}>{kickConfirm ? 'CONFIRM?' : 'KICK'}</div>
-                    </div>
-                }
+                <p>{roles[roleID - 1]}</p>
             </div>
-            {myControls !== 'visitor' &&
+            {myRoleID &&
                 <div className='playerMoreButton' onClick={() => { if (!moreButton) setMoreButton((old) => !old) }}>
                     <div className='buttonBar'></div>
                     <div className='buttonBar'></div>
                     <div className='buttonBar'></div>
-                    {moreButton &&
-                        <div className={`playerMoreInfo ${hover ? 'onTop' : ''}`} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-                            <span className='playerMoreX' onClick={() => setMoreButton(false)}>X</span>
-                            {
-                                Object.keys(contributions).map((good, index) => {
-                                    return (
-                                        <div className='contributionGoal' key={index}>
-                                            <img src={`${process.env.PUBLIC_URL}/assets/images/${good}.png`} />
-                                            <p>{contributions[good].toLocaleString()}</p>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
-                    }
+                    {moreButton && playerInfoCard()}
                 </div>}
         </div>
     )

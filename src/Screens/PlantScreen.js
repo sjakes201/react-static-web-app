@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 import AdinPlayAd from "../AdinPlayAd";
 
-function PlantScreen({ setParts, townPerks, tiles, setTiles, itemsData, setItemsData, getUpgrades, getUser, getBal, updateBalance, getXP, updateXP, level, setLoginBox }) {
+function PlantScreen({ msgNotification, setTownChatBox, setParts, townPerks, tiles, setTiles, itemsData, setItemsData, getUpgrades, getUser, getBal, updateBalance, getXP, updateXP, level, setLoginBox }) {
 
 
     const navigate = useNavigate();
@@ -84,11 +84,11 @@ function PlantScreen({ setParts, townPerks, tiles, setTiles, itemsData, setItems
         <div style={appStyle}>
             <div className='left-column'>
                 <div className='other-screensPl'>
-                    <CompOtherScreens current={'plants'} />
+                    <CompOtherScreens msgNotification={msgNotification} setTownChatBox={setTownChatBox} current={'plants'} />
                 </div>
                 <div className='plot'>
 
-                    <div style={{ width: '160px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <div className='ad-box-style'>
                         {window.innerHeight > 655 &&
                             <div
                                 style={{ width: '160px', height: '600px' }}

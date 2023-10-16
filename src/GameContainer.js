@@ -10,6 +10,7 @@ import AccountScreen from './Screens/AccountScreen';
 import PasswordReset from './Screens/PasswordReset';
 import HowToPlay from './Screens/HowToPlay';
 import MachinesScreen from './Screens/MachinesScreen';
+import TownChat from './Components/Chat/ChatBox';
 import NotificationBox from "./Components/GUI/NotificationBox";
 import Complogin from "./Components/GUI/CompLogin";
 import GoogleAnalyticsReporter from './GoogleAnalyticsReporter';
@@ -23,18 +24,22 @@ import UPGRADES from './UPGRADES';
 
 function GameContainer() {
     const { waitForServerResponse } = useWebSocket();
+    const { addListener, removeListener } = useWebSocket();
+
 
     const { isConnected } = useWebSocket();
 
+    const [notificationBox, setNotificationBox] = useState(false)
+    const [unlockContents, setUnlockContents] = useState([])
+    const [loginBox, setLoginBox] = useState(false);
+    const [townChatBox, setTownChatBox] = useState(false)
 
     const [XP, setXP] = useState(0);
     const [Balance, setBalance] = useState(0);
     const [Username, setUsername] = useState("");
     const [upgrades, setUpgrades] = useState({});
     const [level, setLevel] = useState(0);
-    const [notificationBox, setNotificationBox] = useState(false)
-    const [unlockContents, setUnlockContents] = useState([])
-    const [loginBox, setLoginBox] = useState(false);
+
     const [capacities, setCapacities] = useState({ barnCapacity: 0, coopCapacity: 0 });
 
     const [goodTotals, setGoodTotals] = useState({});
@@ -59,6 +64,26 @@ function GameContainer() {
     const [prices, setPrices] = useState(null);
 
     const [itemsData, setItemsData] = useState({})
+
+    const [townChatMsgs, setTownChatMsgs] = useState([])
+
+    const [msgNotification, setMsgNotification] = useState(false);
+
+    const getTownMessages = async () => {
+        if (waitForServerResponse) {
+            let chatHistory = await waitForServerResponse('getTownMessages');
+            let pastMessages = chatHistory.body?.messageHistory;
+            let lastSeenMsgID = chatHistory.body?.lastSeenMessage;
+            if (pastMessages && lastSeenMsgID) {
+                if (pastMessages.some((msgObj) => msgObj.messageID > lastSeenMsgID)) {
+                    setMsgNotification(true)
+                }
+                pastMessages.sort((a, b) => b.timestamp - a.timestamp)
+                setTownChatMsgs(pastMessages)
+            }
+
+        }
+    }
 
     useEffect(() => {
         let fetchData = async () => {
@@ -141,8 +166,41 @@ function GameContainer() {
                 let data = response.body;
                 setTownPerks(data)
             }
+
+            if (waitForServerResponse) {
+                const response = await waitForServerResponse('leaderboard');
+                let data = response.body;
+                if (data.allTimeLeaderboard && data.tempLeaderboard) {
+                    const stringifiedAll = JSON.stringify(data.allTimeLeaderboard);
+                    const stringifiedTemp = JSON.stringify(data.tempLeaderboard);
+                    sessionStorage.setItem("storedTempLb", stringifiedTemp)
+                    sessionStorage.setItem("storedAllLb", stringifiedAll)
+                }
+            }
         }
         fetchData();
+        getTownMessages();
+
+        const handleNewMsg = (content, timestamp, Username, messageID) => {
+            setTownChatMsgs((old) => {
+                let newMsgs = [...old];
+                newMsgs.push({
+                    content: content,
+                    timestamp: timestamp,
+                    Username: Username,
+                    messageID: messageID
+                })
+                newMsgs.sort((a, b) => b.timestamp - a.timestamp)
+                return newMsgs;
+            })
+            if (!townChatBox) {
+                setMsgNotification(true)
+            }
+        }
+        addListener(handleNewMsg)
+        return () => {
+            removeListener(handleNewMsg)
+        }
     }, [])
 
     useEffect(() => {
@@ -163,6 +221,7 @@ function GameContainer() {
             let data = response.body;
             setTownPerks(data)
         }
+        getTownMessages();
     }
 
     const getStage = (PlantTime, CropID, hasTimeFertilizer) => {
@@ -334,25 +393,26 @@ function GameContainer() {
         );
     }
     // If connected, render the main game content
+
     return (
-        <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
+        <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
             {notificationBox && <NotificationBox close={() => setNotificationBox(false)} contents={unlockContents} />}
             {loginBox && <Complogin close={() => setLoginBox(false)} />}
+            {townChatBox && <TownChat setMsgNotification={setMsgNotification} chatType={"TOWN"} targetName={townPerks.townName} closeMethod={() => setTownChatBox(false)} chatMessages={townChatMsgs} />}
             <GoogleAnalyticsReporter />
             <Routes>
-                <Route path="/" element={<PlantScreen setParts={setParts} townPerks={townPerks} tiles={tiles} setTiles={setTiles} itemsData={itemsData} setItemsData={setItemsData} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
-                <Route path="/plants" element={<PlantScreen setParts={setParts} townPerks={townPerks} tiles={tiles} setTiles={setTiles} itemsData={itemsData} setItemsData={setItemsData} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
-                <Route path="/animals" element={<AnimalScreen townPerks={townPerks} setAnimalsInfo={setAnimalsInfo} barn={barn} coop={coop} setBarn={setBarn} setCoop={setCoop} itemsData={itemsData} setItemsData={setItemsData} capacities={capacities} upgrades={upgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
+                <Route path="/" element={<PlantScreen msgNotification={msgNotification} setTownChatBox={townPerks.townName ? setTownChatBox : null} setParts={setParts} townPerks={townPerks} tiles={tiles} setTiles={setTiles} itemsData={itemsData} setItemsData={setItemsData} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
+                <Route path="/plants" element={<PlantScreen msgNotification={msgNotification} setTownChatBox={townPerks.townName ? setTownChatBox : null} setParts={setParts} townPerks={townPerks} tiles={tiles} setTiles={setTiles} itemsData={itemsData} setItemsData={setItemsData} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
+                <Route path="/animals" element={<AnimalScreen msgNotification={msgNotification} setTownChatBox={townPerks.townName ? setTownChatBox : null} townPerks={townPerks} setAnimalsInfo={setAnimalsInfo} barn={barn} coop={coop} setBarn={setBarn} setCoop={setCoop} itemsData={itemsData} setItemsData={setItemsData} capacities={capacities} upgrades={upgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
                 <Route path="/shop" element={<ShopScreen addAnimal={addAnimal} itemsData={itemsData} setItemsData={setItemsData} animalsInfo={animalsInfo} updateAnimalsInfo={updateAnimalsInfo} deluxePermit={deluxePermit} exoticPermit={exoticPermit} updateUpgrades={updateUpgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} newXP={newXP} XP={XP} />} />
-                <Route path="/market" element={<MarketScreen itemsData={itemsData} setItemsData={setItemsData} prices={prices} setLoginBox={setLoginBox} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} newXP={newXP} XP={XP} />} />
+                <Route path="/market" element={<MarketScreen msgNotification={msgNotification} setTownChatBox={townPerks.townName ? setTownChatBox : null} itemsData={itemsData} setItemsData={setItemsData} prices={prices} setLoginBox={setLoginBox} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} newXP={newXP} XP={XP} />} />
                 <Route path="/leaderboard" element={<LeaderboardScreen Username={Username} userAlltimeTotals={{ ...goodTotals, Balance: Balance, XP: XP }} />} />
-                <Route path="/account" element={<Navigate to={`/profile/${Username.replace(/#/g, '-')}`} />} />
                 <Route path="/profile" element={<Navigate to={`/profile/${Username.replace(/#/g, '-')}`} />} />
                 <Route path="/profile/:username" element={<AccountScreen />} />
                 <Route path="/passwordReset" element={<PasswordReset />} />
                 <Route path="/howtoplay" element={<HowToPlay />} />
                 <Route path="/machines" element={<MachinesScreen artisanItems={artisanItems} setArtisanItems={setArtisanItems} getUser={getUser} getXP={getXP} updateBalance={updateBalance} getBal={getBal} itemsData={itemsData} setItemsData={setItemsData} parts={parts} machines={machines} setParts={setParts} setMachines={setMachines} />} />
-                <Route path="/towns" element={<TownsScreen updateBalance={updateBalance} updateXP={updateXP} reloadTownPerks={reloadTownPerks} playersTown={townPerks.townName} />} />
+                <Route path="/towns" element={<TownsScreen msgNotification={msgNotification} setTownChatBox={townPerks.townName ? setTownChatBox : null} updateBalance={updateBalance} updateXP={updateXP} reloadTownPerks={reloadTownPerks} playersTown={townPerks.townName} />} />
             </Routes>
         </div>
     );

@@ -2,11 +2,12 @@ import React, { useEffect, useState, useRef, useContext } from 'react'
 import '../CSS/CompOtherScreens.css'
 import { Link } from 'react-router-dom';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 // pass parameter for what screen you are at right now
 
-function CompOtherScreens({ current }) {
+function CompOtherScreens({ msgNotification, current, setTownChatBox }) {
+  const location = useLocation();
   const [otherScreens, setOtherScreens] = useState([]);
 
   const navigate = useNavigate();
@@ -54,12 +55,32 @@ function CompOtherScreens({ current }) {
   useEffect(() => {
     createButtons();
   }, [])
-
+  //setTownChatBox
   return (
     <div className='buttons-container bottom-bar'>
       {otherScreens}
-      {current !== 'shop' && <img src={`${process.env.PUBLIC_URL}/assets/images/townButton2.png`} className='townsButton' onClick={() => navigate('/towns')} />}
-      {current !== 'shop' && <img src={`${process.env.PUBLIC_URL}/assets/images/machines/deskClickable.png`} style={{ height: '100%', objectFit: 'contain', cursor: 'pointer' }} onClick={() => navigate('/machines')} />}
+      {current !== 'shop' &&
+        <div className='townsButtonContainer'>
+          <img
+            src={`${process.env.PUBLIC_URL}/assets/images/townButton2.png`}
+            className='townsButton'
+            onClick={() => navigate('/towns', { state: { from: location.pathname.substring(1, location.pathname.length) } })}
+          />
+          {setTownChatBox &&
+            <img
+              src={`${process.env.PUBLIC_URL}/assets/images/GUI/textbubble${msgNotification ? '_notify' : ''}.png`}
+              className='townChatButton'
+              onClick={() => setTownChatBox((old) => !old)}
+            />
+          }
+
+        </div>
+
+      }
+      {current !== 'shop' &&
+        <img src={`${process.env.PUBLIC_URL}/assets/images/machines/deskClickable.png`}
+          style={{ height: '100%', objectFit: 'contain', cursor: 'pointer' }}
+          onClick={() => navigate('/machines')} />}
     </div>
   )
 }

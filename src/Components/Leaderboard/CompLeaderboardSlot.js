@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import CONSTANTS from '../../CONSTANTS';
 import TweetButton from '../External/TweetButton';
+import { useNavigate } from 'react-router-dom';
 
 function CompLeaderboardSlot({ Username, item, data, userAlltimeTotals }) {
+    const navigate = useNavigate();
 
     if (item === "Balance") {
         data.first.Balance = formatMoney(data.first.Balance);
@@ -38,20 +40,35 @@ function CompLeaderboardSlot({ Username, item, data, userAlltimeTotals }) {
 
     const twitterMessageGenerator = () => {
         let message = '';
-        switch(item) {
+        switch (item) {
             case 'Balance':
-                message = `I am the ${data.you}${ordinalSuffix(data.you)} richest farmgame farmer in the world!\nI have $${userAlltimeTotals[item].toLocaleString()}.\nCheck me out on the leaderboards at https://farmgame.live/profile/${Username}`
+                message = `I am the ${data.you}${ordinalSuffix(data.you)} richest farmgame farmer in the world!\nI have $${userAlltimeTotals[item]?.toLocaleString()}.\nCheck me out on the leaderboards at https://farmgame.live/profile/${Username}`
                 break;
             case 'XP':
-                message = `I am the ${data.you}${ordinalSuffix(data.you)} best farmgame farmer in the world!\nI have ${userAlltimeTotals[item].toLocaleString()} XP.\nCheck me out on the leaderboards at https://farmgame.live/profile/${Username}`
+                message = `I am the ${data.you}${ordinalSuffix(data.you)} best farmgame farmer in the world!\nI have ${userAlltimeTotals[item]?.toLocaleString()} XP.\nCheck me out on the leaderboards at https://farmgame.live/profile/${Username}`
                 break;
             default:
                 let itemName = item === 1 ? item : CONSTANTS.InventoryDescriptionsPlural[item][0];
                 itemName = itemName.toLowerCase();
-                message = `I am the ${data.you}${ordinalSuffix(data.you)} best ${item} farmer in the world!\nI have farmed ${userAlltimeTotals[item].toLocaleString()} ${itemName}.\nCheck me out on the leaderboards at https://farmgame.live/profile/${Username}`
+                message = `I am the ${data.you}${ordinalSuffix(data.you)} best ${item} farmer in the world!\nI have farmed ${userAlltimeTotals[item]?.toLocaleString()} ${itemName}.\nCheck me out on the leaderboards at https://farmgame.live/profile/${Username}`
                 break;
         }
         return message;
+    }
+
+    const userText = (place, username, count) => {
+        const defaultPodiumStyles = { width: '2.4vw', display: 'inline-block', padding: '0 5px' }
+        const podiumStyles = [{ color: '#fec32d' }, { color: 'silver' }, { color: 'brown' }]
+        const nameLink = { cursor: 'pointer' }
+        return (
+            <p>
+                <span style={{ ...podiumStyles[place - 1], ...defaultPodiumStyles }}>
+                    {place}<sup>{ordinalSuffix(place)} </sup>
+                </span>
+
+                <span style={nameLink} onClick={() => navigate(`/profile/${username}`, { state: { from: 'leaderboard' } })}>{username === '' ? 'Guest' : username}</span>: {count?.toLocaleString()}
+            </p>
+        )
     }
 
     return data === undefined ? (<div></div>) : (
@@ -99,13 +116,12 @@ function CompLeaderboardSlot({ Username, item, data, userAlltimeTotals }) {
                         flexDirection: 'column',
                         justifyContent: 'space-evenly',
                         wordBreak: 'break-word',
-                        fontSize: '2.3vh'
-
+                        fontSize: '1vw'
                     }}>
-                    <p style={{ textAlign: 'center', textDecoration: 'underline', textTransform: 'uppercase', fontSize: "2.7vh" }}>{CONSTANTS.InventoryDescriptions[item][0]}</p>
-                    <p><span style={{ color: '#fec32d', padding: '0 5px' }}>1<sup>st</sup></span> {data.first.Username === '' ? 'Guest' : data.first.Username}: {data?.first[item]?.toLocaleString()}</p>
-                    <p><span style={{ color: 'silver', padding: '0 5px' }}>2<sup>nd</sup></span>{data.second.Username === '' ? 'Guest' : data.second.Username}: {data?.second[item]?.toLocaleString()}</p>
-                    <p><span style={{ color: 'brown', padding: '0 5px' }}>3<sup>rd</sup></span> {data.third.Username === '' ? 'Guest' : data.third.Username}: {data?.third[item]?.toLocaleString()}</p>
+                    <p style={{ textAlign: 'center', textDecoration: 'underline', textTransform: 'uppercase', fontSize: "1.3vw" }}>{CONSTANTS.InventoryDescriptions[item][0]}</p>
+                    <p>{userText(1, data.first.Username, data?.first?.[item])}</p>
+                    <p>{userText(2, data.second.Username, data?.second?.[item])}</p>
+                    <p>{userText(3, data.third.Username, data?.third?.[item])}</p>
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', color: 'gray' }}>
                         <p>
                             You: {data.you === -1 ? "" : data.you}

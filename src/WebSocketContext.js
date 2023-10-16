@@ -13,6 +13,8 @@ export function WebSocketProvider({ children }) {
 
     const [doneLoading, setDoneLoading] = useState(false)
 
+    const listenersRef = useRef([]);
+
     // We need to re-call the initial GameContainer mount functions after receiving guest auth, force a remount by changing the key
     const [auth, setAuth] = useState(1)
 
@@ -35,8 +37,11 @@ export function WebSocketProvider({ children }) {
             const parsedMessage = JSON.parse(event.data);
             if (parsedMessage.type === 'guest_auth' && parsedMessage.token) {
                 localStorage.setItem('token', parsedMessage.token);
-                console.log("triggering remount due to auth init")
                 setAuth(2)
+            } else if (parsedMessage.type === 'town_message') {
+                const msgInfo = parsedMessage.newMessageInfo;
+                console.log(msgInfo)
+                listenersRef.current.forEach(listenerFunc => listenerFunc(msgInfo.content, msgInfo.timestamp, msgInfo.username, msgInfo.messageID));
             }
         });
 
@@ -61,6 +66,11 @@ export function WebSocketProvider({ children }) {
                 return reject(new Error('WebSocket is not open'));
             }
 
+            const timer = setTimeout(() => {
+                ws.removeEventListener('message', listener);
+                reject(new Error(`Timed out ${action}`));
+            }, timeout);
+
             ws.send(JSON.stringify({ action, ...params }));
 
             const listener = (event) => {
@@ -71,20 +81,25 @@ export function WebSocketProvider({ children }) {
                     resolve(parsedData);
                 }
             };
-
             ws.addEventListener('message', listener);
-
-            const timer = setTimeout(() => {
-                ws.removeEventListener('message', listener);
-                reject(new Error('Timed out'));
-            }, timeout);
         });
     };
+
+    const addListener = (callback) => {
+        listenersRef.current = [...listenersRef.current, callback];
+    };
+    
+    const removeListener = (callback) => {
+        listenersRef.current = listenersRef.current.filter(listener => listener !== callback);
+    };
+    
 
     const contextValue = {
         ws,
         isConnected,
-        waitForServerResponse
+        waitForServerResponse,
+        addListener,
+        removeListener
     };
 
     return (

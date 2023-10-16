@@ -12,7 +12,7 @@ import { useWebSocket } from "../WebSocketContext";
 
 import AdinPlayAd from "../AdinPlayAd";
 
-function MarketScreen({ itemsData, setItemsData, prices, getUser, getBal, updateBalance, getXP, setLoginBox }) {
+function MarketScreen({ msgNotification, setTownChatBox, itemsData, setItemsData, prices, getUser, getBal, updateBalance, getXP, setLoginBox }) {
     const { waitForServerResponse } = useWebSocket();
 
     const navigate = useNavigate();
@@ -107,10 +107,10 @@ function MarketScreen({ itemsData, setItemsData, prices, getUser, getBal, update
         <div className='market-container'>
 
             <div className='market-left'>
-                <div id="market-other-screens"><CompOtherScreen current={'market'} /></div>
+                <div id="market-other-screens"><CompOtherScreen msgNotification={msgNotification} setTownChatBox={setTownChatBox} current={'market'} /></div>
                 <div className='mainMarketContainer'>
 
-                    <div style={{ width: '160px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <div className='ad-box-style'>
                         {window.innerHeight > 655 &&
                             <div
                                 style={{ width: '160px', height: '600px' }}
@@ -131,8 +131,6 @@ function MarketScreen({ itemsData, setItemsData, prices, getUser, getBal, update
                 <div className='market-profile'><CompProfile setLoginBox={setLoginBox} type="wide" getBal={getBal} getUser={getUser} getXP={getXP} /></div>
                 <div className='market-select-info'><CompMarketSelection items={items} onSell={onSell} name={selected.name} newPrice={selected.newPrice} oldPrice={selected.oldPrice} imgURL={selected.imgURL} /></div>
                 <div className='market-inventory'><CompInventory items={items} displayOnly={true} setMarketSelected={setMarketSelected} /></div>
-                {/* <div className='market-other'>
-                </div> */}
             </div>
 
 

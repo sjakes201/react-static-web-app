@@ -1,6 +1,30 @@
-import { Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function HowToPlay() {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const backArrow = () => {
+        const backFunc = () => {
+            if(location?.state?.from) {
+                return () => navigate(`/${location.state.from}`)
+            } else {
+                return () => navigate('/plants')
+            }
+        }
+
+        return (
+            <div style={{ position: 'absolute', width: '10%', top: '2%', left: '2%' }}>
+                <img
+                    src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_light.png`}
+                    alt='back-arrow'
+                    onClick={() => window.history.back()}
+                    style={{ width: '70%', cursor: 'pointer' }}
+                />
+
+            </div>
+        )
+    }
 
     return (
         <div style={{
@@ -13,15 +37,7 @@ function HowToPlay() {
             gap: '2%',
             position: 'relative'
         }}>
-            <div style={{ position: 'absolute', width: '10%', top: '2%', left: '2%' }}>
-                <img
-                    src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_light.png`}
-                    alt='back-arrow'
-                    onClick={() => window.history.back()}
-                    style={{ width: '70%', cursor: 'pointer' }}
-                />
-
-            </div>
+            {backArrow()}
             <div
                 style={{
                     display: 'grid',

@@ -6,8 +6,11 @@ import AdinPlayAd from "../AdinPlayAd";
 
 import "./CSS/TownsScreen.css"
 import React, { useState, useEffect, useRef } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom';
 
-function TownsScreen({ playersTown, reloadTownPerks, updateXP, updateBalance }) {
+function TownsScreen({ msgNotification, setTownChatBox, playersTown, reloadTownPerks, updateXP, updateBalance }) {
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const [town, setTown] = useState("")
     const [screen, setScreen] = useState("TownSearch")
@@ -60,6 +63,26 @@ function TownsScreen({ playersTown, reloadTownPerks, updateXP, updateBalance }) 
         return (<div className='townNavTip'>{text}</div>)
     }
 
+    const backArrow = () => {
+        const backFunc = () => {
+            if (location?.state?.from) {
+                return () => navigate(`/${location.state.from}`)
+            } else {
+                return () => navigate('/plants')
+            }
+        }
+
+        return (
+            <img
+                src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_light.png`}
+                alt='back-arrow'
+                onClick={backFunc()}
+                className='townsScreenBackArrow'
+                draggable={false}
+            />
+        )
+    }
+
     useEffect(() => {
         if (playersTown) {
             setScreen("TownInterface")
@@ -69,14 +92,7 @@ function TownsScreen({ playersTown, reloadTownPerks, updateXP, updateBalance }) 
 
     return (
         <div className='townsScreenContainer'>
-            <img
-                src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_light.png`}
-                alt='back-arrow'
-                onClick={() => window.history.back()}
-                className='townsScreenBackArrow'
-                draggable={false}
-            />
-
+            {backArrow()}
             <div style={{ width: '160px', height: '600px', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'absolute', left: '0', bottom: '0', zIndex: '20000' }}>
                 {window.innerHeight > 650 &&
                     <div
@@ -130,7 +146,7 @@ function TownsScreen({ playersTown, reloadTownPerks, updateXP, updateBalance }) 
 
             </div>
             <div className='townsScreenCenter basicCenter'>
-                {(screen === 'TownInterface' && town !== "") && <TownInterface updateBalance={updateBalance} updateXP={updateXP} reloadTownPerks={reloadTownPerks} townName={town} setScreen={setScreen} setTown={setTown} />}
+                {(screen === 'TownInterface' && town !== "") && <TownInterface msgNotification={msgNotification} setTownChatBox={setTownChatBox} updateBalance={updateBalance} updateXP={updateXP} reloadTownPerks={reloadTownPerks} townName={town} setScreen={setScreen} setTown={setTown} />}
                 {screen === 'TownSearch' && <TownSearch updateBalance={updateBalance} updateXP={updateXP} reloadTownPerks={reloadTownPerks} playerInTown={town} setScreen={setScreen} setTown={setTown} />}
                 {screen === 'TownLeaderboard' && <TownsLeaderboard updateBalance={updateBalance} updateXP={updateXP} reloadTownPerks={reloadTownPerks} />}
             </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './CSS/AccountScreen.css'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useWebSocket } from "../WebSocketContext";
 import { useParams } from 'react-router-dom';
 
@@ -11,6 +11,8 @@ const DISCORD_REDIRECT = 'https://discord.com/api/oauth2/authorize?client_id=114
 
 function AccountScreen() {
     let { username } = useParams();
+    const location = useLocation();
+
     // # is for fragments in URL so we need to change # to - just for url username param. - and # are not allowed in chosen usernames
     username = username.replace(/-/g, '#')
 
@@ -20,8 +22,6 @@ function AccountScreen() {
 
     const [hasCode, setHasCode] = useState(false)
     const [profileData, setProfileData] = useState({})
-
-    console.log(profileData)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -58,20 +58,20 @@ function AccountScreen() {
         }
         fetchData();
         checkDiscordAuthCode();
-    }, [])
+    }, [username])
 
     const [activePoke, setActivePoke] = useState(false)
 
-    const handlePoke = async() => {
-        if(profileData.lastPoke < Date.now() - 60 * 1000) {
+    const handlePoke = async () => {
+        if (profileData.lastPoke < Date.now() - 60 * 1000) {
             setActivePoke(true);
             setTimeout(() => {
                 setActivePoke(false)
             }, 1200)
-            if(waitForServerResponse) {
-                let pokeRes = await waitForServerResponse('pokeUser', {targetUsername: username})
+            if (waitForServerResponse) {
+                let pokeRes = await waitForServerResponse('pokeUser', { targetUsername: username })
                 setProfileData((old) => {
-                    let newData = {...old}
+                    let newData = { ...old }
                     newData.receivedPokes += 1;
                     newData.lastPoke = Date.now();
                     return newData;
@@ -80,17 +80,31 @@ function AccountScreen() {
         }
     }
 
+    const backArrow = () => {
+        const backFunc = () => {
+            if(location?.state?.from) {
+                return () => navigate(`/${location.state.from}`)
+            } else {
+                return () => navigate('/plants')
+            }
+        }
+
+        return (
+            <div className='back-arrow-acc'>
+                <img
+                    src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_dark.png`}
+                    alt='profile/stats'
+                    onClick={backFunc()}
+
+                />
+            </div>
+        )
+    }
+
     if (Object.keys(profileData).length === 0) {
         return (
             <div className='acc-screen'>
-                <div className='back-arrow-acc'>
-                    <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_dark.png`}
-                        alt='profile/stats'
-                        onClick={() => navigate('/plants')}
-
-                    />
-                </div>
+                {backArrow()}
                 <div className='acc-container'>
                     <div className='loadingIconAnimation centerSelf'></div>
                 </div>
@@ -100,14 +114,7 @@ function AccountScreen() {
     if (!profileData.username) {
         return (
             <div className='acc-screen'>
-                <div className='back-arrow-acc'>
-                    <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_dark.png`}
-                        alt='profile/stats'
-                        onClick={() => navigate('/plants')}
-
-                    />
-                </div>
+                {backArrow()}
                 <div className='acc-container'>
                     <div className='centerSelf'><p>No profile for <i>'{username}'</i> found.</p></div>
                 </div>
@@ -116,13 +123,7 @@ function AccountScreen() {
 
     return (
         <div className='acc-screen'>
-            <div className='back-arrow-acc'>
-                <img
-                    src={`${process.env.PUBLIC_URL}/assets/images/back_arrow_dark.png`}
-                    alt='profile/stats'
-                    onClick={() => navigate('/plants')}
-                />
-            </div>
+            {backArrow()}
             {
                 <div className='acc-container'>
                     <div className='acc-row' id='acc-profile'>
@@ -134,14 +135,14 @@ function AccountScreen() {
                         </div>
 
                         <div className='acc-poke-info'>
-                            <img 
-                            src={activePoke ? `${process.env.PUBLIC_URL}/assets/images/duck_walking_right.gif` : `${process.env.PUBLIC_URL}/assets/images/duck_standing_right.png`} 
-                            className={`${profileData.lastPoke < Date.now() - 60 * 1000 ? 'pokable' : 'poked'}`}
-                            onClick={() => handlePoke()}
+                            <img
+                                src={activePoke ? `${process.env.PUBLIC_URL}/assets/images/duck_walking_right.gif` : `${process.env.PUBLIC_URL}/assets/images/duck_standing_right.png`}
+                                className={`${profileData.lastPoke < Date.now() - 60 * 1000 ? 'pokable' : 'poked'}`}
+                                onClick={() => handlePoke()}
                             />
                             <p>x </p>
                             <p>{profileData?.receivedPokes?.toLocaleString()}</p>
-                            
+
                         </div>
 
                         {profileData.isMe && (!hasCode ? (<a href={DISCORD_REDIRECT}>
