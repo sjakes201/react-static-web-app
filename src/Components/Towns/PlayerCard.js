@@ -1,8 +1,11 @@
 import './PlayerCard.css'
 import CONSTANTS from '../../CONSTANTS';
 import React, { useState, useEffect, useRef } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 function PlayerCard({ username, xp, roleID, contributions, myRoleID, managementAction, reportedTimePassed }) {
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const [demoteConfirm, setDemoteConfirm] = useState(false);
     const demoteTimer = useRef(null);
@@ -94,7 +97,7 @@ function PlayerCard({ username, xp, roleID, contributions, myRoleID, managementA
                         {((myRoleID > (roleID + 1)) || (myRoleID === 4)) && <div className='authButton promoteButton basicCenter' onClick={() => buttonControl('PROMOTE')}>{promoteConfirm ? 'CONFIRM?' : 'PROMOTE'}</div>}
                         {myRoleID > roleID && <div className='authButton kickButton basicCenter'
                             onClick={() => {
-                                if(roleID === 1) {
+                                if (roleID === 1) {
                                     buttonControl('KICK')
                                 } else {
                                     buttonControl('DEMOTE')
@@ -118,7 +121,23 @@ function PlayerCard({ username, xp, roleID, contributions, myRoleID, managementA
                     <p className='levelNum'>{calcLevel(xp)}</p>
                 </div>
             </div>
-            <div className='playerUser'>{username}</div>
+            <div
+                className='playerUser'
+            >
+                {username.includes("#") ? (
+                    username
+                ) : (<span
+                    onClick={() =>
+                        navigate(`/profile/${username}`, {
+                            state: {
+                                from:
+                                    location.pathname.substring(1, location.pathname.length)
+                            }
+                        })} >
+                    {username}
+                </span>)
+                }
+            </div>
             <div className='playerGap'></div>
             <div className='playerRole'>
                 <p>{roles[roleID - 1]}</p>

@@ -13,7 +13,7 @@
     width: calc(100% - 12px);
     height: calc(100% - 12px);
     background-color: var(--menu_lightest);
-    
+
     box-sizing: border-box;
     margin: 6px;
     box-shadow:
@@ -35,6 +35,11 @@
     justify-content: flex-start;
     align-items: center;
     padding-left: 3%;
+}
+
+.playerUser>span {
+
+    cursor: pointer;
 }
 
 .playerGap {
@@ -138,7 +143,7 @@
 }
 
 
-.contribution > img {
+.contribution>img {
     object-fit: contain;
     max-height: 75%;
     max-width: 100%;

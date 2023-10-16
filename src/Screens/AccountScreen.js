@@ -27,6 +27,7 @@ function AccountScreen() {
         const fetchData = async () => {
             if (waitForServerResponse) {
                 const response = await waitForServerResponse('getProfileData', { targetUser: username });
+                console.log(response)
                 setProfileData(response.body)
             }
         }
