@@ -167,16 +167,16 @@ function GameContainer() {
                 setTownPerks(data)
             }
 
-            if (waitForServerResponse) {
-                const response = await waitForServerResponse('leaderboard');
-                let data = response.body;
-                if (data.allTimeLeaderboard && data.tempLeaderboard) {
-                    const stringifiedAll = JSON.stringify(data.allTimeLeaderboard);
-                    const stringifiedTemp = JSON.stringify(data.tempLeaderboard);
-                    sessionStorage.setItem("storedTempLb", stringifiedTemp)
-                    sessionStorage.setItem("storedAllLb", stringifiedAll)
-                }
-            }
+            // if (waitForServerResponse) {
+            //     const response = await waitForServerResponse('leaderboard');
+            //     let data = response.body;
+            //     if (data.allTimeLeaderboard && data.tempLeaderboard) {
+            //         const stringifiedAll = JSON.stringify(data.allTimeLeaderboard);
+            //         const stringifiedTemp = JSON.stringify(data.tempLeaderboard);
+            //         sessionStorage.setItem("storedTempLb", stringifiedTemp)
+            //         sessionStorage.setItem("storedAllLb", stringifiedAll)
+            //     }
+            // }
         }
         fetchData();
         getTownMessages();

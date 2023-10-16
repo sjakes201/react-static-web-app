@@ -17,8 +17,10 @@ function LeaderboardScreen({ Username, userAlltimeTotals }) {
 
     //ALLTIME, WEEKLY
     const [type, setType] = useState("WEEKLY")
-    const [leadersAll, setLeadersAll] = useState(JSON.parse(sessionStorage.getItem("storedAllLb")) || {});
-    const [leadersWeekly, setLeadersTemp] = useState(JSON.parse(sessionStorage.getItem("storedTempLb")) || {});
+    // const [leadersAll, setLeadersAll] = useState(JSON.parse(sessionStorage.getItem("storedAllLb")) || {});
+    // const [leadersWeekly, setLeadersTemp] = useState(JSON.parse(sessionStorage.getItem("storedTempLb")) || {});
+    const [leadersAll, setLeadersAll] = useState({});
+    const [leadersWeekly, setLeadersTemp] = useState({});
 
 
     useEffect(() => {
@@ -30,10 +32,11 @@ function LeaderboardScreen({ Username, userAlltimeTotals }) {
                     if (data.allTimeLeaderboard && data.tempLeaderboard) {
                         setLeadersAll(data.allTimeLeaderboard);
                         setLeadersTemp(data.tempLeaderboard);
-                        const stringifiedAll = JSON.stringify(data.allTimeLeaderboard);
-                        const stringifiedTemp = JSON.stringify(data.tempLeaderboard);
-                        sessionStorage.setItem("storedTempLb", stringifiedTemp)
-                        sessionStorage.setItem("storedAllLb", stringifiedAll)
+                        console.log(data.tempLeaderboard)
+                        // const stringifiedAll = JSON.stringify(data.allTimeLeaderboard);
+                        // const stringifiedTemp = JSON.stringify(data.tempLeaderboard);
+                        // sessionStorage.setItem("storedTempLb", stringifiedTemp)
+                        // sessionStorage.setItem("storedAllLb", stringifiedAll)
                     }
                 }
             } catch (error) {
