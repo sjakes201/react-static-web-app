@@ -34,7 +34,7 @@ root.render(
                 width: '5vw'
             }}
             draggable={false} />
-        <p>(10:20PM EST) Downtime for towns update! Estimated: 20 minutes</p>
+        <p>(10:50PM EST) Downtime for towns update! Estimated: 20 minutes</p>
     </div>
 
 );
