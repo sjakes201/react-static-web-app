@@ -74,7 +74,7 @@ function GameContainer() {
             let chatHistory = await waitForServerResponse('getTownMessages');
             let pastMessages = chatHistory.body?.messageHistory;
             let lastSeenMsgID = chatHistory.body?.lastSeenMessage;
-            if (pastMessages && lastSeenMsgID) {
+            if (Array.isArray(pastMessages)) {
                 if (pastMessages.some((msgObj) => msgObj.messageID > lastSeenMsgID)) {
                     setMsgNotification(true)
                 }
