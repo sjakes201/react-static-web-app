@@ -68,7 +68,7 @@ function CompLeaderboardSlot({ Username, item, data, userAlltimeTotals }) {
 
                 <span style={username ? nameLink : {}} onClick={() => {
                     if (username) {
-                        navigate(`/profile/${username === ''}`, { state: { from: 'leaderboard' } })
+                        navigate(`/profile/${username}`, { state: { from: 'leaderboard' } })
                     }
                 }}>{username === '' ? 'Guest' : username}</span>: {count?.toLocaleString()}
             </p>
