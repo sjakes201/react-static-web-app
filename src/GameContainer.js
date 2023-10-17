@@ -69,6 +69,8 @@ function GameContainer() {
 
     const [msgNotification, setMsgNotification] = useState(false);
 
+    const [leaderboardData, setLeaderboardData] = useState({})
+
     const getTownMessages = async () => {
         if (waitForServerResponse) {
             let chatHistory = await waitForServerResponse('getTownMessages');
@@ -82,6 +84,19 @@ function GameContainer() {
                 setTownChatMsgs(pastMessages)
             }
 
+        }
+    }
+
+    const refreshLeaderboard = async () => {
+        if (waitForServerResponse) { // Ensure `waitForServerResponse` is defined
+            const response = await waitForServerResponse('leaderboard');
+            let data = response.body;
+            if (data.allTimeLeaderboard && data.tempLeaderboard) {
+                setLeaderboardData({
+                    all: data.allTimeLeaderboard,
+                    temp: data.tempLeaderboard
+                })
+            }
         }
     }
 
@@ -166,20 +181,10 @@ function GameContainer() {
                 let data = response.body;
                 setTownPerks(data)
             }
-
-            // if (waitForServerResponse) {
-            //     const response = await waitForServerResponse('leaderboard');
-            //     let data = response.body;
-            //     if (data.allTimeLeaderboard && data.tempLeaderboard) {
-            //         const stringifiedAll = JSON.stringify(data.allTimeLeaderboard);
-            //         const stringifiedTemp = JSON.stringify(data.tempLeaderboard);
-            //         sessionStorage.setItem("storedTempLb", stringifiedTemp)
-            //         sessionStorage.setItem("storedAllLb", stringifiedAll)
-            //     }
-            // }
         }
         fetchData();
         getTownMessages();
+        refreshLeaderboard();
 
         const handleNewMsg = (content, timestamp, Username, messageID) => {
             setTownChatMsgs((old) => {
@@ -406,7 +411,7 @@ function GameContainer() {
                 <Route path="/animals" element={<AnimalScreen msgNotification={msgNotification} setTownChatBox={townPerks.townName ? setTownChatBox : null} townPerks={townPerks} setAnimalsInfo={setAnimalsInfo} barn={barn} coop={coop} setBarn={setBarn} setCoop={setCoop} itemsData={itemsData} setItemsData={setItemsData} capacities={capacities} upgrades={upgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} updateXP={updateXP} newXP={newXP} XP={XP} />} />
                 <Route path="/shop" element={<ShopScreen addAnimal={addAnimal} itemsData={itemsData} setItemsData={setItemsData} animalsInfo={animalsInfo} updateAnimalsInfo={updateAnimalsInfo} deluxePermit={deluxePermit} exoticPermit={exoticPermit} updateUpgrades={updateUpgrades} setLoginBox={setLoginBox} level={level} getUpgrades={getUpgrades} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} newXP={newXP} XP={XP} />} />
                 <Route path="/market" element={<MarketScreen msgNotification={msgNotification} setTownChatBox={townPerks.townName ? setTownChatBox : null} itemsData={itemsData} setItemsData={setItemsData} prices={prices} setLoginBox={setLoginBox} getUser={getUser} getBal={getBal} updateBalance={updateBalance} getXP={getXP} newXP={newXP} XP={XP} />} />
-                <Route path="/leaderboard" element={<LeaderboardScreen Username={Username} userAlltimeTotals={{ ...goodTotals, Balance: Balance, XP: XP }} />} />
+                <Route path="/leaderboard" element={<LeaderboardScreen refreshLeaderboard={refreshLeaderboard} leaderboardData={leaderboardData} Username={Username} userAlltimeTotals={{ ...goodTotals, Balance: Balance, XP: XP }} />} />
                 <Route path="/profile" element={<Navigate to={`/profile/${Username.replace(/#/g, '-')}`} />} />
                 <Route path="/profile/:username" element={<AccountScreen />} />
                 <Route path="/passwordReset" element={<PasswordReset />} />
