@@ -10,6 +10,7 @@ function DiscordAuthReturn() {
         let url = new URL(window.location.href);
         let code = url.searchParams.get("code");
         if (code) {
+            console.log(code)
             // Send the code to your backend or handle as necessary
             let attempts = 0;
             const sendCode = async () => {
@@ -46,7 +47,7 @@ function DiscordAuthReturn() {
         width: "1.4vw",
         margin: "1vw -.8vw 0 1.2vw"
     }
-    
+
     return (
         <div
             style={{
