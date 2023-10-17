@@ -13,7 +13,7 @@ import MachinesScreen from "./Screens/MachinesScreen";
 import TownChat from "./Components/Chat/ChatBox";
 import NotificationBox from "./Components/GUI/NotificationBox";
 import Complogin from "./Components/GUI/CompLogin";
-import AccountRedirect from "./Components/External/AccountRedirect";
+import DiscordAuthReturn from "./Components/External/DiscordAuthReturn";
 import GoogleAnalyticsReporter from "./GoogleAnalyticsReporter";
 
 import { useWebSocket } from "./WebSocketContext";
@@ -568,9 +568,8 @@ function GameContainer() {
           path="/profile"
           element={<Navigate to={`/profile/${Username.replace(/#/g, "-")}`} />}
         />
-        <Route path="/account" element={<AccountRedirect username={Username.replace(/#/g, "-")} />} />
-        <Route path="/account/:username" element={<AccountScreen />} />
         <Route path="/profile/:username" element={<AccountScreen />} />
+        <Route path="/discordAuth" element={<DiscordAuthReturn />} />
         <Route path="/passwordReset" element={<PasswordReset />} />
         <Route path="/howtoplay" element={<HowToPlay />} />
         <Route

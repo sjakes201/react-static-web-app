@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import CONSTANTS from "../CONSTANTS";
 
 const DISCORD_REDIRECT =
-  "https://discord.com/api/oauth2/authorize?client_id=1143367795682320434&redirect_uri=https%3A%2F%2Ffarmgame.live%2Faccount&response_type=code&scope=identify";
+  "https://discord.com/api/oauth2/authorize?client_id=1143367795682320434&redirect_uri=https%3A%2F%2Ffarmgame.live%2FdiscordAuth&response_type=code&scope=identify"
 
 function AccountScreen() {
   let { username } = useParams();
@@ -19,7 +19,6 @@ function AccountScreen() {
   const { waitForServerResponse } = useWebSocket();
   const navigate = useNavigate();
 
-  const [hasCode, setHasCode] = useState(false);
   const [profileData, setProfileData] = useState({});
 
   useEffect(() => {
@@ -31,35 +30,9 @@ function AccountScreen() {
         setProfileData(response.body);
       }
     };
-    const checkDiscordAuthCode = async () => {
-      let url = new URL(window.location.href);
-      let code = url.searchParams.get("code");
-      if (code) {
-        setHasCode(true);
-        // Send the code to your backend or handle as necessary
-        let attempts = 0;
-        const sendCode = async () => {
-          if (waitForServerResponse) {
-            const response = await waitForServerResponse("linkDiscordAcc", {
-              code: code,
-            });
-            code = null;
-          } else if (attempts < 10) {
-            attempts++;
-            setTimeout(() => {
-              sendCode();
-            }, 500);
-          }
-        };
-        sendCode();
-      } else {
-        console.error("No code found in URL");
-      }
-    };
     fetchData();
-    checkDiscordAuthCode();
   }, [username]);
-
+  
   const [activePoke, setActivePoke] = useState(false);
 
   const handlePoke = async () => {
@@ -152,11 +125,10 @@ function AccountScreen() {
                     ? `${process.env.PUBLIC_URL}/assets/images/duck_walking_right.gif`
                     : `${process.env.PUBLIC_URL}/assets/images/duck_standing_right.png`
                 }
-                className={`${
-                  profileData.lastPoke < Date.now() - 60 * 1000
-                    ? "pokable"
-                    : "poked"
-                }`}
+                className={`${profileData.lastPoke < Date.now() - 60 * 1000
+                  ? "pokable"
+                  : "poked"
+                  }`}
                 onClick={() => handlePoke()}
               />
               <p>x </p>
@@ -164,12 +136,11 @@ function AccountScreen() {
             </div>
 
             {profileData.isMe &&
-              (!hasCode ? (
+              (!localStorage.getItem("discordLinked") ? (
                 <a href={DISCORD_REDIRECT}>
                   <div
-                    className={`discordAuthBox ${
-                      hasCode ? "syncedDiscord" : ""
-                    }`}
+                    className={`discordAuthBox ${localStorage.getItem("discordLinked") ? "syncedDiscord" : ""
+                      }`}
                     onClick={() => (window.location.href = DISCORD_REDIRECT)}
                   >
                     <img
@@ -181,7 +152,7 @@ function AccountScreen() {
                 </a>
               ) : (
                 <div
-                  className={`discordAuthBox ${hasCode ? "syncedDiscord" : ""}`}
+                  className={`discordAuthBox ${localStorage.getItem("discordLinked") ? "syncedDiscord" : ""}`}
                 >
                   <img
                     src={`${process.env.PUBLIC_URL}/assets/images/discord.png`}
