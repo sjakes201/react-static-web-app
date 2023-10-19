@@ -61,24 +61,24 @@ function ChatBox({
 
   const msgBubble = (text, userWhoSent) => {
     return (
-      <div className="msgBubble">
-        <span
-          onClick={() =>
-            navigate(`/profile/${userWhoSent}`, {
-              state: {
-                from: location.pathname
-                  .substring(1, location.pathname.length)
-                  .includes("profile")
-                  ? "plants"
-                  : location.pathname.substring(1, location.pathname.length),
-              },
-            })
-          }
-          className="fromUser"
-        >
-          {userWhoSent}:
-        </span>
-        <span className="messageText">{text}</span>
+      <div className='msgBubble'>
+          <span
+            onClick={() =>
+              navigate(`/profile/${userWhoSent}`, {
+                state: {
+                  from: location.pathname
+                    .substring(1, location.pathname.length)
+                    .includes("profile")
+                    ? "plants"
+                    : location.pathname.substring(1, location.pathname.length),
+                },
+              })
+            }
+            className="fromUser"
+          >
+            {userWhoSent}:
+          </span>
+          <span className='msgContent'>{text}</span>
       </div>
     );
   };

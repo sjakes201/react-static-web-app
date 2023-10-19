@@ -43,6 +43,8 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+
+    font-size: 1vw;
 }
 
 #chatx {
@@ -55,7 +57,7 @@
 
 .messageBox {
     height: 82%;
-    padding: 3% 5%;
+    padding: 3% 3%;
     font-size: .9vw;
     overflow-y: auto;
     gap: 2%;
@@ -64,31 +66,24 @@
     flex-direction: column-reverse;
 }
 
-
 .msgBubble {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    width: 100%;
+    line-height: 3vh;
+    margin: .25vh 0;
 }
 
 .fromUser {
     border: 1px solid rgb(185, 185, 185);
     border-radius: 4px;
-    padding: 3px 3px 3px 5px;
+    padding: 2px 2px 2px 4px;
     margin-right: 5px;
     flex-shrink: 0;
     white-space: nowrap;
     cursor: pointer;
 }
 
-.messageText {
-    margin-top: 4px;
-    flex-grow: 1;
-    word-wrap: break-word;
-    white-space: pre-wrap;
+.msgContent {
+    color: rgb(47, 47, 47);
 }
-
 
 .newMessageBox {
     border-top: 1px solid black;

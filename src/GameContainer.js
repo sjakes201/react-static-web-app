@@ -88,9 +88,12 @@ function GameContainer() {
     }
   };
 
+  useEffect(() => {
+    console.log(leaderboardData)
+  }, [leaderboardData])
+
   const refreshLeaderboard = async () => {
     if (waitForServerResponse) {
-      // Ensure `waitForServerResponse` is defined
       const response = await waitForServerResponse("leaderboard");
       let data = response.body;
       if (data.allTimeLeaderboard && data.tempLeaderboard) {
@@ -297,6 +300,9 @@ function GameContainer() {
   };
 
   const updateBalance = (amount) => {
+    if(isNaN(amount)) {
+      return;
+    }
     setBalance((oldBal) => {
       const newBal = oldBal + amount;
       return newBal;

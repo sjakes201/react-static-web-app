@@ -19,9 +19,7 @@ function CompLeaderboard({
       return (
         <div
           style={{
-            paddingTop: "2%",
-            paddingBottom: "2%",
-            paddingLeft: "1%",
+            padding: "1vh"
           }}
         >
           <div
@@ -80,10 +78,10 @@ function CompLeaderboard({
             style={{
               width: "100%",
               display: "grid",
-              gridTemplateColumns: "49% 49%",
-              rowGap: ".4%",
-              columnGap: "1%",
-              paddingBottom: "5%",
+              gridTemplateColumns: "1fr 1fr",
+              rowGap: '1vh',
+              columnGap: '.5vw',
+
             }}
           >
             {Object.keys(leadersWeekly).map((key) => {
@@ -116,21 +114,20 @@ function CompLeaderboard({
       return (
         <div
           style={{
-            paddingTop: "2%",
-            paddingBottom: "2%",
-            paddingLeft: "1%",
+            padding: "1vh"
           }}
         >
           <div
             style={{
               width: "100%",
               display: "grid",
-              gridTemplateColumns: "49% 49%",
-              rowGap: ".4%",
-              columnGap: "1%",
+              gridTemplateColumns: "1fr 1fr",
+              rowGap: '1vh',
+              columnGap: '.5vw',
+
             }}
           >
-            <div style={{ width: "100%" }}>
+            <div style={{ width: "100%", height: "20vh" }}>
               <CompLeaderboardSlot
                 Username={Username}
                 userAlltimeTotals={userAlltimeTotals}
@@ -139,7 +136,7 @@ function CompLeaderboard({
                 data={leadersAll.Balance}
               />
             </div>
-            <div style={{ width: "100%" }}>
+            <div style={{ width: "100%", height: "20vh" }}>
               <CompLeaderboardSlot
                 Username={Username}
                 userAlltimeTotals={userAlltimeTotals}
