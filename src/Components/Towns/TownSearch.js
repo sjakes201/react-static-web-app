@@ -22,6 +22,7 @@ function TownSearch({
   const [noResults, setNoResults] = useState(false);
 
   const [createTown, setCreateTown] = useState(false);
+  const [log, setLog] = useState("")
   const [townName, setTownName] = useState("");
 
   const fetchTowns = async () => {
@@ -49,16 +50,22 @@ function TownSearch({
   }, []);
 
   const submitCreateTown = async () => {
+    setLog("")
     if (waitForServerResponse) {
       let result = await waitForServerResponse("createTown", {
         townName: townName,
       });
-      console.log(result);
       if (result.body.message === "SUCCESS") {
         setCreateTown(false);
         setTown(townName);
         setScreen("TownInterface");
         reloadTownPerks();
+      } else {
+        if(result.body.message === "Unique constraint violation. The provided townName is not unique or the leader already owns a town.") {
+          setLog("Town name taken!")
+        } else {
+          setLog("Server error")
+        }
       }
     }
   };
@@ -107,29 +114,34 @@ function TownSearch({
   const createTownGUI = () => {
     return (
       <div className="createTown">
+
         <div className="createGUI">
-          <input
-            className="townNameBox"
-            value={townName}
-            onChange={(e) => {
-              const isValid = /^[A-Za-z0-9._]{0,32}$/.test(e.target.value);
-              if (isValid) {
-                setTownName(e.target.value);
-              }
-            }}
-          />
-          <div
-            className={`townCreateButton ${
-              /^[A-Za-z0-9._]{4,32}$/.test(townName) ? "validButton" : ""
-            }`}
-            onClick={() => {
-              submitCreateTown();
-            }}
-          >
-            Create
+          <div className='createInputs'>
+            <input
+              className="townNameBox"
+              value={townName}
+              onChange={(e) => {
+                const isValid = /^[A-Za-z0-9._]{0,32}$/.test(e.target.value);
+                if (isValid) {
+                  setTownName(e.target.value);
+                }
+              }}
+            />
+            <div
+              className={`townCreateButton ${/^[A-Za-z0-9._]{4,32}$/.test(townName) ? "validButton" : ""
+                }`}
+              onClick={() => {
+                submitCreateTown();
+              }}
+            >
+              Create
+            </div>
           </div>
           <p onClick={() => setCreateTown(false)}>X</p>
+          <div className='townCreateLog'>{log}</div>
         </div>
+
+
       </div>
     );
   };
@@ -175,9 +187,8 @@ function TownSearch({
           onClick={fetchTowns}
         />
         <div
-          className={`${
-            !playerInTown ? "createTownButton" : "disabledCreateButton"
-          }`}
+          className={`${!playerInTown ? "createTownButton" : "disabledCreateButton"
+            }`}
           onClick={() => {
             if (!playerInTown) setCreateTown(true);
           }}

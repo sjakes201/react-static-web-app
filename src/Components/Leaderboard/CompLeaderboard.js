@@ -85,7 +85,7 @@ function CompLeaderboard({
             }}
           >
             {Object.keys(leadersWeekly).map((key) => {
-              if (key === "Balance") return null;
+              if (key === "Balance" || key === "XP") return null;
               return (
                 <div
                   key={key}

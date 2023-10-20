@@ -213,24 +213,36 @@
     padding: 2% 5% 2% 4%;
     z-index: 51;
     background-color: var(--menu_lightest);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+
+
     box-shadow:
         0 0 0 2px var(--black),
         0 0 0 4px var(--border_orange),
         0 0 0 6px var(--border_shadow_orange),
-        0 0 0 8px var(--black);    
+        0 0 0 8px var(--black);
 }
 
-.createGUI > p {
+.createInputs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.createGUI>p {
     position: absolute;
     top: 5%;
     right: 2.5%;
     font-size: .9vw;
     opacity: 0.7;
     cursor: pointer;
+}
+
+.townCreateLog {
+    text-align: center;
+    color: rgb(247, 134, 134);
+    text-wrap: wrap;
+    font-size: 1vw;
 }
 
 .townNameBox {
