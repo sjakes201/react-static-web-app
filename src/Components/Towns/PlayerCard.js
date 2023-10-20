@@ -44,6 +44,8 @@ function PlayerCard({
     }
   }, [demoteConfirm, promoteConfirm]);
 
+  const roles = ["member", "elder", "co-leader", "leader"];
+
   const calcLevel = (XP) => {
     const lvlThresholds = CONSTANTS.xpToLevel;
     let level = 0;
@@ -113,7 +115,7 @@ function PlayerCard({
                 className="authButton promoteButton basicCenter"
                 onClick={() => buttonControl("PROMOTE")}
               >
-                {promoteConfirm ? "CONFIRM?" : "PROMOTE"}
+                {promoteConfirm ? "confirm?" : `${roles[roleID]}`}
               </div>
             )}
             {myRoleID > roleID && (
@@ -128,8 +130,8 @@ function PlayerCard({
                 }}
               >
                 {demoteConfirm
-                  ? "CONFIRM?"
-                  : `${roleID === 1 ? "KICK" : "DEMOTE"}`}
+                  ? "confirm?"
+                  : `${roleID === 1 ? "kick" : "demote"}`}
               </div>
             )}
           </div>
@@ -138,8 +140,6 @@ function PlayerCard({
     );
   };
 
-  const roles = ["member", "elder", "co-leader", "leader"];
-  console.log(roleID);
   return (
     <div className="playerCardContainer">
       <div className="playerLevel basicCenter">
