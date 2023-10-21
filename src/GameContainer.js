@@ -22,9 +22,12 @@ import CONSTANTS from "./CONSTANTS";
 import CROPINFO from "./CROPINFO";
 import UPGRADES from "./UPGRADES";
 
+export const GameContext = React.createContext();
+
 function GameContainer() {
   const { waitForServerResponse } = useWebSocket();
   const { addListener, removeListener } = useWebSocket();
+
 
   const { isConnected } = useWebSocket();
 
@@ -60,6 +63,7 @@ function GameContainer() {
   const [tiles, setTiles] = useState([]);
 
   const [townPerks, setTownPerks] = useState({});
+  const [myTownName, setMyTownName] = useState("")
 
   let newXP = useRef(false);
 
@@ -190,6 +194,7 @@ function GameContainer() {
     fetchData();
     getTownMessages();
     refreshLeaderboard();
+    reloadTownPerks()
 
     const handleNewMsg = (content, timestamp, Username, messageID) => {
       setTownChatMsgs((old) => {
@@ -228,6 +233,7 @@ function GameContainer() {
     if (waitForServerResponse) {
       const response = await waitForServerResponse("getTownPerks");
       let data = response.body;
+      setMyTownName(data.townName)
       setTownPerks(data);
     }
     getTownMessages();
@@ -300,7 +306,7 @@ function GameContainer() {
   };
 
   const updateBalance = (amount) => {
-    if(isNaN(amount)) {
+    if (isNaN(amount)) {
       return;
     }
     setBalance((oldBal) => {
@@ -405,231 +411,239 @@ function GameContainer() {
     };
   }, []);
 
+  const passedContextFuncs = {
+    setTownChatBox,
+    updateBalance,
+    updateXP,
+    reloadTownPerks,
+    msgNotification,
+    myTownName
+  }
+
   if (!isConnected) {
     return <div></div>;
   }
   // If connected, render the main game content
 
   return (
-    <div
-      style={{
-        width: "100vw",
-        height: "100vh",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      {notificationBox && (
-        <NotificationBox
-          close={() => setNotificationBox(false)}
-          contents={unlockContents}
-        />
-      )}
-      {loginBox && <Complogin close={() => setLoginBox(false)} />}
-      {townChatBox && (
-        <TownChat
-          setMsgNotification={setMsgNotification}
-          chatType={"TOWN"}
-          targetName={townPerks.townName}
-          closeMethod={() => setTownChatBox(false)}
-          chatMessages={townChatMsgs}
-        />
-      )}
-      <GoogleAnalyticsReporter />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <PlantScreen
-              msgNotification={msgNotification}
-              setTownChatBox={townPerks.townName ? setTownChatBox : null}
-              setParts={setParts}
-              townPerks={townPerks}
-              tiles={tiles}
-              setTiles={setTiles}
-              itemsData={itemsData}
-              setItemsData={setItemsData}
-              setLoginBox={setLoginBox}
-              level={level}
-              getUpgrades={getUpgrades}
-              getUser={getUser}
-              getBal={getBal}
-              updateBalance={updateBalance}
-              getXP={getXP}
-              updateXP={updateXP}
-              newXP={newXP}
-              XP={XP}
-            />
-          }
-        />
-        <Route
-          path="/plants"
-          element={
-            <PlantScreen
-              msgNotification={msgNotification}
-              setTownChatBox={townPerks.townName ? setTownChatBox : null}
-              setParts={setParts}
-              townPerks={townPerks}
-              tiles={tiles}
-              setTiles={setTiles}
-              itemsData={itemsData}
-              setItemsData={setItemsData}
-              setLoginBox={setLoginBox}
-              level={level}
-              getUpgrades={getUpgrades}
-              getUser={getUser}
-              getBal={getBal}
-              updateBalance={updateBalance}
-              getXP={getXP}
-              updateXP={updateXP}
-              newXP={newXP}
-              XP={XP}
-            />
-          }
-        />
-        <Route
-          path="/animals"
-          element={
-            <AnimalScreen
-              msgNotification={msgNotification}
-              setTownChatBox={townPerks.townName ? setTownChatBox : null}
-              townPerks={townPerks}
-              setAnimalsInfo={setAnimalsInfo}
-              barn={barn}
-              coop={coop}
-              setBarn={setBarn}
-              setCoop={setCoop}
-              itemsData={itemsData}
-              setItemsData={setItemsData}
-              capacities={capacities}
-              upgrades={upgrades}
-              setLoginBox={setLoginBox}
-              level={level}
-              getUpgrades={getUpgrades}
-              getUser={getUser}
-              getBal={getBal}
-              updateBalance={updateBalance}
-              getXP={getXP}
-              updateXP={updateXP}
-              newXP={newXP}
-              XP={XP}
-            />
-          }
-        />
-        <Route
-          path="/shop"
-          element={
-            <ShopScreen
-              addAnimal={addAnimal}
-              itemsData={itemsData}
-              setItemsData={setItemsData}
-              animalsInfo={animalsInfo}
-              updateAnimalsInfo={updateAnimalsInfo}
-              deluxePermit={deluxePermit}
-              exoticPermit={exoticPermit}
-              updateUpgrades={updateUpgrades}
-              setLoginBox={setLoginBox}
-              level={level}
-              getUpgrades={getUpgrades}
-              getUser={getUser}
-              getBal={getBal}
-              updateBalance={updateBalance}
-              getXP={getXP}
-              newXP={newXP}
-              XP={XP}
-            />
-          }
-        />
-        <Route
-          path="/market"
-          element={
-            <MarketScreen
-              msgNotification={msgNotification}
-              setTownChatBox={townPerks.townName ? setTownChatBox : null}
-              itemsData={itemsData}
-              setItemsData={setItemsData}
-              prices={prices}
-              setLoginBox={setLoginBox}
-              getUser={getUser}
-              getBal={getBal}
-              updateBalance={updateBalance}
-              getXP={getXP}
-              newXP={newXP}
-              XP={XP}
-            />
-          }
-        />
-        <Route
-          path="/leaderboard"
-          element={
-            <LeaderboardScreen
-              refreshLeaderboard={refreshLeaderboard}
-              leaderboardData={leaderboardData}
-              Username={Username}
-              userAlltimeTotals={{ ...goodTotals, Balance: Balance, XP: XP }}
-            />
-          }
-        />
-        <Route
-          path="/profile"
-          element={<Navigate to={`/profile/${Username.replace(/#/g, "-")}`} />}
-        />
-        <Route path="/profile/:username" element={<AccountScreen />} />
-        <Route path="/discordAuth" element={<DiscordAuthReturn />} />
-        <Route path="/passwordReset" element={<PasswordReset />} />
-        <Route path="/howtoplay" element={<HowToPlay />} />
-        <Route
-          path="/machines"
-          element={
-            <MachinesScreen
-              artisanItems={artisanItems}
-              setArtisanItems={setArtisanItems}
-              getUser={getUser}
-              getXP={getXP}
-              updateBalance={updateBalance}
-              getBal={getBal}
-              itemsData={itemsData}
-              setItemsData={setItemsData}
-              parts={parts}
-              machines={machines}
-              setParts={setParts}
-              setMachines={setMachines}
-            />
-          }
-        />
-        <Route
-          path="/towns"
-          element={
-            <TownsScreen
-              msgNotification={msgNotification}
-              setTownChatBox={townPerks.townName ? setTownChatBox : null}
-              updateBalance={updateBalance}
-              updateXP={updateXP}
-              reloadTownPerks={reloadTownPerks}
-              playersTown={townPerks.townName}
-            />
-          }
-        />
-        <Route
-          path="/towns/:townName"
-          element={
-            <TownsScreen
-              msgNotification={msgNotification}
-              setTownChatBox={townPerks.townName ? setTownChatBox : null}
-              updateBalance={updateBalance}
-              updateXP={updateXP}
-              reloadTownPerks={reloadTownPerks}
-              playersTown={townPerks.townName}
-            />
-          }
-        />
-      </Routes>
-    </div>
+    <GameContext.Provider value={passedContextFuncs}>
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        {notificationBox && (
+          <NotificationBox
+            close={() => setNotificationBox(false)}
+            contents={unlockContents}
+          />
+        )}
+        {loginBox && <Complogin close={() => setLoginBox(false)} />}
+        {townChatBox && (
+          <TownChat
+            setMsgNotification={setMsgNotification}
+            chatType={"TOWN"}
+            targetName={townPerks.townName}
+            closeMethod={() => setTownChatBox(false)}
+            chatMessages={townChatMsgs}
+          />
+        )}
+        <GoogleAnalyticsReporter />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <PlantScreen
+                msgNotification={msgNotification}
+                setTownChatBox={townPerks.townName ? setTownChatBox : null}
+                setParts={setParts}
+                townPerks={townPerks}
+                tiles={tiles}
+                setTiles={setTiles}
+                itemsData={itemsData}
+                setItemsData={setItemsData}
+                setLoginBox={setLoginBox}
+                level={level}
+                getUpgrades={getUpgrades}
+                getUser={getUser}
+                getBal={getBal}
+                updateBalance={updateBalance}
+                getXP={getXP}
+                updateXP={updateXP}
+                newXP={newXP}
+                XP={XP}
+              />
+            }
+          />
+          <Route
+            path="/plants"
+            element={
+              <PlantScreen
+                msgNotification={msgNotification}
+                setTownChatBox={townPerks.townName ? setTownChatBox : null}
+                setParts={setParts}
+                townPerks={townPerks}
+                tiles={tiles}
+                setTiles={setTiles}
+                itemsData={itemsData}
+                setItemsData={setItemsData}
+                setLoginBox={setLoginBox}
+                level={level}
+                getUpgrades={getUpgrades}
+                getUser={getUser}
+                getBal={getBal}
+                updateBalance={updateBalance}
+                getXP={getXP}
+                updateXP={updateXP}
+                newXP={newXP}
+                XP={XP}
+              />
+            }
+          />
+          <Route
+            path="/animals"
+            element={
+              <AnimalScreen
+                msgNotification={msgNotification}
+                setTownChatBox={townPerks.townName ? setTownChatBox : null}
+                townPerks={townPerks}
+                setAnimalsInfo={setAnimalsInfo}
+                barn={barn}
+                coop={coop}
+                setBarn={setBarn}
+                setCoop={setCoop}
+                itemsData={itemsData}
+                setItemsData={setItemsData}
+                capacities={capacities}
+                upgrades={upgrades}
+                setLoginBox={setLoginBox}
+                level={level}
+                getUpgrades={getUpgrades}
+                getUser={getUser}
+                getBal={getBal}
+                updateBalance={updateBalance}
+                getXP={getXP}
+                updateXP={updateXP}
+                newXP={newXP}
+                XP={XP}
+              />
+            }
+          />
+          <Route
+            path="/shop"
+            element={
+              <ShopScreen
+                addAnimal={addAnimal}
+                itemsData={itemsData}
+                setItemsData={setItemsData}
+                animalsInfo={animalsInfo}
+                updateAnimalsInfo={updateAnimalsInfo}
+                deluxePermit={deluxePermit}
+                exoticPermit={exoticPermit}
+                updateUpgrades={updateUpgrades}
+                setLoginBox={setLoginBox}
+                level={level}
+                getUpgrades={getUpgrades}
+                getUser={getUser}
+                getBal={getBal}
+                updateBalance={updateBalance}
+                getXP={getXP}
+                newXP={newXP}
+                XP={XP}
+              />
+            }
+          />
+          <Route
+            path="/market"
+            element={
+              <MarketScreen
+                msgNotification={msgNotification}
+                setTownChatBox={townPerks.townName ? setTownChatBox : null}
+                itemsData={itemsData}
+                setItemsData={setItemsData}
+                prices={prices}
+                setLoginBox={setLoginBox}
+                getUser={getUser}
+                getBal={getBal}
+                updateBalance={updateBalance}
+                getXP={getXP}
+                newXP={newXP}
+                XP={XP}
+              />
+            }
+          />
+          <Route
+            path="/leaderboard"
+            element={
+              <LeaderboardScreen
+                refreshLeaderboard={refreshLeaderboard}
+                leaderboardData={leaderboardData}
+                Username={Username}
+                userAlltimeTotals={{ ...goodTotals, Balance: Balance, XP: XP }}
+              />
+            }
+          />
+          <Route
+            path="/profile"
+            element={<Navigate to={`/profile/${Username.replace(/#/g, "-")}`} />}
+          />
+          <Route path="/profile/:username" element={<AccountScreen />} />
+          <Route path="/discordAuth" element={<DiscordAuthReturn />} />
+          <Route path="/passwordReset" element={<PasswordReset />} />
+          <Route path="/howtoplay" element={<HowToPlay />} />
+          <Route
+            path="/machines"
+            element={
+              <MachinesScreen
+                artisanItems={artisanItems}
+                setArtisanItems={setArtisanItems}
+                getUser={getUser}
+                getXP={getXP}
+                updateBalance={updateBalance}
+                getBal={getBal}
+                itemsData={itemsData}
+                setItemsData={setItemsData}
+                parts={parts}
+                machines={machines}
+                setParts={setParts}
+                setMachines={setMachines}
+              />
+            }
+          />
+          <Route
+            path="/towns"
+            element={
+              <TownsScreen
+                msgNotification={msgNotification}
+                setTownChatBox={townPerks.townName ? setTownChatBox : null}
+                updateBalance={updateBalance}
+                updateXP={updateXP}
+                reloadTownPerks={reloadTownPerks}
+                playersTown={myTownName}
+              />}
+          />
+          <Route
+            path="/towns/:townName"
+            element={
+              <TownsScreen
+                msgNotification={msgNotification}
+                setTownChatBox={townPerks.townName ? setTownChatBox : null}
+                updateBalance={updateBalance}
+                updateXP={updateXP}
+                reloadTownPerks={reloadTownPerks}
+                playersTown={myTownName}
+              />
+            }
+          />
+        </Routes>
+      </div>
+    </GameContext.Provider>
   );
 }
 
-function App() {
+export function CreateGameContainer() {
   return <GameContainer />;
 }
-
-export default App;

@@ -1,13 +1,16 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "../CSS/CompOtherScreens.css";
 import { Link } from "react-router-dom";
+import { GameContext } from '../../GameContainer'
 
 import { useNavigate, useLocation } from "react-router-dom";
 
 // pass parameter for what screen you are at right now
 
-function CompOtherScreens({ msgNotification, current, setTownChatBox }) {
+function CompOtherScreens({ current }) {
   const location = useLocation();
+  const { setTownChatBox, msgNotification, myTownName } = useContext(GameContext)
+
   const [otherScreens, setOtherScreens] = useState([]);
 
   const navigate = useNavigate();
@@ -78,7 +81,7 @@ function CompOtherScreens({ msgNotification, current, setTownChatBox }) {
             src={`${process.env.PUBLIC_URL}/assets/images/townButton2.png`}
             className="townsButton"
             onClick={() =>
-              navigate("/towns", {
+              navigate(`/towns/${myTownName}`, {
                 state: {
                   from: location.pathname.substring(
                     1,

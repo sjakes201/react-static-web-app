@@ -81,6 +81,13 @@
     cursor: pointer;
 }
 
+.broadcastContent {
+    color: rgb(104, 114, 221);
+    width: 100%;
+    text-align: center;
+    font-size: .8vw;
+}
+
 .msgContent {
     color: rgb(47, 47, 47);
 }
