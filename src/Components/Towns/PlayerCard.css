@@ -85,6 +85,7 @@
 .contributedTownXP {
     color: gray;
     margin-top: 1.5vh;
+    margin-left: .35vw;
     text-align: left;
 }
 
@@ -117,6 +118,7 @@
     border: 1px solid black;
     border-radius: 4%;
     padding: 1.4vh;
+    cursor: default;
 }
 
 .individualContributions {
