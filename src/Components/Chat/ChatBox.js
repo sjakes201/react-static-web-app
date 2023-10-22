@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./ChatBox.css";
+import MessageBubble from "./MessageBubble";
 import Draggable from "react-draggable";
 import { useWebSocket } from "../../WebSocketContext";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -52,37 +53,6 @@ function ChatBox({ chatMessages }) {
     }
   };
 
-  const msgBubble = (text, userWhoSent) => {
-    if (userWhoSent === 'Server') {
-      return (
-        <div className='msgBubble'>
-          <p className='broadcastContent'>{<i>{text}</i>}</p>
-        </div>
-      );
-    }
-    return (
-      <div className='msgBubble'>
-        <span
-          onClick={() =>
-            navigate(`/profile/${userWhoSent}`, {
-              state: {
-                from: location.pathname
-                  .substring(1, location.pathname.length)
-                  .includes("profile")
-                  ? "plants"
-                  : location.pathname.substring(1, location.pathname.length),
-              },
-            })
-          }
-          className="fromUser"
-        >
-          {userWhoSent}:
-        </span>
-        <span className='msgContent'>{text}</span>
-      </div>
-    );
-  };
-
   return (
     <Draggable handle=".chatTabBar">
       <div className="chatContainer">
@@ -93,7 +63,11 @@ function ChatBox({ chatMessages }) {
           </p>
         </div>
         <div className="messageBox">
-          {myTownName === "" ? <i>Not currently in a town</i> : chatMessages.map((txt) => msgBubble(txt.content, txt.Username))}
+          {myTownName === "" ?
+            <i>Not currently in a town</i>
+            :
+            chatMessages.map((txt) => <MessageBubble text={txt.content} userWhoSent={txt.Username} unixTimeStamp={txt.timestamp} />)
+          }
         </div>
         <div className="newMessageBox">
           <textarea

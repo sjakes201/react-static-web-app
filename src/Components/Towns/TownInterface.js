@@ -15,7 +15,7 @@ function TownInterface({
   setTownChatBox
 }) {
   const { waitForServerResponse } = useWebSocket();
-  const { updateBalance, updateXP, reloadTownPerks, msgNotification } = useContext(GameContext)
+  const { updateBalance, updateXP, reloadTownPerks, msgNotification, myTownName } = useContext(GameContext)
 
   // Which screen to show ("MAIN" or "GOALS" or "DNE")
   const [townScreen, setTownScreen] = useState("MAIN");
@@ -438,7 +438,7 @@ function TownInterface({
                       onClick={() => backArrow(true)}
                     />
                   )}
-                  {setTownChatBox && (
+                  {(setTownChatBox && myTownName === townName) && (
                     <img
                       src={`${process.env.PUBLIC_URL
                         }/assets/images/GUI/textbubble${msgNotification ? "_notify" : ""

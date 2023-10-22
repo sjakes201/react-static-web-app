@@ -92,6 +92,13 @@
     color: rgb(47, 47, 47);
 }
 
+.msgTimestamp {
+    margin-left: 1vw;
+    color: gray;
+    font-style: italic;
+    font-size: .65vw;
+}
+
 .newMessageBox {
     border-top: 1px solid black;
     height: 10%;

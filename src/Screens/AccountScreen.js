@@ -148,7 +148,7 @@ function AccountScreen() {
               </p>
               {profileData?.totalContributedTownXP !== undefined &&
                 <p>
-                  Total contributed XP: {profileData.totalContributedTownXP}
+                  All-Time XP: {profileData.totalContributedTownXP.toLocaleString()}
                 </p>
               }
             </div>
