@@ -66,7 +66,7 @@ function ChatBox({ chatMessages }) {
           {myTownName === "" ?
             <i>Not currently in a town</i>
             :
-            chatMessages.map((txt) => <MessageBubble text={txt.content} userWhoSent={txt.Username} unixTimeStamp={txt.timestamp} />)
+            chatMessages.map((txt) => <MessageBubble text={txt.content} userWhoSent={txt.Username} unixTimeStamp={txt.timestamp * 1000} />)
           }
         </div>
         <div className="newMessageBox">
