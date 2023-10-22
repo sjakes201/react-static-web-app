@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import "../CSS/CompLogin.css";
-
+import { GameContext } from "../../GameContainer";
 import { useWebSocket } from "../../WebSocketContext";
 
 /*
@@ -11,9 +11,9 @@ If loginLogged in, contains loginLog out
 
 */
 
-function Complogin({ close }) {
+function Complogin() {
   const { waitForServerResponse } = useWebSocket();
-
+  const { setLoginBox } = useContext(GameContext)
   // type is login or register
   const [screenType, setScreenType] = useState("Login");
   const [showPassword, setShowPassword] = useState(false);
@@ -164,7 +164,7 @@ function Complogin({ close }) {
   const getLogin = () => {
     return (
       <div className="loginBoxPagePos">
-        <div className="xClose" onClick={close}>
+        <div className="xClose" onClick={() => setLoginBox(false)}>
           X
         </div>
         <div className="login-gui">
@@ -260,7 +260,7 @@ function Complogin({ close }) {
   const getForgot = () => {
     return (
       <div className="loginBoxPagePos">
-        <div className="xClose" onClick={close}>
+        <div className="xClose" onClick={() => setLoginBox(false)}>
           X
         </div>
         <div className="login-gui">
@@ -325,7 +325,7 @@ function Complogin({ close }) {
           <span>*Email optional and exclusively</span>
           <span>for 'forgot password'</span>
         </span>
-        <div className="xClose" onClick={close}>
+        <div className="xClose" onClick={() => setLoginBox(false)}>
           X
         </div>
         <div id="register" className="login-gui">

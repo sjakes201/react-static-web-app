@@ -7,11 +7,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 // pass parameter for what screen you are at right now
 
-function CompOtherScreens({ current }) {
+function CompOtherScreens() {
+
   const location = useLocation();
   const { setTownChatBox, msgNotification, myTownName } = useContext(GameContext)
-
   const [otherScreens, setOtherScreens] = useState([]);
+  const current = location.pathname.substring(1, location.pathname.length);
 
   const navigate = useNavigate();
   if (localStorage.getItem("token") === null) {

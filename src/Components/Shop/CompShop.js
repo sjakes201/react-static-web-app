@@ -1,25 +1,17 @@
-import React, { useRef, useEffect } from "react";
-
+import React, { useRef, useEffect, useContext } from "react";
+import { GameContext } from "../../GameContainer";
 import "../CSS/CompShop.css";
 import CompItem from "./CompItem";
 import CONSTANTS from "../../CONSTANTS";
 import UPGRADES from "../../UPGRADES";
 
 function CompShop({
-  addAnimal,
-  updateAnimalsInfo,
-  getAnimals,
-  getXP,
-  level,
-  updateUpgrades,
-  updateBalance,
-  getBal,
   updateInventory,
-  getUpgrades,
   items,
 }) {
+  const { addAnimal, updateAnimalsInfo, getXP, getBal, level, updateUpgrades, updateBalance, getUpgrades, animalsInfo } = useContext(GameContext)
   const upgrades = getUpgrades();
-  const animals = getAnimals();
+  const animals = animalsInfo;
 
   let unlocked = [];
   for (let unlockLevel in CONSTANTS.levelUnlocks) {

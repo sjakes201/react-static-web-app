@@ -32,7 +32,7 @@ function AccountScreen() {
     };
     fetchData();
   }, [username]);
-  
+
   const [activePoke, setActivePoke] = useState(false);
 
   const handlePoke = async () => {
@@ -112,12 +112,46 @@ function AccountScreen() {
               id="acc-pfp"
               alt="profile pic"
             />
+
             <div className="acc-user-info">
               <h3 id="acc-username">{profileData?.username}</h3>
               <p>XP: {profileData?.XP?.toLocaleString()}</p>
               <p>Balance: ${profileData?.Balance?.toLocaleString()}</p>
             </div>
 
+            <img
+              id='town-info-icon'
+              src={`${process.env.PUBLIC_URL}/assets/images/townButton2.png`}
+              onClick={() => {
+                if (profileData.townName) {
+                  navigate(`/towns/${profileData.townName}`,
+                    {
+                      state:
+                        { from: location.pathname.substring(1, location.pathname.length) }
+                    })
+                }
+              }}
+            />
+            <div className='acc-user-town-info'>
+              <p>
+                Town: {profileData.townName ?
+                  (<span
+                    id='townLink'
+                    onClick={() => navigate(`/towns/${profileData.townName}`,
+                      {
+                        state:
+                          { from: location.pathname.substring(1, location.pathname.length) }
+                      })}
+                  >{profileData.townName}</span>)
+                  :
+                  (<span id='noTown'>None</span>)}
+              </p>
+              {profileData?.totalContributedTownXP !== undefined &&
+                <p>
+                  Total contributed XP: {profileData.totalContributedTownXP}
+                </p>
+              }
+            </div>
             <div className="acc-poke-info">
               <img
                 src={

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import CompAnimal from "./CompAnimal";
 import CONSTANTS from "../../CONSTANTS";
 import UPGRADES from "../../UPGRADES";
@@ -6,22 +6,20 @@ import { useNavigate } from "react-router-dom";
 import ANIMALINFO from "../../ANIMALINFO";
 import TOWNSINFO from "../../TOWNSINFO";
 import { useWebSocket } from "../../WebSocketContext";
+import { GameContext } from "../../GameContainer";
 
 function CompPen({
-  townPerks,
   animalsParent,
   setAnimalsParent,
-  getUpgrades,
   penWidth,
   penHeight,
   isBarn,
   updateInventory,
-  updateXP,
-  getXP,
   setOrderNotice,
   setEquippedFeed,
 }) {
   const { waitForServerResponse } = useWebSocket();
+  const { townPerks, updateXP, getXP, getUpgrades } = useContext(GameContext)
   // 10 per border
   penWidth -= 20;
   penHeight -= 20;

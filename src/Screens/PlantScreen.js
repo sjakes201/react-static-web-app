@@ -1,44 +1,28 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import CONSTANTS from "../CONSTANTS";
 import "./CSS/PlantScreen.css";
 import CompPlot from "../Components/Crops/CompPlot";
 import CompInventory from "../Components/GUI/CompInventory";
 import CompOtherScreens from "../Components/GUI/CompOtherScreens";
 import CompProfile from "../Components/GUI/CompProfile";
-import OrderBoard from "../Components/Orders/OrderBoard";
 import { useNavigate } from "react-router-dom";
+import { GameContext } from "../GameContainer";
 
 import AdinPlayAd from "../AdinPlayAd";
 
-function PlantScreen({
-  msgNotification,
-  setTownChatBox,
-  setParts,
-  townPerks,
-  tiles,
-  setTiles,
-  itemsData,
-  setItemsData,
-  getUpgrades,
-  getUser,
-  getBal,
-  updateBalance,
-  getXP,
-  updateXP,
-  level,
-  setLoginBox,
-}) {
+function PlantScreen() {
   const navigate = useNavigate();
   if (localStorage.getItem("token") === null) {
     // no auth token present
     navigate("/");
   }
 
+  const { itemsData, setItemsData, getBal, getUser, updateBalance, getXP, setLoginBox, level } = useContext(GameContext)
+
   const [items, setItems] = useState({});
   const [fertilizers, setFertilizers] = useState({});
   const [tool, setTool] = useState("");
 
-  const [orderBox, setOrderBox] = useState(false);
   const [orderNotice, setOrderNotice] = useState(false);
 
   // level is just for level (pass to components that want to know unlocks)
@@ -104,11 +88,7 @@ function PlantScreen({
     <div style={appStyle}>
       <div className="left-column">
         <div className="other-screensPl">
-          <CompOtherScreens
-            msgNotification={msgNotification}
-            setTownChatBox={setTownChatBox}
-            current={"plants"}
-          />
+          <CompOtherScreens />
         </div>
         <div className="plot">
           <div className="ad-box-style">
@@ -121,20 +101,13 @@ function PlantScreen({
 
           <div className="farmArea">
             <CompPlot
-              setParts={setParts}
-              townPerks={townPerks}
-              tiles={tiles}
-              setTiles={setTiles}
               tool={tool}
               setFertilizers={setFertilizers}
               fertilizers={fertilizers}
               equippedFert={equippedFert}
               setEquippedFert={setEquippedFert}
               setOrderNotice={setOrderNotice}
-              getUpgrades={getUpgrades}
               updateInventory={updateInventory}
-              updateXP={updateXP}
-              getXP={getXP}
               items={items}
             />
           </div>
@@ -144,18 +117,11 @@ function PlantScreen({
         <div className="userProfile">
           <CompProfile
             orderNotice={orderNotice}
-            setOrderBox={setOrderBox}
-            setLoginBox={setLoginBox}
             type={"tall"}
-            getBal={getBal}
-            updateBalance={updateBalance}
-            getUser={getUser}
-            getXP={getXP}
           />
         </div>
         <div className="inventoryPl">
           <CompInventory
-            level={level}
             tool={tool}
             setTool={setTool}
             fertilizers={fertilizers}
@@ -226,19 +192,6 @@ function PlantScreen({
             </a>
           </div>
         </div>
-      </div>
-      <div className="order-GUI">
-        {orderBox && (
-          <OrderBoard
-            itemsData={itemsData}
-            setItemsData={setItemsData}
-            townPerks={townPerks}
-            close={() => setOrderBox(false)}
-            setFertilizers={setFertilizers}
-            updateBalance={updateBalance}
-            updateXP={updateXP}
-          />
-        )}
       </div>
     </div>
   );

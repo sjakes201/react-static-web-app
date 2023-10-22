@@ -11,6 +11,7 @@ function PlayerCard({
   myRoleID,
   managementAction,
   reportedTimePassed,
+  contributedTownXP
 }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -136,6 +137,9 @@ function PlayerCard({
             )}
           </div>
         )}
+        {contributedTownXP !== undefined &&
+          (<p className='contributedTownXP'>{contributedTownXP} contributed town xp</p>)
+        }
       </div>
     );
   };

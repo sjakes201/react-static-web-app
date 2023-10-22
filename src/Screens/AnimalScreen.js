@@ -1,5 +1,4 @@
-import React, { useRef, useLayoutEffect, useEffect, useState } from "react";
-import CONSTANTS from "../CONSTANTS";
+import React, { useRef, useLayoutEffect, useEffect, useState, useContext } from "react";
 import "./CSS/AnimalScreen.css";
 import CompPen from "../Components/Animals/CompPen";
 import CompOtherScreens from "../Components/GUI/CompOtherScreens";
@@ -7,37 +6,19 @@ import CompInventory from "../Components/GUI/CompInventory";
 import CompProfile from "../Components/GUI/CompProfile";
 import AnimalsTopBar from "../Components/Animals/AnimalsTopBar";
 import AnimalManagement from "../Components/Animals/AnimalManagement";
-import OrderBoard from "../Components/Orders/OrderBoard";
+import { GameContext } from "../GameContainer";
 
 import { useNavigate } from "react-router-dom";
 
 import AdinPlayAd from "../AdinPlayAd";
 
-function AnimalScreen({
-  msgNotification,
-  setTownChatBox,
-  townPerks,
-  setAnimalsInfo,
-  barn,
-  coop,
-  setBarn,
-  setCoop,
-  itemsData,
-  setItemsData,
-  getUpgrades,
-  getUser,
-  getBal,
-  updateBalance,
-  getXP,
-  updateXP,
-  setLoginBox,
-  capacities,
-}) {
+function AnimalScreen() {
   const navigate = useNavigate();
   if (localStorage.getItem("token") === null) {
     // no auth token present
     navigate("/");
   }
+  const { itemsData, setItemsData, barn, coop, setBarn, setCoop, capacities, setAnimalsInfo } = useContext(GameContext)
 
   // Get size of component
   const componentRef = useRef(null);
@@ -66,7 +47,6 @@ function AnimalScreen({
 
   const [items, setItems] = useState({});
 
-  const [orderBox, setOrderBox] = useState(false);
   const [manager, setManager] = useState(false);
   const [orderNotice, setOrderNotice] = useState(false);
 
@@ -139,11 +119,7 @@ function AnimalScreen({
       )}
       <div className="left-column">
         <div className="other-screensAn">
-          <CompOtherScreens
-            msgNotification={msgNotification}
-            setTownChatBox={setTownChatBox}
-            current={"animals"}
-          />
+          <CompOtherScreens />
         </div>
         <div className="pen-management">
           {" "}
@@ -154,11 +130,9 @@ function AnimalScreen({
             {" "}
             {renderPens && (
               <CompPen
-                townPerks={townPerks}
                 setEquippedFeed={setEquippedFeed}
                 equippedFeed={equippedFeed}
                 setOrderNotice={setOrderNotice}
-                getUpgrades={getUpgrades}
                 animalsParent={barn}
                 setAnimalsParent={setBarn}
                 isBarn={true}
@@ -166,19 +140,15 @@ function AnimalScreen({
                 penWidth={componentWidth}
                 penHeight={componentHeight}
                 updateInventory={updateInventory}
-                updateXP={updateXP}
-                getXP={getXP}
               />
             )}
           </div>
           <div className="coop-container" ref={componentRef}>
             {renderPens && (
               <CompPen
-                townPerks={townPerks}
                 setEquippedFeed={setEquippedFeed}
                 equippedFeed={equippedFeed}
                 setOrderNotice={setOrderNotice}
-                getUpgrades={getUpgrades}
                 animalsParent={coop}
                 setAnimalsParent={setCoop}
                 isBarn={false}
@@ -186,8 +156,6 @@ function AnimalScreen({
                 penWidth={componentWidth}
                 penHeight={componentHeight}
                 updateInventory={updateInventory}
-                updateXP={updateXP}
-                getXP={getXP}
               />
             )}
           </div>
@@ -198,12 +166,6 @@ function AnimalScreen({
           <CompProfile
             orderNotice={orderNotice}
             type={"tall"}
-            setLoginBox={setLoginBox}
-            setOrderBox={setOrderBox}
-            getBal={getBal}
-            updateBalance={updateBalance}
-            getUser={getUser}
-            getXP={getXP}
           />
         </div>
         <div className="inventory">
@@ -275,18 +237,6 @@ function AnimalScreen({
             </a>
           </div>
         </div>
-      </div>
-      <div className="order-GUI">
-        {orderBox && (
-          <OrderBoard
-            itemsData={itemsData}
-            setItemsData={setItemsData}
-            townPerks={townPerks}
-            close={() => setOrderBox(false)}
-            updateBalance={updateBalance}
-            updateXP={updateXP}
-          />
-        )}
       </div>
     </div>
   );

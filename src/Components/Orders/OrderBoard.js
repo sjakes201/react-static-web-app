@@ -1,19 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Order from "./Order";
 import { useNavigate } from "react-router-dom";
 import CONSTANTS from "../../CONSTANTS";
 import { useWebSocket } from "../../WebSocketContext";
 import TOWNSINFO from "../../TOWNSINFO";
+import { GameContext } from "../../GameContainer";
 
-function OrderBoard({
-  setItemsData,
-  itemsData,
-  townPerks,
-  close,
-  updateBalance,
-  updateXP,
-  setFertilizers,
-}) {
+function OrderBoard() {
+  const { updateXP, updateBalance, townPerks, itemsData, setItemsData, setOrderBoard } = useContext(GameContext)
   const { waitForServerResponse } = useWebSocket();
   const navigate = useNavigate();
   const [orders, setOrders] = useState([{}, {}, {}, {}]);
@@ -91,7 +85,7 @@ function OrderBoard({
     if (townPerks.orderRefreshLevel) {
       let boostPercent =
         TOWNSINFO.upgradeBoosts.orderRefreshPerkLevel[
-          townPerks.orderRefreshLevel
+        townPerks.orderRefreshLevel
         ];
       let boostChange = 1 + boostPercent;
       timePassedMS *= boostChange;
@@ -135,7 +129,7 @@ function OrderBoard({
   if (townPerks.orderRefreshLevel) {
     let boostPercent =
       TOWNSINFO.upgradeBoosts.orderRefreshPerkLevel[
-        townPerks.orderRefreshLevel
+      townPerks.orderRefreshLevel
       ];
     let boostChange = 1 + boostPercent;
     refreshTimeNeeded /= boostChange;
@@ -144,7 +138,9 @@ function OrderBoard({
   return (
     <div
       style={{
-        position: "relative",
+        position: "absolute",
+        top: '0',
+        left: '0',
         width: "100vw",
         height: "100vh",
         zIndex: "30100",
@@ -156,7 +152,7 @@ function OrderBoard({
       onClick={(event) => {
         event.preventDefault();
         if (event.target === event.currentTarget) {
-          close();
+          setOrderBoard(false)
         }
       }}
     >
@@ -179,7 +175,7 @@ function OrderBoard({
             cursor: "pointer",
             textShadow: "-1px 1px var(--menu_light)",
           }}
-          onClick={close}
+          onClick={() => setOrderBoard(false)}
         >
           X
         </div>

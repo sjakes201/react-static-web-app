@@ -1,24 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./TownInterface.css";
 import PlayerCard from "./PlayerCard";
 import { useWebSocket } from "../../WebSocketContext";
 import TOWNSINFO from "../../TOWNSINFO";
 import TownGoals from "./TownGoals";
 import { calcTownLevel } from "../../townHelpers";
-
+import { GameContext } from "../../GameContainer";
 // townName is string for town name, backArrow is optional function to be called when back arrow pressed
 function TownInterface({
-  msgNotification,
-  setTownChatBox,
-  updateBalance,
-  updateXP,
   townName,
   backArrow,
-  reloadTownPerks,
   setTown,
   setScreen,
+  setTownChatBox
 }) {
   const { waitForServerResponse } = useWebSocket();
+  const { updateBalance, updateXP, reloadTownPerks, msgNotification } = useContext(GameContext)
 
   // Which screen to show ("MAIN" or "GOALS" or "DNE")
   const [townScreen, setTownScreen] = useState("MAIN");
@@ -408,6 +405,7 @@ function TownInterface({
               contributions={player.contributions}
               myRoleID={townInfo.myRoleID}
               managementAction={managementAction}
+              contributedTownXP={player.contributedTownXP}
             />
           </div>
         ))}

@@ -1,22 +1,19 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import "../CSS/CompProfile.css";
 import CONSTANTS from "../../CONSTANTS";
 import { useNavigate, useLocation } from "react-router-dom";
 import ScrollingText from "./ScrollingText";
+import { GameContext } from "../../GameContainer";
 
 function CompProfile({
-  getBal,
-  getUser,
-  getXP,
   type,
-  setLoginBox,
-  setOrderBox,
   orderNotice,
   disableBorder,
   noPFP,
 }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { getBal, getXP, getUser, setLoginBox, setOrderBoard } = useContext(GameContext)
 
   const [bal, setBal] = useState(0);
   const [user, setUser] = useState("");
@@ -159,9 +156,8 @@ function CompProfile({
               width: "100%",
               background: "lightblue",
               position: "absolute",
-              right: `${
-                100 - (barInfo.overflow / barInfo.nextLvlThresholdTotal) * 100
-              }%`,
+              right: `${100 - (barInfo.overflow / barInfo.nextLvlThresholdTotal) * 100
+                }%`,
             }}
           ></div>
         </div>
@@ -250,7 +246,7 @@ function CompProfile({
             id="orderboard-button"
             onMouseOver={() => handleMouseOver(2)}
             onMouseOut={() => handleMouseOut(2)}
-            onClick={() => setOrderBox(true)}
+            onClick={() => setOrderBoard(true)}
           >
             {tool2 && <div className="toolTip">Orders Board</div>}
             <img

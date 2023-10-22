@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import CompLeaderboardSlot from "./CompLeaderboardSlot";
+import { GameContext } from "../../GameContainer";
 
 function CompLeaderboard({
-  Username,
   type,
   leadersWeekly,
   leadersAll,
-  userAlltimeTotals,
 }) {
+  const { getUser, getUserAlltimeTotals } = useContext(GameContext)
+  const userAlltimeTotals = getUserAlltimeTotals()
   if (
     Object.keys(leadersAll).length === 0 ||
     Object.keys(leadersWeekly).length === 0
@@ -95,7 +96,7 @@ function CompLeaderboard({
                 >
                   <div style={{ width: "100%", height: "20vh" }}>
                     <CompLeaderboardSlot
-                      Username={Username}
+                      Username={getUser()}
                       userAlltimeTotals={userAlltimeTotals}
                       key={key}
                       item={key}
@@ -129,7 +130,7 @@ function CompLeaderboard({
           >
             <div style={{ width: "100%", height: "20vh" }}>
               <CompLeaderboardSlot
-                Username={Username}
+                Username={getUser()}
                 userAlltimeTotals={userAlltimeTotals}
                 key={"Balance"}
                 item={"Balance"}
@@ -138,7 +139,7 @@ function CompLeaderboard({
             </div>
             <div style={{ width: "100%", height: "20vh" }}>
               <CompLeaderboardSlot
-                Username={Username}
+                Username={getUser()}
                 userAlltimeTotals={userAlltimeTotals}
                 key={"XP"}
                 item={"XP"}
@@ -156,7 +157,7 @@ function CompLeaderboard({
                 >
                   <div style={{ width: "100%", height: "20vh" }}>
                     <CompLeaderboardSlot
-                      Username={Username}
+                      Username={getUser()}
                       userAlltimeTotals={userAlltimeTotals}
                       key={key}
                       item={key}

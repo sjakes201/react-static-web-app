@@ -5,19 +5,15 @@ import TownsLeaderboard from "../Components/Towns/TownsLeaderboard";
 import AdinPlayAd from "../AdinPlayAd";
 
 import "./CSS/TownsScreen.css";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { GameContext } from "../GameContainer";
 
-function TownsScreen({
-  msgNotification,
-  setTownChatBox,
-  playersTown,
-  reloadTownPerks,
-  updateXP,
-  updateBalance,
-}) {
+function TownsScreen( ) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { updateBalance, updateXP, reloadTownPerks, msgNotification, setTownChatBox, myTownName } = useContext(GameContext)
+
 
   const { townName } = useParams();
 
@@ -30,12 +26,6 @@ function TownsScreen({
   const [tip1, setTip1] = useState(false);
   const [tip2, setTip2] = useState(false);
   const [tip3, setTip3] = useState(false);
-
-  useEffect(() => {
-    console.log(tip1);
-    console.log(tip2);
-    console.log(tip3);
-  }, [tip1, tip2, tip3]);
 
   const handleMouseEnter = (tip) => {
     switch (tip) {
@@ -93,14 +83,14 @@ function TownsScreen({
   };
 
   useEffect(() => {
-    if(townName) {
+    if (townName) {
       setScreen("TownInterface");
       setTown(townName);
-    } else if (playersTown) {
+    } else if (myTownName) {
       setScreen("TownInterface");
-      setTown(playersTown);
+      setTown(myTownName);
     }
-  }, [playersTown, townName]);
+  }, [myTownName, townName]);
 
   return (
     <div className="townsScreenContainer">
@@ -147,9 +137,8 @@ function TownsScreen({
 
       <div className="townsNavButtons">
         <div
-          className={`townsNavButton ${town === "" ? "lockedButton" : ""} ${
-            screen === "TownInterface" ? "activeButton" : ""
-          }`}
+          className={`townsNavButton ${town === "" ? "lockedButton" : ""} ${screen === "TownInterface" ? "activeButton" : ""
+            }`}
         >
           <img
             src={`${process.env.PUBLIC_URL}/assets/images/singleHouse.png`}
@@ -162,9 +151,8 @@ function TownsScreen({
           {tip1 && toolTip("Your Town")}
         </div>
         <div
-          className={`townsNavButton ${
-            screen === "TownSearch" ? "activeButton" : ""
-          }`}
+          className={`townsNavButton ${screen === "TownSearch" ? "activeButton" : ""
+            }`}
         >
           <img
             src={`${process.env.PUBLIC_URL}/assets/images/searchRed.png`}
@@ -176,9 +164,8 @@ function TownsScreen({
         </div>
 
         <div
-          className={`townsNavButton ${
-            screen === "TownLeaderboard" ? "activeButton" : ""
-          }`}
+          className={`townsNavButton ${screen === "TownLeaderboard" ? "activeButton" : ""
+            }`}
         >
           <img
             src={`${process.env.PUBLIC_URL}/assets/images/leaderboard.png`}

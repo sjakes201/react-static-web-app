@@ -82,7 +82,11 @@
     background-color: var(--soft_red);
 }
 
-
+.contributedTownXP {
+    color: gray;
+    margin-top: 1.5vh;
+    text-align: left;
+}
 
 .playerMoreButton {
     height: 35%;

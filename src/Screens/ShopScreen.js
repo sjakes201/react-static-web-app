@@ -1,36 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import CompShop from "../Components/Shop/CompShop";
 import CompProfile from "../Components/GUI/CompProfile";
 import CompOtherScreens from "../Components/GUI/CompOtherScreens";
 import { useNavigate } from "react-router-dom";
-import { useWebSocket } from "../WebSocketContext";
 import "./CSS/ShopScreen.css";
-
+import { GameContext } from "../GameContainer";
 import AdinPlayAd from "../AdinPlayAd";
 
-function ShopScreen({
-  addAnimal,
-  itemsData,
-  setItemsData,
-  animalsInfo,
-  updateAnimalsInfo,
-  deluxePermit,
-  exoticPermit,
-  getUpgrades,
-  getUser,
-  getBal,
-  updateBalance,
-  getXP,
-  level,
-  setLoginBox,
-  updateUpgrades,
-}) {
+function ShopScreen() {
   const navigate = useNavigate();
   if (localStorage.getItem("token") === null) {
     // no auth token present
     navigate("/");
   }
+  const { itemsData, setItemsData } = useContext(GameContext)
 
   useEffect(() => {
     sessionStorage.setItem("equipped", "");
@@ -49,13 +33,6 @@ function ShopScreen({
   }, [itemsData]);
 
   // pass each screen this. they will use it and assign it to their building/path buttons
-  const switchScreen = () => {
-    sessionStorage.setItem("equipped", "");
-  };
-
-  const getAnimals = () => {
-    if (animalsInfo) return animalsInfo;
-  };
 
   const updateInventory = (itemName, quantity, preventAnimate) => {
     setItemsData((prevItems) => {
@@ -91,15 +68,11 @@ function ShopScreen({
         }}
       >
         <div style={{ width: "70vw" }}>
-          <CompOtherScreens switchScreen={switchScreen} current={"shop"} />
+          <CompOtherScreens />
         </div>
         <div style={{ width: "30vw" }}>
           <CompProfile
-            setLoginBox={setLoginBox}
             type={"short"}
-            getBal={getBal}
-            getUser={getUser}
-            getXP={getXP}
           />
         </div>
       </div>
@@ -112,17 +85,7 @@ function ShopScreen({
         }}
       >
         <CompShop
-          addAnimal={addAnimal}
-          level={level}
-          getXP={getXP}
-          getAnimals={getAnimals}
-          updateUpgrades={updateUpgrades}
-          getUpgrades={getUpgrades}
           updateInventory={updateInventory}
-          permits={{ deluxePermit: deluxePermit, exoticPermit: exoticPermit }}
-          updateBalance={updateBalance}
-          getBal={getBal}
-          updateAnimalsInfo={updateAnimalsInfo}
           items={items}
         />
         <div className="shop-ad-box">

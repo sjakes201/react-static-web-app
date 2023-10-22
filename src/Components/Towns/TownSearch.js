@@ -1,19 +1,17 @@
 import { useWebSocket } from "../../WebSocketContext";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./TownSearch.css";
 import TOWNSINFO from "../../TOWNSINFO";
 import TownInterface from "./TownInterface";
 import { calcTownLevel, calcPerkLevels } from "../../townHelpers.js";
+import { GameContext } from "../../GameContainer";
 
 function TownSearch({
-  updateXP,
-  updateBalance,
-  playerInTown,
-  reloadTownPerks,
   setScreen,
   setTown,
 }) {
   const { waitForServerResponse } = useWebSocket();
+  const { updateBalance, updateXP, reloadTownPerks, myTownName} = useContext(GameContext)
 
   const [towns, setTowns] = useState([]);
   const [viewingTown, setViewingTown] = useState("");
@@ -187,10 +185,10 @@ function TownSearch({
           onClick={fetchTowns}
         />
         <div
-          className={`${!playerInTown ? "createTownButton" : "disabledCreateButton"
+          className={`${!(myTownName && myTownName !== "") ? "createTownButton" : "disabledCreateButton"
             }`}
           onClick={() => {
-            if (!playerInTown) setCreateTown(true);
+            if (!(myTownName && myTownName !== "")) setCreateTown(true);
           }}
         >
           Create town

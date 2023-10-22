@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import CompLeaderboard from "../Components/Leaderboard/CompLeaderboard";
 import "./CSS/LeaderboardScreen.css";
 import { useNavigate, useLocation } from "react-router-dom";
+import { GameContext } from "../GameContainer";
 
-function LeaderboardScreen({
-  refreshLeaderboard,
-  leaderboardData,
-  Username,
-  userAlltimeTotals,
-}) {
+function LeaderboardScreen() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { refreshLeaderboard, leaderboardData } = useContext(GameContext)
 
   useEffect(() => {
     refreshLeaderboard();
@@ -71,8 +68,6 @@ function LeaderboardScreen({
         </div>
         <div className="leaderboard-container">
           <CompLeaderboard
-            Username={Username}
-            userAlltimeTotals={userAlltimeTotals}
             type={type}
             leadersWeekly={leaderboardData.temp || {}}
             leadersAll={leaderboardData.all || {}}

@@ -1,17 +1,9 @@
-import CONSTANTS from "../../CONSTANTS";
-import UPGRADES from "../../UPGRADES";
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import AnimalCard from "./AnimalCard";
+import { GameContext } from "../../GameContainer";
 
-function AnimalManagement({
-  setAnimalsInfo,
-  coop,
-  setCoop,
-  barn,
-  setBarn,
-  setManager,
-  capacities,
-}) {
+function AnimalManagement({ setManager }) {
+  const { setAnimalsInfo, coop, setCoop, barn, setBarn, capacities } = useContext(GameContext)
   return (
     <div
       style={{
@@ -102,12 +94,7 @@ function AnimalManagement({
             {barn.map((animal, index) => {
               return (
                 <AnimalCard
-                  key={index}
-                  setAnimalsInfo={setAnimalsInfo}
                   animal={animal}
-                  coop={coop}
-                  setCoop={setCoop}
-                  setBarn={setBarn}
                 />
               );
             })}
@@ -152,12 +139,7 @@ function AnimalManagement({
             {coop.map((animal) => {
               return (
                 <AnimalCard
-                  setAnimalsInfo={setAnimalsInfo}
-                  key={animal.Animal_ID}
                   animal={animal}
-                  coop={coop}
-                  setCoop={setCoop}
-                  setBarn={setBarn}
                 />
               );
             })}

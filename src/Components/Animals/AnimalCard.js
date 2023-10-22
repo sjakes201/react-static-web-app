@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import ANIMALINFO from "../../ANIMALINFO";
 import { useWebSocket } from "../../WebSocketContext";
+import { GameContext } from "../../GameContainer";
 
-function AnimalCard({ setAnimalsInfo, animal, coop, setCoop, setBarn }) {
+function AnimalCard({ animal }) {
   const { waitForServerResponse } = useWebSocket();
+  const { setBarn, setCoop, coop, setAnimalsInfo } = useContext(GameContext)
 
   const type = animal.Animal_type;
   const Animal_ID = animal.Animal_ID;
@@ -298,13 +300,12 @@ function AnimalCard({ setAnimalsInfo, animal, coop, setCoop, setBarn }) {
                     <img
                       src={`${process.env.PUBLIC_URL}/assets/images/${name}.png`}
                       style={{
-                        width: `${
-                          100 / ANIMALINFO.foodPreferences?.[type].like.length >
+                        width: `${100 / ANIMALINFO.foodPreferences?.[type].like.length >
                           50
-                            ? 50
-                            : 100 /
-                              ANIMALINFO.foodPreferences?.[type].like.length
-                        }%`,
+                          ? 50
+                          : 100 /
+                          ANIMALINFO.foodPreferences?.[type].like.length
+                          }%`,
                       }}
                     />
                   );
@@ -326,14 +327,13 @@ function AnimalCard({ setAnimalsInfo, animal, coop, setCoop, setBarn }) {
                     <img
                       src={`${process.env.PUBLIC_URL}/assets/images/${name}.png`}
                       style={{
-                        width: `${
-                          100 /
-                            ANIMALINFO.foodPreferences?.[type].dislike.length >
+                        width: `${100 /
+                          ANIMALINFO.foodPreferences?.[type].dislike.length >
                           50
-                            ? 50
-                            : 100 /
-                              ANIMALINFO.foodPreferences?.[type].dislike.length
-                        }%`,
+                          ? 50
+                          : 100 /
+                          ANIMALINFO.foodPreferences?.[type].dislike.length
+                          }%`,
                       }}
                     />
                   );

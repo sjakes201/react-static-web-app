@@ -1,9 +1,9 @@
 import MACHINESINFO from "../../MACHINESINFO";
 import "../CSS/MachineUnit.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { GameContext } from "../../GameContainer";
 
 function MachineUnit({
-  setItemsData,
   items,
   machineNum,
   machineInfo,
@@ -13,10 +13,11 @@ function MachineUnit({
   cancelMachine,
   sellMachine,
 }) {
+  const { setItemsData } = useContext(GameContext);
   // total info is constants machine type info
   let totalInfo =
     MACHINESINFO[
-      `${MACHINESINFO.machineTypeFromIDS[machineInfo.ID]}MachineInfo`
+    `${MACHINESINFO.machineTypeFromIDS[machineInfo.ID]}MachineInfo`
     ];
   let tierInfo = totalInfo?.[`tier${machineInfo.level}`];
 
@@ -107,9 +108,8 @@ function MachineUnit({
     if ([0, 1, 2].includes(typeID)) {
       return (
         <img
-          src={`${process.env.PUBLIC_URL}/assets/images/machines/${
-            MACHINESINFO.machineTypeFromIDS[typeID]
-          }_t${level}_${isRunning ? "running" : "idle"}.png`}
+          src={`${process.env.PUBLIC_URL}/assets/images/machines/${MACHINESINFO.machineTypeFromIDS[typeID]
+            }_t${level}_${isRunning ? "running" : "idle"}.png`}
           alt="machine"
           style={{
             width: width,
@@ -180,11 +180,10 @@ function MachineUnit({
         >
           <div style={{ width: "100%", height: "50%", textAlign: "center" }}>
             <img
-              src={`${process.env.PUBLIC_URL}/assets/images/${
-                selectedBuild === ""
-                  ? "EMPTY.png"
-                  : `machines/${selectedBuild}_t1_idle.png`
-              }`}
+              src={`${process.env.PUBLIC_URL}/assets/images/${selectedBuild === ""
+                ? "EMPTY.png"
+                : `machines/${selectedBuild}_t1_idle.png`
+                }`}
               alt="machine"
               style={{
                 height: "100%",
@@ -208,7 +207,7 @@ function MachineUnit({
                   {selectedBuild === ""
                     ? "..."
                     : MACHINESINFO[`${selectedBuild}MachineCost`][`tier1`]
-                        .Money}
+                      .Money}
                 </p>
                 <p className="costRow">
                   <img
@@ -219,7 +218,7 @@ function MachineUnit({
                   {selectedBuild === ""
                     ? "..."
                     : MACHINESINFO[`${selectedBuild}MachineCost`][`tier1`]
-                        .Gears}
+                      .Gears}
                 </p>
               </div>
               <div className="costColumn">
@@ -232,7 +231,7 @@ function MachineUnit({
                   {selectedBuild === ""
                     ? "..."
                     : MACHINESINFO[`${selectedBuild}MachineCost`][`tier1`]
-                        .MetalSheets}
+                      .MetalSheets}
                 </p>
                 <p className="costRow">
                   <img
@@ -243,7 +242,7 @@ function MachineUnit({
                   {selectedBuild === ""
                     ? "..."
                     : MACHINESINFO[`${selectedBuild}MachineCost`][`tier1`]
-                        .Bolts}
+                      .Bolts}
                 </p>
               </div>
             </div>
@@ -472,9 +471,8 @@ function MachineUnit({
           <div className="processingRow">
             {machineInfo.produceReceived}
             <img
-              src={`${process.env.PUBLIC_URL}/assets/images/${
-                MACHINESINFO.machineTypeFromIDS[machineInfo.ID]
-              }Q0.png`}
+              src={`${process.env.PUBLIC_URL}/assets/images/${MACHINESINFO.machineTypeFromIDS[machineInfo.ID]
+                }Q0.png`}
               className="processedIcon"
             />
           </div>
@@ -540,13 +538,12 @@ function MachineUnit({
   function upgradeMenu() {
     let nextTierCosts =
       MACHINESINFO[
-        `${MACHINESINFO.machineTypeFromIDS[machineInfo.ID]}MachineCost`
+      `${MACHINESINFO.machineTypeFromIDS[machineInfo.ID]}MachineCost`
       ]?.[`tier${machineInfo.level + 1}`];
     return (
       <div
-        className={`normalMachineText ${
-          machineRunning ? "isRunningUpgrade" : ""
-        }`}
+        className={`normalMachineText ${machineRunning ? "isRunningUpgrade" : ""
+          }`}
       >
         <div className="machineGUILabel">Upgrade:</div>
         <div style={{ display: "flex", flexDirection: "row" }}>
@@ -589,9 +586,8 @@ function MachineUnit({
           }}
         >
           <button
-            className={`machineButtonD ${
-              machineRunning ? "isRunningUpgrade" : ""
-            }`}
+            className={`machineButtonD ${machineRunning ? "isRunningUpgrade" : ""
+              }`}
           >
             UPGRADE
           </button>

@@ -82,7 +82,7 @@
 }
 
 .broadcastContent {
-    color: rgb(104, 114, 221);
+    color: var(--dirt);
     width: 100%;
     text-align: center;
     font-size: .8vw;

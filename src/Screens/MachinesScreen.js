@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./CSS/MachinesScreen.css";
 import MachineUnit from "../Components/Machines/MachineUnit";
 import CompInventory from "../Components/GUI/CompInventory";
@@ -6,24 +6,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import MACHINESINFO from "../MACHINESINFO";
 import CompProfile from "../Components/GUI/CompProfile";
 import { useWebSocket } from "../WebSocketContext";
-
+import { GameContext } from "../GameContainer";
 import AdinPlayAd from "../AdinPlayAd";
 
-function MachinesScreen({
-  artisanItems,
-  setArtisanItems,
-  itemsData,
-  setItemsData,
-  parts,
-  setParts,
-  machines,
-  setMachines,
-  getBal,
-  updateBalance,
-  getUser,
-  getXP,
-}) {
+function MachinesScreen() {
   const { waitForServerResponse } = useWebSocket();
+  const { itemsData, setItemsData, getBal, updateBalance, getUser, getXP, setParts, parts, artisanItems, setArtisanItems, machines, setMachines } = useContext(GameContext)
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -419,6 +407,35 @@ function MachinesScreen({
     );
   };
 
+  const MachineUnits = () => {
+    const machineUnits = [1, 2, 3, 4, 5, 6]
+
+    return (
+      <>
+        {machineUnits.map((machineNum) => (
+          <div className="machineUnit" key={machineNum}>
+            <MachineUnit
+              items={items}
+              machineNum={machineNum}
+              machineInfo={{
+                ID: machines[`Slot${machineNum}`],
+                level: machines[`Slot${machineNum}Level`],
+                produceReceived: machines[`Slot${machineNum}ProduceReceived`],
+                startTime: machines[`Slot${machineNum}StartTime`],
+              }}
+              sellMachine={sellMachine}
+              cancelMachine={cancelMachine}
+              buyMachine={buyMachine}
+              startMachine={startMachine}
+              collectMachine={collectMachine}
+            />
+          </div>
+        ))}
+      </>
+    );
+  };
+
+
   return (
     <div className="machineScreen">
       {helpGUI && buildHelpGUI()}
@@ -449,11 +466,6 @@ function MachinesScreen({
               <AdinPlayAd placementId="farmgame-live_970x90" />
             </div>
           )}
-          {/* {(window.innerWidth < 1137) &&
-                        <div style={{ position: 'relative', width: '120px', height: '60px', zIndex: '20000' }}>
-                            <AdinPlayAd placementId="XXXXX_placement" />
-                        </div>
-                    } */}
           <img
             src={`${process.env.PUBLIC_URL}/assets/images/questionmark.png`}
             alt="info"
@@ -472,9 +484,6 @@ function MachinesScreen({
             />
             <div className="machinesProfile">
               <CompProfile
-                getBal={getBal}
-                getUser={getUser}
-                getXP={getXP}
                 type={"wide"}
                 disableBorder={true}
                 noPFP={true}
@@ -523,11 +532,10 @@ function MachinesScreen({
             <div className="artisanSelected">
               <img
                 className="partCountImg"
-                src={`${process.env.PUBLIC_URL}/assets/images/${
-                  Object.keys(MACHINESINFO.artisanPrices).includes(selectedGood)
-                    ? selectedGood
-                    : "EMPTY"
-                }.png`}
+                src={`${process.env.PUBLIC_URL}/assets/images/${Object.keys(MACHINESINFO.artisanPrices).includes(selectedGood)
+                  ? selectedGood
+                  : "EMPTY"
+                  }.png`}
                 alt="Selected artisan good"
               />
             </div>
@@ -536,113 +544,105 @@ function MachinesScreen({
             {Object.keys(MACHINESINFO.artisanPrices).includes(selectedGood) && (
               <div className="artisanPricesGrid">
                 <div
-                  className={`artisanPriceSlot ${
-                    selectedGood.includes("Q0") ? "bold" : "notSelected"
-                  }`}
+                  className={`artisanPriceSlot ${selectedGood.includes("Q0") ? "bold" : "notSelected"
+                    }`}
                   id="q0"
                 >
                   <img
                     className="artisanPriceListImg"
-                    src={`${
-                      process.env.PUBLIC_URL
-                    }/assets/images/${selectedGood.substring(
-                      0,
-                      selectedGood.length - 2,
-                    )}Q0.png`}
+                    src={`${process.env.PUBLIC_URL
+                      }/assets/images/${selectedGood.substring(
+                        0,
+                        selectedGood.length - 2,
+                      )}Q0.png`}
                     alt="Selected artisan good"
                   />
                   <span className="artisanTierPrice">
                     $
                     {
                       MACHINESINFO.artisanPrices[
-                        `${selectedGood.substring(
-                          0,
-                          selectedGood.length - 2,
-                        )}Q0`
+                      `${selectedGood.substring(
+                        0,
+                        selectedGood.length - 2,
+                      )}Q0`
                       ]
                     }
                   </span>
                 </div>
                 <div
-                  className={`artisanPriceSlot ${
-                    selectedGood.includes("Q1") ? "bold" : "notSelected"
-                  }`}
+                  className={`artisanPriceSlot ${selectedGood.includes("Q1") ? "bold" : "notSelected"
+                    }`}
                   id="q1"
                 >
                   <img
                     className="artisanPriceListImg"
-                    src={`${
-                      process.env.PUBLIC_URL
-                    }/assets/images/${selectedGood.substring(
-                      0,
-                      selectedGood.length - 2,
-                    )}Q1.png`}
+                    src={`${process.env.PUBLIC_URL
+                      }/assets/images/${selectedGood.substring(
+                        0,
+                        selectedGood.length - 2,
+                      )}Q1.png`}
                     alt="Selected artisan good"
                   />
                   <span className="artisanTierPrice">
                     $
                     {
                       MACHINESINFO.artisanPrices[
-                        `${selectedGood.substring(
-                          0,
-                          selectedGood.length - 2,
-                        )}Q1`
+                      `${selectedGood.substring(
+                        0,
+                        selectedGood.length - 2,
+                      )}Q1`
                       ]
                     }
                   </span>
                 </div>
                 <div
-                  className={`artisanPriceSlot ${
-                    selectedGood.includes("Q2") ? "bold" : "notSelected"
-                  }`}
+                  className={`artisanPriceSlot ${selectedGood.includes("Q2") ? "bold" : "notSelected"
+                    }`}
                   id="q2"
                 >
                   <img
                     className="artisanPriceListImg"
-                    src={`${
-                      process.env.PUBLIC_URL
-                    }/assets/images/${selectedGood.substring(
-                      0,
-                      selectedGood.length - 2,
-                    )}Q2.png`}
+                    src={`${process.env.PUBLIC_URL
+                      }/assets/images/${selectedGood.substring(
+                        0,
+                        selectedGood.length - 2,
+                      )}Q2.png`}
                     alt="Selected artisan good"
                   />
                   <span className="artisanTierPrice">
                     $
                     {
                       MACHINESINFO.artisanPrices[
-                        `${selectedGood.substring(
-                          0,
-                          selectedGood.length - 2,
-                        )}Q2`
+                      `${selectedGood.substring(
+                        0,
+                        selectedGood.length - 2,
+                      )}Q2`
                       ]
                     }
                   </span>
                 </div>
                 <div
-                  className={`artisanPriceSlot ${
-                    selectedGood.includes("Q3") ? "bold" : "notSelected"
-                  }`}
+                  className={`artisanPriceSlot ${selectedGood.includes("Q3") ? "bold" : "notSelected"
+                    }`}
                   id="q3"
                 >
                   <img
                     className="artisanPriceListImg"
-                    src={`${
-                      process.env.PUBLIC_URL
-                    }/assets/images/${selectedGood.substring(
-                      0,
-                      selectedGood.length - 2,
-                    )}Q3.png`}
+                    src={`${process.env.PUBLIC_URL
+                      }/assets/images/${selectedGood.substring(
+                        0,
+                        selectedGood.length - 2,
+                      )}Q3.png`}
                     alt="Selected artisan good"
                   />
                   <span className="artisanTierPrice">
                     $
                     {
                       MACHINESINFO.artisanPrices[
-                        `${selectedGood.substring(
-                          0,
-                          selectedGood.length - 2,
-                        )}Q3`
+                      `${selectedGood.substring(
+                        0,
+                        selectedGood.length - 2,
+                      )}Q3`
                       ]
                     }
                   </span>
@@ -697,120 +697,7 @@ function MachinesScreen({
 
         {Object.keys(machines).length !== 0 && (
           <div id="machineArea">
-            <div className="machineUnit">
-              {" "}
-              <MachineUnit
-                setItemsData={setItemsData}
-                items={items}
-                machineNum={1}
-                machineInfo={{
-                  ID: machines.Slot1,
-                  level: machines.Slot1Level,
-                  produceReceived: machines.Slot1ProduceReceived,
-                  startTime: machines.Slot1StartTime,
-                }}
-                sellMachine={sellMachine}
-                cancelMachine={cancelMachine}
-                buyMachine={buyMachine}
-                startMachine={startMachine}
-                collectMachine={collectMachine}
-              />
-            </div>
-            <div className="machineUnit">
-              {" "}
-              <MachineUnit
-                setItemsData={setItemsData}
-                items={items}
-                machineNum={2}
-                machineInfo={{
-                  ID: machines.Slot2,
-                  level: machines.Slot2Level,
-                  produceReceived: machines.Slot2ProduceReceived,
-                  startTime: machines.Slot2StartTime,
-                }}
-                sellMachine={sellMachine}
-                cancelMachine={cancelMachine}
-                buyMachine={buyMachine}
-                startMachine={startMachine}
-                collectMachine={collectMachine}
-              />
-            </div>
-            <div className="machineUnit">
-              {" "}
-              <MachineUnit
-                setItemsData={setItemsData}
-                items={items}
-                machineNum={3}
-                machineInfo={{
-                  ID: machines.Slot3,
-                  level: machines.Slot3Level,
-                  produceReceived: machines.Slot3ProduceReceived,
-                  startTime: machines.Slot3StartTime,
-                }}
-                sellMachine={sellMachine}
-                cancelMachine={cancelMachine}
-                buyMachine={buyMachine}
-                startMachine={startMachine}
-                collectMachine={collectMachine}
-              />
-            </div>
-            <div className="machineUnit">
-              {" "}
-              <MachineUnit
-                setItemsData={setItemsData}
-                items={items}
-                machineNum={4}
-                machineInfo={{
-                  ID: machines.Slot4,
-                  level: machines.Slot4Level,
-                  produceReceived: machines.Slot4ProduceReceived,
-                  startTime: machines.Slot4StartTime,
-                }}
-                sellMachine={sellMachine}
-                cancelMachine={cancelMachine}
-                buyMachine={buyMachine}
-                startMachine={startMachine}
-                collectMachine={collectMachine}
-              />
-            </div>
-            <div className="machineUnit">
-              {" "}
-              <MachineUnit
-                setItemsData={setItemsData}
-                items={items}
-                machineNum={5}
-                machineInfo={{
-                  ID: machines.Slot5,
-                  level: machines.Slot5Level,
-                  produceReceived: machines.Slot5ProduceReceived,
-                  startTime: machines.Slot5StartTime,
-                }}
-                sellMachine={sellMachine}
-                cancelMachine={cancelMachine}
-                buyMachine={buyMachine}
-                startMachine={startMachine}
-                collectMachine={collectMachine}
-              />
-            </div>
-            <div className="machineUnit">
-              {" "}
-              <MachineUnit
-                setItemsData={setItemsData}
-                items={items}
-                machineNum={6}
-                machineInfo={{
-                  ID: machines.Slot6,
-                  level: machines.Slot6Level,
-                  produceReceived: machines.Slot6ProduceReceived,
-                  startTime: machines.Slot6StartTime,
-                }}
-                sellMachine={sellMachine}
-                cancelMachine={cancelMachine}
-                buyMachine={buyMachine}
-                startMachine={startMachine}
-                collectMachine={collectMachine}
-              />
-            </div>
+            {MachineUnits()}
           </div>
         )}
       </div>

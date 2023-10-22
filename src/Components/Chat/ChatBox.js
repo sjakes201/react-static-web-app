@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./ChatBox.css";
 import Draggable from "react-draggable";
 import { useWebSocket } from "../../WebSocketContext";
 import { useNavigate, useLocation } from "react-router-dom";
+import { GameContext } from "../../GameContainer";
 
-// chatType is string "TOWN", targetName is string for who you are chatting with (townname if town)
-function ChatBox({
-  setMsgNotification,
-  chatType,
-  targetName,
-  closeMethod,
-  chatMessages,
-}) {
+function ChatBox({ chatMessages }) {
   const { waitForServerResponse } = useWebSocket();
+  const { setMsgNotification, myTownName, setTownChatBox } = useContext(GameContext)
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -48,13 +43,11 @@ function ChatBox({
 
   const sendMessage = async () => {
     if (waitForServerResponse) {
-      if (chatType === "TOWN") {
-        let msgResult = await waitForServerResponse("createTownMessage", {
-          messageContent: newMessage,
-        });
-        if (msgResult.body.messageContent) {
-          setNewMessage("");
-        }
+      let msgResult = await waitForServerResponse("createTownMessage", {
+        messageContent: newMessage,
+      });
+      if (msgResult.body.messageContent) {
+        setNewMessage("");
       }
     }
   };
@@ -63,7 +56,7 @@ function ChatBox({
     if (userWhoSent === 'Server') {
       return (
         <div className='msgBubble'>
-          <p className='broadcastContent'><i>{text}</i></p>
+          <p className='broadcastContent'>{<i>{text}</i>}</p>
         </div>
       );
     }
@@ -94,13 +87,13 @@ function ChatBox({
     <Draggable handle=".chatTabBar">
       <div className="chatContainer">
         <div className="chatTabBar">
-          <p>{targetName} chat</p>
-          <p id="chatx" onClick={closeMethod}>
+          <p>{myTownName ? myTownName : 'Town'} chat</p>
+          <p id="chatx" onClick={() => setTownChatBox(false)}>
             X
           </p>
         </div>
         <div className="messageBox">
-          {chatMessages.map((txt) => msgBubble(txt.content, txt.Username))}
+          {myTownName === "" ? <i>Not currently in a town</i> : chatMessages.map((txt) => msgBubble(txt.content, txt.Username))}
         </div>
         <div className="newMessageBox">
           <textarea

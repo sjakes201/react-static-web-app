@@ -1,7 +1,10 @@
 import CONSTANTS from "../../CONSTANTS";
 import "../CSS/NotificationBox.css";
+import React, { useContext } from 'react'
+import { GameContext } from "../../GameContainer";
 
-function NotificationBox({ close, contents }) {
+function NotificationBox() {
+  const { setNotificationBox, unlockContents } = useContext(GameContext)
   const unlocks = (unlocksArray) => {
     return (
       <div className="unlocksNotification">
@@ -55,10 +58,10 @@ function NotificationBox({ close, contents }) {
 
   return (
     <div className="notificationBox">
-      <span className="closeNotification" onClick={close}>
+      <span className="closeNotification" onClick={() => setNotificationBox(false)}>
         X
       </span>
-      {unlocks(contents)}
+      {unlocks(unlockContents)}
     </div>
   );
 }

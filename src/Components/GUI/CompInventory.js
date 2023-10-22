@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import "../CSS/CompInventory.css";
 import CONSTANTS from "../../CONSTANTS";
 import ANIMALINFO from "../../ANIMALINFO";
+import { GameContext } from "../../GameContainer";
 
 const MULTIPLANTLEVEL = 20;
 const MULTIHARVESTLEVEL = 20;
 
 function CompInventory({
-  level,
   tool,
   setTool,
   fertilizers,
@@ -22,6 +22,7 @@ function CompInventory({
   equippedFert,
 }) {
   //Tooltip code
+  const { level } = useContext(GameContext)
   const [tip1, setTip1] = useState(false);
   const [tip2, setTip2] = useState(false);
 
@@ -234,9 +235,8 @@ function CompInventory({
     return (
       <div className="inventory-container">
         <div
-          className={`inventorySlots ${
-            showBottomBar ? "showBottomBar" : "noBottomBar"
-          }`}
+          className={`inventorySlots ${showBottomBar ? "showBottomBar" : "noBottomBar"
+            }`}
         >
           {items && (
             <div id="display" className="items-grid">
@@ -319,9 +319,8 @@ function CompInventory({
   return (
     <div className={`inventory-container`}>
       <div
-        className={`inventorySlots ${
-          showBottomBar ? "showBottomBar" : "noBottomBar"
-        }`}
+        className={`inventorySlots ${showBottomBar ? "showBottomBar" : "noBottomBar"
+          }`}
       >
         <div className="selected-item-info">
           <img src={selectedItem.image} alt={selectedItem.name} />
@@ -333,9 +332,8 @@ function CompInventory({
             <div className="toolSelect">
               {tool !== "multiharvest" && (
                 <div
-                  className={`toolIcon${
-                    level < MULTIHARVESTLEVEL ? "Disabled" : ""
-                  }`}
+                  className={`toolIcon${level < MULTIHARVESTLEVEL ? "Disabled" : ""
+                    }`}
                 >
                   <img
                     src={`${process.env.PUBLIC_URL}/assets/images/multiharvest.png`}
@@ -365,9 +363,8 @@ function CompInventory({
               )}
               {tool !== "multiplant" && (
                 <div
-                  className={`toolIcon${
-                    level < MULTIHARVESTLEVEL ? "Disabled" : ""
-                  }`}
+                  className={`toolIcon${level < MULTIHARVESTLEVEL ? "Disabled" : ""
+                    }`}
                 >
                   <img
                     src={`${process.env.PUBLIC_URL}/assets/images/multiplant.png`}

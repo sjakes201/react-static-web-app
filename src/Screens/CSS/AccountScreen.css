@@ -6,7 +6,8 @@
     align-items: center;
     background-color: var(--menu_light);
     position: absolute;
-
+    font-size: 1vw;
+    
     /* width */
     ::-webkit-scrollbar {
         width: 10px;
@@ -73,18 +74,32 @@
 
 
 #acc-pfp {
-    width: 25%;
+    width: 10%;
     height: 80%;
     object-fit: contain;
+    margin-left: 5%;
 }
 
 .acc-user-info {
     width: 20%;
-    padding: 2%;
+    padding: 2% 2% 2% 0;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
+}
+
+.acc-user-town-info {
+    width: 20%;
+    padding: 2% 2% 2% 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+#town-info-icon {
+    width: 6.5%;
 }
 
 .acc-poke-info {
@@ -96,7 +111,7 @@
 }
 
 .acc-poke-info > img {
-    width: 4vw;
+    height: 8vh;
     object-fit: contain;
     margin-right: -.7vw;
 }
@@ -112,6 +127,15 @@
 .acc-poke-info > p {
     margin-right: 2px;
     margin-top: 5px;
+}
+
+#noTown {
+    opacity: 0.6;
+}
+
+#townLink {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 #acc-username {

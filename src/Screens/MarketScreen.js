@@ -4,26 +4,16 @@ import CompMarket from "../Components/Market/CompMarket";
 import CompOtherScreen from "../Components/GUI/CompOtherScreens";
 import CompInventory from "../Components/GUI/CompInventory";
 import CompMarketSelection from "../Components/Market/CompMarketSelection";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { GameContext } from "../GameContainer";
 import { useWebSocket } from "../WebSocketContext";
 
 import AdinPlayAd from "../AdinPlayAd";
 
-function MarketScreen({
-  msgNotification,
-  setTownChatBox,
-  itemsData,
-  setItemsData,
-  prices,
-  getUser,
-  getBal,
-  updateBalance,
-  getXP,
-  setLoginBox,
-}) {
+function MarketScreen() {
   const { waitForServerResponse } = useWebSocket();
+  const { updateBalance, itemsData, setItemsData, prices } = useContext(GameContext)
 
   const navigate = useNavigate();
   if (localStorage.getItem("token") === null) {
@@ -126,11 +116,7 @@ function MarketScreen({
     <div className="market-container">
       <div className="market-left">
         <div id="market-other-screens">
-          <CompOtherScreen
-            msgNotification={msgNotification}
-            setTownChatBox={setTownChatBox}
-            current={"market"}
-          />
+          <CompOtherScreen />
         </div>
         <div className="mainMarketContainer">
           <div className="ad-box-style">
@@ -152,13 +138,7 @@ function MarketScreen({
 
       <div className="market-right">
         <div className="market-profile">
-          <CompProfile
-            setLoginBox={setLoginBox}
-            type="wide"
-            getBal={getBal}
-            getUser={getUser}
-            getXP={getXP}
-          />
+          <CompProfile type="wide" />
         </div>
         <div className="market-select-info">
           <CompMarketSelection

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import CompTile from "./CompTile";
 import CONSTANTS from "../../CONSTANTS";
 import CROPINFO from "../../CROPINFO";
@@ -6,25 +6,20 @@ import UPGRADES from "../../UPGRADES";
 import { useNavigate } from "react-router-dom";
 import { useWebSocket } from "../../WebSocketContext";
 import TOWNSINFO from "../../TOWNSINFO";
+import { GameContext } from "../../GameContainer";
 
 function CompPlot({
-  setParts,
-  townPerks,
-  tiles,
-  setTiles,
   tool,
   setFertilizers,
   fertilizers,
   equippedFert,
   setEquippedFert,
-  getUpgrades,
   updateInventory,
-  updateXP,
-  getXP,
   setOrderNotice,
   items,
 }) {
   const { waitForServerResponse } = useWebSocket();
+  const { townPerks, tiles, setTiles, updateXP, getXP, getUpgrades, setParts } = useContext(GameContext)
 
   const [growthTable, setGrowthTable] = useState("");
   const [numHarvestTable, setNumHarvestTable] = useState("NumHarvests0");
@@ -384,7 +379,6 @@ function CompPlot({
           );
           let finished = data.finishedOrder;
           if (finished) {
-            // setOrderNotice(false);
             setOrderNotice(true);
             if (orderTimer !== null) {
               clearTimeout(orderTimer);
