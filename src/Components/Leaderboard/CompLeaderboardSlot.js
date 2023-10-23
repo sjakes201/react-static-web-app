@@ -76,16 +76,16 @@ function CompLeaderboardSlot({ Username, item, data, userAlltimeTotals }) {
           <sup>{ordinalSuffix(place)} </sup>
         </span>
         <span
-          style={username ? nameLink : {}}
+          style={username?.includes("#") ? {} : nameLink}
           onClick={() => {
-            if (username) {
+            if (!username?.includes("#")) {
               navigate(`/profile/${username}`, {
                 state: { from: "leaderboard" },
               });
             }
           }}
         >
-          {username === "" ? "Guest" : username}
+          {username?.includes("#") ? "Guest" : username}
         </span>
         : {(item === "Balance" ? "$" : "" )}{count?.toLocaleString()}
       </p>

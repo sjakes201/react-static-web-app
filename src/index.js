@@ -2,6 +2,7 @@ import ReactDOM from "react-dom/client";
 import ReactGA from "react-ga";
 import { BrowserRouter as Router } from "react-router-dom";
 import "./reset.css";
+import "./common.css"
 import { CreateGameContainer } from "./GameContainer";
 import { WebSocketProvider } from "./WebSocketContext"; // Make sure the path is correct
 import React from "react";

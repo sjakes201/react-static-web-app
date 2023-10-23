@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./CSS/AccountScreen.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useWebSocket } from "../WebSocketContext";
 import { useParams } from "react-router-dom";
+import { GameContext } from "../GameContainer";
+import PfpSelection from "../Components/Account/PfpSelection";
 
 import CONSTANTS from "../CONSTANTS";
 
@@ -11,15 +13,20 @@ const DISCORD_REDIRECT =
 
 function AccountScreen() {
   let { username } = useParams();
-  const location = useLocation();
-
   // # is for fragments in URL so we need to change # to - just for url username param. - and # are not allowed in chosen usernames
   username = username.replace(/-/g, "#");
+
+  const location = useLocation();
+  const { getUser } = useContext(GameContext);
+
 
   const { waitForServerResponse } = useWebSocket();
   const navigate = useNavigate();
 
   const [profileData, setProfileData] = useState({});
+  const [pfpName, setPfpName] = useState("reg_maroon");
+
+  const [pfpMenu, setPfpMenu] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,6 +35,9 @@ function AccountScreen() {
           targetUser: username,
         });
         setProfileData(response.body);
+        if (response?.body?.profilePic) {
+          setPfpName(response.body.profilePic)
+        }
       }
     };
     fetchData();
@@ -104,14 +114,28 @@ function AccountScreen() {
   return (
     <div className="acc-screen">
       {backArrow()}
+      {pfpMenu && <PfpSelection close={() => setPfpMenu(false)} setPfpName={setPfpName} />}
       {
         <div className="acc-container">
           <div className="acc-row" id="acc-profile">
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/images/HIGHRESHOMIE.png`}
-              id="acc-pfp"
-              alt="profile pic"
-            />
+            <div
+              className={`profile-pic-container ${getUser() === username ? 'clickable' : ''}`}
+              onClick={() => setPfpMenu(getUser() === username)}
+            >
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/images/profilePics/${pfpName}.png`}
+                alt="profile pic"
+                draggable={false}
+                id='pfp-img'
+              />
+              {getUser() === username &&
+                <img
+                  id='pfp-switch-icon'
+                  src={`${process.env.PUBLIC_URL}/assets/images/Gears.png`}
+                />
+              }
+
+            </div>
 
             <div className="acc-user-info">
               <h3 id="acc-username">{profileData?.username}</h3>
@@ -120,6 +144,7 @@ function AccountScreen() {
             </div>
 
             <img
+              draggable={false}
               id='town-info-icon'
               src={`${process.env.PUBLIC_URL}/assets/images/townButton2.png`}
               onClick={() => {
@@ -154,6 +179,7 @@ function AccountScreen() {
             </div>
             <div className="acc-poke-info">
               <img
+                draggable={false}
                 src={
                   activePoke
                     ? `${process.env.PUBLIC_URL}/assets/images/duck_walking_right.gif`

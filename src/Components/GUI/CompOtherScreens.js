@@ -72,7 +72,7 @@ function CompOtherScreens() {
   useEffect(() => {
     createButtons();
   }, []);
-  //setTownChatBox
+
   return (
     <div className="buttons-container bottom-bar">
       {otherScreens}

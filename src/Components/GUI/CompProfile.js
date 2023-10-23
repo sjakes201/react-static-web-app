@@ -13,7 +13,7 @@ function CompProfile({
 }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { getBal, getXP, getUser, setLoginBox, setOrderBoard } = useContext(GameContext)
+  const { getBal, getXP, getUser, setLoginBox, setOrderBoard, profilePic } = useContext(GameContext)
 
   const [bal, setBal] = useState(0);
   const [user, setUser] = useState("");
@@ -173,7 +173,7 @@ function CompProfile({
         {noPFP !== true && (
           <div className="pfp">
             <img
-              src={`${process.env.PUBLIC_URL}/assets/images/homie.png`}
+              src={`${process.env.PUBLIC_URL}/assets/images/profilePics/${profilePic}.png`}
               alt="homie"
             />
           </div>

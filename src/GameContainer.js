@@ -42,6 +42,7 @@ function GameContainer() {
   const [Username, setUsername] = useState("");
   const [upgrades, setUpgrades] = useState({});
   const [level, setLevel] = useState(0);
+  const [profilePic, setProfilePic] = useState("reg_maroon");
 
   const [capacities, setCapacities] = useState({
     barnCapacity: 0,
@@ -126,8 +127,11 @@ function GameContainer() {
       }
 
       if (waitForServerResponse) {
-        const response = await waitForServerResponse("profileInfo");
+        const response = await waitForServerResponse("profileInfo", { oStamp: (new Date()).getTimezoneOffset() });
         let data = response.body;
+        if(response.body.profilePic) {
+          setProfilePic(response.body.profilePic)
+        }
         setBalance(data.Balance);
         setXP(data.XP);
         setUsername(data.Username);
@@ -460,7 +464,9 @@ function GameContainer() {
     setMachines,
     machines,
     artisanItems,
-    setArtisanItems
+    setArtisanItems,
+    profilePic,
+    setProfilePic
   }
 
   if (!isConnected) {

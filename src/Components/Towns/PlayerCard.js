@@ -22,8 +22,6 @@ function PlayerCard({
   const [promoteConfirm, setPromoteConfirm] = useState(false);
   const promoteTimer = useRef(null);
 
-  const [hover, setHover] = useState(false);
-
   const [moreButton, setMoreButton] = useState(false);
 
   useEffect(() => {
@@ -90,12 +88,11 @@ function PlayerCard({
   const playerInfoCard = () => {
     return (
       <div
-        className={`playerMoreInfo ${hover ? "onTop" : ""}`}
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
+        className={`playerMoreInfo`}
+        onMouseLeave={() => setMoreButton(false)}
       >
-        <span className="playerMoreX" onClick={() => setMoreButton(false)}>
-          X
+        <span className="playerMoreX">
+          -
         </span>
         <div className="individualContributions">
           {Object.keys(contributions).map((good, index) => {
@@ -138,7 +135,7 @@ function PlayerCard({
           </div>
         )}
         {contributedTownXP !== undefined &&
-          (<p className='contributedTownXP'>{contributedTownXP} contributed town xp</p>)
+          (<p className='contributedTownXP'>{contributedTownXP?.toLocaleString()} contributed town xp</p>)
         }
       </div>
     );
@@ -178,8 +175,8 @@ function PlayerCard({
       {myRoleID && (
         <div
           className="playerMoreButton"
-          onClick={() => {
-            if (!moreButton) setMoreButton((old) => !old);
+          onMouseEnter={() => {
+            setMoreButton(true);
           }}
         >
           <div className="buttonBar"></div>

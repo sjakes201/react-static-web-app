@@ -406,6 +406,7 @@ function TownInterface({
               myRoleID={townInfo.myRoleID}
               managementAction={managementAction}
               contributedTownXP={player.contributedTownXP}
+              pfpName={player.pfpName}
             />
           </div>
         ))}

@@ -1,0 +1,53 @@
+.pfp-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2%;
+    padding: 2%;
+    width: 60vw;
+    height: 65vh;
+    overflow-y: auto;
+    background-color: var(--menu_lightest);
+}
+
+.pfp-item {
+    width: 100%;
+    height: 20vh;
+    box-sizing: border-box;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 8px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.pfp-item>img {
+    max-width: 100%;
+    object-fit: contain;
+    height: 80%;
+}
+
+.pfp-item>p {
+    margin-top: 1vh;
+    color: rgb(129, 129, 129);
+    font-size: .6vw;
+    text-align: center;
+}
+
+.not-unlocked {
+    opacity: 0.5;
+    filter: grayscale(1)
+}
+
+.unlocked {
+    cursor: pointer;
+}
+
+.unlocked:hover {
+    transform: scale(1.02);
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+    transition: transform 100ms;
+}
