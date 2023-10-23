@@ -24,7 +24,7 @@ function CompItem({
 }) {
   const { waitForServerResponse } = useWebSocket();
 
-  const [gif, setGif] = useState({ 1: null, 5: null, 25: null });
+  const [gif, setGif] = useState({ 1: null, 5: null, 30: null });
   const [gifKey, setGifKey] = useState(0);
   const [itemInfo, setItemInfo] = useState(false);
 
@@ -205,7 +205,6 @@ function CompItem({
                 className="gif"
               />
             )}
-            {/* <small>${cost || 'COST'}</small> */}
           </div>
           <div className="buyButton">
             <button onClick={() => handleClick(5)}>x5</button>
@@ -216,18 +215,16 @@ function CompItem({
                 className="gif"
               />
             )}
-            {/* <small>${(5 * cost) || 'COST'}</small> */}
           </div>
           <div className="buyButton">
-            <button onClick={() => handleClick(25)}>x25</button>
-            {gif[25] && (
+            <button onClick={() => handleClick(30)}>x30</button>
+            {gif[30] && (
               <img
                 key={gifKey}
-                src={`${process.env.PUBLIC_URL}/assets/images/${gif[25]}.gif`}
+                src={`${process.env.PUBLIC_URL}/assets/images/${gif[30]}.gif`}
                 className="gif"
               />
             )}
-            {/* <small>${(25 * cost) || 'COST'}</small> */}
           </div>
         </div>
       </div>
