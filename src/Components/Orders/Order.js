@@ -12,9 +12,9 @@ function Order({
   refreshable,
 }) {
   const goldReward = Math.floor(
-    CONSTANTS.Init_Market_Prices[good] * (2 / 3) * numNeeded,
+    CONSTANTS.Init_Market_Prices[good] * (3 / 2) * numNeeded,
   );
-  const xpReward = Math.floor(CONSTANTS.XP[good] * (2 / 3) * numNeeded);
+  const xpReward = Math.floor(CONSTANTS.XP[good] * numNeeded);
 
   const [progressWidth, setProgressWidth] = useState("40%");
   const [progressHeight, setProgressHeight] = useState("60%");
@@ -217,9 +217,8 @@ function Order({
           >
             {itemsData[good] < numNeeded && (
               <img
-                src={`${process.env.PUBLIC_URL}/assets/images/${
-                  refreshable ? "refresh" : "refresh_disabled"
-                }.png`}
+                src={`${process.env.PUBLIC_URL}/assets/images/${refreshable ? "refresh" : "refresh_disabled"
+                  }.png`}
                 style={{
                   cursor: refreshable ? "pointer" : "default",
                   width: "100%",

@@ -147,7 +147,7 @@ function InitLoading({ setDoneLoading }) {
 
   setTimeout(() => {
     setTimePassed(true);
-  }, 800);
+  }, 500);
 
   useEffect(() => {
     checkAuth();

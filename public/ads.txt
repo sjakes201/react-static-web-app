@@ -1,5 +1,5 @@
 ##################################
-# AdinPlay.com ads.txt - 2023-10-19
+# AdinPlay.com ads.txt - 2023-10-26
 ##################################
 
 OWNERDOMAIN=farmgame.live
@@ -768,6 +768,23 @@ appnexus.com, 3153, RESELLER, f5ab79cb980f11d1
 #media.net_serverside_displayvideo
 media.net, 8CUV34PJ4, DIRECT
 sharethrough.com, koRtppYA, RESELLER, d53b998a7bd4ecd2
+video.unrulymedia.com, 699546687, RESELLER
+lijit.com, 264726, RESELLER, fafdf38b16bf6b2b
+onetag.com, 765b4e6bb9c8438, RESELLER
+amxrtb.com, 105199663, RESELLER
+yieldmo.com, 2954622693783052507, RESELLER
+loopme.com, 11556, RESELLER, 6c8d5f95897a5a3b
+Contextweb.com, 562963, RESELLER, 89ff185a4c4e857c
+zeta.com, 591, RESELLER
+disqus.com, 591, RESELLER
+admanmedia.com, 953, RESELLER
+smartadserver.com, 4106, RESELLER, 060d053dcf45cbf3
+imds.tv, 82302, RESELLER, ae6c32151e71f19d
+improvedigital.com, 2073, RESELLER
+betweendigital.com, 44808, RESELLER
+adyoulike.com, 53264963677efeda057eef7db2cb305f, RESELLER
+freewheel.tv,1577878,RESELLER
+freewheel.tv,1577888,RESELLER
 
 #AdaptMX
 
@@ -880,5 +897,5 @@ indexexchange.com, 206233, RESELLER, 50b1c356f2c5c8fc
 themediagrid.com, 1J3ZI6, DIRECT, 35d5010d7789b49d
 
 ##################################
-# AdinPlay.com ads.txt - 2023-10-19
+# AdinPlay.com ads.txt - 2023-10-26
 ##################################
