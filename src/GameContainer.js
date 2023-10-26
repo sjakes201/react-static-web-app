@@ -108,28 +108,31 @@ function GameContainer() {
     }
   };
 
+  const getTiles = async () => {
+    if (waitForServerResponse) {
+      const response = await waitForServerResponse("tilesAll");
+      let dbTiles = response.body;
+      let updatedTiles = dbTiles.map((tile) => {
+        let hasTimeFertilizer = tile.TimeFertilizer !== -1;
+        let stage = getStage(tile.PlantTime, tile.CropID, hasTimeFertilizer);
+        return {
+          ...tile,
+          stage: stage,
+          hasTimeFertilizer: hasTimeFertilizer,
+          highlighted: false,
+        };
+      });
+      setTiles(updatedTiles);
+    }
+  }
+
   useEffect(() => {
     let fetchData = async () => {
-      if (waitForServerResponse) {
-        const response = await waitForServerResponse("tilesAll");
-        let dbTiles = response.body;
-        let updatedTiles = dbTiles.map((tile) => {
-          let hasTimeFertilizer = tile.TimeFertilizer !== -1;
-          let stage = getStage(tile.PlantTime, tile.CropID, hasTimeFertilizer);
-          return {
-            ...tile,
-            stage: stage,
-            hasTimeFertilizer: hasTimeFertilizer,
-            highlighted: false,
-          };
-        });
-        setTiles(updatedTiles);
-      }
 
       if (waitForServerResponse) {
         const response = await waitForServerResponse("profileInfo", { oStamp: (new Date()).getTimezoneOffset() });
         let data = response.body;
-        if(response.body.profilePic) {
+        if (response.body.profilePic) {
           setProfilePic(response.body.profilePic)
         }
         setBalance(data.Balance);
@@ -197,7 +200,8 @@ function GameContainer() {
     fetchData();
     getTownMessages();
     refreshLeaderboard();
-    reloadTownPerks()
+    reloadTownPerks();
+    getTiles();
 
     const handleNewMsg = (content, timestamp, Username, messageID) => {
       setTownChatMsgs((old) => {
@@ -434,14 +438,10 @@ function GameContainer() {
     getUpgrades,
     parts,
     setParts,
-    itemsData,
-    setItemsData,
     getBal,
     getUser,
-    updateBalance,
     setLoginBox,
     level,
-    setLoginBox,
     setOrderBoard,
     barn,
     coop,
@@ -466,7 +466,8 @@ function GameContainer() {
     artisanItems,
     setArtisanItems,
     profilePic,
-    setProfilePic
+    setProfilePic,
+    getTiles
   }
 
   if (!isConnected) {

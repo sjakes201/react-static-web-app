@@ -19,7 +19,7 @@ function CompPlot({
   items,
 }) {
   const { waitForServerResponse } = useWebSocket();
-  const { townPerks, tiles, setTiles, updateXP, getXP, getUpgrades, setParts } = useContext(GameContext)
+  const { townPerks, tiles, setTiles, updateXP, getXP, getUpgrades, setParts, getTiles } = useContext(GameContext)
 
   const [growthTable, setGrowthTable] = useState("");
   const [numHarvestTable, setNumHarvestTable] = useState("NumHarvests0");
@@ -353,7 +353,7 @@ function CompPlot({
             data.TileID === undefined ||
             data.hasTimeFertilizer === undefined
           ) {
-            window.location.reload(false);
+            getTiles()
             return false;
           }
           setTiles((prevTiles) =>
@@ -483,7 +483,7 @@ function CompPlot({
 
         if (!Array.isArray(tilesResult?.updatedTiles)) {
           console.log("ERROR: Did not receive array back");
-          window.location.reload(false);
+          getTiles()
           return;
         }
         setTiles((prevTiles) =>
