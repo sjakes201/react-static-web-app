@@ -201,7 +201,15 @@ function AccountScreen() {
                   <div
                     className={`discordAuthBox ${localStorage.getItem("discordLinked") ? "syncedDiscord" : ""
                       }`}
-                    onClick={() => (window.location.href = DISCORD_REDIRECT)}
+                    onClick={() => {
+                      window.location.href = DISCORD_REDIRECT;
+                      if (window.gtag) {
+                        window.gtag('event', 'discord_link', {
+                          'event_category': 'Social',
+                          'event_label': 'Linked Discord'
+                        })
+                      }
+                    }}
                   >
                     <img
                       src={`${process.env.PUBLIC_URL}/assets/images/discord.png`}
@@ -281,7 +289,7 @@ function AccountScreen() {
           </div>
         </div>
       }
-    </div>
+    </div >
   );
 }
 

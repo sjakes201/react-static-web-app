@@ -128,11 +128,12 @@ function MachinesScreen() {
 
     try {
       if (waitForServerResponse) {
-        await waitForServerResponse("buyMachine", {
+        let res = await waitForServerResponse("buyMachine", {
           type: type,
           slot: slot,
           tier: tier,
         });
+        console.log(res)
       }
     } catch (error) {
       if (error.message.includes("401")) {

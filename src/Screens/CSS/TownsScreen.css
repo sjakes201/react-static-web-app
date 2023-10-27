@@ -4,8 +4,8 @@
     width: 100vw;
     height: 100vh;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
     background-color: var(--menu_dark);
 }
@@ -13,11 +13,13 @@
 .townsScreenCenter {
     width: 70%;
     height: 80%;
+    position: relative;
+    margin-top: 6vh;
 }
 
 .townsScreenBackArrow {
     position: absolute;
-    height: 5vw;
+    height: 10vh;
     top: 2vh;
     left: 2vh;
     cursor: pointer;
@@ -37,9 +39,11 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    height: 7%;
-    width: 12%;
+    height: 10%;
+    width: 20%;
     margin-bottom: 12px;
+    position: absolute;
+    top: -12%;
 
 }
 
@@ -89,4 +93,16 @@
     padding: 3px;
     font-size: .9vw;
 
+}
+
+.aipAd {
+    z-index: 20000;
+    width: calc(15% - 12px);
+    height: calc(100% - 12vh);
+    align-self: flex-end;
+}
+
+.innerSkyscraper {
+    width: 160px;
+    height: 600px;
 }

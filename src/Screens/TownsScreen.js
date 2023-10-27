@@ -9,7 +9,7 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { GameContext } from "../GameContainer";
 
-function TownsScreen( ) {
+function TownsScreen() {
   const navigate = useNavigate();
   const location = useLocation();
   const { updateBalance, updateXP, reloadTownPerks, msgNotification, setTownChatBox, myTownName } = useContext(GameContext)
@@ -96,87 +96,57 @@ function TownsScreen( ) {
     <div className="townsScreenContainer">
       {backArrow()}
       <div
-        style={{
-          width: "160px",
-          height: "600px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          position: "absolute",
-          left: "0",
-          bottom: "0",
-          zIndex: "20000",
-        }}
+        className='aipAd basicCenter'
       >
         {window.innerHeight > 650 && (
-          <div style={{ width: "160px", height: "600px" }}>
+          <div className='innerSkyscraper'>
             <AdinPlayAd placementId="farmgame-live_160x600_4" />
           </div>
         )}
       </div>
 
-      <div
-        style={{
-          width: "160px",
-          height: "600px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          position: "absolute",
-          right: "0",
-          bottom: "0",
-          zIndex: "20000",
-        }}
-      >
-        {window.innerHeight > 650 && (
-          <div style={{ width: "160px", height: "600px" }}>
-            <AdinPlayAd placementId="farmgame-live_160x600_5" />
-          </div>
-        )}
-      </div>
-
-      <div className="townsNavButtons">
-        <div
-          className={`townsNavButton ${town === "" ? "lockedButton" : ""} ${screen === "TownInterface" ? "activeButton" : ""
-            }`}
-        >
-          <img
-            src={`${process.env.PUBLIC_URL}/assets/images/singleHouse.png`}
-            onClick={() => {
-              if (town !== "") setScreen("TownInterface");
-            }}
-            onMouseEnter={() => handleMouseEnter(1)}
-            onMouseLeave={() => handleMouseLeave(1)}
-          />
-          {tip1 && toolTip("Your Town")}
-        </div>
-        <div
-          className={`townsNavButton ${screen === "TownSearch" ? "activeButton" : ""
-            }`}
-        >
-          <img
-            src={`${process.env.PUBLIC_URL}/assets/images/searchRed.png`}
-            onClick={() => setScreen("TownSearch")}
-            onMouseEnter={() => handleMouseEnter(2)}
-            onMouseLeave={() => handleMouseLeave(2)}
-          />
-          {tip2 && toolTip("Town Search")}
-        </div>
-
-        <div
-          className={`townsNavButton ${screen === "TownLeaderboard" ? "activeButton" : ""
-            }`}
-        >
-          <img
-            src={`${process.env.PUBLIC_URL}/assets/images/leaderboard.png`}
-            onClick={() => setScreen("TownLeaderboard")}
-            onMouseEnter={() => handleMouseEnter(3)}
-            onMouseLeave={() => handleMouseLeave(3)}
-          />
-          {tip3 && toolTip("Town Leaderboards")}
-        </div>
-      </div>
       <div className="townsScreenCenter basicCenter">
+        <div className="townsNavButtons">
+          <div
+            className={`townsNavButton ${town === "" ? "lockedButton" : ""} ${screen === "TownInterface" ? "activeButton" : ""
+              }`}
+          >
+            <img
+              src={`${process.env.PUBLIC_URL}/assets/images/singleHouse.png`}
+              onClick={() => {
+                if (town !== "") setScreen("TownInterface");
+              }}
+              onMouseEnter={() => handleMouseEnter(1)}
+              onMouseLeave={() => handleMouseLeave(1)}
+            />
+            {tip1 && toolTip("Your Town")}
+          </div>
+          <div
+            className={`townsNavButton ${screen === "TownSearch" ? "activeButton" : ""
+              }`}
+          >
+            <img
+              src={`${process.env.PUBLIC_URL}/assets/images/searchRed.png`}
+              onClick={() => setScreen("TownSearch")}
+              onMouseEnter={() => handleMouseEnter(2)}
+              onMouseLeave={() => handleMouseLeave(2)}
+            />
+            {tip2 && toolTip("Town Search")}
+          </div>
+
+          <div
+            className={`townsNavButton ${screen === "TownLeaderboard" ? "activeButton" : ""
+              }`}
+          >
+            <img
+              src={`${process.env.PUBLIC_URL}/assets/images/leaderboard.png`}
+              onClick={() => setScreen("TownLeaderboard")}
+              onMouseEnter={() => handleMouseEnter(3)}
+              onMouseLeave={() => handleMouseLeave(3)}
+            />
+            {tip3 && toolTip("Town Leaderboards")}
+          </div>
+        </div>
         {screen === "TownInterface" && town !== "" && (
           <TownInterface
             msgNotification={msgNotification}
@@ -205,6 +175,16 @@ function TownsScreen( ) {
             updateXP={updateXP}
             reloadTownPerks={reloadTownPerks}
           />
+        )}
+      </div>
+
+      <div
+        className='aipAd basicCenter'
+      >
+        {window.innerHeight > 650 && (
+          <div className='innerSkyscraper'>
+            <AdinPlayAd placementId="farmgame-live_160x600_5" />
+          </div>
         )}
       </div>
     </div>

@@ -18,6 +18,14 @@ function TweetButton({ message }) {
           borderRadius: "3px",
           padding: ".1vh",
         }}
+        onClick={() => {
+          if(window.gtag) {
+            window.gtag('event', 'twitter_button', {
+              'event_category': 'Social',
+              'event_label': 'Twitter Button'
+            })
+          }
+        }}
       >
         <img
           style={{ height: "100%" }}

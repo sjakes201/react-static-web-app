@@ -79,7 +79,15 @@ function ChatBox({ chatMessages }) {
             onChange={handleMsgChange}
             onKeyDown={handleKeyDown}
           ></textarea>
-          <p id="chatSend" onClick={() => sendMessage()}>
+          <p id="chatSend" onClick={() => {
+            sendMessage();
+            if (window.gtag) {
+              window.gtag('event', 'town_chat', {
+                'event_category': 'Social',
+                'event_label': 'Sent Town Chat'
+              })
+            }
+          }}>
             {">"}
           </p>
         </div>

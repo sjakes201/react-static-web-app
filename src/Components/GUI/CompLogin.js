@@ -105,6 +105,12 @@ function Complogin() {
       response = await waitForServerResponse("userRegister", profile);
       data = response.body;
     }
+    if (window.gtag) {
+      window.gtag('event', 'user_register', {
+        'event_category': 'Accounts',
+        'event_label': 'User Register'
+      })
+    }
 
     if (data.auth) {
       localStorage.setItem("token", data.token);
