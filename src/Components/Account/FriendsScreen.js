@@ -79,7 +79,7 @@ function FriendsScreen() {
                         src={`${process.env.PUBLIC_URL}/assets/images/GUI/friendsIcon.png`}
                     />
                     <p>
-                        You can add friends in game by going to their profile and pressing the <img id='inTextAddFriend' src={`${process.env.PUBLIC_URL}/assets/images/gui/addFriend.png`} /> icon. You can view the profiles of your friends and when they were last online.
+                        You can add friends in game by going to their profile and pressing the <img id='inTextAddFriend' src={`${process.env.PUBLIC_URL}/assets/images/GUI/addFriend.png`} /> icon. You can view the profiles of your friends and when they were last online.
                     </p>
                 </div>
                 <div className='friendsHelpSection'>
