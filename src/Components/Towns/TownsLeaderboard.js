@@ -16,7 +16,6 @@ function TownsLeaderboard({ reloadTownPerks, updateBalance, updateXP }) {
     if (waitForServerResponse) {
       let response = await waitForServerResponse("getTopTowns", {});
       setTopTowns(response.body.townArray);
-      console.log(response.body.townArray);
     }
   };
 

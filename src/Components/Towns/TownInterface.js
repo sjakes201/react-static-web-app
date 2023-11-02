@@ -99,7 +99,6 @@ function TownInterface({
         let response = await waitForServerResponse("kickTownMember", {
           kickedMember: targetUser,
         });
-        console.log(response);
       }
     }
     if (action === "DEMOTE" && myRoleID > roleID && roleID > 1) {
@@ -107,7 +106,6 @@ function TownInterface({
         let response = await waitForServerResponse("demoteTownMember", {
           targetUser: targetUser,
         });
-        console.log(response);
         setTownInfo((old) => {
           let newTownInfo = { ...old };
           newTownInfo.playersData = newTownInfo.playersData.map((player) => {
@@ -127,11 +125,9 @@ function TownInterface({
         let response = await waitForServerResponse("promoteTownMemberRole", {
           targetUser: targetUser,
         });
-        console.log(townInfo);
         let targetPlayerInfo = townInfo.playersData.filter(
           (player) => player.username === targetUser,
         )[0];
-        console.log(targetPlayerInfo);
         if (targetPlayerInfo.roleID === 3) {
           // Transferring leadership
           setTownInfo((old) => {
@@ -176,7 +172,6 @@ function TownInterface({
       let response = await waitForServerResponse("joinTown", {
         townName: townInfo.townName,
       });
-      console.log(response);
       if (response.body.message === "SUCCESS") {
         setRefreshData((old) => old + 1);
         if (reloadTownPerks) reloadTownPerks();
@@ -189,7 +184,6 @@ function TownInterface({
   const leaveTown = async () => {
     if (waitForServerResponse) {
       let response = await waitForServerResponse("leaveTown", {});
-      console.log(response);
       if (response.body.message === "SUCCESS") {
         setRefreshData((old) => old + 1);
         if (setTown) setTown("");

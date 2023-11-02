@@ -2,7 +2,7 @@ import React from 'react';
 
 const TextDate = ({ unixTimeStamp }) => {
     try {
-        const date = new Date(unixTimeStamp);  // Convert to milliseconds
+        const date = new Date(unixTimeStamp); 
 
         const dateOptions = {
             month: 'long',

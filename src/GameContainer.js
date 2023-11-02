@@ -80,6 +80,10 @@ function GameContainer() {
 
   const [leaderboardData, setLeaderboardData] = useState({});
 
+  const getBarn = () => barn;
+  const getCoop = () => coop
+
+
   const getTownMessages = async () => {
     if (waitForServerResponse) {
       let chatHistory = await waitForServerResponse("getTownMessages");
@@ -219,7 +223,28 @@ function GameContainer() {
         setMsgNotification(true);
       }
     };
-    addListener(handleNewMsg);
+
+    const changeAnimalHappiness = (Animal_ID, Happiness) => {
+      setCoop((old) => old.map((animal) => {
+        if (animal.Animal_ID === Animal_ID) {
+          let newAnimal = { ...animal };
+          newAnimal.Happiness += Happiness;
+          return newAnimal
+        }
+        return animal;
+      }))
+      setBarn((old) => old.map((animal) => {
+        if (animal.Animal_ID === Animal_ID) {
+          let newAnimal = { ...animal };
+          newAnimal.Happiness += Happiness;
+          return newAnimal
+        }
+        return animal;
+      }))
+    }
+
+    addListener(['town_message', handleNewMsg]);
+    addListener(['animal_happiness', changeAnimalHappiness])
     return () => {
       removeListener(handleNewMsg);
     };
@@ -388,6 +413,7 @@ function GameContainer() {
       });
     }
   };
+
   const getUserAlltimeTotals = () => {
     return { ...goodTotals, Balance: Balance, XP: XP }
   }
@@ -467,7 +493,7 @@ function GameContainer() {
     setArtisanItems,
     profilePic,
     setProfilePic,
-    getTiles
+    getTiles,
   }
 
   if (!isConnected) {

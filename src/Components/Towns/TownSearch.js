@@ -33,7 +33,6 @@ function TownSearch({
       } else {
         setNoResults(true);
       }
-      console.log(result);
     }
   };
 

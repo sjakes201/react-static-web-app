@@ -45,7 +45,7 @@ function LeaderboardScreen() {
     <div id="leaderboards" className="leaderboards">
       {backArrow()}
       <div className="main-board">
-        <div className="buttons" style={{}}>
+        <div className="buttons">
           <div
             id="weekly-title"
             className={

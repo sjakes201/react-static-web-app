@@ -63,6 +63,7 @@
         0 0 0 6px var(--black);
     background-color: var(--menu_lighter);
     position: relative;
+    border: 1px solid black;
 }
 
 .townsNavButton > img {

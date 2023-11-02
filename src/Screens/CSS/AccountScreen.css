@@ -1,11 +1,7 @@
 .acc-screen {
     height: 100vh;
     width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: var(--menu_light);
-    position: absolute;
     font-size: 1vw;
 
     /* width */
@@ -29,26 +25,42 @@
 }
 
 .acc-container {
-    height: 90vh;
-    width: 80vw;
-    box-sizing: border-box;
+    height: 85vh;
+    width: 70vw;
 
     display: flex;
     flex-direction: column;
-
-    background-color: var(--menu_lighter);
-    box-shadow:
-        0 0 0 3px var(--black),
-        0 0 0 6px var(--border_orange),
-        0 0 0 8px var(--border_shadow_orange),
-        0 0 0 11px var(--black);
 }
 
-.acc-row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    position: relative;
+.accNavButtons {
+    width: 70vw;
+    height: 10vh;
+    margin-bottom: calc(11px + .3vh);
+    margin-top: -5vh;
+}
+
+.accNavButtons > button {
+    margin: 0 1vw;
+    width: 7vh;
+    height: 7vh;
+    border-radius: 1vh;
+    filter: grayscale(0.5);
+}
+
+.accNavButtons img {
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.activeAccButton {
+    filter: grayscale(0) !important;
+}
+
+.profile-info {
+    width: 100%;
+    height: 90%;
+    background-color: var(--menu_lighter);
 }
 
 .back-arrow-acc {
@@ -60,397 +72,4 @@
 
 .back-arrow-acc>img {
     width: 5vw;
-}
-
-/*
-    Top row (profile)
-
-    [ (25pfp) ]  [ (25 user info) ]  [ (7.5 margin) (35 permits) (7.5 margin) ]
-*/
-
-#acc-profile {
-    height: 25%;
-}
-
-
-.profile-pic-container {
-    width: 10%;
-    max-height: 100%;
-    object-fit: contain;
-    margin-left: 4.7vw;
-    margin-right: .6vw;
-    position: relative;
-    display: flex;
-    margin-bottom: -2vh;
-}
-
-#pfp-img {
-    max-height: 100%;
-    width: 100%;
-}
-
-#pfp-switch-icon {
-    position: absolute;
-    right: .2vw;
-    bottom: -1.5vh;
-    width: 2vw;
-    object-fit: contain;
-    filter: grayscale(1);
-}
-
-
-.acc-user-info {
-    width: 20%;
-    padding: 2% 2% 2% 0;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-}
-
-.acc-user-town-info {
-    width: 20%;
-    padding: 2% 2% 2% 0;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-}
-
-#town-info-icon {
-    width: 6.5%;
-}
-
-.acc-poke-info {
-    width: 10%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.acc-poke-info>img {
-    height: 8vh;
-    object-fit: contain;
-    margin-right: -.7vw;
-}
-
-.pokable {
-    cursor: pointer;
-}
-
-.poked {
-    opacity: 0.7;
-}
-
-.acc-poke-info>p {
-    margin-right: 2px;
-    margin-top: 5px;
-}
-
-#noTown {
-    opacity: 0.6;
-}
-
-#townLink {
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-#acc-username {
-    text-decoration: underline;
-}
-
-#acc-permit-holder {
-    width: 35%;
-    margin-left: 7.5%;
-    margin-right: 7.5%;
-    display: flex;
-    flex-direction: column;
-    padding: 1%
-}
-
-#acc-permits-status {
-    height: calc(100% - 12px);
-    border: 1px solid black;
-    box-sizing: border-box;
-    margin: 6px;
-    box-shadow:
-        0 0 0 1px var(--black),
-        0 0 0 3px var(--border_yellow),
-        0 0 0 5px var(--border_shadow_yellow),
-        0 0 0 6px var(--black);
-}
-
-#acc-permits-label {
-    text-decoration: underline;
-    text-align: center;
-}
-
-.discordAuthBox {
-    position: absolute;
-    right: 4%;
-    height: 3vw;
-    border: 2px solid #36393e;
-    border-radius: 5px;
-    background-color: #433693;
-    padding: 6px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
-    font-size: .9vw;
-    cursor: pointer;
-    color: rgb(226, 224, 224);
-}
-
-.syncedDiscord {
-    border: 1px dotted gray;
-    opacity: 0.6;
-    cursor: default;
-}
-
-#discordAccIcon {
-    max-height: 80%;
-    object-fit: contain;
-    margin-right: 4px;
-}
-
-/*
-    Second row (stats)
-*/
-
-#acc-stats {
-    height: 50%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-
-}
-
-.acc-collect-totals {
-    height: 100%;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.acc-collect-grids {
-    height: calc(85% - 22px);
-    width: calc(75% - 22px);
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    overflow-y: auto;
-    row-gap: 5%;
-    padding: 1%;
-    border: 1px solid black;
-    box-sizing: border-box;
-    margin: 11px;
-    box-shadow:
-        0 0 0 3px var(--black),
-        0 0 0 6px var(--border_yellow),
-        0 0 0 8px var(--border_shadow_yellow),
-        0 0 0 11px var(--black);
-}
-
-.acc-goods-slot {
-    place-self: center;
-    border: 1px solid black;
-    border-radius: 5%;
-    padding: 10%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 10vh;
-    min-width: 90%;
-}
-
-.acc-goods-slot>img {
-    width: 90%;
-    height: 90%;
-    object-fit: contain;
-}
-
-/*
-    Third row (contact, policy, ads)
-*/
-
-#acc-other {
-    height: 25%;
-    padding-top: 1%;
-    display: flex;
-    flex-direction: column;
-}
-
-.acc-line-decor {
-    width: 100%;
-    height: 20%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-
-}
-
-.acc-bottom {
-    height: 80%;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    font-size: .9vw;
-}
-
-#acc-contact-info {
-    width: 25%;
-    text-align: center;
-}
-
-#acc-bottom-ad {
-    width: 50%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid black;
-}
-
-#acc-privacy-policy {
-    width: 25%;
-    text-align: center;
-    text-decoration: underline;
-}
-
-#acc-privacy-policy:hover {
-    color: blue;
-    cursor: pointer
-}
-
-.loadingIconAnimation {
-    display: inline-block;
-    width: 80px;
-    height: 80px;
-}
-
-.centerSelf {
-    align-self: center;
-    justify-self: center;
-    margin: 45vh 40vw;
-}
-
-.centerSelf>p {
-    font-size: 1vw;
-    width: 20vw;
-    text-align: center;
-}
-
-.loadingIconAnimation:after {
-    content: " ";
-    display: block;
-    width: 64px;
-    height: 64px;
-    margin: 8px;
-    border-radius: 50%;
-    border: 6px solid black;
-    border-color: black transparent black transparent;
-    animation: loadingIconAnimation 1.2s linear infinite;
-}
-
-@keyframes loadingIconAnimation {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-.clickable {
-    cursor: pointer;
-}
-
-/*
-    Corn decor line rotation
-*/
-.acc-line-decor>img:nth-child(2) {
-    transform: rotate(18deg);
-}
-
-.acc-line-decor>img:nth-child(3) {
-    transform: rotate(36deg);
-}
-
-.acc-line-decor>img:nth-child(4) {
-    transform: rotate(54deg);
-}
-
-.acc-line-decor>img:nth-child(5) {
-    transform: rotate(72deg);
-}
-
-.acc-line-decor>img:nth-child(6) {
-    transform: rotate(90deg);
-}
-
-.acc-line-decor>img:nth-child(7) {
-    transform: rotate(108deg);
-}
-
-.acc-line-decor>img:nth-child(8) {
-    transform: rotate(126deg);
-}
-
-.acc-line-decor>img:nth-child(9) {
-    transform: rotate(144deg);
-}
-
-.acc-line-decor>img:nth-child(10) {
-    transform: rotate(162deg);
-}
-
-.acc-line-decor>img:nth-child(11) {
-    transform: rotate(180deg);
-}
-
-.acc-line-decor>img:nth-child(12) {
-    transform: rotate(198deg);
-}
-
-.acc-line-decor>img:nth-child(13) {
-    transform: rotate(216deg);
-}
-
-.acc-line-decor>img:nth-child(14) {
-    transform: rotate(234deg);
-}
-
-.acc-line-decor>img:nth-child(15) {
-    transform: rotate(252deg);
-}
-
-.acc-line-decor>img:nth-child(16) {
-    transform: rotate(270deg);
-}
-
-.acc-line-decor>img:nth-child(17) {
-    transform: rotate(288deg);
-}
-
-.acc-line-decor>img:nth-child(18) {
-    transform: rotate(306deg);
-}
-
-.acc-line-decor>img:nth-child(19) {
-    transform: rotate(324deg);
-}
-
-.acc-line-decor>img:nth-child(20) {
-    transform: rotate(342deg);
-}
-
-.acc-line-decor>img:nth-child(21) {
-    transform: rotate(360deg);
 }

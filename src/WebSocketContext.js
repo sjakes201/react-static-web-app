@@ -20,7 +20,6 @@ export function WebSocketProvider({ children }) {
   const [doneLoading, setDoneLoading] = useState(false);
 
   const listenersRef = useRef([]);
-
   // We need to re-call the initial GameContainer mount functions after receiving guest auth, force a remount by changing the key
   const [auth, setAuth] = useState(1);
 
@@ -31,8 +30,8 @@ export function WebSocketProvider({ children }) {
       useLocal
         ? `ws://localhost:8080?token=${localStorage.getItem("token")}`
         : `wss://farmgameserver.azurewebsites.net?token=${localStorage.getItem(
-            "token",
-          )}`,
+          "token",
+        )}`,
     );
 
     wsInstance.addEventListener("open", () => {
@@ -48,15 +47,35 @@ export function WebSocketProvider({ children }) {
         setAuth(2);
       } else if (parsedMessage.type === "town_message") {
         const msgInfo = parsedMessage.newMessageInfo;
-        console.log(msgInfo);
-        listenersRef.current.forEach((listenerFunc) =>
-          listenerFunc(
-            msgInfo.content,
-            msgInfo.timestamp,
-            msgInfo.username,
-            msgInfo.messageID,
-          ),
+        listenersRef.current.forEach((listener) => {
+          if (listener[0] === 'town_message') {
+            const func = listener[1];
+            func(
+              msgInfo.content,
+              msgInfo.timestamp,
+              msgInfo.username,
+              msgInfo.messageID,
+            );
+          }
+        }
+
         );
+      } else if (parsedMessage.type === 'data_update') {
+        switch (parsedMessage.dataType) {
+          case 'animal_was_fed':
+            listenersRef.current.forEach((listener) => {
+              if (listener[0] === 'animal_happiness') {
+                const func = listener[1];
+                func(
+                  parsedMessage.data.Animal_ID,
+                  parsedMessage.data.Happiness
+                );
+              }
+            })
+            break;
+          default:
+            break;
+        }
       }
     });
 

@@ -1,0 +1,224 @@
+.friendsScreen {
+    background-color: var(--menu_light);
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Friends top bar component */
+.friendsTopBar {
+    width: 100%;
+    height: calc(10% - 8px);
+    background-color: var(--menu_lighter);
+    margin-bottom: 8px;
+    box-shadow:
+        0 2px 0 0 var(--black),
+        0 4px 0 0 var(--border_orange),
+        0 6px 0 0 var(--border_shadow_orange),
+        0 8px 0 0 var(--black);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.2vw;
+    padding: 0 1vw 0 2vw;
+}
+
+.friendsBarButtons {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.friendsBarButtons>button {
+    height: 80%;
+    padding: 5%;
+    background-color: var(--menu_lightest);
+    border-radius: 5px;
+    margin: 0 .6vw;
+}
+
+.friendsBarButtons img {
+    height: 100%;
+}
+
+#friendsHelp {
+    border: none;
+    background-color: transparent;
+}
+
+/* Friends help/info menu component */
+.helpMenu {
+    padding: 2.2vw 3.2vw 2.2vw 2.2vw;
+    background-color: var(--menu_lighter);
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 3vw;
+}
+
+.friendsHelpSection {
+    height: 12vh;
+    width: 30vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.friendsHelpSection > p {
+    font-size: 1vw;
+    margin-left: 1vw;
+    color: var(--soft_black);
+}
+
+.friendsHelpSection > img {
+    height: 100%;
+}
+
+#inTextAddFriend {
+    height: 1vw;
+}
+
+/* Friends user search bar */
+.userSearch {
+    padding: 0 .5vw 0 1vw;
+    height: 7vh;
+    background-color: var(--menu_lighter);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.userSearch input {
+    padding-left: 1px;
+}
+
+#userSearchButton {
+    border: none;
+    background-color: transparent;
+    height: 100%;
+}
+
+#userSearchButton > img {
+    height: 40%;
+    margin: 0 .4vw;
+}
+
+/* Friends table component */
+.friendsTable {
+    width: 100%;
+    height: 90%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    gap: .8vw;
+    overflow-y: auto;
+    background-color: var(--menu_light);
+    padding: 1vw 0;
+}
+
+
+/* Friend row component */
+.friendRowContainer {
+    border: 1px solid black;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.acceptedRequest {
+    justify-content: space-between;
+    background-color: var(--menu_lighter);
+    width: 97%;
+    height: 8vh;
+}
+
+.pendingRequest {
+    justify-content: center;
+    background-color: var(--menu_lightest);
+    width: 50%;
+    height: 6vh;
+}
+
+.leftAligned {
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.rightAligned {
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.friendPfP {
+    height: 80%;
+    object-fit: contain;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+
+.friendUsername {
+    font-size: 1vw;
+}
+
+.friendActiveStatus {
+    font-size: .7vw;
+    margin-left: 1vw;
+    color: gray;
+}
+
+.onlineStatus {
+    color: rgb(48, 180, 48) !important;
+}
+
+.feedButton {
+    margin-right: 1vw;
+    height: 80%;
+    background-color: var(--menu_lightest);
+    border-radius: 5px;
+}
+
+.feedable:active {
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: scale(0.98);
+}
+
+.feedButton>img {
+    height: 100%;
+    padding: 5px;
+    object-fit: contain;
+}
+
+.friendOptions {
+    margin-right: 1vw;
+    height: 70%;
+    background-color: inherit;
+    border: none;
+    border-left: 1px solid var(--menu_light);
+    padding-left: 1vw;
+    font-size: 1.2vw;
+    color: var(--menu_dark);
+}
+
+.pendingRequestButton {
+    width: 1.5vw;
+    height: 1.5vw;
+    margin-left: 0.8vw;
+    border-radius: 4px;
+}
