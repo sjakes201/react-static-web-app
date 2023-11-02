@@ -76,7 +76,7 @@ function FriendsScreen() {
                 >X</button>
                 <div className='friendsHelpSection'>
                     <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/gui/friendsIcon.png`}
+                        src={`${process.env.PUBLIC_URL}/assets/images/GUI/friendsIcon.png`}
                     />
                     <p>
                         You can add friends in game by going to their profile and pressing the <img id='inTextAddFriend' src={`${process.env.PUBLIC_URL}/assets/images/gui/addFriend.png`} /> icon. You can view the profiles of your friends and when they were last online.
@@ -84,7 +84,7 @@ function FriendsScreen() {
                 </div>
                 <div className='friendsHelpSection'>
                     <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/gui/friendsCartFull.gif`}
+                        src={`${process.env.PUBLIC_URL}/assets/images/GUI/friendsCartFull.gif`}
                     />
                     <p>
                         Clicking the cart will feed your friend's lowest happiness animal a double strength loved food. It has a 30 minute cooldown per friend and does not cost you any of your crops.
@@ -145,7 +145,7 @@ function FriendsScreen() {
                     type='button'
                 >
                     <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/gui/searchBlue.png`}
+                        src={`${process.env.PUBLIC_URL}/assets/images/GUI/searchBlue.png`}
                     />
                 </button>
 
@@ -178,7 +178,7 @@ function FriendsScreen() {
                         onClick={() => setUserSearch(true)}
                     >
                         <img
-                            src={`${process.env.PUBLIC_URL}/assets/images/gui/searchBlue.png`}
+                            src={`${process.env.PUBLIC_URL}/assets/images/GUI/searchBlue.png`}
                         />
                     </button>
                 </div>
