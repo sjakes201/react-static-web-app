@@ -95,7 +95,7 @@ function UserProfile({ username }) {
                     </p>
                 }
                 <img
-                    src={`${process.env.PUBLIC_URL}/assets/images/gui/addFriend.png`}
+                    src={`${process.env.PUBLIC_URL}/assets/images/GUI/addFriend.png`}
                     className={`${friendStatus === 'pending_sent' ? 'friendPending' : 'clickable'}`}
                 />
             </div>
