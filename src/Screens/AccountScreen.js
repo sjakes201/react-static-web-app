@@ -59,7 +59,7 @@ function AccountScreen() {
                 <button className={`clickable yellow-border-thin basic-center ${accountTab === 'friends' ? 'activeAccButton' : ''}`}
                   onClick={() => setAccountTab('friends')}
                 >
-                  <img src={`${process.env.PUBLIC_URL}/assets/images/gui/friendsIcon.png`} />
+                  <img src={`${process.env.PUBLIC_URL}/assets/images/GUI/friendsIcon.png`} />
                 </button>
               </>)
             }
