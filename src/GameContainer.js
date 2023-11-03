@@ -80,10 +80,6 @@ function GameContainer() {
 
   const [leaderboardData, setLeaderboardData] = useState({});
 
-  const getBarn = () => barn;
-  const getCoop = () => coop
-
-
   const getTownMessages = async () => {
     if (waitForServerResponse) {
       let chatHistory = await waitForServerResponse("getTownMessages");
@@ -127,6 +123,13 @@ function GameContainer() {
         };
       });
       setTiles(updatedTiles);
+    }
+  }
+
+  const refreshPrices = async () => {
+    if (waitForServerResponse) {
+      const response = await waitForServerResponse("prices");
+      setPrices(response.body);
     }
   }
 
@@ -180,10 +183,6 @@ function GameContainer() {
         setCoop(data.coopResult);
       }
 
-      if (waitForServerResponse) {
-        const response = await waitForServerResponse("prices");
-        setPrices(response.body);
-      }
 
       if (waitForServerResponse) {
         const response = await waitForServerResponse("getAllMachines");
@@ -201,6 +200,7 @@ function GameContainer() {
         setMyTownName(data.townName)
       }
     };
+    refreshPrices();
     fetchData();
     getTownMessages();
     refreshLeaderboard();
@@ -494,6 +494,7 @@ function GameContainer() {
     profilePic,
     setProfilePic,
     getTiles,
+    refreshPrices
   }
 
   if (!isConnected) {

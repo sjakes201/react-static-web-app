@@ -15,6 +15,30 @@
         0 0 0 11px var(--black);
 }
 
+.orange-border-medium {
+    box-shadow:
+        0 0 0 1px var(--black),
+        0 0 0 4px var(--border_orange),
+        0 0 0 6px var(--border_shadow_orange),
+        0 0 0 9px var(--black);
+}
+
+.gold-border {
+    box-shadow:
+        0 0 0 3px var(--black),
+        0 0 0 7px rgb(255, 215, 0),
+        0 0 0 10px rgb(218, 165, 32),
+        0 0 0 13px var(--black);
+}
+
+.super-gold-border {
+    box-shadow:
+        0 0 0 5px var(--black),
+        0 0 0 9px rgb(255, 242, 0),
+        0 0 0 12px rgb(207, 197, 1),
+        0 0 0 15px var(--black);
+}
+
 .yellow-border {
     box-shadow:
         0 0 0 3px var(--black),

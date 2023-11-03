@@ -17,6 +17,7 @@ function CompMarket({ marketItems, setSelected }) {
                   newPrice: item.newPrice,
                   oldPrice: item.oldPrice,
                   imgURL: item.imgURL,
+                  multiplier: item.multiplier
                 })
               }
             >
@@ -26,6 +27,7 @@ function CompMarket({ marketItems, setSelected }) {
                 newPrice={item.newPrice}
                 oldPrice={item.oldPrice}
                 name={item.name}
+                multiplier={item.multiplier}
               />
             </div>
           );

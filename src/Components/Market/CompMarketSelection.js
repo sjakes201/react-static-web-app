@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import CONSTANTS from "../../CONSTANTS";
+import './MarketComponents.css'
 
 // pass it all price info
 function CompMarketSelection({
@@ -9,18 +10,19 @@ function CompMarketSelection({
   imgURL,
   onSell,
   items,
+  multiplier
 }) {
   const autoSubmit = useRef(false);
 
   let arrowURL = `${process.env.PUBLIC_URL}/assets/images/market_direction_error.png`;
   if (newPrice === 0 && oldPrice === 0) {
-    arrowURL = `${process.env.PUBLIC_URL}/assets/images/market-neutral.png`;
+    arrowURL = `${process.env.PUBLIC_URL}/assets/images/market-neutral${multiplier !== 1 ? '-gold' : ''}.png`;
   } else if (newPrice >= oldPrice * 1.019) {
-    arrowURL = `${process.env.PUBLIC_URL}/assets/images/market-up.png`;
+    arrowURL = `${process.env.PUBLIC_URL}/assets/images/market-up${multiplier !== 1 ? '-gold' : ''}.png`;
   } else if (newPrice <= oldPrice * 0.981) {
-    arrowURL = `${process.env.PUBLIC_URL}/assets/images/market-down.png`;
+    arrowURL = `${process.env.PUBLIC_URL}/assets/images/market-down${multiplier !== 1 ? '-gold' : ''}.png`;
   } else {
-    arrowURL = `${process.env.PUBLIC_URL}/assets/images/market-neutral.png`;
+    arrowURL = `${process.env.PUBLIC_URL}/assets/images/market-neutral${multiplier !== 1 ? '-gold' : ''}.png`;
   }
   const [quantity, setQuantity] = useState("");
   // showPrice is the quantity to override display in price calculation
@@ -42,6 +44,17 @@ function CompMarketSelection({
     onSell(name, quantity);
     setQuantity("");
   };
+
+  const multiplierGraphic = () => {
+    if (multiplier === 2) {
+      return (
+        <img className='nameMultiplierGraphic' src={`${process.env.PUBLIC_URL}/assets/images/market/multiplier2x.png`} />)
+    }
+    if (multiplier === 3) {
+      return (
+        <img className='nameMultiplierGraphic' src={`${process.env.PUBLIC_URL}/assets/images/market/multiplier3x.png`} />)
+    }
+  }
 
   return (
     <div
@@ -79,17 +92,11 @@ function CompMarketSelection({
           }}
         >
           <div
-            style={{
-              textAlign: "center",
-              textTransform: "uppercase",
-              textDecoration: "underline",
-              fontSize: "1vw",
-              height: "1vw",
-              wordBreak: "break-all",
-              marginBottom: "5px",
-            }}
+            className='selected-good-title'
           >
-            {name ? CONSTANTS?.InventoryDescriptions?.[name]?.[0] : ""}
+            {/* {multiplierGraphic()} */}
+            <p>{name ? CONSTANTS?.InventoryDescriptions?.[name]?.[0] : ""}</p>
+            {/* {multiplierGraphic()} */}
           </div>
           <div
             style={{
@@ -100,7 +107,7 @@ function CompMarketSelection({
               fontSize: "1.3vw",
             }}
           >
-            ${newPrice} <small>/each</small>{" "}
+            ${Math.round((newPrice * multiplier) * 100) / 100} <small>/each</small>{" "}
             <img src={arrowURL} style={{ width: "12%" }} />
           </div>
           <div style={{ fontSize: "0.7vw" }}>${oldPrice} /each previously</div>
@@ -185,7 +192,7 @@ function CompMarketSelection({
               }}
             >
               <p>
-                ${newPrice} x{" "}
+                ${Math.round((newPrice * multiplier) * 100) / 100} x{" "}
                 {showPrice
                   ? showPrice.toLocaleString()
                   : Number.parseInt(quantity).toLocaleString()}{" "}
@@ -194,7 +201,7 @@ function CompMarketSelection({
               <p>
                 $
                 {(
-                  newPrice * (showPrice ? showPrice : quantity)
+                  Math.round(((newPrice * (showPrice ? showPrice : quantity)) * multiplier) * 100) / 100
                 ).toLocaleString()}
               </p>
             </div>

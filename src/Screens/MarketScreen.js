@@ -13,7 +13,7 @@ import AdinPlayAd from "../AdinPlayAd";
 
 function MarketScreen() {
   const { waitForServerResponse } = useWebSocket();
-  const { updateBalance, itemsData, setItemsData, prices } = useContext(GameContext)
+  const { updateBalance, itemsData, setItemsData, prices, refreshPrices } = useContext(GameContext)
 
   const navigate = useNavigate();
   if (localStorage.getItem("token") === null) {
@@ -28,6 +28,7 @@ function MarketScreen() {
     newPrice: 0,
     oldPrice: 0,
     imgURL: "EMPTY.png",
+    multiplier: 1
   });
 
   useEffect(() => {
@@ -40,6 +41,7 @@ function MarketScreen() {
 
   useEffect(() => {
     getMarketItems();
+    refreshPrices()
   }, []);
 
   useEffect(() => {
@@ -90,6 +92,7 @@ function MarketScreen() {
         newPrice: prices.newPrices[keys[i]],
         oldPrice: prices.oldPrices[keys[i]],
         imgURL: `${keys[i]}.png`,
+        multiplier: prices.bonuses[keys[i]]
       });
     }
     setMarketItems(items);
@@ -97,9 +100,12 @@ function MarketScreen() {
 
   const onSell = async (itemName, quantity) => {
     if (itemName in items && itemName in prices.newPrices) {
+      const targetItem = marketItems.filter((i) => i.name === itemName)[0]
+      let priceMultiplier = targetItem.multiplier;
+
       if (items[itemName] >= quantity) {
         updateInventory(itemName, -1 * quantity, false);
-        updateBalance(prices.newPrices[itemName] * quantity);
+        updateBalance(prices.newPrices[itemName] * quantity * priceMultiplier);
         if (waitForServerResponse) {
           await waitForServerResponse("marketSell", {
             item: itemName,
@@ -148,6 +154,7 @@ function MarketScreen() {
             newPrice={selected.newPrice}
             oldPrice={selected.oldPrice}
             imgURL={selected.imgURL}
+            multiplier={selected.multiplier}
           />
         </div>
         <div className="market-inventory">

@@ -134,23 +134,10 @@ function PlantScreen() {
         </div>
         <div className="settings">
           <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              width: "100%",
-              height: "60px",
-              justifyContent: "space-evenly",
-              position: "absolute",
-              top: "0",
-            }}
+            className='settingsBox1'
           >
             <div
-              style={{
-                position: "relative",
-                width: "120px",
-                height: "60px",
-                zIndex: "2000",
-              }}
+              className='adBoxMobile'
             >
               <div>
                 <AdinPlayAd placementId="farmgame-live_120x60" />
@@ -158,27 +145,12 @@ function PlantScreen() {
             </div>
           </div>
           <div
-            style={{
-              width: "70%",
-              height: "3vh",
-              position: "absolute",
-              bottom: "1vh",
-              left: "30%",
-              fontSize: "1vw",
-            }}
+            className='settingsBox2'
           >
             <a
               target="_black"
               href="https://discord.gg/jrxWrgNCHw"
-              style={{
-                fontSize: ".9vw",
-                textDecoration: "underline",
-                height: "100%",
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+              className='discordLink'
             >
               <img
                 src={`${process.env.PUBLIC_URL}/assets/images/discord.png`}

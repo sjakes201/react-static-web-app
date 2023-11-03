@@ -95,6 +95,13 @@ function CompPlot({
 
   const fertilizeTile = async (tileID) => {
     let desiredFertilizer = equippedFert;
+    let targetTile = tiles.filter((tile) => tile.TileID === tileID)[0]
+    if(!targetTile) return;
+    
+    if(targetTile[desiredFertilizer] > 0) {
+      return;
+    }
+
     if (fertilizers[desiredFertilizer] > 0) {
       setFertilizers((old) => {
         let newCounts = { ...old };
