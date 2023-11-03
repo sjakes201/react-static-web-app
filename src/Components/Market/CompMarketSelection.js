@@ -110,7 +110,7 @@ function CompMarketSelection({
             ${Math.round((newPrice * multiplier) * 100) / 100} <small>/each</small>{" "}
             <img src={arrowURL} style={{ width: "12%" }} />
           </div>
-          <div style={{ fontSize: "0.7vw" }}>${oldPrice} /each previously</div>
+          <div style={{ fontSize: "0.7vw" }}>${Math.round((oldPrice * multiplier) * 100) / 100} /each previously</div>
           <div style={{ marginTop: "10%", textAlign: "center" }}>
             <form onSubmit={handleSubmit} autoComplete="off">
               <input
