@@ -14,11 +14,12 @@ function InitLoading({ setDoneLoading }) {
   // Images on the plant screen or that could be used immediately
   const FIRST_IMAGES = [
     "dirt.png",
+    "fence.png",
     "homie.png",
     "oats_seeds.png",
     "corn_seeds.png",
-    "corn_stage_0.png",
-    "oats_stage_0.png",
+    "crops/corn_stage_0.png",
+    "crops/oats_stage_0.png",
     "corn.png",
     "oats.png",
     "chicken_standing_right.png",
@@ -26,6 +27,16 @@ function InitLoading({ setDoneLoading }) {
     "accounticon.png",
     "leaderboard.png",
     "order-icon.png",
+    "townButton2.png",
+    "go_animals.png",
+    "go_animals_pressed.png",
+    "go_market.png",
+    "go_market_pressed.png",
+    "go_plants.png",
+    "go_plants_pressed.png",
+    "go_shop.png",
+    "go_shop_pressed.png",
+    "machines/deskClickable.png",
   ];
   // Secondary images in menus, all icons, and all stage 0's
   const ICONS = [
@@ -37,20 +48,22 @@ function InitLoading({ setDoneLoading }) {
     "market-down.png",
     "market-up.png",
     "market-neutral.png",
+    "multiharvest.png",
+    "multiplant.png",
   ];
   const STAGE0s = [
-    "bamboo_stage_0.png",
-    "beet_stage_0.png",
-    "blueberry_stage_0.png",
-    "cauliflower_stage_0.png",
-    "grape_stage_0.png",
-    "hops_stage_0.png",
-    "melon_stage_0.png",
-    "parsnip_stage_0.png",
-    "potato_stage_0.png",
-    "pumpkin_stage_0.png",
-    "strawberry_stage_0.png",
-    "yam_stage_0.png",
+    "crops/bamboo_stage_0.png",
+    "crops/beet_stage_0.png",
+    "crops/blueberry_stage_0.png",
+    "crops/cauliflower_stage_0.png",
+    "crops/grape_stage_0.png",
+    "crops/hops_stage_0.png",
+    "crops/melon_stage_0.png",
+    "crops/parsnip_stage_0.png",
+    "crops/potato_stage_0.png",
+    "crops/pumpkin_stage_0.png",
+    "crops/strawberry_stage_0.png",
+    "crops/yam_stage_0.png",
   ];
   const SEEDS = [
     "blueberry_seeds.png",
@@ -114,15 +127,8 @@ function InitLoading({ setDoneLoading }) {
   };
 
   const preloadSecondaryImages = async (paths) => {
-    let toLoad = paths.length;
     paths.forEach((path) => {
       const img = new Image();
-      img.onload = () => {
-        toLoad--;
-        if (toLoad <= 0) {
-          setInitLoad(true);
-        }
-      };
       img.src = `${process.env.PUBLIC_URL}/assets/images/${path}`;
     });
   };

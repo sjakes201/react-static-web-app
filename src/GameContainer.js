@@ -501,7 +501,6 @@ function GameContainer() {
     return <div></div>;
   }
   // If connected, render the main game content
-
   return (
     <GameContext.Provider value={passedContextFuncs}>
       <div
