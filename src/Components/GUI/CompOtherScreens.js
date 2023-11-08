@@ -56,7 +56,11 @@ function CompOtherScreens() {
     ];
     let otherScreenButtons = [];
     for (let i = 0; i < allScreens.length; ++i) {
-      if (allScreens[i] === current) {
+      if (allScreens[i] === "plants" && (current === "plants" || current === "")) {
+        otherScreenButtons.push(
+          renderScreenButton(allImgsPressed[i], allScreens[i], allScreens[i]),
+        );
+      } else if (allScreens[i] === current) {
         otherScreenButtons.push(
           renderScreenButton(allImgsPressed[i], allScreens[i], allScreens[i]),
         );
@@ -94,9 +98,8 @@ function CompOtherScreens() {
           />
           {setTownChatBox && (
             <img
-              src={`${process.env.PUBLIC_URL}/assets/images/GUI/textbubble${
-                msgNotification ? "_notify" : ""
-              }.png`}
+              src={`${process.env.PUBLIC_URL}/assets/images/GUI/textbubble${msgNotification ? "_notify" : ""
+                }.png`}
               className="townChatButton"
               onClick={() => setTownChatBox((old) => !old)}
             />
