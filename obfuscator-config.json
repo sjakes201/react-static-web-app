@@ -3,6 +3,6 @@
     "controlFlowFlattening": false,
     "deadCodeInjection": false,
     "debugProtection": false,
-    "debugProtectionInterval": false,
+    "debugProtectionInterval": 0,
     "disableConsoleOutput": true
 }
