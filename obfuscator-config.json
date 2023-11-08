@@ -1,0 +1,8 @@
+{
+    "compact": true,
+    "controlFlowFlattening": false,
+    "deadCodeInjection": false,
+    "debugProtection": false,
+    "debugProtectionInterval": false,
+    "disableConsoleOutput": true
+}
