@@ -4,6 +4,7 @@ import PlayerCard from "./PlayerCard";
 import { useWebSocket } from "../../WebSocketContext";
 import TOWNSINFO from "../../TOWNSINFO";
 import TownGoals from "./TownGoals";
+import TownShop from "../TownShop/TownShop";
 import { calcTownLevel } from "../../townHelpers";
 import { GameContext } from "../../GameContainer";
 // townName is string for town name, backArrow is optional function to be called when back arrow pressed
@@ -17,11 +18,12 @@ function TownInterface({
   const { waitForServerResponse } = useWebSocket();
   const { updateBalance, updateXP, reloadTownPerks, msgNotification, myTownName } = useContext(GameContext)
 
-  // Which screen to show ("MAIN" or "GOALS" or "DNE")
+  // Which screen to show ("MAIN" or "GOALS" or "SHOP" or "DNE")
   const [townScreen, setTownScreen] = useState("MAIN");
 
   /* The townInfo query will return data based on who requested it */
   const [townInfo, setTownInfo] = useState({});
+  const [townShopInfo, setTownShopInfo] = useState({})
   // GUI useStates
   const [perksPopup, setPerksPopup] = useState(false);
 
@@ -73,6 +75,9 @@ function TownInterface({
         }
         data.body.playersData.sort((a, b) => b.xp - a.xp);
         setTownInfo(data.body);
+        if (data.body.townShopInfo) {
+          setTownShopInfo(data.body.townShopInfo)
+        }
         setSettingsData({
           description: data.body.description,
           logoNum: data.body.townLogoNum,
@@ -457,38 +462,29 @@ function TownInterface({
                   />
                 </div>
                 <div className="townTextInfo">
-                  <p id="townName">{townInfo.townName}</p>
+                  <p id="townName">{townInfo.townName} <small id='town-xp-level'>town level {calcTownLevel(townInfo.townXP)[0]}</small></p>
                   <p id="townDescription">{townInfo.description}</p>
                 </div>
                 <div className="townLevel">
-                  <div
-                    className="burst-12 outerClick"
-                    onClick={() => setPerksPopup(true)}
-                  >
-                    <div
-                      className="burst-12 middleClick"
-                      onClick={() => setPerksPopup(true)}
-                    >
-                      <div
-                        className="burst-12 innerClick"
-                        onClick={() => setPerksPopup(true)}
-                      >
-                        <p className="townLevelNum">
-                          LVL {calcTownLevel(townInfo.townXP)[0]}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  {perksPopup && levelPerks()}
                   {townInfo.myRoleID && (
-                    <div
-                      className="showGoalsButton basicCenter"
+                    <button
+                      className='town-menu-button basic-center'
+                      onClick={() => {
+                        setTownScreen("SHOP");
+                      }}
+                    >
+                      TOWN SHOP
+                    </button>
+                  )}
+                  {townInfo.myRoleID && (
+                    <button
+                      className="town-menu-button basic-center"
                       onClick={() => {
                         setTownScreen("GOALS");
                       }}
                     >
                       GOALS
-                    </div>
+                    </button>
                   )}
                 </div>
                 <div className="townGap"></div>
@@ -543,6 +539,7 @@ function TownInterface({
             <TownGoals
               updateBalance={updateBalance}
               updateXP={updateXP}
+              indivGoals={townInfo.indivGoals}
               setTownInfo={setTownInfo}
               setTownScreen={setTownScreen}
               townName={townInfo.townName}
@@ -551,6 +548,14 @@ function TownInterface({
               myUnclaimed={townInfo.myUnclaimed}
               remount={() => setRefreshData((old) => old + 1)}
             />
+          )}
+          {townScreen === "SHOP" && (
+            Object.keys(townShopInfo).length > 0 &&
+            < TownShop
+              townShopInfo={townShopInfo}
+              setTownShopInfo={setTownShopInfo} 
+              menuBack={() => setTownScreen("MAIN")}
+              />
           )}
         </>
       )

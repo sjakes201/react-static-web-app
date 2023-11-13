@@ -14,6 +14,8 @@ function AnimalCard({ animal }) {
   // Generate heart images (make this less ratchet, better ways to do it with mod)
   const hearts = [0, 0, 0, 0, 0];
   let happiness = animal.Happiness;
+  happiness = Math.round(happiness * 100) / 100
+
   for (let i = 0; i < 5; ++i) {
     if (happiness >= 0.2) {
       hearts[i] = 1;

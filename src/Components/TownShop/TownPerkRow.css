@@ -1,0 +1,132 @@
+.rowContainer {
+    height: 6vh;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+}
+
+.perkIcon {
+    height: 100%;
+    object-fit: contain;
+    background-color: var(--menu_light);
+    padding: .1vw;
+    width: 5%;
+}
+
+.levelContainer {
+    margin: 0 1vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex: 1;
+    height: 80%;
+    border-radius: 5px;
+}
+
+.thick-white-border {
+    border: 6px solid var(--soft_white);
+
+}
+
+.thick-gold-border {
+    border: 6px solid gold;
+
+}
+
+.levelContainer::before,
+.levelContainer::after {
+    content: " ";
+    width: 1px;
+    height: 100%;
+    background-color: black;
+    ;
+}
+
+.rowCell {
+    height: 100%;
+    flex: 1;
+    position: relative;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+.boughtCell {
+    background-color: #215EE3;
+    z-index: 3;
+}
+
+.boughtCell>p {
+    font-size: .9vw;
+    opacity: 0.9;
+}
+
+.nextCell {
+    background-color: #5F87DC;
+    z-index: 2;
+    margin: 0 3px;
+}
+
+.nextCell>p {
+    font-size: 0.9vw;
+}
+
+.unavailableCell {
+    background-color: #D4DCED;
+    z-index: 3;
+}
+
+.unavailableCell>p {
+    font-size: .6vw;
+    color: rgb(101, 101, 101)
+}
+
+.nextHighlight {
+    box-shadow:
+        0 0 0 4px rgb(5, 15, 54),
+
+        -6px -9px 0 var(--soft_white),
+        -6px 9px 0 var(--soft_white),
+        6px -9px 0 var(--soft_white),
+        6px 9px 0 var(--soft_white),
+
+        -7px -8px 0 var(--soft_white),
+        -7px 8px 0 var(--soft_white),
+        7px -8px 0 var(--soft_white),
+        7px 8px 0 var(--soft_white),
+
+        -8px -7px 0 var(--soft_white),
+        -8px 7px 0 var(--soft_white),
+        8px -7px 0 var(--soft_white),
+        8px 7px 0 var(--soft_white);
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.perkLevelInfo {
+    display: flex;
+    flex-direction: column;
+    font-size: .9vw;
+    background-color: var(--menu_light);
+    padding: .1vw;
+    width: 10%;
+}
+
+.perkLevelInfo {
+    text-wrap: nowrap;
+}
+
+.levelInfoTip {
+    position: absolute;
+    bottom: -2vw;
+    font-size: 0.9vw;
+    text-wrap: nowrap;
+    background-color: var(--menu_light);
+    padding: .1vw .2vw;
+    z-index: 500;
+}

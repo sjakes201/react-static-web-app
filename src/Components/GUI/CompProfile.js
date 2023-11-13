@@ -132,7 +132,6 @@ function CompProfile({
 
   function xpProgressBar(XP) {
     let barInfo = xpBarInfo(XP);
-    // for parent
 
     return (
       <div
@@ -164,8 +163,6 @@ function CompProfile({
       </div>
     );
   }
-
-  //location.pathname.substring(1, location.pathname.length)
 
   return (
     <div className={`user-profile ${disableBorder ? "" : "orangeBorder"}`}>

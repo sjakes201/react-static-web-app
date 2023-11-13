@@ -1,0 +1,90 @@
+.indiv-goal-card {
+    height: 17vh;
+    width: 10vw;
+    position: relative;
+    border: none;
+    background-color: transparent;
+}
+
+.main-card-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.goal-contents {
+    position: absolute;
+    /* Absolute positioning within the relative container */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.goal-info {
+    width: 40%;
+    height: 70%;
+    flex-direction: column;
+    margin-right: -1%;
+    margin-left: -6%;
+}
+
+.crop-icon {
+    max-height: 100%;
+    width: 100%;
+    margin-bottom: -5%;
+    margin-left: -5%;
+}
+
+.goal-quantity {
+    font-size: .9vw;
+}
+
+.indiv-reward-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 1vw;
+}
+
+.indiv-reward-row>img {
+    width: 50%;
+}
+
+.town-xp-reward {
+    position: absolute;
+    bottom: 1vh;
+    width: 100%;
+    text-align: center;
+    font-size: .8vw;
+    color: gray;
+}
+
+.claimed-user {
+    width: 100%;
+}
+
+.claimed-user > img {
+    width: 3vw;
+}
+
+.goal-timer {
+    position: absolute;
+    top: 1.4vw;
+    right: 1.2vw;
+    width: 1.3vw;
+}
+
+.claim-goal {
+    position: absolute;
+    bottom: 0.9vh;
+    font-size: 1.1vw;
+    font-weight: bold;
+}

@@ -305,7 +305,7 @@ function CompItem({
         </div>
         <div id="info">
           <div className="left-text">
-            <p>${cost}</p>
+            <p>${cost?.toLocaleString()}</p>
             <small></small>
           </div>
           <div className="right-text" style={getLocationStyle()}>
@@ -321,7 +321,7 @@ function CompItem({
                   ? "BUY"
                   : "OWNED"
                 : unlocked
-                ? `UPGRADE TIER ${tier + 1}`
+                ? `TIER ${tier + 1}`
                 : `MAXED`}
             </button>
             {gif[1] && (

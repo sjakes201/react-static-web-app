@@ -174,7 +174,7 @@ function GoalCard({
           <p>
             {CONSTANTS.InventoryDescriptionsPlural[good][0]}
             <small className="townXPFromGoal">
-              {good.includes("_") ? 1200 : 1000} town xp
+              {good.includes("_") ? 1200 : 1000} town funds
             </small>
           </p>
           <p>
