@@ -27,12 +27,29 @@ function TownGoals({
 
   const [unclaimedIndiv, setUnclaimedIndiv] = useState([])
   const [individualGoals, setIndividualGoals] = useState([])
+  const [pendingGoal, setPendingGoal] = useState(false)
 
   useEffect(() => {
-    const unclaimedIndivGoals = userNotifications.filter((goal) => goal.Type === "INDIV_TOWN_GOAL_REWARD").map((ucGoal) => JSON.parse(ucGoal.Message))
+    const unclaimedIndivGoals = userNotifications
+      .filter(
+        (goal) => goal.Type === "INDIV_TOWN_GOAL_REWARD")
+      .map(
+        (ucGoal) => {
+          let goalContents = JSON.parse(ucGoal.Message)
+          return {
+            goalID: goalContents.goalID,
+            good: goalContents.good,
+            qty: goalContents.qty,
+            notificationID: ucGoal.NotificationID
+          }
+        }
+      )
     setUnclaimedIndiv(unclaimedIndivGoals)
     setIndividualGoals(indivGoals)
-  }, [])
+
+    const pendingGoal = indivGoals.some((goal) => goal.Username === getUser())
+    setPendingGoal(pendingGoal)
+  }, [indivGoals])
 
   const changeGoal = async (newGoal, goalSlot) => {
     if (waitForServerResponse) {
@@ -58,11 +75,10 @@ function TownGoals({
       updateBalance(result.body.personalRewards.gold);
     }
   };
-
+  
   const chooseIndivGoal = async (goalID) => {
     if (waitForServerResponse) {
       let res = await waitForServerResponse("chooseIndivTownGoal", { targetGoalID: goalID })
-      console.log(res.body)
       if (res.body?.success) {
         setTownInfo((old) => {
           let newInfo = { ...old };
@@ -82,9 +98,26 @@ function TownGoals({
     }
   }
 
-  const collectIndivReward = (goalID) => {
-    console.log(goalID)
-    //* TODO: IMPLEMENT *//
+  const collectIndivReward = async (goalID) => {
+    let notifID = unclaimedIndiv.filter(g => g.goalID === goalID)[0].notificationID
+    if (waitForServerResponse) {
+      let res = await waitForServerResponse("acceptNotification", { notificationID: notifID, processAction: "CLAIM" })
+      if(res.body.success) {
+        setUnclaimedIndiv((old) => {
+          let newUnclaimed = [...old]
+          newUnclaimed = newUnclaimed.filter(g => g.goalID !== goalID)
+          return newUnclaimed
+        })
+        if(res.body.goldReward) {
+          updateBalance(res.body.goldReward)
+        }
+        setUserNotifications((old) => {
+          let newNotifs = [...old]
+          newNotifs = newNotifs.filter(n => n.NotificationID !== notifID)
+          return newNotifs
+        })
+      }
+    }
   }
 
   return (
@@ -149,6 +182,7 @@ function TownGoals({
               goalID={goalObj.goalID}
               chooseIndivGoal={chooseIndivGoal}
               profilePic={goalObj.profilePic}
+              pendingGoal={pendingGoal}
             />)
           })}
         </div>

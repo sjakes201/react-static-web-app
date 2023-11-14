@@ -511,7 +511,8 @@ function GameContainer() {
     refreshPrices,
     setTownPerks,
     userNotifications,
-    setUserNotifications
+    setUserNotifications,
+    refreshNotifications
   }
 
   if (!isConnected) {

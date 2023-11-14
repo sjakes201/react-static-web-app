@@ -16,7 +16,7 @@ function TownInterface({
   setTownChatBox
 }) {
   const { waitForServerResponse } = useWebSocket();
-  const { updateBalance, updateXP, reloadTownPerks, msgNotification, myTownName } = useContext(GameContext)
+  const { updateBalance, updateXP, reloadTownPerks, msgNotification, myTownName, refreshNotifications } = useContext(GameContext)
 
   // Which screen to show ("MAIN" or "GOALS" or "SHOP" or "DNE")
   const [townScreen, setTownScreen] = useState("MAIN");
@@ -65,6 +65,7 @@ function TownInterface({
 
   useEffect(() => {
     const fetchData = async () => {
+      refreshNotifications();
       if (waitForServerResponse) {
         let data = await waitForServerResponse("getTownInfo", {
           townName: townName,

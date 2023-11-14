@@ -3,7 +3,7 @@ import './IndivGoalCard.css';
 import { calcIndivRewards } from '../../townHelpers'
 import { GameContext } from '../../GameContainer';
 
-function IndivGoalCard({ good, quantity, expiration, progress, username, goalID, chooseIndivGoal, profilePic, collectIndivReward }) {
+function IndivGoalCard({ good, quantity, expiration, progress, username, goalID, chooseIndivGoal, profilePic, collectIndivReward, pendingGoal }) {
     const rewards = calcIndivRewards(good, quantity);
     const { getUser } = useContext(GameContext)
     const [pfpTip, setPfpTip] = useState(false)
@@ -56,7 +56,7 @@ function IndivGoalCard({ good, quantity, expiration, progress, username, goalID,
 
     return (
         <button
-            className={`indiv-goal-card ${profilePic ? '' : 'clickable'}`}
+            className={`indiv-goal-card ${(profilePic || pendingGoal) ? '' : 'clickable'}`}
             onClick={() => chooseIndivGoal(goalID)}
         >
             <img src={getBackgroundImage()} className='main-card-img' />
