@@ -556,6 +556,7 @@ function TownInterface({
               townShopInfo={townShopInfo}
               setTownShopInfo={setTownShopInfo} 
               menuBack={() => setTownScreen("MAIN")}
+              myRoleID={townInfo.myRoleID}
               />
           )}
         </>

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './TownPerkRow.css'
 import TOWNSINFO from '../../TOWNSINFO'
 
-function TownPerkRow({ perkName, currentLevel, buyPerk }) {
+function TownPerkRow({ perkName, currentLevel, buyPerk, myRoleID }) {
 
     const [iconTip, setIconTip] = useState(false);
     const [tipTimer, setTipTimer] = useState(null);
@@ -11,6 +11,7 @@ function TownPerkRow({ perkName, currentLevel, buyPerk }) {
     const [cellTip, setCellTip] = useState(null);
 
     const callBuy = async (level) => {
+        if(myRoleID < 3) return
         if ((level === currentLevel + 1) && !buyBuffer) {
             setBuyBuffer(true)
             await buyPerk(perkName);
@@ -23,7 +24,7 @@ function TownPerkRow({ perkName, currentLevel, buyPerk }) {
     const levelCell = (level) => {
         const getCellStyle = () => {
             if (level <= currentLevel) return "boughtCell"
-            if (level === currentLevel + 1) return "nextCell clickable"
+            if (level === currentLevel + 1) return `nextCell ${myRoleID >= 3 ? 'clickable' : ''}`
             return "unavailableCell"
         }
 

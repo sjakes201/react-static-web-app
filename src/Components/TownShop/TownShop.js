@@ -6,7 +6,7 @@ import { GameContext } from '../../GameContainer'
 import TOWNSINFO from '../../TOWNSINFO'
 import './TownShop.css'
 
-function TownShop({ townShopInfo, setTownShopInfo, menuBack }) {
+function TownShop({ townShopInfo, setTownShopInfo, menuBack, myRoleID }) {
     const { waitForServerResponse } = useWebSocket();
     const { setTownPerks } = useContext(GameContext)
 
@@ -43,11 +43,11 @@ function TownShop({ townShopInfo, setTownShopInfo, menuBack }) {
             </div>
             <div className='townPerkRows woodBackground brown-border-small'>
                 <div className='townFunds basic-center brown-border-small'>Town Funds: ${townShopInfo.townFunds?.toLocaleString()}</div>
-                <TownPerkRow perkName="cropTimeLevel" currentLevel={townShopInfo.cropTimeLevel} buyPerk={buyPerk} />
-                <TownPerkRow perkName="animalTimeLevel" currentLevel={townShopInfo.animalTimeLevel} buyPerk={buyPerk} />
-                <TownPerkRow perkName="partsChanceLevel" currentLevel={townShopInfo.partsChanceLevel} buyPerk={buyPerk} />
-                <TownPerkRow perkName="orderRefreshLevel" currentLevel={townShopInfo.orderRefreshLevel} buyPerk={buyPerk} />
-                <TownPerkRow perkName="happinessMultiplierLevel" currentLevel={townShopInfo.happinessMultiplierLevel} buyPerk={buyPerk} />
+                <TownPerkRow perkName="cropTimeLevel" currentLevel={townShopInfo.cropTimeLevel} buyPerk={buyPerk} myRoleID={myRoleID}/>
+                <TownPerkRow perkName="animalTimeLevel" currentLevel={townShopInfo.animalTimeLevel} buyPerk={buyPerk} myRoleID={myRoleID}/>
+                <TownPerkRow perkName="partsChanceLevel" currentLevel={townShopInfo.partsChanceLevel} buyPerk={buyPerk} myRoleID={myRoleID}/>
+                <TownPerkRow perkName="orderRefreshLevel" currentLevel={townShopInfo.orderRefreshLevel} buyPerk={buyPerk} myRoleID={myRoleID}/>
+                <TownPerkRow perkName="happinessMultiplierLevel" currentLevel={townShopInfo.happinessMultiplierLevel} buyPerk={buyPerk} myRoleID={myRoleID}/>
             </div>
         </div>
     )

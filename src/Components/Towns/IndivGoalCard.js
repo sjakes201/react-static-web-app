@@ -61,7 +61,7 @@ function IndivGoalCard({ good, quantity, expiration, progress, username, goalID,
         >
             <img src={getBackgroundImage()} className='main-card-img' />
             {profilePic && <img className='goal-timer' src={`${process.env.PUBLIC_URL}/assets/images/towns/timer.gif`} />}
-            {pfpTip && <p className='toolTipText'>Claimed by {username} ({timeRemaining} mins)</p>}
+            {pfpTip && <p className='toolTipText'>Claimed by {username === getUser() ? "you" : username} ({timeRemaining} mins)</p>}
             <div className='goal-contents'>
                 <div className='goal-info basic-center'>
                     <img className='crop-icon' src={`${process.env.PUBLIC_URL}/assets/images/${good}.png`} />

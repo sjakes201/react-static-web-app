@@ -94,6 +94,8 @@ function TownGoals({
           })
           return newInfo
         })
+      } else {
+        remount()
       }
     }
   }
