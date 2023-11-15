@@ -17,7 +17,7 @@ function PlantScreen() {
     navigate("/");
   }
 
-  const { itemsData, setItemsData, getBal, getUser, updateBalance, getXP, setLoginBox, level } = useContext(GameContext)
+  const { itemsData, setItemsData } = useContext(GameContext)
 
   const [items, setItems] = useState({});
   const [fertilizers, setFertilizers] = useState({});

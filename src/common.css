@@ -23,6 +23,22 @@
         0 0 0 9px var(--black);
 }
 
+.light-border-small {
+    box-shadow:
+        0 0 0 1px var(--black),
+        0 0 0 2px var(--shop_brown),
+        0 0 0 3px var(--menu_dark),
+        0 0 0 4px var(--black);
+}
+
+.gold-border-small {
+    box-shadow:
+        0 0 0 1px var(--black),
+        0 0 0 2px rgb(255, 215, 0),
+        0 0 0 3px rgb(218, 165, 32),
+        0 0 0 4px var(--black);
+}
+
 .gold-border {
     box-shadow:
         0 0 0 3px var(--black),
@@ -55,6 +71,14 @@
         0 0 0 4px var(--border_shadow_yellow),
         0 0 0 6px var(--black);
     margin: 6px;
+}
+
+.brown-border-small {
+    box-shadow:
+        0 0 0 3px var(--black),
+        0 0 0 6px var(--shop_brown),
+        0 0 0 8px var(--menu_dark),
+        0 0 0 11px var(--black);
 }
 
 .basic-center {
@@ -104,4 +128,14 @@
 
 .relative {
     position: relative;
+}
+
+.toolTipText {
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+    font-size: .9vw;
+    z-index: 500;
+    pointer-events: none;
+    padding: 1px 5px;
 }

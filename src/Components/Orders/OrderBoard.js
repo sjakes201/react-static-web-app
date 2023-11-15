@@ -124,13 +124,10 @@ function OrderBoard() {
     }
   };
 
-  let refreshTimeNeeded =
-    CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN * (1 / 1000) * (1 / 60);
+  let refreshTimeNeeded = CONSTANTS.VALUES.ORDER_REFRESH_COOLDOWN * (1 / 1000) * (1 / 60);
+
   if (townPerks.orderRefreshLevel) {
-    let boostPercent =
-      TOWNSINFO.upgradeBoosts.orderRefreshPerkLevel[
-      townPerks.orderRefreshLevel
-      ];
+    let boostPercent = TOWNSINFO.perkBoosts.orderRefreshLevel[townPerks.orderRefreshLevel - 1];
     let boostChange = 1 + boostPercent;
     refreshTimeNeeded /= boostChange;
   }

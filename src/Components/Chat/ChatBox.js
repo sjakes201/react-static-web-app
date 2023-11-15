@@ -66,7 +66,7 @@ function ChatBox({ chatMessages }) {
           {myTownName === "" ?
             <i>Not currently in a town</i>
             :
-            chatMessages.map((txt) => <MessageBubble text={txt.content} userWhoSent={txt.Username} unixTimeStamp={txt.timestamp} />)
+            chatMessages.filter(txt => !txt.content.includes("completed goal")).map((txt) => <MessageBubble text={txt.content} userWhoSent={txt.Username} unixTimeStamp={txt.timestamp} />)
           }
         </div>
         <div className="newMessageBox">

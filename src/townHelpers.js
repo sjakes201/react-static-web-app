@@ -46,6 +46,26 @@ function calcPerkLevels(townLevel) {
   return result;
 }
 
+// Rewards for finishing individual goal
+function calcIndivRewards (good, quantity) {
+  let rewards = {
+      gold: 0,
+      xp: 0,
+      townXP: 0
+  }
+  // Gold is quantity / 15 * init market price if crop, or quantity * (2/3) * init market price if animal produce
+  if(good?.includes("_")) {
+      //animal produce
+      rewards.gold = Math.round((quantity * (2/3)) * CONSTANTS.Init_Market_Prices[good])
+      rewards.townXP = 120;
+  } else {
+      // crop
+      rewards.gold = Math.round((quantity / 15) * CONSTANTS.Init_Market_Prices[good]);
+      rewards.townXP = 100
+  }
+  return rewards;
+}
+
 function personalRewards(good, quantity) {
   let rewards = {
     gold: 0,
@@ -59,7 +79,7 @@ function personalRewards(good, quantity) {
     return rewards;
 
   // Gold is quantity / 15 * init market price if crop, or quantity * (2/3) * init market price if animal produce
-  if (good.includes("_")) {
+  if (good?.includes("_")) {
     //animal produce
     rewards.gold = Math.round(
       quantity * (2 / 3) * CONSTANTS.Init_Market_Prices[good],
@@ -76,4 +96,4 @@ function personalRewards(good, quantity) {
   return rewards;
 }
 
-export { calcTownLevel, calcPerkLevels, personalRewards };
+export { calcTownLevel, calcPerkLevels, personalRewards, calcIndivRewards };

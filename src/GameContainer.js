@@ -80,6 +80,8 @@ function GameContainer() {
 
   const [leaderboardData, setLeaderboardData] = useState({});
 
+  const [userNotifications, setUserNotifications] = useState([])
+
   const getTownMessages = async () => {
     if (waitForServerResponse) {
       let chatHistory = await waitForServerResponse("getTownMessages");
@@ -94,6 +96,15 @@ function GameContainer() {
       }
     }
   };
+
+  const refreshNotifications = async() => {
+    if(waitForServerResponse) {
+      let res = await waitForServerResponse("getNotifications");
+      if(res.body.success){
+        setUserNotifications(res.body.notificationsData)
+      }
+    }
+  }
 
   const refreshLeaderboard = async () => {
     if (waitForServerResponse) {
@@ -206,6 +217,7 @@ function GameContainer() {
     refreshLeaderboard();
     reloadTownPerks();
     getTiles();
+    refreshNotifications();
 
     const handleNewMsg = (content, timestamp, Username, messageID) => {
       setTownChatMsgs((old) => {
@@ -266,7 +278,9 @@ function GameContainer() {
       const response = await waitForServerResponse("getTownPerks");
       let data = response.body;
       setMyTownName(data.townName)
-      setTownPerks(data);
+      const perks = {...data};
+      delete perks.townName;
+      setTownPerks(perks);
     }
     getTownMessages();
   };
@@ -494,7 +508,11 @@ function GameContainer() {
     profilePic,
     setProfilePic,
     getTiles,
-    refreshPrices
+    refreshPrices,
+    setTownPerks,
+    userNotifications,
+    setUserNotifications,
+    refreshNotifications
   }
 
   if (!isConnected) {

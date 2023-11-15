@@ -78,7 +78,6 @@ function CompPlot({
     }
   };
 
-  // can you plant this plant?
   const isUnlocked = (name) => {
     let xpNeeded = Object.keys(CONSTANTS.levelUnlocks).filter((level) =>
       CONSTANTS.levelUnlocks[level].includes(name) ? true : false,
@@ -96,9 +95,9 @@ function CompPlot({
   const fertilizeTile = async (tileID) => {
     let desiredFertilizer = equippedFert;
     let targetTile = tiles.filter((tile) => tile.TileID === tileID)[0]
-    if(!targetTile) return;
-    
-    if(targetTile[desiredFertilizer] > 0) {
+    if (!targetTile) return;
+
+    if (targetTile[desiredFertilizer] > 0) {
       return;
     }
 
@@ -590,9 +589,10 @@ function CompPlot({
       if (simRes.hasTimeFertilizer) {
         secsPassed *= 2;
       }
-      if (townPerks?.growthPerkLevel) {
+
+      if (townPerks?.cropTimeLevel > 0) {
         let boostPercent =
-          TOWNSINFO.upgradeBoosts.growthPerkLevel[townPerks.growthPerkLevel];
+          TOWNSINFO.perkBoosts.cropTimeLevel[townPerks.cropTimeLevel - 1];
         let boostChange = 1 - boostPercent;
         secsNeeded *= boostChange;
       }
@@ -619,14 +619,13 @@ function CompPlot({
             timeSkip /= 2;
           }
 
-          if (townPerks?.growthPerkLevel) {
+          if (townPerks?.cropTimeLevel > 0) {
             let boostPercent =
-              TOWNSINFO.upgradeBoosts.growthPerkLevel[
-                townPerks.growthPerkLevel
-              ];
+              TOWNSINFO.perkBoosts.cropTimeLevel[townPerks.cropTimeLevel - 1];
             let boostChange = 1 - boostPercent;
             timeSkip *= boostChange;
           }
+
           // ms since epoch
           let newPlantTime = Date.now();
           newPlantTime = newPlantTime - timeSkip;
@@ -673,16 +672,16 @@ function CompPlot({
       if (hasTimeFertilizer) {
         secsPassed = secsPassed * 2;
       }
-      if (townPerks?.growthPerkLevel) {
+      if (townPerks?.cropTimeLevel > 0) {
         let boostPercent =
-          TOWNSINFO.upgradeBoosts.growthPerkLevel[townPerks.growthPerkLevel];
+          TOWNSINFO.perkBoosts.cropTimeLevel[townPerks.cropTimeLevel - 1];
         let boostChange = 1 - boostPercent;
         secsPassed /= boostChange;
       }
       // Use secs passed to find out what stage you are in by summing growth in constants
       let growth =
         UPGRADES["GrowthTimes".concat(getUpgrades().plantGrowthTimeUpgrade)][
-          CROPINFO.seedsFromID[CropID]
+        CROPINFO.seedsFromID[CropID]
         ];
       let stage = 0;
       while (secsPassed > 0 && stage < growth.length) {

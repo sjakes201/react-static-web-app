@@ -102,16 +102,17 @@ function CompPen({
     if (timePassedMS >= ANIMALINFO.VALUES.FEED_COOLDOWN) {
       let newCount = updateInventory(feed, -1);
       let happinessAdd = ANIMALINFO.FoodHappinessYields[feed];
-      if (
-        ANIMALINFO.foodPreferences[targetAnimal.Animal_type].like.includes(feed)
-      ) {
+      if (ANIMALINFO.foodPreferences[targetAnimal.Animal_type].like.includes(feed)) {
         happinessAdd *= 2;
-      } else if (
-        ANIMALINFO.foodPreferences[targetAnimal.Animal_type].dislike.includes(
-          feed,
-        )
-      ) {
+      } else if (ANIMALINFO.foodPreferences[targetAnimal.Animal_type].dislike.includes(feed)) {
         happinessAdd *= -1;
+      }
+      if (happinessAdd > 0) {
+        const happPerkLevel = townPerks.happinessMultiplierLevel;
+        if (happPerkLevel > 0) {
+          let perkBoost = 1 + TOWNSINFO.perkBoosts.happinessMultiplierLevel[happPerkLevel - 1]
+          happinessAdd *= perkBoost;
+        }
       }
       setAnimalsParent((old) => {
         return old.map((a) => {
@@ -126,19 +127,7 @@ function CompPen({
           }
         });
       });
-      setAnimalsParent((old) => {
-        return old.map((a) => {
-          if (a.Animal_ID === targetAnimal.Animal_ID) {
-            // set last fed and new happiness
-            let newAnimal = { ...a };
-            newAnimal.Last_fed = Date.now();
-            newAnimal.Happiness = newAnimal.Happiness + happinessAdd;
-            return newAnimal;
-          } else {
-            return a;
-          }
-        });
-      });
+    
       if (newCount === 0) {
         setEquippedFeed("");
         sessionStorage.setItem("equipped", "");
@@ -330,10 +319,10 @@ function CompPen({
       : getUpgrades().coopCollectTimeUpgrade;
     let tableName = "AnimalCollectTimes".concat(level);
     if (tableName.includes("undefined")) tableName = "AnimalCollectTimes0";
-    let secsNeeded = UPGRADES[tableName][Animal_type];
-    if (townPerks.animalPerkLevel) {
+    let secsNeeded = UPGRADES[tableName][Animal_type][0];
+    if (townPerks.animalTimeLevel) {
       let boostPercent =
-        TOWNSINFO.upgradeBoosts.animalPerkLevel[townPerks.animalPerkLevel];
+        TOWNSINFO.perkBoosts.animalTimeLevel[townPerks.animalTimeLevel - 1];
       let boostChange = 1 - boostPercent;
       secsNeeded *= boostChange;
     }

@@ -160,6 +160,12 @@
     margin-bottom: 2%;
 }
 
+#town-xp-level {
+    font-size: 0.8vw;
+    color: gray;
+    margin-left: 0.7vw;
+}
+
 #townDescription {
     height: 80%;
     width: 100%;
@@ -195,13 +201,15 @@
     margin-top: 5px;
 }
 
-.showGoalsButton {
-    width: 55%;
+.town-menu-button {
+    width: 70%;
+    font-size: 1vw;
     height: 25%;
     border: 1px solid black;
     border-radius: 4px;
     cursor: pointer;
     background-color: var(--menu_lightest);
+    text-wrap: nowrap;
 }
 
 .townGap {
