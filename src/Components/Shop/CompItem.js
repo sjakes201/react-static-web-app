@@ -4,7 +4,7 @@ import CONSTANTS from "../../CONSTANTS";
 import UPGRADES from "../../UPGRADES";
 import { useWebSocket } from "../../WebSocketContext";
 
-const SEED_LIMIT = 100;
+const SEED_LIMIT = 250;
 
 function CompItem({
   addAnimal,
@@ -63,7 +63,7 @@ function CompItem({
       }
       if (items[itemName] + num >= SEED_LIMIT) {
         // reduce num purchased to what is allowed
-        num = num - (items[itemName] + num - 100);
+        num = num - (items[itemName] + num - 250);
         if (num < 1) return;
       }
       if (getBal() >= cost * num) {
