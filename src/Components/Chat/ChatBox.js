@@ -43,6 +43,7 @@ function ChatBox({ chatMessages }) {
   };
 
   const sendMessage = async () => {
+    if(!newMessage.replace(/\s/g, '').length) {console.log('only whitespace'); return};
     if (waitForServerResponse) {
       let msgResult = await waitForServerResponse("createTownMessage", {
         messageContent: newMessage,
