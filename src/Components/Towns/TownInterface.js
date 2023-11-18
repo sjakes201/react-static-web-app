@@ -76,6 +76,7 @@ function TownInterface({
         }
         data.body.playersData.sort((a, b) => b.xp - a.xp);
         setTownInfo(data.body);
+        console.log(data.body)
         if (data.body.townShopInfo) {
           setTownShopInfo(data.body.townShopInfo)
         }

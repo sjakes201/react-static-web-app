@@ -47,6 +47,10 @@
     color: gray;
 }
 
+.online {
+    color: rgb(26, 222, 26) !important;
+}
+
 .playerGap {
     width: 24%
 }

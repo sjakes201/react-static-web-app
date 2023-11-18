@@ -15,7 +15,6 @@ function PlayerCard({
 }) {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(seenString)
   const [demoteConfirm, setDemoteConfirm] = useState(false);
   const demoteTimer = useRef(null);
 
@@ -168,7 +167,7 @@ function PlayerCard({
           </span>
         )}
         {seenString &&
-          <span className='last-seen-string'>{seenString}</span>
+          <span className={`last-seen-string ${seenString === "Online" ? 'online' : ''}`}>{seenString}</span>
         }
       </div>
       <div className="playerGap"></div>
