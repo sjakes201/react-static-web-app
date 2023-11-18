@@ -10,12 +10,12 @@ function PlayerCard({
   contributions,
   myRoleID,
   managementAction,
-  reportedTimePassed,
+  seenString,
   contributedTownXP
 }) {
   const navigate = useNavigate();
   const location = useLocation();
-
+  console.log(seenString)
   const [demoteConfirm, setDemoteConfirm] = useState(false);
   const demoteTimer = useRef(null);
 
@@ -167,6 +167,9 @@ function PlayerCard({
             {username}
           </span>
         )}
+        {seenString &&
+          <span className='last-seen-string'>{seenString}</span>
+        }
       </div>
       <div className="playerGap"></div>
       <div className="playerRole">

@@ -407,6 +407,7 @@ function TownInterface({
               managementAction={managementAction}
               contributedTownXP={player.contributedTownXP}
               pfpName={player.pfpName}
+              seenString={player.seenString}
             />
           </div>
         ))}

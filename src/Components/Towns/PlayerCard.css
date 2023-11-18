@@ -38,8 +38,13 @@
 }
 
 .playerUser>span {
-
     cursor: pointer;
+}
+
+.last-seen-string {
+    margin-left: 1vw;
+    font-size: 0.80vw;
+    color: gray;
 }
 
 .playerGap {
