@@ -187,6 +187,20 @@
     color: rgb(48, 180, 48) !important;
 }
 
+
+.recent-feed {
+    height: 30%;
+    object-fit: contain;
+    margin-right: 1vw;
+}
+
+.recent-feed-tip {
+    font-size: .8vw;
+    margin-right: 1vw;
+    color: gray;
+    text-align: center;
+}
+
 .feedButton {
     margin-right: 1vw;
     height: 80%;

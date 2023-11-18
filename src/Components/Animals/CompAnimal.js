@@ -45,28 +45,33 @@ function CompAnimal({
     if (collectible) {
       if (walkingInfo.walking && visible) {
         // left animation is just right animation but mirrored
-        return `${
-          process.env.PUBLIC_URL
-        }/assets/images/${type}_collectible_walking_${
-          walkingInfo.direction === "left" ? "right" : walkingInfo.direction
-        }.gif`;
+        return `${process.env.PUBLIC_URL
+          }/assets/images/${type}_collectible_walking_${walkingInfo.direction === "left" ? "right" : walkingInfo.direction
+          }.gif`;
       }
-      return `${
-        process.env.PUBLIC_URL
-      }/assets/images/${type}_collectible_standing_${
-        walkingInfo.direction === "left" ? "right" : walkingInfo.direction
-      }.png`;
+      return `${process.env.PUBLIC_URL
+        }/assets/images/${type}_collectible_standing_${walkingInfo.direction === "left" ? "right" : walkingInfo.direction
+        }.png`;
     } else {
       if (walkingInfo.walking && visible) {
-        return `${process.env.PUBLIC_URL}/assets/images/${type}_walking_${
-          walkingInfo.direction === "left" ? "right" : walkingInfo.direction
-        }.gif`;
+        return `${process.env.PUBLIC_URL}/assets/images/${type}_walking_${walkingInfo.direction === "left" ? "right" : walkingInfo.direction
+          }.gif`;
       }
-      return `${process.env.PUBLIC_URL}/assets/images/${type}_standing_${
-        walkingInfo.direction === "left" ? "right" : walkingInfo.direction
-      }.png`;
+      return `${process.env.PUBLIC_URL}/assets/images/${type}_standing_${walkingInfo.direction === "left" ? "right" : walkingInfo.direction
+        }.png`;
     }
   };
+
+  const timeUntilNextFeed = () => {
+    const secondsRemaining = Math.round((ANIMALINFO.VALUES.FEED_COOLDOWN - (Date.now() - lastFed)) * (1 / 1000));
+    if (secondsRemaining <= 0) {
+      return ' (hungry)';
+    }
+    if (secondsRemaining >= 60) {
+      return ` (${Math.floor(secondsRemaining / 60)} min)`;
+    }
+    return ` (${secondsRemaining} secs)`
+  }
 
   const left = walkingInfo?.coordinates?.[0] ? walkingInfo.coordinates?.[0] : 0;
   const top = walkingInfo?.coordinates?.[1] ? walkingInfo.coordinates?.[1] : 0;
@@ -125,17 +130,19 @@ function CompAnimal({
     >
       {hover &&
         sessionStorage.getItem("equipped") in
-          ANIMALINFO.FoodHappinessYields && (
+        ANIMALINFO.FoodHappinessYields && (
           <div
             style={{
               position: "absolute",
-              top: "-0.75vh",
-              fontSize: "2.1vh",
-              textTransform: name === "" ? "capitalize" : "",
-              color: "#303030",
+              top: "-2vh",
+              fontSize: "2vh",
+              textAlign: "center",
+              zIndex: '5',
+              textWrap: "nowrap"
             }}
           >
             {name === "" ? type : name}
+            <span style={{fontSize: '1.8vh', color: 'black'}}>{timeUntilNextFeed()}</span>
           </div>
         )}
       {feedGif && (

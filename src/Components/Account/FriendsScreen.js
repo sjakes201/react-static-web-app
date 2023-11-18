@@ -192,6 +192,7 @@ function FriendsScreen() {
                         lastActive={friend.friendLastActive}
                         username={friend.friendUsername}
                         lastFeed={Number(friend.yourLastFeed)}
+                        theirLastFeed={Number(friend.theirLastFeed)}
                         acceptedFlag={friend.acceptedFlag}
                         removeFriend={removeFriend}
                         acceptFriendRequest={acceptFriendRequest}
