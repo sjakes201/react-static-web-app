@@ -142,7 +142,7 @@ function CompAnimal({
             }}
           >
             {name === "" ? type : name}
-            {timeUntilNextFeed()}
+            <span style={{fontSize: '1.8vh', color: 'black'}}>{timeUntilNextFeed()}</span>
           </div>
         )}
       {feedGif && (
