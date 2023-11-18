@@ -4,12 +4,12 @@ import './FriendComponents.css'
 
 const MS_FRIEND_FEED_COOLDOWN = 30 * 60 * 1000
 
-function FriendRow({ profilePic, username, lastFeed, acceptedFlag, lastActive, removeFriend, acceptFriendRequest, feedFriendAnimal }) {
+function FriendRow({ profilePic, username, lastFeed, theirLastFeed, acceptedFlag, lastActive, removeFriend, acceptFriendRequest, feedFriendAnimal }) {
     const navigate = useNavigate();
     const location = useLocation();
-
     const [confirmRemove, setConfirmRemove] = useState(false)
     const [refresh, setRefresh] = useState(false)
+    const [recentFeedTip, setRecentFeedTip] = useState(false)
 
     const removeFriendButton = () => {
         return (<button
@@ -28,7 +28,7 @@ function FriendRow({ profilePic, username, lastFeed, acceptedFlag, lastActive, r
             {confirmRemove ? 'x?' : 'x'}
         </button>)
     }
-    
+
     const feedCart = () => {
         if (lastFeed + 1500 > Date.now()) {
             setTimeout(() => setRefresh((old) => !old), 1510);
@@ -40,6 +40,10 @@ function FriendRow({ profilePic, username, lastFeed, acceptedFlag, lastActive, r
         } else {
             return (<img src={`${process.env.PUBLIC_URL}/assets/images/GUI/friendsCartEmpty.png`} />)
         }
+    }
+
+    const didTheyRecentlyFeed = () => {
+        return (Date.now() - theirLastFeed) < (2 * 24 * 60 * 60 * 1000)
     }
 
     if (acceptedFlag === 1) {
@@ -71,6 +75,20 @@ function FriendRow({ profilePic, username, lastFeed, acceptedFlag, lastActive, r
                     </p>
                 </div>
                 <div className='rightAligned'>
+                    {recentFeedTip &&
+                        <p className='recent-feed-tip'>
+                            <div>They recently</div>
+                            <div>fed your animals!</div>
+                        </p>
+                    }
+                    {didTheyRecentlyFeed() &&
+                        <img
+                            className='recent-feed'
+                            onMouseEnter={() => setRecentFeedTip(true)}
+                            onMouseLeave={() => setRecentFeedTip(false)}
+                            src={`${process.env.PUBLIC_URL}/assets/images/animal_reactions/fullheart.png`
+                            } />
+                    }
                     {Date.now() > lastFeed + MS_FRIEND_FEED_COOLDOWN ? (
                         <button
                             className='feedButton clickable basic-center feedable'
