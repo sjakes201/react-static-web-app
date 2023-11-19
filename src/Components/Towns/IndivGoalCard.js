@@ -4,7 +4,7 @@ import { calcIndivRewards } from '../../townHelpers'
 import { GameContext } from '../../GameContainer';
 import CONSTANTS from '../../CONSTANTS';
 
-function IndivGoalCard({ good, quantity, expiration, progress, username, goalID, chooseIndivGoal, profilePic, collectIndivReward, pendingGoal }) {
+function IndivGoalCard({ good, quantity, townFunds, expiration, progress, username, goalID, chooseIndivGoal, profilePic, collectIndivReward, pendingGoal }) {
     const rewards = calcIndivRewards(good, quantity);
     const { getUser } = useContext(GameContext)
     const [pfpTip, setPfpTip] = useState(false)
@@ -75,7 +75,7 @@ function IndivGoalCard({ good, quantity, expiration, progress, username, goalID,
                     {goodTip && <p className='toolTipText'>{CONSTANTS.InventoryDescriptionsPlural[good]?.[0]}</p>}
                     <p className='goal-quantity'>
                         {username ? `${progress}/` : ''}
-                        {quantity.toLocaleString()}
+                        {quantity?.toLocaleString()}
                     </p>
                 </div>
                 <div className='goal-info basic-center'>
@@ -98,7 +98,7 @@ function IndivGoalCard({ good, quantity, expiration, progress, username, goalID,
                     </div>
                 </div>
             </div>
-            <p className='town-xp-reward'>{rewards.townXP} town funds</p>
+            <p className='town-xp-reward'>{townFunds} town funds</p>
         </button >
     );
 }

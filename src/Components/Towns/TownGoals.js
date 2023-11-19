@@ -171,6 +171,7 @@ function TownGoals({
                   quantity={matchingGoal[0].qty}
                   collectIndivReward={collectIndivReward}
                   goalID={goalID}
+                  townFunds={matchingGoal[0].townFunds}
                 />)
               }
             }
@@ -185,6 +186,7 @@ function TownGoals({
               chooseIndivGoal={chooseIndivGoal}
               profilePic={goalObj.profilePic}
               pendingGoal={pendingGoal}
+              townFunds={goalObj.townFunds}
             />)
           })}
         </div>
