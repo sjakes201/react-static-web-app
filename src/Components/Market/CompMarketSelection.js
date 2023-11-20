@@ -45,17 +45,6 @@ function CompMarketSelection({
     setQuantity("");
   };
 
-  const multiplierGraphic = () => {
-    if (multiplier === 2) {
-      return (
-        <img className='nameMultiplierGraphic' src={`${process.env.PUBLIC_URL}/assets/images/market/multiplier2x.png`} />)
-    }
-    if (multiplier === 3) {
-      return (
-        <img className='nameMultiplierGraphic' src={`${process.env.PUBLIC_URL}/assets/images/market/multiplier3x.png`} />)
-    }
-  }
-
   return (
     <div
       style={{
@@ -89,14 +78,13 @@ function CompMarketSelection({
             width: "40%",
             padding: "1.5vh 1vh",
             paddingTop: "4%",
+            marginTop: "5%"
           }}
         >
           <div
             className='selected-good-title'
           >
-            {/* {multiplierGraphic()} */}
             <p>{name ? CONSTANTS?.InventoryDescriptions?.[name]?.[0] : ""}</p>
-            {/* {multiplierGraphic()} */}
           </div>
           <div
             style={{

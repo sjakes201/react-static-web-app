@@ -18,7 +18,7 @@ function AnimalScreen() {
     // no auth token present
     navigate("/");
   }
-  const { itemsData, setItemsData, barn, coop, setBarn, setCoop, capacities, setAnimalsInfo } = useContext(GameContext)
+  const { itemsData, setItemsData, barn, coop, setBarn, setCoop, capacities, setAnimalsInfo, moreInfo } = useContext(GameContext)
 
   // Get size of component
   const componentRef = useRef(null);
@@ -97,7 +97,9 @@ function AnimalScreen() {
     position: "relative",
   };
 
-  if (equippedFeed !== "") {
+  if(moreInfo) {
+    appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/moreInfo32.png) 16 16, auto`;
+  } else if (equippedFeed !== "") {
     appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/${equippedFeed}32.png) 16 16, auto`;
   }
 

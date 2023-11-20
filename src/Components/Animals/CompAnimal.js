@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import ANIMALINFO from "../../ANIMALINFO";
+import SmallInfoTile from "../Atoms/SmallInfoTile";
+import CONSTANTS from "../../CONSTANTS";
 
 function CompAnimal({
   type,
@@ -13,9 +15,13 @@ function CompAnimal({
   name,
   lastFed,
   visible,
+  moreInfo,
+  timeUntilCollect
 }) {
   const [hover, setHover] = useState(false);
   const [feedGif, setFeedGif] = useState(null);
+
+  const [infoTile, setInfoTile] = useState(false);
 
   const handleClick = () => {
     if (sessionStorage.getItem("equipped") in ANIMALINFO.FoodHappinessYields) {
@@ -73,6 +79,32 @@ function CompAnimal({
     return ` (${secondsRemaining} secs)`
   }
 
+  const moreInfoMenu = () => {
+    const getTimeString = () => {
+      let totalSeconds = timeUntilCollect;
+      if (totalSeconds <= 0) return "Done"
+
+      let minString = '';
+      if (totalSeconds > 60) {
+        minString = `${Math.floor(totalSeconds / 60)}m `;
+        totalSeconds = totalSeconds % 60;
+      }
+      let secString = '';
+      if (totalSeconds > 0) {
+        secString = `${Math.floor(totalSeconds)}s`;
+      }
+      return minString + secString;
+    }
+
+    return (
+      <SmallInfoTile>
+        <p>Animal: {CONSTANTS.InventoryDescriptions[type]?.[0]}</p>
+        {name && <p>Name: {name}</p>}
+        <p>Time: {getTimeString()}</p>
+      </SmallInfoTile>
+    )
+  }
+
   const left = walkingInfo?.coordinates?.[0] ? walkingInfo.coordinates?.[0] : 0;
   const top = walkingInfo?.coordinates?.[1] ? walkingInfo.coordinates?.[1] : 0;
 
@@ -89,7 +121,7 @@ function CompAnimal({
     draggable: "false",
   };
 
-  if (sessionStorage.getItem("equipped") === "") {
+  if (sessionStorage.getItem("equipped") === "" && !moreInfo) {
     imgStyle.cursor = collectible ? "grab" : "default";
   }
 
@@ -120,14 +152,20 @@ function CompAnimal({
     <div
       style={divStyle}
       onMouseEnter={() => {
-        setHover(true);
+        if(moreInfo) {
+          setInfoTile(true)
+        } else {
+          setHover(true);
+        }
       }}
       onMouseLeave={() => {
         setHover(false);
+        setInfoTile(false)
       }}
       onMouseDown={handleClick}
       draggable={false}
     >
+      {infoTile && moreInfoMenu()}
       {hover &&
         sessionStorage.getItem("equipped") in
         ANIMALINFO.FoodHappinessYields && (
@@ -142,7 +180,7 @@ function CompAnimal({
             }}
           >
             {name === "" ? type : name}
-            <span style={{fontSize: '1.8vh', color: 'black'}}>{timeUntilNextFeed()}</span>
+            <span style={{ fontSize: '1.8vh', color: 'black' }}>{timeUntilNextFeed()}</span>
           </div>
         )}
       {feedGif && (

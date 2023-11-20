@@ -19,7 +19,7 @@ function CompPen({
   setEquippedFeed,
 }) {
   const { waitForServerResponse } = useWebSocket();
-  const { townPerks, updateXP, getXP, getUpgrades } = useContext(GameContext)
+  const { townPerks, updateXP, getXP, getUpgrades, moreInfo } = useContext(GameContext)
   // 10 per border
   penWidth -= 20;
   penHeight -= 20;
@@ -127,7 +127,7 @@ function CompPen({
           }
         });
       });
-    
+
       if (newCount === 0) {
         setEquippedFeed("");
         sessionStorage.setItem("equipped", "");
@@ -302,7 +302,10 @@ function CompPen({
 
   // Is this animal collectibel and ready to be collected?
   const isCollectible = (Last_produce, Animal_type) => {
-    // TODO: Need to update for upgrade collect times
+    return timeUntilCollect(Last_produce, Animal_type) <= 0;
+  };
+
+  const timeUntilCollect = (Last_produce, Animal_type) => {
     if (
       Last_produce === null ||
       !(Animal_type in UPGRADES.AnimalCollectTimes0)
@@ -327,8 +330,8 @@ function CompPen({
       secsNeeded *= boostChange;
     }
 
-    return secsPassed >= secsNeeded;
-  };
+    return secsNeeded - secsPassed;
+  }
 
   // Generate random starting coords, takes array of animal objects
   const randomStarting = (walkingState) => {
@@ -547,6 +550,8 @@ function CompPen({
             sizeWidth={`${animalWidth}px`}
             sizeHeight={`${animalHeight}px`}
             visible={visible}
+            moreInfo={moreInfo}
+            timeUntilCollect={timeUntilCollect(animal.Last_produce, animal.Animal_type)}
           />
         );
       })}

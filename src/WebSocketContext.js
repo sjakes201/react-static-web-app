@@ -16,6 +16,7 @@ export function useWebSocket() {
 export function WebSocketProvider({ children }) {
   const [ws, setWs] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [banScreen, setBanScreen] = useState(false);
 
   const [doneLoading, setDoneLoading] = useState(false);
 
@@ -82,10 +83,21 @@ export function WebSocketProvider({ children }) {
     wsInstance.addEventListener("close", (event) => {
       console.log(event);
       setIsConnected(false);
-      alert("Connection to game server closed. Press OK or refresh reconnect.");
-      // connectToWebSocketServer();
-      window.location.reload(false);
+      console.log('you')
+      // Assuming 4001 is the close code for 'Banned IP'
+      if (event.code === 4001) {
+        setBanScreen(true)
+        alert("You have been disconnected due to an IP ban. Please contact support if you believe this is an error.");
+        localStorage.setItem("b", Date.now())
+        // Optionally, disable the reconnect function or redirect the user
+      } else {
+        alert("Connection to game server closed. Press OK or refresh to reconnect.");
+        // connectToWebSocketServer();
+        window.location.reload(false);
+      }
     });
+
+
   };
 
   useEffect(() => {
@@ -138,6 +150,8 @@ export function WebSocketProvider({ children }) {
     addListener,
     removeListener,
   };
+
+  if (banScreen) { return (<InitLoading banScreen={true} />) }
 
   return (
     <WebSocketContext.Provider value={contextValue} key={auth}>

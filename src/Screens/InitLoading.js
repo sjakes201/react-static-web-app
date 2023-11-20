@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-function InitLoading({ setDoneLoading }) {
+function InitLoading({ setDoneLoading, banScreen }) {
   /*
     To finish loading need both init imgs loaded and at least 800ms to pass
     For psych, to give non init images time to load, and to not flash screen fast and confuse them
@@ -156,24 +156,28 @@ function InitLoading({ setDoneLoading }) {
   }, 500);
 
   useEffect(() => {
-    checkAuth();
-    preloadInitialImages(FIRST_IMAGES);
-    preloadSecondaryImages(ICONS);
-    preloadSecondaryImages(SEEDS);
-    preloadSecondaryImages(PRODUCE);
-    preloadSecondaryImages(STAGE0s);
-    preloadSecondaryImages(ANIMALS);
+    if (!banScreen) {
+      checkAuth();
+      preloadInitialImages(FIRST_IMAGES);
+      preloadSecondaryImages(ICONS);
+      preloadSecondaryImages(SEEDS);
+      preloadSecondaryImages(PRODUCE);
+      preloadSecondaryImages(STAGE0s);
+      preloadSecondaryImages(ANIMALS);
 
-    sessionStorage.setItem("equipped", "");
+      sessionStorage.setItem("equipped", "");
 
-    setTimeout(() => {
-      setLog("Servers taking a while to respond");
-    }, 10000);
+      setTimeout(() => {
+        setLog("Servers taking a while to respond");
+      }, 10000);
+    }
   }, []);
 
   useEffect(() => {
-    if (loadTimePassed && initImgsLoaded && authorized) {
-      finishLoading();
+    if (!banScreen) {
+      if (loadTimePassed && initImgsLoaded && authorized) {
+        finishLoading();
+      }
     }
   }, [loadTimePassed, initImgsLoaded, authorized]);
 

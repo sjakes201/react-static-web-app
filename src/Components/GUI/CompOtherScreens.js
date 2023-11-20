@@ -10,7 +10,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 function CompOtherScreens() {
 
   const location = useLocation();
-  const { setTownChatBox, msgNotification, myTownName } = useContext(GameContext)
+  const { setTownChatBox, msgNotification, myTownName, setMoreInfo } = useContext(GameContext)
   const [otherScreens, setOtherScreens] = useState([]);
   const current = location.pathname.substring(1, location.pathname.length);
 
@@ -27,6 +27,11 @@ function CompOtherScreens() {
         to={`/${whereTo}`}
         key={altText}
         className="nav-button"
+        onClick={() => {
+          if(whereTo !== "plants" && whereTo !== "animals") {
+            setMoreInfo(false)
+          }
+        }}
       >
         {/* <p style={{ height: '50%' }}>{whereTo}</p> */}
         <img
