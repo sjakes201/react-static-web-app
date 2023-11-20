@@ -22,7 +22,7 @@ function CompInventory({
   equippedFert,
 }) {
   //Tooltip code
-  const { level } = useContext(GameContext)
+  const { level, setMoreInfo, moreInfo } = useContext(GameContext)
   const [tip1, setTip1] = useState(false);
   const [tip2, setTip2] = useState(false);
 
@@ -231,6 +231,7 @@ function CompInventory({
       return totalSlots;
     });
   };
+
   if (displayOnly) {
     return (
       <div className="inventory-container">
@@ -323,10 +324,14 @@ function CompInventory({
           }`}
       >
         <div className="selected-item-info">
-          <img src={selectedItem.image} alt={selectedItem.name} />
+          <div className='info-left-column'>
+            <img className='selected-item-img' src={selectedItem.image} alt={selectedItem.name} />
+          </div>
           <summary>
             <p>{selectedItem.description[0]}</p>
-            {/* <small>{selectedItem.description[1]}</small> */}
+            <button className={`more-info-button ${moreInfo ? 'throbbing' : ''}`} onClick={() => setMoreInfo((old) => !old)}>
+              <img src={`${process.env.PUBLIC_URL}/assets/images/GUI/moreInfo.png`}/>
+            </button>
           </summary>
           {showFertilizer && (
             <div className="toolSelect">

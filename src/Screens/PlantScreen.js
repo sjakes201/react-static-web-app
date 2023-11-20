@@ -17,7 +17,7 @@ function PlantScreen() {
     navigate("/");
   }
 
-  const { itemsData, setItemsData } = useContext(GameContext)
+  const { itemsData, setItemsData, moreInfo } = useContext(GameContext)
 
   const [items, setItems] = useState({});
   const [fertilizers, setFertilizers] = useState({});
@@ -78,6 +78,9 @@ function PlantScreen() {
 
   if (equippedFert !== "") {
     appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/${equippedFert}.png) 16 16, auto`;
+  }
+  if(moreInfo) {
+    appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/moreInfo32.png) 16 16, auto`;
   }
 
   useEffect(() => {

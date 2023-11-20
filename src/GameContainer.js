@@ -37,6 +37,8 @@ function GameContainer() {
   const [loginBox, setLoginBox] = useState(false);
   const [townChatBox, setTownChatBox] = useState(false);
 
+  const [moreInfo, setMoreInfo] = useState(false);
+
   const [XP, setXP] = useState(0);
   const [Balance, setBalance] = useState(0);
   const [Username, setUsername] = useState("");
@@ -512,7 +514,9 @@ function GameContainer() {
     setTownPerks,
     userNotifications,
     setUserNotifications,
-    refreshNotifications
+    refreshNotifications,
+    moreInfo,
+    setMoreInfo
   }
 
   if (!isConnected) {

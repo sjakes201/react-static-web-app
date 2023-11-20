@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "../../CONSTANTS";
 import CROPINFO from "../../CROPINFO";
 import UPGRADES from "../../UPGRADES";
+import CONSTANTS from "../../CONSTANTS";
+import { GameContext } from "../../GameContainer";
+import SmallInfoTile from "../Atoms/SmallInfoTile";
+import "./CompTile.css";
 
 function CompTile({
   tool,
@@ -13,6 +17,8 @@ function CompTile({
   tileAction,
   equippedFert,
   fertilizeTile,
+  moreInfo,
+  timeUntilHarvest
 }) {
   const [imgURL, setImgURL] = useState(
     `${process.env.PUBLIC_URL}/assets/images/dirt.png`,
@@ -21,6 +27,8 @@ function CompTile({
 
   const [animatePart, setAnimatePart] = useState(false);
   const [partToAnimate, setPartToAnimate] = useState("EMPTY");
+
+  const [infoHover, setInfoHover] = useState(false);
 
   const createGif = (e) => {
     if (gif) return;
@@ -110,7 +118,9 @@ function CompTile({
     objectFit: "contain",
   };
 
-  if (
+  if (moreInfo) {
+    imgStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/moreInfo32.png) 16 16, auto`;
+  } else if (
     UPGRADES.GrowthTimes0[seedIDS[tile?.CropID]]?.length === stage &&
     equippedFert === ""
   ) {
@@ -118,9 +128,36 @@ function CompTile({
   }
 
   if (highlighted) {
-    imgStyle.boxShadow = `0 0 3px 2px ${
-      tool === "multiharvest" ? "gold" : "lightblue"
-    }`;
+    imgStyle.boxShadow = `0 0 3px 2px ${tool === "multiharvest" ? "gold" : "lightblue"
+      }`;
+  }
+
+  const moreInfoMenu = () => {
+    const getTimeString = () => {
+      let totalSeconds = Math.round(timeUntilHarvest(tile.PlantTime, tile.CropID, tile.hasTimeFertilizer));
+      if (totalSeconds <= 0) return "Grown"
+
+      let minString = '';
+      if (totalSeconds > 60) {
+        minString = `${Math.floor(totalSeconds / 60)}m `;
+        totalSeconds = totalSeconds % 60;
+      }
+      let secString = '';
+      if (totalSeconds > 0) {
+        secString = `${totalSeconds}s`;
+      }
+      return minString + secString;
+    }
+
+    return (<SmallInfoTile>
+      {tile.CropID !== -1 ? (<>
+        <p>Crop: {CONSTANTS.InventoryDescriptions[CROPINFO.seedCropMap[CROPINFO.seedsFromID[tile.CropID]]][0]}</p>
+        <p>Harvests: {tile.HarvestsRemaining}</p>
+        <p>Time: {getTimeString()}</p>
+      </>) : (
+        <p className='nothing-planted'>Nothing planted</p>
+      )}
+    </SmallInfoTile>)
   }
 
   return (
@@ -136,8 +173,10 @@ function CompTile({
       onMouseDown={(e) => {
         onTileClick(e);
       }}
-      onMouseEnter={() => setHovering(tile.TileID)}
+      onMouseEnter={() => { setHovering(tile.TileID); if (moreInfo) setInfoHover(true) }}
+      onMouseLeave={() => { setInfoHover(false) }}
     >
+      {infoHover && moreInfoMenu()}
       {gif && (
         <img
           key={gif.id}
@@ -155,9 +194,8 @@ function CompTile({
       )}
 
       <img
-        src={`${process.env.PUBLIC_URL}/assets/images/${
-          partToAnimate === "" ? "EMPTY" : partToAnimate
-        }.png`}
+        src={`${process.env.PUBLIC_URL}/assets/images/${partToAnimate === "" ? "EMPTY" : partToAnimate
+          }.png`}
         alt="machine part Animation"
         style={animatePart ? animatedStyle : defaultStyle}
       />

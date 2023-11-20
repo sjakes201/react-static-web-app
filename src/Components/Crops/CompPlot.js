@@ -19,7 +19,7 @@ function CompPlot({
   items,
 }) {
   const { waitForServerResponse } = useWebSocket();
-  const { townPerks, tiles, setTiles, updateXP, getXP, getUpgrades, setParts, getTiles } = useContext(GameContext)
+  const { townPerks, tiles, setTiles, updateXP, getXP, getUpgrades, setParts, getTiles, moreInfo } = useContext(GameContext)
 
   const [growthTable, setGrowthTable] = useState("");
   const [numHarvestTable, setNumHarvestTable] = useState("NumHarvests0");
@@ -696,6 +696,37 @@ function CompPlot({
     }
   };
 
+  const timeUntilHarvest = (PlantTime, CropID, hasTimeFertilizer) => {
+    if (
+      PlantTime !== null &&
+      CropID !== -1 &&
+      Object.keys(getUpgrades()).length !== 0
+    ) {
+      const date = PlantTime;
+      const curTime = Date.now();
+
+      let secsPassed = (curTime - date) / 1000;
+      if (hasTimeFertilizer) {
+        secsPassed = secsPassed * 2;
+      }
+      let growth =
+        UPGRADES["GrowthTimes".concat(getUpgrades().plantGrowthTimeUpgrade)][
+        CROPINFO.seedsFromID[CropID]
+        ];
+
+      let totalTimeNeeded = growth.reduce((sum, e) => sum + e, 0);
+      if (townPerks?.cropTimeLevel > 0) {
+        let boostPercent =
+          TOWNSINFO.perkBoosts.cropTimeLevel[townPerks.cropTimeLevel - 1];
+        let boostChange = 1 - boostPercent;
+        totalTimeNeeded *= boostChange;
+      }
+      return totalTimeNeeded - secsPassed > 0 ? totalTimeNeeded - secsPassed : 0;
+    } else {
+      return -1;
+    }
+  };
+
   const updateAllStages = () => {
     setTiles((old) =>
       old.map((tile) => {
@@ -769,6 +800,8 @@ function CompPlot({
             tile={tile}
             stage={tile.stage}
             tileAction={tileAction}
+            moreInfo={moreInfo}
+            timeUntilHarvest={timeUntilHarvest}
           />
         );
       })}
