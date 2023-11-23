@@ -67,6 +67,8 @@ function GameContainer() {
   const [tiles, setTiles] = useState([]);
 
   const [townPerks, setTownPerks] = useState({});
+  const [townRoleID, setTownRoleID] = useState(-1);
+
   const [myTownName, setMyTownName] = useState("")
 
   let newXP = useRef(false);
@@ -205,13 +207,6 @@ function GameContainer() {
         setArtisanItems(data.artisanData);
       }
 
-      if (waitForServerResponse) {
-        // For now, getTownPerks also returns the player's town info. Rename to 'player town info' or something
-        const response = await waitForServerResponse("getTownPerks");
-        let data = response.body;
-        setTownPerks(data);
-        setMyTownName(data.townName)
-      }
     };
     refreshPrices();
     fetchData();
@@ -221,7 +216,7 @@ function GameContainer() {
     getTiles();
     refreshNotifications();
 
-    const handleNewMsg = (content, timestamp, Username, messageID) => {
+    const handleNewMsg = (content, timestamp, Username, messageID, msgType, requestID) => {
       setTownChatMsgs((old) => {
         let newMsgs = [...old];
         newMsgs.push({
@@ -229,6 +224,8 @@ function GameContainer() {
           timestamp: timestamp,
           Username: Username,
           messageID: messageID,
+          requestID: requestID,
+          Type: msgType
         });
         newMsgs.sort((a, b) => b.timestamp - a.timestamp);
         return newMsgs;
@@ -237,6 +234,10 @@ function GameContainer() {
         setMsgNotification(true);
       }
     };
+
+    const handleTownJoinResolve = (requestID, isAccepted) => {
+      setTownChatMsgs((old) => old.filter((msg) => msg.requestID !== requestID))
+    }
 
     const changeAnimalHappiness = (Animal_ID, Happiness) => {
       setCoop((old) => old.map((animal) => {
@@ -257,10 +258,19 @@ function GameContainer() {
       }))
     }
 
+    const townChange = () => {
+      reloadTownPerks();
+    }
+    
     addListener(['town_message', handleNewMsg]);
     addListener(['animal_happiness', changeAnimalHappiness])
+    addListener(['TOWN_JOIN_RESOLVE', handleTownJoinResolve])
+    addListener(['TOWN_CHANGE', townChange])
     return () => {
-      removeListener(handleNewMsg);
+      removeListener('town_message');
+      removeListener('animal_happiness');
+      removeListener('TOWN_JOIN_RESOLVE');
+      removeListener('TOWN_CHANGE');
     };
   }, []);
 
@@ -283,6 +293,7 @@ function GameContainer() {
       const perks = {...data};
       delete perks.townName;
       setTownPerks(perks);
+      setTownRoleID(data.roleID)
     }
     getTownMessages();
   };
@@ -516,7 +527,8 @@ function GameContainer() {
     setUserNotifications,
     refreshNotifications,
     moreInfo,
-    setMoreInfo
+    setMoreInfo,
+    townRoleID
   }
 
   if (!isConnected) {
@@ -538,7 +550,7 @@ function GameContainer() {
         )}
         {loginBox && <Complogin />}
         {townChatBox && (
-          <ChatBox chatMessages={townChatMsgs} />
+          <ChatBox chatMessages={townChatMsgs} setTownChatMsgs={setTownChatMsgs} />
         )}
         {orderBoard && <OrderBoard />}
         <GoogleAnalyticsReporter />

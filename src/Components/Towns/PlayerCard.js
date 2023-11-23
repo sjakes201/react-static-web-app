@@ -148,24 +148,22 @@ function PlayerCard({
         </div>
       </div>
       <div className="playerUser">
-        {username.includes("#") ? (
-          username
-        ) : (
-          <span
-            onClick={() =>
-              navigate(`/profile/${username}`, {
-                state: {
-                  from: location.pathname.substring(
-                    1,
-                    location.pathname.length,
-                  ),
-                },
-              })
-            }
-          >
-            {username}
-          </span>
-        )}
+
+        <span
+          onClick={() =>
+            navigate(`/profile/${username.replace(/#/g, "-")}`, {
+              state: {
+                from: location.pathname.substring(
+                  1,
+                  location.pathname.length,
+                ),
+              },
+            })
+          }
+        >
+          {username}
+        </span>
+
         {seenString &&
           <span className={`last-seen-string ${seenString === "Online" ? 'online' : ''}`}>{seenString}</span>
         }
