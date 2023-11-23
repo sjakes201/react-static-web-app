@@ -76,7 +76,6 @@ function TownInterface({
         }
         data.body.playersData.sort((a, b) => b.xp - a.xp);
         setTownInfo(data.body);
-        console.log(data.body)
         if (data.body.townShopInfo) {
           setTownShopInfo(data.body.townShopInfo)
         }
@@ -179,11 +178,17 @@ function TownInterface({
       let response = await waitForServerResponse("joinTown", {
         townName: townInfo.townName,
       });
-      if (response.body.message === "SUCCESS") {
+      if (townInfo.status === "OPEN" && response.body.message === "SUCCESS") {
         setRefreshData((old) => old + 1);
         if (reloadTownPerks) reloadTownPerks();
         if (setTown) setTown(townInfo.townName);
         if (setScreen) setScreen("TownInterface");
+      } else {
+        setTownInfo((old) => {
+          let newInfo = {...old};
+          newInfo.sentJoinRequest = true;
+          return newInfo;
+        })
       }
     }
   };
@@ -198,85 +203,6 @@ function TownInterface({
         if (reloadTownPerks) reloadTownPerks();
       }
     }
-  };
-
-  // Info for when player clicks level button
-  const levelPerks = () => {
-    const townLevelInfo = calcTownLevel(townInfo.townXP);
-    let noPerks =
-      !townInfo.growthPerkLevel &&
-      !townInfo.partsPerkLevel &&
-      !townInfo.animalPerkLevel &&
-      !townInfo.orderRefreshPerkLevel;
-    return (
-      <div className="levelPerksContainer">
-        <span className="perksPopupX" onClick={() => setPerksPopup(false)}>
-          X
-        </span>
-        <p id="perksLabel">Town Perks</p>
-        {townInfo.growthPerkLevel !== 0 && (
-          <li>
-            <span className="perkPercent">
-              {TOWNSINFO.upgradeBoosts.growthPerkLevel[
-                townInfo.growthPerkLevel
-              ] * 100}
-              %
-            </span>{" "}
-            faster crop growth
-          </li>
-        )}
-        {townInfo.animalPerkLevel !== 0 && (
-          <li>
-            <span className="perkPercent">
-              {TOWNSINFO.upgradeBoosts.animalPerkLevel[
-                townInfo.animalPerkLevel
-              ] * 100}
-              %
-            </span>{" "}
-            faster animal production
-          </li>
-        )}
-        {townInfo.partsPerkLevel !== 0 && (
-          <li>
-            <span className="perkPercent">
-              {TOWNSINFO.upgradeBoosts.partsPerkLevel[townInfo.partsPerkLevel] *
-                100}
-              %
-            </span>{" "}
-            higher chance of parts
-          </li>
-        )}
-        {townInfo.orderRefreshPerkLevel !== 0 && (
-          <li>
-            <span className="perkPercent">
-              {TOWNSINFO.upgradeBoosts.orderRefreshPerkLevel[
-                townInfo.orderRefreshPerkLevel
-              ] * 100}
-              %
-            </span>{" "}
-            lower order refresh cooldown
-          </li>
-        )}
-        {noPerks && (
-          <span
-            style={{
-              color: "gray",
-              opacity: "0.65",
-              marginTop: "5%",
-              textAlign: "center",
-              width: "100%",
-            }}
-          >
-            First perk at town level 1
-          </span>
-        )}
-        {townLevelInfo[2] !== -1 && (
-          <p className="townXPIndicator">
-            {townLevelInfo[1]} / {townLevelInfo[2]} town xp to next level
-          </p>
-        )}
-      </div>
-    );
   };
 
   const settings = () => {
@@ -361,6 +287,23 @@ function TownInterface({
                 }
               >
                 Open
+              </button>
+              <button
+                type="button"
+                className={
+                  settingsData.status === "INVITE"
+                    ? "selectedButton"
+                    : "unselectedButton"
+                }
+                onClick={() =>
+                  setSettingsData((old) => {
+                    let newData = { ...old };
+                    newData.status = "INVITE";
+                    return newData;
+                  })
+                }
+              >
+                Invite
               </button>
               <button
                 type="button"
@@ -496,7 +439,7 @@ function TownInterface({
                     <p>{townInfo.memberCount}/25 members</p>
                     <p
                       style={{
-                        color: townInfo.status === "OPEN" ? "#36e04d" : "gray",
+                        color: townInfo.status === "CLOSED" ? "gray" : "#36e04d",
                       }}
                     >
                       {townInfo.status}
@@ -521,7 +464,7 @@ function TownInterface({
                       </p>
                     ))}
                   {!townInfo.myRoleID &&
-                    townInfo.status === "OPEN" &&
+                    townInfo.status !== "CLOSED" &&
                     townInfo.memberCount < 25 &&
                     !townInfo.imInTown && (
                       <div className="townJoinContainer basicCenter">
@@ -529,7 +472,7 @@ function TownInterface({
                           className="joinButton basicCenter"
                           onClick={() => joinTown()}
                         >
-                          Join
+                          {townInfo.status === "OPEN" ? "Join" : townInfo.sentJoinRequest ? "Requested" : "Request"}
                         </div>
                       </div>
                     )}
@@ -556,10 +499,10 @@ function TownInterface({
             Object.keys(townShopInfo).length > 0 &&
             < TownShop
               townShopInfo={townShopInfo}
-              setTownShopInfo={setTownShopInfo} 
+              setTownShopInfo={setTownShopInfo}
               menuBack={() => setTownScreen("MAIN")}
               myRoleID={townInfo.myRoleID}
-              />
+            />
           )}
         </>
       )

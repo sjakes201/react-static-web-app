@@ -66,10 +66,46 @@
     flex-direction: column-reverse;
 }
 
+.announcement-box {
+    height: 92% !important;
+}
+
+#sendTownAnnouncement {
+    width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    padding-right: .2vw;
+}
+
 .msgBubble {
     line-height: 3vh;
     margin: .25vh 0;
     max-width: 95%;
+}
+
+.join-request {
+    text-align: center;
+    font-size: 0.9vw;
+}
+
+.requester-username {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.request-responses {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1vw;
+    align-items: center;
+}
+
+.request-responses > button {
+    width: 24%;
+    height: 3vh;
+    font-size: .9vw;
+    border-radius: 5px;
 }
 
 .fromUser {
@@ -82,7 +118,21 @@
     cursor: pointer;
 }
 
-.broadcastContent {
+.broadcast-content {
+    width: 100%;
+    text-align: left;
+    font-size: .8vw;
+    border: 1px solid #000000;
+    border-radius: .4vw;
+    background-color: white;
+    padding: .5vw;
+}
+
+.town-broadcast-user {
+    text-decoration: underline;
+}
+
+.server-notification {
     color: var(--dirt);
     width: 100%;
     text-align: center;
@@ -125,4 +175,33 @@
     width: 8%;
     text-align: center;
     cursor: pointer;
+}
+
+.chat-type-button {
+    position: absolute;
+    left: calc(-4vw - 18px);
+    height: 3vw;
+    width: 3vw;
+    border: none;
+    background-color: white;
+    border-radius: 5%;
+    padding: .2vw;
+}
+
+.chat-type-button>img {
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+#top-button {
+    top: 0;
+}
+
+#middle-button {
+    top: calc(4vw + 9px);
+}
+
+#bottom-button {
+    top: calc(8vw + 18px);
 }

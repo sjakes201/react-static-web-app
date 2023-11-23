@@ -51,11 +51,14 @@ export function WebSocketProvider({ children }) {
         listenersRef.current.forEach((listener) => {
           if (listener[0] === 'town_message') {
             const func = listener[1];
+            console.log(msgInfo.requestID)
             func(
               msgInfo.content,
               msgInfo.timestamp,
               msgInfo.username,
               msgInfo.messageID,
+              msgInfo.Type,
+              msgInfo.requestID,
             );
           }
         }
@@ -71,6 +74,25 @@ export function WebSocketProvider({ children }) {
                   parsedMessage.data.Animal_ID,
                   parsedMessage.data.Happiness
                 );
+              }
+            })
+            break;
+          case 'TOWN_JOIN_RESOLVE':
+            listenersRef.current.forEach((listener) => {
+              if (listener[0] === 'TOWN_JOIN_RESOLVE') {
+                const func = listener[1];
+                func(
+                  parsedMessage.data.requestID,
+                  parsedMessage.data.isAccepted
+                );
+              }
+            })
+            break;
+          case 'TOWN_CHANGE':
+            listenersRef.current.forEach((listener) => {
+              if (listener[0] === 'TOWN_CHANGE') {
+                const func = listener[1];
+                func();
               }
             })
             break;
@@ -137,9 +159,9 @@ export function WebSocketProvider({ children }) {
     listenersRef.current = [...listenersRef.current, callback];
   };
 
-  const removeListener = (callback) => {
+  const removeListener = (name) => {
     listenersRef.current = listenersRef.current.filter(
-      (listener) => listener !== callback,
+      (listener) => listener[0] !== name,
     );
   };
 
