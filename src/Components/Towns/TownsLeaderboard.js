@@ -56,7 +56,7 @@ function TownsLeaderboard({ reloadTownPerks, updateBalance, updateXP }) {
             <p className="lbTownLevel">town lvl {townLevel}</p>
           </div>
           <div className="lbCardRight">
-            <p className={town.status === "OPEN" ? "lbTownStatus" : ""}>
+            <p className={town.status === "CLOSED" ? "" : "lbTownStatus"}>
               {town.status}
             </p>
             <p className="lbMemberCount">{town.memberCount}/25</p>
