@@ -157,11 +157,15 @@ function CompItem({
             {!unlockInfo[0] && <p>{`Level ${getLevelNeeded()}`}</p>}
           </div>
         )}
-        <img
+        <div
           className={`seed-pin ${isPinned ? "seed-pinned" : ""}`}
-          src={`${process.env.PUBLIC_URL}/assets/images/GUI/pinned.png`}
           onClick={() => changePin(itemName)}
-        />
+        >
+          <img
+            src={`${process.env.PUBLIC_URL}/assets/images/GUI/pinned.png`}
+            draggable={false}
+          />
+        </div>
         <div className="itemImg">
           <img
             src={`${process.env.PUBLIC_URL}/assets/images/${itemName}.png`}
