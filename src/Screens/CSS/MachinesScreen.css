@@ -366,6 +366,7 @@
 #artisanSellCount {
     width: 100%;
     height: 60%;
+    font-size: 1vw;
     grid-row-start: 1;
     grid-row-end: 3;
     grid-column-start: 2;
@@ -396,6 +397,10 @@
     grid-template-rows: repeat(2, 1fr);
     align-items: center;
     justify-items: center;
+}
+
+.artisan-sell-total {
+    height: 15%;
 }
 
 #artSell {
