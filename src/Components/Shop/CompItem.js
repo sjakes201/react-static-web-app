@@ -21,6 +21,8 @@ function CompItem({
   updateUpgrades,
   items,
   hasSpace,
+  isPinned,
+  changePin
 }) {
   const { waitForServerResponse } = useWebSocket();
 
@@ -144,6 +146,7 @@ function CompItem({
     }
     return -1;
   };
+
   if (itemName in CONSTANTS.Fixed_Prices) {
     return (
       <div id="itemBox" className={unlocked ? "" : "notAvailable"}>
@@ -154,6 +157,11 @@ function CompItem({
             {!unlockInfo[0] && <p>{`Level ${getLevelNeeded()}`}</p>}
           </div>
         )}
+        <img
+          className={`seed-pin ${isPinned ? "seed-pinned" : ""}`}
+          src={`${process.env.PUBLIC_URL}/assets/images/GUI/pinned.png`}
+          onClick={() => changePin(itemName)}
+        />
         <div className="itemImg">
           <img
             src={`${process.env.PUBLIC_URL}/assets/images/${itemName}.png`}
@@ -163,7 +171,7 @@ function CompItem({
           <p>
             {
               CONSTANTS.InventoryDescriptions[
-                CONSTANTS.SeedCropMap[itemName][0]
+              CONSTANTS.SeedCropMap[itemName][0]
               ][0]
             }
           </p>
@@ -321,8 +329,8 @@ function CompItem({
                   ? "BUY"
                   : "OWNED"
                 : unlocked
-                ? `TIER ${tier + 1}`
-                : `MAXED`}
+                  ? `TIER ${tier + 1}`
+                  : `MAXED`}
             </button>
             {gif[1] && (
               <img

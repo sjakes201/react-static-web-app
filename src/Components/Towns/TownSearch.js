@@ -87,7 +87,7 @@ function TownSearch({
           <p className="searchTownLevel">town lvl {townLevel}</p>
         </div>
         <div className="townCardRight">
-          <p className={status === "OPEN" ? "searchTownStatus" : ""}>
+          <p className={status === "CLOSED" ? "" : "searchTownStatus"}>
             {status}
           </p>
           <p className="searchMemberCount">{memberCount}/25</p>

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useContext } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
 import { GameContext } from "../../GameContainer";
 import "../CSS/CompShop.css";
 import CompItem from "./CompItem";
@@ -12,6 +12,28 @@ function CompShop({
   const { addAnimal, updateAnimalsInfo, getXP, getBal, level, updateUpgrades, updateBalance, getUpgrades, animalsInfo } = useContext(GameContext)
   const upgrades = getUpgrades();
   const animals = animalsInfo;
+
+  const [pinnedItems, setPinnedItems] = useState([]);
+
+  useEffect(() => {
+    let jsonItems = localStorage.getItem("pinnedItems");
+    if (jsonItems !== null) {
+      setPinnedItems(JSON.parse(jsonItems));
+    }
+  }, [])
+
+  useEffect(() => {
+    let jsonItems = JSON.stringify(pinnedItems);
+    localStorage.setItem("pinnedItems", jsonItems);
+  }, [pinnedItems])
+
+  const changePin = (itemName) => {
+    if (!pinnedItems.includes(itemName)) {
+      setPinnedItems([...pinnedItems, itemName]);
+    } else {
+      setPinnedItems(pinnedItems.filter((item) => item !== itemName));
+    }
+  }
 
   let unlocked = [];
   for (let unlockLevel in CONSTANTS.levelUnlocks) {
@@ -67,7 +89,22 @@ function CompShop({
     for (let i = 1; i < allSeedsArray.length; ++i) {
       let name = allSeedsArray[i];
       let unlockInfo = isUnlocked(name);
-      if (unlockInfo[0]) {
+      if (pinnedItems.includes(name)) {
+        firstItems.unshift(<CompItem
+          key={i}
+          unlockInfo={unlockInfo}
+          updateInventory={updateInventory}
+          updateBalance={updateBalance}
+          getBal={getBal}
+          itemName={name}
+          cost={CONSTANTS.Fixed_Prices[name]}
+          unlocked={true}
+          info={unlockInfo[1]}
+          items={items}
+          isPinned={pinnedItems.includes(name)}
+          changePin={changePin}
+        />)
+      } else if (unlockInfo[0]) {
         firstItems.push(
           <CompItem
             key={i}
@@ -80,6 +117,8 @@ function CompShop({
             unlocked={true}
             info={unlockInfo[1]}
             items={items}
+            isPinned={pinnedItems.includes(name)}
+            changePin={changePin}
           />,
         );
       } else {
@@ -95,6 +134,8 @@ function CompShop({
             unlocked={false}
             info={unlockInfo[1]}
             items={items}
+            isPinned={pinnedItems.includes(name)}
+            changePin={changePin}
           />,
         );
       }

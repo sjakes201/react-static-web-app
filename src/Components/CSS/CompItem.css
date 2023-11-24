@@ -5,11 +5,9 @@
     height: calc(100% - 16px);
     margin: 0 calc(.13vw + 5px);
 
-    /* height: calc(100% - 9px);
-    margin: 0 calc(.2vw); */
+    position: relative;
 
     background-color: var(--menu_light);
-    /* background-color: #b08444; */
 
     padding-top: 5px;
     box-sizing: border-box;
@@ -76,6 +74,20 @@
     justify-content: space-evenly;
 }
 
+.seed-pin {
+    position: absolute;
+    top: .3vw;
+    right: .3vw;
+    width: 1.3vw;
+    object-fit: contain;
+    cursor: pointer;
+    transform: rotate(45deg);
+    filter: opacity(0.5) grayscale(100%);
+}
+
+.seed-pinned {
+    filter: none !important;
+}
 
 .shopItemInfo {
     position: absolute;
