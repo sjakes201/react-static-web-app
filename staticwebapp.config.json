@@ -1,0 +1,10 @@
+{
+    "routes": [
+      {
+        "route": "/ads.txt",
+        "redirect": "//config.playwire.com/dyn_ads/1025126/74677/ads.txt",
+        "statusCode": 301
+      }
+    ]
+  }
+  
