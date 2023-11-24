@@ -11,7 +11,7 @@ import AdinPlayAd from "../AdinPlayAd";
 
 function MachinesScreen() {
   const { waitForServerResponse } = useWebSocket();
-  const { itemsData, setItemsData, getBal, updateBalance, getUser, getXP, setParts, parts, artisanItems, setArtisanItems, machines, setMachines } = useContext(GameContext)
+  const { itemsData, getBal, updateBalance, setParts, parts, artisanItems, setArtisanItems, machines, setMachines } = useContext(GameContext)
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -22,6 +22,8 @@ function MachinesScreen() {
 
   const [selectedGood, setSelected] = useState("");
   const [sellQty, setSellQty] = useState("");
+
+  const [priceHover, setPriceHover] = useState(null)
 
   useEffect(() => {
     let data = { ...itemsData };
@@ -436,7 +438,6 @@ function MachinesScreen() {
     );
   };
 
-
   return (
     <div className="machineScreen">
       {helpGUI && buildHelpGUI()}
@@ -665,6 +666,8 @@ function MachinesScreen() {
               <button
                 id="artSell"
                 onClick={() => sellArtisan(selectedGood, parseInt(sellQty))}
+                onMouseEnter={() => setPriceHover("SELL")}
+                onMouseLeave={() => setPriceHover(null)}
               >
                 SELL
               </button>
@@ -689,10 +692,17 @@ function MachinesScreen() {
                     setSellQty("");
                   }
                 }}
+                onMouseEnter={() => setPriceHover("SELL ALL")}
+                onMouseLeave={() => setPriceHover(null)}
               >
                 SELL ALL
               </button>
             </div>
+            <div className='artisan-sell-total'>
+              {(priceHover === "SELL" && sellQty) && <p>Total: ${(MACHINESINFO.artisanPrices[selectedGood] * parseInt(sellQty))?.toLocaleString()}</p>}
+              {(priceHover === "SELL ALL" && selectedGood) && <p>Total: ${(MACHINESINFO.artisanPrices[selectedGood] * items[selectedGood])?.toLocaleString()}</p>}
+            </div>
+
           </div>
         </div>
 

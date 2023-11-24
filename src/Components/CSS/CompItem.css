@@ -75,6 +75,7 @@
 }
 
 .seed-pin {
+    background-color: transparent !important;
     position: absolute;
     top: .3vw;
     right: .3vw;
@@ -82,6 +83,7 @@
     cursor: pointer;
     filter: opacity(0.5) grayscale(100%);
     transition: transform 0.5s ease;
+    border: none;
 }
 
 .seed-pin > img {
@@ -161,6 +163,7 @@
     width: 80%;
     height: 90%;
     font-size: 1.1vw;
+    cursor: pointer;
 }
 
 .buyButton>small {
