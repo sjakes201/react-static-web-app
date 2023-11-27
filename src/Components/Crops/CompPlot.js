@@ -665,7 +665,8 @@ function CompPlot({
       CropID !== -1 &&
       Object.keys(getUpgrades()).length !== 0
     ) {
-      const date = PlantTime;
+      let date = PlantTime;
+      date -= 5; // 5 ms buffer to account for rounding as to not flash lower stage for a split second
       const curTime = Date.now();
 
       let secsPassed = (curTime - date) / 1000;
