@@ -26,6 +26,7 @@ import UPGRADES from "./UPGRADES";
 export const GameContext = React.createContext();
 
 function GameContainer() {
+
   const { waitForServerResponse } = useWebSocket();
   const { addListener, removeListener } = useWebSocket();
 
@@ -101,10 +102,10 @@ function GameContainer() {
     }
   };
 
-  const refreshNotifications = async() => {
-    if(waitForServerResponse) {
+  const refreshNotifications = async () => {
+    if (waitForServerResponse) {
       let res = await waitForServerResponse("getNotifications");
-      if(res.body.success){
+      if (res.body.success) {
         setUserNotifications(res.body.notificationsData)
       }
     }
@@ -261,7 +262,7 @@ function GameContainer() {
     const townChange = () => {
       reloadTownPerks();
     }
-    
+
     addListener(['town_message', handleNewMsg]);
     addListener(['animal_happiness', changeAnimalHappiness])
     addListener(['TOWN_JOIN_RESOLVE', handleTownJoinResolve])
@@ -290,7 +291,7 @@ function GameContainer() {
       const response = await waitForServerResponse("getTownPerks");
       let data = response.body;
       setMyTownName(data.townName)
-      const perks = {...data};
+      const perks = { ...data };
       delete perks.townName;
       setTownPerks(perks);
       setTownRoleID(data.roleID)
