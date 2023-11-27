@@ -1,0 +1,4 @@
+.rising-animation-gif {
+    background-image: url('../../../public/assets/images/scattering_seeds.gif');
+    background-size: cover; /* or any other styling you need */
+}

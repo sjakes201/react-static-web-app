@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react'
 
-
-function RisingAnimation({ imgSrc, msTime = 1500, refresh }) {
+function RisingAnimation(
+    { imgSrc = `${process.env.PUBLIC_URL}/assets/images/EMPTY.png`,
+        msTime = 1500,
+        refresh,
+        slideUp = true,
+        fadeOut = true,
+        startingScale = 1.1,
+        endingScale = 1.2,
+    }) {
 
     const [go, setGo] = useState(false)
     const [previous, setPrevious] = useState(null)
@@ -30,7 +37,7 @@ function RisingAnimation({ imgSrc, msTime = 1500, refresh }) {
     const defaultStyle = {
         transition: `all 1.5s ease-out`,
         opacity: 1,
-        transform: "translateY(0) scale(1.2)",
+        transform: `translateY(0) scale(${endingScale})`,
         position: "absolute",
         top: "0",
         zIndex: "10",
@@ -40,10 +47,11 @@ function RisingAnimation({ imgSrc, msTime = 1500, refresh }) {
         border: "none"
     };
 
+    
     const animatedStyle = {
         ...defaultStyle,
-        opacity: 0,
-        transform: "translateY(-3vh) scale(1.1)",
+        opacity: `${fadeOut ? 0 : 1}`,
+        transform: `${slideUp ? 'translateY(-3vh)' : 'translateY(0)'} scale(${startingScale})`,
     };
 
     return (
