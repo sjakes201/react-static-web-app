@@ -3,7 +3,7 @@ import "../../CONSTANTS";
 import CROPINFO from "../../CROPINFO";
 import UPGRADES from "../../UPGRADES";
 import CONSTANTS from "../../CONSTANTS";
-import { GameContext } from "../../GameContainer";
+import RisingAnimation from "../Atoms/RisingAnimation";
 import SmallInfoTile from "../Atoms/SmallInfoTile";
 import "./CompTile.css";
 
@@ -30,6 +30,17 @@ function CompTile({
 
   const [infoHover, setInfoHover] = useState(false);
 
+  // This is used for animation refresh
+  const [oldCropID, setOldCropID] = useState(tile.CropID);
+  const [animationRefresh, setAnimationRefresh] = useState(1)
+  useEffect(() => {
+    setOldCropID(tile.CropID);
+    if(tile.CropID !== oldCropID && tile.CropID !== -1) {
+      setOldCropID(tile.CropID);
+      setAnimationRefresh((old) => old + 1)
+    }
+  }, [tile.CropID])
+
   const createGif = (e) => {
     if (gif) return;
     const rect = e.target.getBoundingClientRect();
@@ -54,6 +65,7 @@ function CompTile({
     if (tile.CropID === -1 && CROPINFO.seedsFromID.includes(equipped)) {
       // Something equipped attempt plant
       tileAction(tile.TileID, "plant", equipped, tile.CropID);
+      // setAnimationRefresh((old) => old + 1)
     } else {
       // nothing equipped, harvest animation and attempt harvest
 
@@ -176,6 +188,15 @@ function CompTile({
       onMouseEnter={() => { setHovering(tile.TileID); if (moreInfo) setInfoHover(true) }}
       onMouseLeave={() => { setInfoHover(false) }}
     >
+      <RisingAnimation
+        refresh={animationRefresh}
+        imgSrc={`${process.env.PUBLIC_URL}/assets/images/scattering_seeds.gif`}
+        slideUp={false}
+        fadeOut={false}
+        startingScale={1.4}
+        endingScale={1.4}
+        key={tile.tileID}
+      />
       {infoHover && moreInfoMenu()}
       {gif && (
         <img

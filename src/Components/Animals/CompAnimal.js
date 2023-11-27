@@ -2,6 +2,8 @@ import React, { useEffect, useState, useMemo } from "react";
 import ANIMALINFO from "../../ANIMALINFO";
 import SmallInfoTile from "../Atoms/SmallInfoTile";
 import CONSTANTS from "../../CONSTANTS";
+import RisingAnimation from "../Atoms/RisingAnimation";
+import UPGRADES from "../../UPGRADES";
 
 function CompAnimal({
   type,
@@ -23,6 +25,8 @@ function CompAnimal({
 
   const [infoTile, setInfoTile] = useState(false);
 
+  const [animationRefresh, setAnimationRefresh] = useState(1);
+
   const handleClick = () => {
     if (sessionStorage.getItem("equipped") in ANIMALINFO.FoodHappinessYields) {
       if (Date.now() - lastFed >= ANIMALINFO.VALUES.FEED_COOLDOWN) {
@@ -42,8 +46,10 @@ function CompAnimal({
       } else {
         // cooldown on feed
       }
-    } else {
+    } else if(collectible) {
       onCollect(Animal_ID, type);
+      setAnimationRefresh((old) => old+1)
+
     }
   };
 
@@ -148,11 +154,14 @@ function CompAnimal({
   if (Object.keys(walkingInfo).length === 0) {
     return <div></div>;
   }
+
+  const produceName = UPGRADES.AnimalProduceMap0[type]?.[0]
+
   return (
     <div
       style={divStyle}
       onMouseEnter={() => {
-        if(moreInfo) {
+        if (moreInfo) {
           setInfoTile(true)
         } else {
           setHover(true);
@@ -165,6 +174,7 @@ function CompAnimal({
       onMouseDown={handleClick}
       draggable={false}
     >
+      <RisingAnimation imgSrc={`${process.env.PUBLIC_URL}/assets/images/${produceName}.png`} refresh={animationRefresh} />
       {infoTile && moreInfoMenu()}
       {hover &&
         sessionStorage.getItem("equipped") in
