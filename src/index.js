@@ -18,25 +18,7 @@ root.render(
         {CreateGameContainer()}
       </div>
     </Router>
-  </WebSocketProvider>,
-  // <div
-  //     style={{
-  //         width: '100vw',
-  //         height: '100vh',
-  //         display: 'flex',
-  //         justifyContent: 'center',
-  //         alignItems: 'center',
-  //         backgroundColor: 'beige'
-  //     }}>
-  //     <img
-  //         src={`${process.env.PUBLIC_URL}/assets/images/chicken_collectible_walking_right.gif`}
-  //         alt={'loading chicken'}
-  //         style={{
-  //             width: '5vw'
-  //         }}
-  //         draggable={false} />
-  //     <p>(10:50PM EST) Downtime for towns update! Estimated: 20 minutes</p>
-  // </div>
+  </WebSocketProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -34,7 +34,7 @@ function CompInventory({
   const tooltipHandleMouseEnter = (tooltipId) => {
     tooltipTimer.current = setTimeout(() => {
       setActiveTooltip(tooltipId);
-    }, 800); // Delay of 500ms
+    }, 1000);
   };
 
   const tooltipHandleMouseLeave = () => {

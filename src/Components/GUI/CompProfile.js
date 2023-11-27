@@ -4,6 +4,7 @@ import CONSTANTS from "../../CONSTANTS";
 import { useNavigate, useLocation } from "react-router-dom";
 import ScrollingText from "./ScrollingText";
 import { GameContext } from "../../GameContainer";
+import MoneyDisplay from "./MoneyDisplay";
 
 function CompProfile({
   type,
@@ -90,12 +91,6 @@ function CompProfile({
     setXP(getXP());
   }, [getBal, getUser, getXP]);
 
-  function formatMoney(amount) {
-    if (amount.toString().includes("$")) return amount;
-    const formatted = amount.toLocaleString("en-US");
-    return "$" + formatted;
-  }
-
   // Take integer XP, return object {level: int, overflow: xx, nextLvl: yy} for the current level and how close you are to next level
 
   const [showXP, setShowXP] = useState(false);
@@ -178,7 +173,8 @@ function CompProfile({
         <div className="profile-stats">
           <div>{user && user.includes("#") ? "Guest" : user}</div>
           {xpProgressBar(xp)}
-          <div>{formatMoney(bal === 0 ? 0 : Math.round(bal * 100) / 100)}</div>
+          <MoneyDisplay amount={bal} />
+          
         </div>
 
         <div className="login-prompt">
