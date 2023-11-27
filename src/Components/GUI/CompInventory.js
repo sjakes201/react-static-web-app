@@ -3,6 +3,7 @@ import "../CSS/CompInventory.css";
 import CONSTANTS from "../../CONSTANTS";
 import ANIMALINFO from "../../ANIMALINFO";
 import { GameContext } from "../../GameContainer";
+import InventorySlot from "./InventorySlot";
 
 const MULTIPLANTLEVEL = 20;
 const MULTIHARVESTLEVEL = 20;
@@ -25,6 +26,22 @@ function CompInventory({
   const { level, setMoreInfo, moreInfo } = useContext(GameContext)
   const [tip1, setTip1] = useState(false);
   const [tip2, setTip2] = useState(false);
+
+  // slot id that is currently a tooltip
+  const [activeTooltip, setActiveTooltip] = useState(null);
+  const tooltipTimer = useRef(null);
+
+  const tooltipHandleMouseEnter = (tooltipId) => {
+    tooltipTimer.current = setTimeout(() => {
+      setActiveTooltip(tooltipId);
+    }, 800); // Delay of 500ms
+  };
+
+  const tooltipHandleMouseLeave = () => {
+    clearTimeout(tooltipTimer.current);
+    setActiveTooltip(null);
+  };
+
 
   const ref1 = useRef();
   const ref2 = useRef();
@@ -83,6 +100,7 @@ function CompInventory({
   });
 
   const handleClick = (itemName) => {
+    console.log(itemName)
     if (items[itemName]) {
       if (isAnimalScreen && itemName in ANIMALINFO.FoodHappinessYields) {
         sessionStorage.setItem("equipped", itemName);
@@ -167,67 +185,35 @@ function CompInventory({
       let itemCount = sortedObject[item];
       while (itemCount > 1000) {
         totalSlots.push(
-          <div
-            className={
-              isAnimalScreen
-                ? item in ANIMALINFO.FoodHappinessYields && itemCount !== 0
-                  ? "item-slot is-feed"
-                  : "item-slot"
-                : "item-slot"
-            }
-            id={item.concat(itemCount)}
+          <InventorySlot
             key={`${item}+${itemCount}`}
-            onClick={() => handleClick(item)}
-          >
-            {itemCount ? (
-              <>
-                <img
-                  draggable={false}
-                  src={`${process.env.PUBLIC_URL}/assets/images/${item}.png`}
-                  alt={item}
-                />
-                <ins className="count">1000</ins>
-              </>
-            ) : (
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/images/EMPTY.png`}
-                alt={"No item"}
-              />
-            )}
-          </div>,
+            handleClick={handleClick}
+            itemCount={1000}
+            item={item}
+            isAnimalScreen={isAnimalScreen}
+            passedID={item.concat(itemCount)}
+            tooltipHandleMouseEnter={tooltipHandleMouseEnter}
+            tooltipHandleMouseLeave={tooltipHandleMouseLeave}
+            activeTooltip={activeTooltip}
+          />
         );
         itemCount -= 1000;
       }
       totalSlots.push(
-        <div
-          className={
-            isAnimalScreen
-              ? item in ANIMALINFO.FoodHappinessYields && itemCount !== 0
-                ? "item-slot is-feed"
-                : "item-slot"
-              : "item-slot"
-          }
-          id={item}
-          key={item}
-          onClick={() => handleClick(item)}
-        >
-          {itemCount ? (
-            <>
-              <img
-                draggable={false}
-                src={`${process.env.PUBLIC_URL}/assets/images/${item}.png`}
-                alt={item}
-              />
-              <ins className="count">{itemCount}</ins>
-            </>
-          ) : (
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/images/EMPTY.png`}
-              alt={"No item"}
-            />
-          )}
-        </div>,
+        <InventorySlot
+          key={`${item}+${itemCount}`}
+          handleClick={handleClick}
+          itemCount={itemCount}
+          item={item}
+          isAnimalScreen={isAnimalScreen}
+          passedID={item}
+          tooltipHandleMouseEnter={tooltipHandleMouseEnter}
+          tooltipHandleMouseLeave={tooltipHandleMouseLeave}
+          activeTooltip={activeTooltip}
+        />
       );
+
+
       return totalSlots;
     });
   };
@@ -330,7 +316,7 @@ function CompInventory({
           <summary>
             <p>{selectedItem.description[0]}</p>
             <button className={`more-info-button ${moreInfo ? 'throbbing' : ''}`} onClick={() => setMoreInfo((old) => !old)}>
-              <img src={`${process.env.PUBLIC_URL}/assets/images/GUI/moreInfo.png`}/>
+              <img src={`${process.env.PUBLIC_URL}/assets/images/GUI/moreInfo.png`} />
             </button>
           </summary>
           {showFertilizer && (

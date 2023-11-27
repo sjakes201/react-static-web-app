@@ -33,12 +33,12 @@ function FriendRow({ profilePic, username, lastFeed, theirLastFeed, acceptedFlag
         if (lastFeed + 1500 > Date.now()) {
             setTimeout(() => setRefresh((old) => !old), 1510);
             return (
-                <img src={`${process.env.PUBLIC_URL}/assets/images/GUI/friendsCartFull.gif`} />
+                <img draggable={false} src={`${process.env.PUBLIC_URL}/assets/images/GUI/friendsCartFull.gif`} />
             )
         } else if (Date.now() > lastFeed + MS_FRIEND_FEED_COOLDOWN) {
-            return (<img src={`${process.env.PUBLIC_URL}/assets/images/GUI/friendsCartFull.png`} />)
+            return (<img draggable={false} src={`${process.env.PUBLIC_URL}/assets/images/GUI/friendsCartFull.png`} />)
         } else {
-            return (<img src={`${process.env.PUBLIC_URL}/assets/images/GUI/friendsCartEmpty.png`} />)
+            return (<img draggable={false} src={`${process.env.PUBLIC_URL}/assets/images/GUI/friendsCartEmpty.png`} />)
         }
     }
 
