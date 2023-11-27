@@ -6,6 +6,8 @@ import CONSTANTS from '../../CONSTANTS';
 import { useWebSocket } from "../../WebSocketContext";
 import PfpSelection from './PfpSelection';
 import LoadingWheel from '../Atoms/LoadingWheel'
+import GoodCountGrid from './GoodCountGrid';
+import FavoriteGood from './FavoriteGood';
 
 const DISCORD_REDIRECT =
     "https://discord.com/api/oauth2/authorize?client_id=1143367795682320434&redirect_uri=https%3A%2F%2Ffarmgame.live%2FdiscordAuth&response_type=code&scope=identify"
@@ -121,7 +123,7 @@ function UserProfile({ username }) {
             {pfpMenu && <PfpSelection close={() => setPfpMenu(false)} setPfpName={setPfpName} />}
 
             <div className="acc-row" id="acc-profile">
-            {(friendStatus !== 'friends' && username != getUser()) && addFriendButton()}
+                {(friendStatus !== 'friends' && username != getUser()) && addFriendButton()}
                 <div
                     className={`profile-pic-container ${getUser() === username ? 'clickable' : ''}`}
                     onClick={() => setPfpMenu(getUser() === username)}
@@ -235,48 +237,19 @@ function UserProfile({ username }) {
                     ))}
             </div>
 
+            <div className='acc-row' id='profile-more-info'>
+                <FavoriteGood profileData={profileData} type='crop' />
+                <FavoriteGood profileData={profileData} type='produce' />
+            </div>
+
             <div className="acc-row" id="acc-stats">
                 <div className="acc-collect-totals">
-                    <p>Total Harvests</p>
-                    <div className="acc-collect-grids">
-                        {Object.keys(profileData).map((crop) => {
-                            if (
-                                crop in CONSTANTS.Init_Market_Prices &&
-                                !crop.includes("_")
-                            ) {
-                                return (
-                                    <div className="acc-goods-slot" key={crop}>
-                                        <img
-                                            src={`${process.env.PUBLIC_URL}/assets/images/${crop}.png`}
-                                            alt={crop}
-                                        />
-                                        {profileData[crop]?.toLocaleString()}
-                                    </div>
-                                );
-                            }
-                        })}
-                    </div>
+                    <p className='basic-center'>Total Harvests</p>
+                    <GoodCountGrid cropData={profileData} type='crops' />
                 </div>
                 <div className="acc-collect-totals">
-                    Total Produce
-                    <div className="acc-collect-grids">
-                        {Object.keys(profileData).map((produce) => {
-                            if (
-                                produce in CONSTANTS.Init_Market_Prices &&
-                                produce.includes("_")
-                            ) {
-                                return (
-                                    <div className="acc-goods-slot" key={produce}>
-                                        <img
-                                            src={`${process.env.PUBLIC_URL}/assets/images/${produce}.png`}
-                                            alt={produce}
-                                        />
-                                        {profileData[produce]?.toLocaleString()}
-                                    </div>
-                                );
-                            }
-                        })}
-                    </div>
+                    <p className='basic-center'>Total Produce</p>
+                    <GoodCountGrid cropData={profileData} type='produce' />
                 </div>
             </div>
         </div>
