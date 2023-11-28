@@ -446,35 +446,6 @@ function GameContainer() {
     return { ...goodTotals, Balance: Balance, XP: XP }
   }
 
-  useEffect(() => {
-    // Initialize
-    window.aiptag = window.aiptag || {};
-    window.aiptag.cmd = window.aiptag.cmd || [];
-    window.aiptag.cmd.display = window.aiptag.cmd.display || [];
-    window.aiptag.cmd.player = window.aiptag.cmd.player || [];
-
-    window.aiptag.cmp = {
-      show: true,
-      position: "centered", //centered or bottom
-      button: true,
-      buttonText: "Privacy settings",
-      buttonPosition: "bottom-left", //bottom-left, bottom-right, top-left, top-right
-    };
-
-    // Load AdinPlay Ads script
-    const script = document.createElement("script");
-    script.async = true;
-    script.src =
-      "//api.adinplay.com/libs/aiptag/pub/FRM/farmgame.live/tag.min.js";
-    document.head.appendChild(script);
-
-    return () => {
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-    };
-  }, []);
-
   const passedContextFuncs = {
     setTownChatBox,
     updateBalance,

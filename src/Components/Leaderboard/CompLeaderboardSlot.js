@@ -76,13 +76,12 @@ function CompLeaderboardSlot({ Username, item, data, userAlltimeTotals }) {
           <sup>{ordinalSuffix(place)} </sup>
         </span>
         <span
-          style={username?.includes("#") ? {} : nameLink}
+          style={nameLink}
           onClick={() => {
-            if (!username?.includes("#")) {
-              navigate(`/profile/${username}`, {
+              navigate(`/profile/${username?.replace(/#/g, "-")}`, {
                 state: { from: "leaderboard" },
               });
-            }
+            
           }}
         >
           {username?.includes("#") ? "Guest" : username}
