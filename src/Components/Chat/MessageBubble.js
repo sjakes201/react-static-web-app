@@ -65,7 +65,7 @@ function MessageBubble({ text, userWhoSent, messageID, requestID, unixTimeStamp,
         >
             <span
                 onClick={() =>
-                    navigate(`/profile/${userWhoSent}`, {
+                    navigate(`/profile/${userWhoSent?.replace(/#/g, "-")}`, {
                         state: {
                             from: location.pathname
                                 .substring(1, location.pathname.length)
