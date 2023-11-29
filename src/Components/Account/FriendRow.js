@@ -51,7 +51,7 @@ function FriendRow({ profilePic, username, lastFeed, theirLastFeed, acceptedFlag
             <div className='friendRowContainer yellow-border-thin acceptedRequest'>
                 <div
                     onClick={() =>
-                        navigate(`/profile/${username.replace(/#/g, "-")}`, {
+                        navigate(`/profile/${username}`, {
                             state: {
                                 from: location.pathname.substring(
                                     1,
@@ -68,7 +68,7 @@ function FriendRow({ profilePic, username, lastFeed, theirLastFeed, acceptedFlag
                     />
                     <p className='friendUsername'
                     >
-                        {username.replace(/#/g, "-")}
+                        {username}
                     </p>
                     <p className={`friendActiveStatus ${lastActive === 'Online' ? 'onlineStatus' : ''}`}>
                         {lastActive}

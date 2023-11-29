@@ -144,7 +144,7 @@ function UserProfile({ username }) {
                 </div>
 
                 <div className="acc-user-info">
-                    <h3 id="acc-username">{profileData?.username?.replace(/#/g, "-")}</h3>
+                    <h3 id="acc-username">{profileData?.username}</h3>
                     <p>XP: {profileData?.XP?.toLocaleString()}</p>
                     <p>Balance: ${profileData?.Balance?.toLocaleString()}</p>
                 </div>

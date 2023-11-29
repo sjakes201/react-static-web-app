@@ -11,7 +11,6 @@ function AccountScreen() {
   let { username } = useParams();
   const { getUser } = useContext(GameContext);
   // # is for fragments in URL so we need to change # to - just for url username param. - and # are not allowed in chosen usernames
-  username = username.replace(/-/g, "#");
   const location = useLocation();
 
   const navigate = useNavigate();

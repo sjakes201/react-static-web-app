@@ -83,7 +83,7 @@ function CompProfile({
   useEffect(() => {
     setBal(getBal());
     let user = getUser();
-    if (user && !user.includes("#")) {
+    if (user && !user.includes("Farmer-")) {
       // they are considered 'logged in' when they have a claimed account, guest accounts are 'logged out'
       setLoggedIn(true);
     }
@@ -171,7 +171,7 @@ function CompProfile({
           </div>
         )}
         <div className="profile-stats">
-          <div>{user && user.includes("#") ? "Guest" : user}</div>
+          <div>{user && user.includes("Farmer-") ? "Farmer" : user}</div>
           {xpProgressBar(xp)}
           <MoneyDisplay amount={bal} />
           

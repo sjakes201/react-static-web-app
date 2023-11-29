@@ -78,13 +78,13 @@ function CompLeaderboardSlot({ Username, item, data, userAlltimeTotals }) {
         <span
           style={nameLink}
           onClick={() => {
-              navigate(`/profile/${username?.replace(/#/g, "-")}`, {
+              navigate(`/profile/${username}`, {
                 state: { from: "leaderboard" },
               });
             
           }}
         >
-          {username?.includes("#") ? "Guest" : username}
+          {username}
         </span>
         : {(item === "Balance" ? "$" : "" )}{count?.toLocaleString()}
       </p>
