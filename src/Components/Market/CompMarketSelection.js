@@ -100,14 +100,16 @@ function CompMarketSelection({
               ${Math.round((newPrice) * 100) / 100} <small>/each</small>{" "}
             </>}
             {multiplier > 1 && <>
-              <CrossedNumber belowText={`$${Math.round((newPrice) * 100) / 100}`} aboveText={`$${Math.round((newPrice * multiplier) * 100) / 100}`} />
+              <CrossedNumber
+                belowText={`$${(Math.round((newPrice) * 100) / 100)?.toLocaleString('en-us', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}
+                aboveText={`$${(Math.round((newPrice * multiplier) * 100) / 100)?.toLocaleString('en-us', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} />
               <small>/each</small>{" "}
             </>}
             <img src={arrowURL} style={{ width: "12%" }} />
           </div>
           <div style={{ fontSize: "0.7vw" }}>
             ${Math.round(oldPrice * 100) / 100} /each previously
-            </div>
+          </div>
           <div style={{ marginTop: "10%", textAlign: "center" }}>
             <form onSubmit={handleSubmit} autoComplete="off">
               <input

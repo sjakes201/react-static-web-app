@@ -25,7 +25,6 @@ function FriendsScreen() {
     const acceptFriendRequest = async (targetUsername) => {
         if (waitForServerResponse) {
             let res = await waitForServerResponse('acceptFriendRequest', { targetUsername: targetUsername })
-            console.log(res)
             if (res.body.success) {
                 getFriendsData()
             }
@@ -37,8 +36,8 @@ function FriendsScreen() {
             let res = await waitForServerResponse('getFriendsData');
             if (res?.body?.friendsData) {
                 res.body.friendsData.sort((a, b) => a.acceptedFlag === 1 ? -1 : 1)
-                console.log(res.body.friendsData)
-                setFriendsData(res.body.friendsData)
+                console.log([...res.body.friendsData, ...res.body.outgoingRequests])
+                setFriendsData([...res.body.friendsData, ...res.body.outgoingRequests])
             }
         }
     }
@@ -197,6 +196,7 @@ function FriendsScreen() {
                         removeFriend={removeFriend}
                         acceptFriendRequest={acceptFriendRequest}
                         feedFriendAnimal={feedFriendAnimal}
+                        status={friend?.status}
                     />)
                 })}
             </div>
