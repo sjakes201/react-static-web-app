@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import CONSTANTS from "../../CONSTANTS";
 import './MarketComponents.css'
+import CrossedNumber from "../Atoms/CrossedNumber";
 
 // pass it all price info
 function CompMarketSelection({
@@ -95,10 +96,18 @@ function CompMarketSelection({
               fontSize: "1.3vw",
             }}
           >
-            ${Math.round((newPrice * multiplier) * 100) / 100} <small>/each</small>{" "}
+            {multiplier === 1 && <>
+              ${Math.round((newPrice) * 100) / 100} <small>/each</small>{" "}
+            </>}
+            {multiplier > 1 && <>
+              <CrossedNumber belowText={`$${Math.round((newPrice) * 100) / 100}`} aboveText={`$${Math.round((newPrice * multiplier) * 100) / 100}`} />
+              <small>/each</small>{" "}
+            </>}
             <img src={arrowURL} style={{ width: "12%" }} />
           </div>
-          <div style={{ fontSize: "0.7vw" }}>${Math.round((oldPrice * multiplier) * 100) / 100} /each previously</div>
+          <div style={{ fontSize: "0.7vw" }}>
+            ${Math.round(oldPrice * 100) / 100} /each previously
+            </div>
           <div style={{ marginTop: "10%", textAlign: "center" }}>
             <form onSubmit={handleSubmit} autoComplete="off">
               <input
