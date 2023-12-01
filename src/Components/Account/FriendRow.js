@@ -4,7 +4,7 @@ import './FriendComponents.css'
 
 const MS_FRIEND_FEED_COOLDOWN = 30 * 60 * 1000
 
-function FriendRow({ profilePic, username, lastFeed, theirLastFeed, acceptedFlag, lastActive, removeFriend, acceptFriendRequest, feedFriendAnimal }) {
+function FriendRow({ profilePic, username, lastFeed, theirLastFeed, acceptedFlag, lastActive, removeFriend, acceptFriendRequest, feedFriendAnimal, status }) {
     const navigate = useNavigate();
     const location = useLocation();
     const [confirmRemove, setConfirmRemove] = useState(false)
@@ -44,6 +44,43 @@ function FriendRow({ profilePic, username, lastFeed, theirLastFeed, acceptedFlag
 
     const didTheyRecentlyFeed = () => {
         return (Date.now() - theirLastFeed) < (2 * 24 * 60 * 60 * 1000)
+    }
+
+    if (status === "OUTGOING") {
+        return (
+            <div className='friendRowContainer yellow-border-thin pendingRequest'>
+                <div
+                    onClick={() =>
+                        navigate(`/profile/${username}`, {
+                            state: {
+                                from: location.pathname.substring(
+                                    1,
+                                    location.pathname.length,
+                                ),
+                            },
+                        })
+                    }
+                    className='leftAligned clickable'
+                >
+                    <img
+                        className='friendPfP'
+                        src={`${process.env.PUBLIC_URL}/assets/images/profilePics/${profilePic}.png`}
+                    />
+                    <p className='friendUsername'
+                    >
+                        {username}
+                    </p>
+                </div>
+
+                <button
+                    className='pendingRequestButton basic-center clickable'
+                    onClick={() => removeFriend(username)}
+                >
+                    x
+                </button>
+                <i className='outgoing-status'>(sent)</i>
+
+            </div>)
     }
 
     if (acceptedFlag === 1) {

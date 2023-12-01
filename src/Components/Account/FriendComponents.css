@@ -236,3 +236,9 @@
     margin-left: 0.8vw;
     border-radius: 4px;
 }
+
+.outgoing-status {
+    margin-left: 1vw;
+    font-size: 0.9vw;
+    color: gray;
+}
