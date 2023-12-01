@@ -1,0 +1,33 @@
+.cross-num-parent {
+    position: relative;
+}
+
+.below-text-size {
+    position: relative;
+    z-index: 50;
+    color: transparent;
+    pointer-events: none;
+    user-select: none;
+}
+
+.below-text {
+    position: absolute;
+    top: 15%;
+    left: 10%;
+    transform: rotate(3deg) scale(0.9);
+    color: black;
+    text-decoration: line-through;
+    pointer-events: default;
+    user-select: auto;
+}
+
+.above-text {
+    position: absolute;
+    top: -15%;
+    left: -30%;
+    color: gold;
+    font-weight: bold;
+    transform: rotate(-15deg) scale(1.1);
+    z-index: 100;
+    text-shadow: -1px 1px 0px whitesmoke;
+}

@@ -16,6 +16,7 @@ import Complogin from "./Components/GUI/CompLogin";
 import DiscordAuthReturn from "./Components/External/DiscordAuthReturn";
 import GoogleAnalyticsReporter from "./GoogleAnalyticsReporter";
 import OrderBoard from "./Components/Orders/OrderBoard";
+import NotFound from "./Screens/NotFound";
 
 import { useWebSocket } from "./WebSocketContext";
 
@@ -588,6 +589,7 @@ function GameContainer() {
               <TownsScreen />
             }
           />
+          <Route path='*' element={<NotFound />}/>
         </Routes>
       </div>
     </GameContext.Provider>
