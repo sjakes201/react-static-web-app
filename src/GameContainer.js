@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import AnimalScreen from "./Screens/AnimalScreen";
 import PlantScreen from "./Screens/PlantScreen";
 import ShopScreen from "./Screens/ShopScreen";
@@ -17,12 +17,15 @@ import DiscordAuthReturn from "./Components/External/DiscordAuthReturn";
 import GoogleAnalyticsReporter from "./GoogleAnalyticsReporter";
 import OrderBoard from "./Components/Orders/OrderBoard";
 import NotFound from "./Screens/NotFound";
+import AnimationParent from "./Screens/ScreenEffects/AnimationParent";
+import SeasonsInfo from "./Components/GUI/SeasonsInfo";
 
 import { useWebSocket } from "./WebSocketContext";
 
 import CONSTANTS from "./CONSTANTS";
 import CROPINFO from "./CROPINFO";
 import UPGRADES from "./UPGRADES";
+import TOWNSINFO from "./TOWNSINFO";
 
 export const GameContext = React.createContext();
 
@@ -31,6 +34,7 @@ function GameContainer() {
   const { waitForServerResponse } = useWebSocket();
   const { addListener, removeListener } = useWebSocket();
 
+  const location = useLocation();
 
   const { isConnected } = useWebSocket();
 
@@ -83,10 +87,15 @@ function GameContainer() {
 
   const [msgNotification, setMsgNotification] = useState(false);
   const [orderBoard, setOrderBoard] = useState(false);
+  const [seasonsInfoBox, setSeasonsInfoBox] = useState(false);
 
   const [leaderboardData, setLeaderboardData] = useState({});
 
   const [userNotifications, setUserNotifications] = useState([])
+
+  const [animationsEnabled, setAnimationsEnabled] = useState(true)
+
+  const toggleAnimations = () => setAnimationsEnabled((old) => !old)
 
   const getTownMessages = async () => {
     if (waitForServerResponse) {
@@ -306,18 +315,30 @@ function GameContainer() {
       CropID !== -1 &&
       Object.keys(getUpgrades()).length !== 0
     ) {
-      const date = PlantTime;
+      let seedName = CROPINFO.seedsFromID[CropID]
+      let date = PlantTime;
+      date -= 5; // 5 ms buffer to account for rounding as to not flash lower stage for a split second
       const curTime = Date.now();
 
       let secsPassed = (curTime - date) / 1000;
       if (hasTimeFertilizer) {
         secsPassed = secsPassed * 2;
       }
+      if (townPerks?.cropTimeLevel > 0) {
+        let boostPercent =
+          TOWNSINFO.perkBoosts.cropTimeLevel[townPerks.cropTimeLevel - 1];
+        let boostChange = 1 + boostPercent;
+        secsPassed *= boostChange;
+      }
+      if (CONSTANTS.cropSeasons[getCurrentSeason()].includes(seedName)) {
+        let boostPercent = CONSTANTS.VALUES.SEASON_GROWTH_BUFF;
+        secsPassed *= 1 + boostPercent;
+      }
+
       // Use secs passed to find out what stage you are in by summing growth in constants
       let growth =
-        UPGRADES["GrowthTimes".concat(getUpgrades().plantGrowthTimeUpgrade)][
-        CROPINFO.seedsFromID[CropID]
-        ];
+        UPGRADES["GrowthTimes".concat(getUpgrades().plantGrowthTimeUpgrade)][seedName];
+
       let stage = 0;
       while (secsPassed > 0 && stage < growth.length) {
         secsPassed -= growth[stage];
@@ -349,6 +370,19 @@ function GameContainer() {
     // find next threshold
     return level;
   };
+
+  const getCurrentSeason = () => {
+    const seasons = ['spring', 'summer', 'fall', 'winter'];
+    const currentDate = new Date();
+    const epochStart = new Date(1970, 0, 1);
+    const millisecondsPerDay = 24 * 60 * 60 * 1000;
+
+    let totalDays = Math.floor((currentDate - epochStart) / millisecondsPerDay);
+
+    const currentSeasonIndex = totalDays % seasons.length;
+
+    return seasons[currentSeasonIndex];
+  }
 
   const getXP = () => {
     return XP;
@@ -501,7 +535,11 @@ function GameContainer() {
     refreshNotifications,
     moreInfo,
     setMoreInfo,
-    townRoleID
+    townRoleID,
+    getCurrentSeason,
+    getStage,
+    toggleAnimations,
+    setSeasonsInfoBox
   }
 
   if (!isConnected) {
@@ -518,8 +556,16 @@ function GameContainer() {
           overflow: "hidden",
         }}
       >
+        <div style={{
+          opacity: (location.pathname === "/plants" || location.pathname === "/animals" || location.pathname === "/") ? 1 : 0,
+        }}>
+          {animationsEnabled && <AnimationParent currentSeason={getCurrentSeason()} />}
+        </div>
         {notificationBox && (
           <NotificationBox />
+        )}
+        {seasonsInfoBox && (
+          <SeasonsInfo />
         )}
         {loginBox && <Complogin />}
         {townChatBox && (
@@ -589,7 +635,7 @@ function GameContainer() {
               <TownsScreen />
             }
           />
-          <Route path='*' element={<NotFound />}/>
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </div>
     </GameContext.Provider>

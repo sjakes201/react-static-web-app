@@ -14,7 +14,7 @@ function CompProfile({
 }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { getBal, getXP, getUser, setLoginBox, setOrderBoard, profilePic } = useContext(GameContext)
+  const { getBal, getXP, getUser, setLoginBox, setOrderBoard, profilePic, getCurrentSeason, setSeasonsInfoBox } = useContext(GameContext)
 
   const [bal, setBal] = useState(0);
   const [user, setUser] = useState("");
@@ -174,34 +174,42 @@ function CompProfile({
           <div>{user && user.includes("Farmer-") ? "Farmer" : user}</div>
           {xpProgressBar(xp)}
           <MoneyDisplay amount={bal} />
-          
+
         </div>
 
         <div className="login-prompt">
           {!loggedIn && (
-            <div>
-              <button
-                className="login-button"
-                onClick={() => setLoginBox(true)}
-              >
-                Login
-              </button>
-            </div>
+            <button
+              className="login-button clickable"
+              onClick={() => setLoginBox(true)}
+            >
+              Login
+            </button>
           )}
           {loggedIn && (
-            <div>
-              <button
-                onClick={() => {
-                  localStorage.removeItem("token");
-                  navigate("/");
-                  window.location.reload(false);
-                }}
-                className="login-button"
-              >
-                Log out
-              </button>
-            </div>
+            <button
+              onClick={() => {
+                localStorage.removeItem("token");
+                navigate("/");
+                window.location.reload(false);
+              }}
+              className="login-button clickable"
+            >
+              Log out
+            </button>
           )}
+          {type === "tall" &&
+            <button className='seasons-button basic-center'>
+              <img
+                className='clickable'
+                onClick={() => {
+                  setSeasonsInfoBox(true)
+                }}
+                src={`${process.env.PUBLIC_URL}/assets/images/${getCurrentSeason()}Icon.png`}
+              />
+            </button>
+          }
+
         </div>
       </div>
 

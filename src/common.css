@@ -73,6 +73,14 @@
     margin: 6px;
 }
 
+.yellow-border-thin-marginless {
+    box-shadow:
+        0 0 0 1px var(--black),
+        0 0 0 3px var(--border_yellow),
+        0 0 0 4px var(--border_shadow_yellow),
+        0 0 0 6px var(--black);
+}
+
 .brown-border-small {
     box-shadow:
         0 0 0 3px var(--black),
@@ -101,7 +109,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 25000;
+    z-index: 2500;
     background-color: rgba(255, 245, 245, 0.5);
 }
 
@@ -111,7 +119,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 25000;
+    z-index: 2500;
     background-color: rgba(22, 22, 22, 0.692);
 }
 

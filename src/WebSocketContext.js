@@ -135,17 +135,18 @@ export function WebSocketProvider({ children }) {
       if (!ws || ws.readyState !== WebSocket.OPEN) {
         return reject(new Error("WebSocket is not open"));
       }
+      const MESSAGE_ID = Math.floor(Math.random() * 1000000000);
 
       const timer = setTimeout(() => {
         ws.removeEventListener("message", listener);
         reject(new Error(`Timed out ${action}`));
       }, timeout);
 
-      ws.send(JSON.stringify({ action, ...params }));
+      ws.send(JSON.stringify({ action, MESSAGE_ID, ...params }));
 
       const listener = (event) => {
         const parsedData = JSON.parse(event.data);
-        if (parsedData.action === action) {
+        if (parsedData.action === action && parsedData.MESSAGE_ID === MESSAGE_ID) {
           ws.removeEventListener("message", listener);
           clearTimeout(timer);
           resolve(parsedData);
