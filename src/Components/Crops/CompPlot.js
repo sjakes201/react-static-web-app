@@ -597,7 +597,7 @@ function CompPlot({
         secsPassed *= boostChange;
       }
 
-      if(CONSTANTS.cropSeasons[getCurrentSeason()]?.includes(seedIDS[targetTile.CropID])) {
+      if (CONSTANTS.cropSeasons[getCurrentSeason()]?.includes(seedIDS[targetTile.CropID])) {
         let boostChange = CONSTANTS.VALUES.SEASON_GROWTH_BUFF + 1;
         secsPassed *= boostChange;
       }
@@ -634,7 +634,7 @@ function CompPlot({
           if (CONSTANTS?.cropSeasons?.[getCurrentSeason()]?.includes(seedIDS[targetTile.CropID])) {
             let boostPercent = CONSTANTS.VALUES.SEASON_GROWTH_BUFF;
             timeSkip /= (1 + boostPercent);
-        }
+          }
 
           // ms since epoch
           let newPlantTime = Date.now();
@@ -679,27 +679,40 @@ function CompPlot({
       const curTime = Date.now();
 
       let secsPassed = (curTime - date) / 1000;
-    
+
       let growth =
         UPGRADES["GrowthTimes".concat(getUpgrades().plantGrowthTimeUpgrade)][
         CROPINFO.seedsFromID[CropID]
         ];
 
       let totalTimeNeeded = growth.reduce((sum, e) => sum + e, 0);
+
+      let totalSpeedMultiple = 1;
+
       if (hasTimeFertilizer) {
-        totalTimeNeeded = totalTimeNeeded / 2;
+        totalSpeedMultiple *= 2;
       }
+
       if (townPerks?.cropTimeLevel > 0) {
         let boostPercent =
           TOWNSINFO.perkBoosts.cropTimeLevel[townPerks.cropTimeLevel - 1];
-        let boostChange = 1 - boostPercent;
-        totalTimeNeeded *= boostChange;
+        let boostChange = 1 + boostPercent;
+        totalSpeedMultiple *= boostChange;
       }
-      if(CONSTANTS.cropSeasons[getCurrentSeason()]?.includes(CropID)) {
-        let boostChange = 1 - CONSTANTS.VALUES.SEASON_GROWTH_BUFF;
-        totalTimeNeeded *= boostChange;
+
+      if (CONSTANTS.cropSeasons[getCurrentSeason()]?.includes(CROPINFO.seedsFromID[CropID])) {
+        let boostChange = 1 + CONSTANTS.VALUES.SEASON_GROWTH_BUFF;
+        totalSpeedMultiple *= boostChange;
       }
-      return totalTimeNeeded - secsPassed > 0 ? totalTimeNeeded - secsPassed : 0;
+
+      /* Since we do not have secsPassed, calculate how many seconds would have been saved by the time you finish,
+       subtract that from total and compare to unmodified secsPassed to get difference. We can't modify secsPassed because
+       it is a real value the player sees, so it should be not accelerating or not 1 second per second
+       */
+      let adjustedSecondsNeeded = Math.ceil((totalTimeNeeded / totalSpeedMultiple))
+      console.log(`totalTimeNeeded: ${totalTimeNeeded}, totalSpeedMultiple: ${totalSpeedMultiple}, adjustedSecondsNeeded: ${adjustedSecondsNeeded}`)
+
+      return adjustedSecondsNeeded - secsPassed > 0 ? adjustedSecondsNeeded - secsPassed : 0;
     } else {
       return -1;
     }

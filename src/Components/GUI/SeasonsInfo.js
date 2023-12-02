@@ -39,11 +39,11 @@ function SeasonsInfo() {
                             className={getCurrentSeason() === 'spring' ? 'yellow-border-thin-marginless' : ''}
 
                         />
-                        <p>
+                        <div>
                             <u style={{color: 'green'}}>Spring</u>
                             <p><span className='crops-label'>Crops:</span> parsnips, melons, carrots, bamboo, hops</p>
                             <p><span className='animals-label'>Animals:</span> all coop animals</p>
-                        </p>
+                        </div>
 
                     </div>
                     <div className='season-row'>
@@ -51,10 +51,10 @@ function SeasonsInfo() {
                             src={`${process.env.PUBLIC_URL}/assets/images/summerIcon.png`}
                             className={getCurrentSeason() === 'summer' ? 'yellow-border-thin-marginless' : ''}
                         />
-                        <p>
+                        <div>
                             <u style={{color: 'orange'}}>Summer</u>
                             <p><span className='crops-label'>Crops:</span> blueberries, strawberries, potatoes, oats, cauliflower</p>
-                        </p>
+                        </div>
                     </div>
                     <div className='season-row'>
                         <img
@@ -62,11 +62,11 @@ function SeasonsInfo() {
                             className={getCurrentSeason() === 'fall' ? 'yellow-border-thin-marginless' : ''}
 
                         />
-                        <p>
+                        <div>
                             <u style={{color: 'maroon'}}>Fall</u>
                             <p><span className='crops-label'>Crops:</span> yam, grape, beet, pumpkin, corn</p>
                             <p><span className='animals-label'>Animals:</span> all barn animals</p>
-                        </p>
+                        </div>
                     </div>
                     <div className='season-row'>
                         <img
@@ -74,11 +74,11 @@ function SeasonsInfo() {
                             className={getCurrentSeason() === 'winter' ? 'yellow-border-thin-marginless' : ''}
 
                         />
-                        <p>
+                        <div>
                             <u style={{color: 'gray'}}>Winter</u>
                             <p>Higher machine parts chance</p>
                             <p><i id='no-crop-bonuses'>No crop or animal bonuses</i></p>
-                        </p>
+                        </div>
                     </div>
                 </div>
 

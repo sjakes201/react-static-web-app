@@ -100,7 +100,6 @@ function CompInventory({
   });
 
   const handleClick = (itemName) => {
-    console.log(itemName)
     if (items[itemName]) {
       if (isAnimalScreen && itemName in ANIMALINFO.FoodHappinessYields) {
         sessionStorage.setItem("equipped", itemName);
