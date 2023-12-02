@@ -36,7 +36,6 @@ function FriendsScreen() {
             let res = await waitForServerResponse('getFriendsData');
             if (res?.body?.friendsData) {
                 res.body.friendsData.sort((a, b) => a.acceptedFlag === 1 ? -1 : 1)
-                console.log([...res.body.friendsData, ...res.body.outgoingRequests])
                 setFriendsData([...res.body.friendsData, ...res.body.outgoingRequests])
             }
         }

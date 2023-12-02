@@ -3,7 +3,6 @@ import CONSTANTS from '../../CONSTANTS'
 import "./AccountComponents.css"
 
 function LeaderboardPosList({ tempData, allTimeData }) {
-    console.log(tempData, allTimeData)
     const listString = (crop, position, type, index) => {
         let numberClass =
             position <= 5 ? "goldPos" :

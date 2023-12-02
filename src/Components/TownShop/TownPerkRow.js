@@ -85,11 +85,11 @@ function TownPerkRow({ perkName, currentLevel, buyPerk, myRoleID }) {
                 {levelCell(14)}
                 {levelCell(15)}
             </div>
-            <p className={`perkLevelInfo ${currentLevel === 15 ? 'gold-border-small' : 'light-border-small'}`}>
+            <div className={`perkLevelInfo ${currentLevel === 15 ? 'gold-border-small' : 'light-border-small'}`}>
                 <p>Bonus: <span className='perkBonusPercent'>{getBoostPercent(currentLevel)}%</span></p>
                 {getBoostPercent(currentLevel + 1) !== 0 && <p>Next: <span className='perkBonusPercent'>{getBoostPercent(currentLevel + 1)}%</span></p>}
 
-            </p>
+            </div>
         </div>
 
     )
