@@ -1,0 +1,67 @@
+.seasons-info {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2500;
+    font-size: 0.9vw;
+}
+
+.seasons-container {
+    background-color: var(--menu_lighter);
+    padding: 1vw 1vw 2vw 1vw;
+}
+
+.seasons-explanation {
+    width: 100%;
+    text-align: center;
+    font-size: 1.1vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.seasons-explanation > u {
+    margin-bottom: 0.3vh;
+}
+
+.seasons-list {
+    margin-top: 1.5vh;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
+    row-gap: 1vh;
+}
+
+.season-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+
+.season-row>img {
+    height: 10vh;
+    border: 2px solid black;
+    margin-right: 1vw;
+}
+
+#no-crop-bonuses {
+    color: gray;
+    font-size: 0.8vw;
+}
+
+.crops-label {
+    /* color: green; */
+}
+
+.animals-label {
+    /* color: maroon */
+}
+
+.boost-percent {
+    font-weight: bold;
+}

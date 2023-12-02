@@ -68,7 +68,7 @@ function CompMarketItem({ imgURL, name, newPrice, oldPrice, multiplier }) {
         className='marketPriceInfo'
       >
         <img className={`priceChangeArrow`} src={arrowURL} />
-        <p className={`price-style`}>${Math.round((newPrice * multiplier) * 100) / 100}</p>
+        <p className={`price-style`}>${(Math.round((newPrice * multiplier) * 100) / 100)?.toLocaleString('en-us', { minimumFractionDigits: 2, maximumFractionDigits: 2})}</p>
         <img className={`priceChangeArrow`} src={arrowURL} />
         <small style={{ fontSize: ".8vw" }}>/each</small>
       </div>

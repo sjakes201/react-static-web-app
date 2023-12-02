@@ -3,6 +3,20 @@ module.exports = {
     NUM_CROP_TILES: 60,
     ORDER_REFRESH_COOLDOWN: 900000,
     TimeFeritilizeDuration: 600000, //ms duration of time fertilizer
+    SEASON_GROWTH_BUFF: 0.15, // 15% faster crop growth for current season crops
+    SEASON_ANIMAL_BUFF: 0.10, // 10% faster animal production in season
+  },
+  cropSeasons: {
+    spring: ["bamboo_seeds", "parsnip_seeds", "hops_seeds", "melon_seeds", "carrot_seeds"],
+    summer: ["blueberry_seeds", "strawberry_seeds", "potato_seeds", "oats_seeds", "cauliflower_seeds"],
+    fall: ["yam_seeds", "grape_seeds", "beet_seeds", "pumpkin_seeds", "corn_seeds"],
+    winter: []
+  },
+  animalSeasons: {
+      spring: ["chicken", "duck", "quail", "ostrich", "kiwi"],
+      summer: [],
+      fall: ["cow", "yak", "sheep", "goat", "llama"],
+      winter: []
   },
   fertilizerInfo: {
     YieldsFertilizer: "Next 10 harvests receive higher yields",

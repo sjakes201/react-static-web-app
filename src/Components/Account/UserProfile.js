@@ -8,6 +8,7 @@ import PfpSelection from './PfpSelection';
 import LoadingWheel from '../Atoms/LoadingWheel'
 import GoodCountGrid from './GoodCountGrid';
 import FavoriteGood from './FavoriteGood';
+import LeaderboardPosList from './LeaderboardPosList';
 
 const DISCORD_REDIRECT =
     "https://discord.com/api/oauth2/authorize?client_id=1143367795682320434&redirect_uri=https%3A%2F%2Ffarmgame.live%2FdiscordAuth&response_type=code&scope=identify"
@@ -25,6 +26,7 @@ function UserProfile({ username }) {
                     targetUser: username,
                 });
                 setProfileData(response.body);
+                // console.log(response.body)
                 if (response?.body?.profilePic) {
                     setPfpName(response.body.profilePic)
                 }
@@ -240,6 +242,10 @@ function UserProfile({ username }) {
             <div className='acc-row' id='profile-more-info'>
                 <FavoriteGood profileData={profileData} type='crop' />
                 <FavoriteGood profileData={profileData} type='produce' />
+                <LeaderboardPosList
+                    tempData={profileData.TempLeaderboardPositions}
+                    allTimeData={profileData.AllTimeLeaderboardPositions}
+                />
             </div>
 
             <div className="acc-row" id="acc-stats">

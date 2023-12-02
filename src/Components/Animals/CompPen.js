@@ -8,6 +8,19 @@ import TOWNSINFO from "../../TOWNSINFO";
 import { useWebSocket } from "../../WebSocketContext";
 import { GameContext } from "../../GameContainer";
 
+const getCurrentSeason = () => {
+  const seasons = ['spring', 'summer', 'fall', 'winter'];
+  const currentDate = new Date();
+  const epochStart = new Date(1970, 0, 1);
+  const millisecondsPerDay = 24 * 60 * 60 * 1000;
+
+  let totalDays = Math.floor((currentDate - epochStart) / millisecondsPerDay);
+
+  const currentSeasonIndex = totalDays % seasons.length;
+
+  return seasons[currentSeasonIndex];
+}
+
 function CompPen({
   animalsParent,
   setAnimalsParent,
@@ -206,6 +219,10 @@ function CompPen({
       let happiness = animal.Happiness,
         nextRandom = animal.Next_random;
       let probOfExtra = happiness > 1 ? 0.67 : happiness / 1.5;
+      let inSeason = CONSTANTS.animalSeasons[getCurrentSeason()].includes(type);
+      if (inSeason) {
+        probOfExtra += 0.1
+      }
       if (nextRandom < probOfExtra) {
         // extra produce bc of happiness
         qty += 1;
@@ -317,17 +334,25 @@ function CompPen({
     let curTime = Date.now();
     let secsPassed = (curTime - Last_produce) / 1000 - 0.1;
 
+    let inSeason = CONSTANTS.animalSeasons[getCurrentSeason()].includes(Animal_type);
+    if (inSeason) {
+      let boostPercent = CONSTANTS.VALUES.SEASON_ANIMAL_BUFF;
+      let boostChange = 1 + boostPercent;
+      secsPassed *= boostChange;
+    }
+
     let level = isBarn
       ? getUpgrades().barnCollectTimeUpgrade
       : getUpgrades().coopCollectTimeUpgrade;
     let tableName = "AnimalCollectTimes".concat(level);
     if (tableName.includes("undefined")) tableName = "AnimalCollectTimes0";
     let secsNeeded = UPGRADES[tableName][Animal_type][0];
+
     if (townPerks.animalTimeLevel) {
       let boostPercent =
         TOWNSINFO.perkBoosts.animalTimeLevel[townPerks.animalTimeLevel - 1];
-      let boostChange = 1 - boostPercent;
-      secsNeeded *= boostChange;
+      let boostChange = 1 + boostPercent;
+      secsPassed *= boostChange;
     }
 
     return secsNeeded - secsPassed;

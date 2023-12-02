@@ -19,7 +19,7 @@ function CompPlot({
   items,
 }) {
   const { waitForServerResponse } = useWebSocket();
-  const { townPerks, tiles, setTiles, updateXP, getXP, getUpgrades, setParts, getTiles, moreInfo } = useContext(GameContext)
+  const { townPerks, tiles, setTiles, updateXP, getXP, getUpgrades, setParts, getTiles, moreInfo, getStage, getCurrentSeason } = useContext(GameContext)
 
   const [growthTable, setGrowthTable] = useState("");
   const [numHarvestTable, setNumHarvestTable] = useState("NumHarvests0");
@@ -593,8 +593,13 @@ function CompPlot({
       if (townPerks?.cropTimeLevel > 0) {
         let boostPercent =
           TOWNSINFO.perkBoosts.cropTimeLevel[townPerks.cropTimeLevel - 1];
-        let boostChange = 1 - boostPercent;
-        secsNeeded *= boostChange;
+        let boostChange = 1 + boostPercent;
+        secsPassed *= boostChange;
+      }
+
+      if(CONSTANTS.cropSeasons[getCurrentSeason()]?.includes(seedIDS[targetTile.CropID])) {
+        let boostChange = CONSTANTS.VALUES.SEASON_GROWTH_BUFF + 1;
+        secsPassed *= boostChange;
       }
 
       if (secsPassed >= secsNeeded) {
@@ -622,9 +627,14 @@ function CompPlot({
           if (townPerks?.cropTimeLevel > 0) {
             let boostPercent =
               TOWNSINFO.perkBoosts.cropTimeLevel[townPerks.cropTimeLevel - 1];
-            let boostChange = 1 - boostPercent;
-            timeSkip *= boostChange;
+            let boostChange = 1 + boostPercent;
+            timeSkip /= boostChange;
           }
+
+          if (CONSTANTS?.cropSeasons?.[getCurrentSeason()]?.includes(seedIDS[targetTile.CropID])) {
+            let boostPercent = CONSTANTS.VALUES.SEASON_GROWTH_BUFF;
+            timeSkip /= (1 + boostPercent);
+        }
 
           // ms since epoch
           let newPlantTime = Date.now();
@@ -659,44 +669,6 @@ function CompPlot({
     return simRes;
   };
 
-  const getStage = (PlantTime, CropID, hasTimeFertilizer) => {
-    if (
-      PlantTime !== null &&
-      CropID !== -1 &&
-      Object.keys(getUpgrades()).length !== 0
-    ) {
-      let date = PlantTime;
-      date -= 5; // 5 ms buffer to account for rounding as to not flash lower stage for a split second
-      const curTime = Date.now();
-
-      let secsPassed = (curTime - date) / 1000;
-      if (hasTimeFertilizer) {
-        secsPassed = secsPassed * 2;
-      }
-      if (townPerks?.cropTimeLevel > 0) {
-        let boostPercent =
-          TOWNSINFO.perkBoosts.cropTimeLevel[townPerks.cropTimeLevel - 1];
-        let boostChange = 1 - boostPercent;
-        secsPassed /= boostChange;
-      }
-      // Use secs passed to find out what stage you are in by summing growth in constants
-      let growth =
-        UPGRADES["GrowthTimes".concat(getUpgrades().plantGrowthTimeUpgrade)][
-        CROPINFO.seedsFromID[CropID]
-        ];
-      let stage = 0;
-      while (secsPassed > 0 && stage < growth.length) {
-        secsPassed -= growth[stage];
-        if (secsPassed >= 0) {
-          stage++;
-        }
-      }
-      return stage;
-    } else {
-      return -1;
-    }
-  };
-
   const timeUntilHarvest = (PlantTime, CropID, hasTimeFertilizer) => {
     if (
       PlantTime !== null &&
@@ -707,19 +679,24 @@ function CompPlot({
       const curTime = Date.now();
 
       let secsPassed = (curTime - date) / 1000;
-      if (hasTimeFertilizer) {
-        secsPassed = secsPassed * 2;
-      }
+    
       let growth =
         UPGRADES["GrowthTimes".concat(getUpgrades().plantGrowthTimeUpgrade)][
         CROPINFO.seedsFromID[CropID]
         ];
 
       let totalTimeNeeded = growth.reduce((sum, e) => sum + e, 0);
+      if (hasTimeFertilizer) {
+        totalTimeNeeded = totalTimeNeeded / 2;
+      }
       if (townPerks?.cropTimeLevel > 0) {
         let boostPercent =
           TOWNSINFO.perkBoosts.cropTimeLevel[townPerks.cropTimeLevel - 1];
         let boostChange = 1 - boostPercent;
+        totalTimeNeeded *= boostChange;
+      }
+      if(CONSTANTS.cropSeasons[getCurrentSeason()]?.includes(CropID)) {
+        let boostChange = 1 - CONSTANTS.VALUES.SEASON_GROWTH_BUFF;
         totalTimeNeeded *= boostChange;
       }
       return totalTimeNeeded - secsPassed > 0 ? totalTimeNeeded - secsPassed : 0;

@@ -15,7 +15,6 @@ function FavoriteGood({ profileData, type }) {
             let good = allGoods[i];
             let qty = profileData[good]
             let contributedXP = CONSTANTS.XP[good] * qty;
-            console.log(`good ${good} contributed ${contributedXP} xp`)
             if (contributedXP > totalXP) {
                 totalXP = contributedXP;
                 currentCrop = good;
@@ -27,7 +26,7 @@ function FavoriteGood({ profileData, type }) {
     const favGood = calcFavorite();
 
     return (
-        <div className='favorite-good-container yellow-border-thin'>
+        <div className='favorite-good-container'>
 
             <p
                 className='favorite-good-name basic-center'
@@ -35,15 +34,13 @@ function FavoriteGood({ profileData, type }) {
                 Favorite {type === "crop" ? "crop" : "produce"}:
             </p>
             <div className='favorite-info'>
-                <div className='fav-good-left-column'>
-                    <img
-                        className='favorite-good-img'
-                        alt={favGood}
-                        src={`${process.env.PUBLIC_URL}/assets/images/${favGood}.png`}
-                    />
-                </div>
+                <img
+                    className='favorite-good-img'
+                    alt={favGood}
+                    src={`${process.env.PUBLIC_URL}/assets/images/${favGood}.png`}
+                />
                 <div className='fav-good-right-column'>
-                    <p><u>{CONSTANTS.InventoryDescriptionsPlural[favGood]?.[0]}</u></p>
+                    <p>{CONSTANTS.InventoryDescriptionsPlural[favGood]?.[0]}</p>
                     <p>Qty: {profileData[favGood]?.toLocaleString()}</p>
                     <p>Total XP: {(profileData[favGood] * CONSTANTS.XP[favGood])?.toLocaleString()}</p>
                 </div>
