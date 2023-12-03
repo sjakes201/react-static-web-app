@@ -13,18 +13,23 @@ function AccountScreen() {
   // # is for fragments in URL so we need to change # to - just for url username param. - and # are not allowed in chosen usernames
   const location = useLocation();
 
+  const { subPage = '', subSection = '' } = location.state || {};
   const navigate = useNavigate();
-
-  const [accountTab, setAccountTab] = useState("profile")
+  console.log(subPage, subSection)
+  const [accountTab, setAccountTab] = useState(subPage ? subPage : "profile")
 
   useEffect(() => {
-    setAccountTab("profile")
+    if(getUser() === username) {
+      setAccountTab(subPage ? subPage : "profile")
+    } else {
+      setAccountTab("profile")
+    }
   }, [username])
 
   const backArrow = () => {
     const backFunc = () => {
       if (location?.state?.from) {
-        return () => navigate(`/${location.state.from}`);
+        return () => navigate(`/${location.state.from}`, { state: { subPage, subSection } });
       } else {
         return () => navigate("/plants");
       }

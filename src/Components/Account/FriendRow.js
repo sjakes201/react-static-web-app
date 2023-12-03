@@ -57,6 +57,7 @@ function FriendRow({ profilePic, username, lastFeed, theirLastFeed, acceptedFlag
                                     1,
                                     location.pathname.length,
                                 ),
+                                subPage: "friends"
                             },
                         })
                     }
@@ -94,6 +95,7 @@ function FriendRow({ profilePic, username, lastFeed, theirLastFeed, acceptedFlag
                                     1,
                                     location.pathname.length,
                                 ),
+                                subPage: "friends"
                             },
                         })
                     }
@@ -156,6 +158,7 @@ function FriendRow({ profilePic, username, lastFeed, theirLastFeed, acceptedFlag
                                 1,
                                 location.pathname.length,
                             ),
+                            subPage: "friends"
                         },
                     })
                 }

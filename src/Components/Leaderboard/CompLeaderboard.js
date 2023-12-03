@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import CompLeaderboardSlot from "./CompLeaderboardSlot";
 import { GameContext } from "../../GameContainer";
 
@@ -9,6 +10,23 @@ function CompLeaderboard({
 }) {
   const { getUser, getUserAlltimeTotals } = useContext(GameContext)
   const userAlltimeTotals = getUserAlltimeTotals()
+  const location = useLocation();
+
+  useEffect(() => {
+    const subSection = location.state?.subSection;
+    const subPage = location.state?.subPage;
+
+    if (subPage && subSection) {
+      const element = document.getElementById(`${subSection}-${subPage}-slot`);
+      const scrollContainer = document.getElementById('leaderboard-scroll-box'); // ID of your scrolling container
+
+      if (element && scrollContainer) {
+        element.scrollIntoView({ behavior: 'instant', block: 'center' });
+      }
+    }
+  }, [location.state]);
+
+
   if (
     Object.keys(leadersAll).length === 0 ||
     Object.keys(leadersWeekly).length === 0
@@ -45,6 +63,7 @@ function CompLeaderboard({
                 fontSize: "1.8vh",
                 overflowY: "auto",
               }}
+              id='leaderboard-scroll-box'
             >
               <p>
                 These are the farming leaderboards! Positions refresh every 5
@@ -101,6 +120,7 @@ function CompLeaderboard({
                       key={key}
                       item={key}
                       data={leadersWeekly[key]}
+                      type={type}
                     />{" "}
                   </div>
                 </div>
@@ -125,8 +145,9 @@ function CompLeaderboard({
               gridTemplateColumns: "1fr 1fr",
               rowGap: '1vh',
               columnGap: '.5vw',
-
+              overflowY: 'auto'
             }}
+            id='leaderboard-scroll-box'
           >
             <div style={{ width: "100%", height: "20vh" }}>
               <CompLeaderboardSlot
@@ -135,6 +156,7 @@ function CompLeaderboard({
                 key={"Balance"}
                 item={"Balance"}
                 data={leadersAll.Balance}
+                type={type}
               />
             </div>
             <div style={{ width: "100%", height: "20vh" }}>
@@ -144,6 +166,7 @@ function CompLeaderboard({
                 key={"XP"}
                 item={"XP"}
                 data={leadersAll.XP}
+                type={type}
               />
             </div>
             {Object.keys(leadersAll).map((key) => {
@@ -162,6 +185,7 @@ function CompLeaderboard({
                       key={key}
                       item={key}
                       data={leadersAll[key]}
+                      type={type}
                     />{" "}
                   </div>
                 </div>

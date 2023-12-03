@@ -103,6 +103,7 @@ function FriendsScreen() {
                     1,
                     location.pathname.length,
                 ),
+                subPage: 'friends'
             },
         })
     }

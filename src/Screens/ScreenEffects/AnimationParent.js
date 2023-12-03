@@ -97,7 +97,6 @@ function AnimationParent({ currentSeason }) {
         },  1000)
     }
 
-
     /* 
         Events to create animations
     */
