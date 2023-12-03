@@ -5,7 +5,7 @@ import "./AccountComponents.css"
 function LeaderboardPosList({ tempData, allTimeData }) {
     const listString = (crop, position, type, index) => {
         let numberClass =
-            position <= 5 ? "goldPos" :
+            position <= 3 ? "goldPos" :
                 position <= 6 ? "silverPos" :
                     "bronzePos"
         return (
