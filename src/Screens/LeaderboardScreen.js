@@ -8,6 +8,7 @@ function LeaderboardScreen() {
   const navigate = useNavigate();
   const location = useLocation();
   const { refreshLeaderboard, leaderboardData } = useContext(GameContext)
+  const { subPage = '', subSection = '' } = location.state || {};
 
   useEffect(() => {
     refreshLeaderboard();
@@ -19,7 +20,7 @@ function LeaderboardScreen() {
   }
 
   //ALLTIME, WEEKLY
-  const [type, setType] = useState("WEEKLY");
+  const [type, setType] = useState(subPage ? subPage : "WEEKLY");
 
   const backArrow = () => {
     const backFunc = () => {

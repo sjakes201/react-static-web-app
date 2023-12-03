@@ -2,8 +2,6 @@ import TownInterface from "../Components/Towns/TownInterface";
 import TownSearch from "../Components/Towns/TownSearch";
 import TownsLeaderboard from "../Components/Towns/TownsLeaderboard";
 
-import AdinPlayAd from "../AdinPlayAd";
-
 import "./CSS/TownsScreen.css";
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
@@ -100,7 +98,6 @@ function TownsScreen() {
       >
         {window.innerHeight > 650 && (
           <div className='innerSkyscraper'>
-            <AdinPlayAd placementId="farmgame-live_160x600_4" />
           </div>
         )}
       </div>
@@ -183,7 +180,6 @@ function TownsScreen() {
       >
         {window.innerHeight > 650 && (
           <div className='innerSkyscraper'>
-            <AdinPlayAd placementId="farmgame-live_160x600_5" />
           </div>
         )}
       </div>

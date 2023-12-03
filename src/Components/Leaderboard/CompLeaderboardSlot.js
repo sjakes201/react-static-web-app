@@ -3,7 +3,7 @@ import CONSTANTS from "../../CONSTANTS";
 import TweetButton from "../External/TweetButton";
 import { useNavigate } from "react-router-dom";
 
-function CompLeaderboardSlot({ Username, item, data, userAlltimeTotals }) {
+function CompLeaderboardSlot({ Username, item, data, userAlltimeTotals, type }) {
   const navigate = useNavigate();
 
   function ordinalSuffix(number) {
@@ -79,9 +79,8 @@ function CompLeaderboardSlot({ Username, item, data, userAlltimeTotals }) {
           style={nameLink}
           onClick={() => {
               navigate(`/profile/${username}`, {
-                state: { from: "leaderboard" },
+                state: { from: "leaderboard", subPage: type, subSection: item },
               });
-            
           }}
         >
           {username}
@@ -95,7 +94,8 @@ function CompLeaderboardSlot({ Username, item, data, userAlltimeTotals }) {
     <div></div>
   ) : (
     <div
-      id="leaderboard-slot"
+      id={`${item}-${type}-slot`}
+      key={`${item}-${type}-slot`}
       style={{
         width: "100%",
         height: "100%",
