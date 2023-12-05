@@ -20,8 +20,6 @@ import NotFound from "./Screens/NotFound";
 import AnimationParent from "./Screens/ScreenEffects/AnimationParent";
 import SeasonsInfo from "./Components/GUI/SeasonsInfo";
 
-import PlaywireTest from "./Screens/PlaywireTest";
-
 import { useWebSocket } from "./WebSocketContext";
 
 import CONSTANTS from "./CONSTANTS";
@@ -32,6 +30,8 @@ import TOWNSINFO from "./TOWNSINFO";
 export const GameContext = React.createContext();
 
 function GameContainer() {
+
+  console.log("Playwire ad scripts are loaded: ", window?.loadedTestPageScripts ? true : false)
 
   const { waitForServerResponse } = useWebSocket();
   const { addListener, removeListener } = useWebSocket();
@@ -630,11 +630,6 @@ function GameContainer() {
             path="/towns"
             element={
               <TownsScreen />}
-          />
-          <Route
-            path="/PlaywireTest"
-            element={
-              <PlaywireTest />}
           />
           <Route
             path="/towns/:townName"
