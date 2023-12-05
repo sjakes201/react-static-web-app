@@ -9,8 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { GameContext } from "../GameContainer";
 import { useWebSocket } from "../WebSocketContext";
 
-import AdinPlayAd from "../AdinPlayAd";
-
 function MarketScreen() {
   const { waitForServerResponse } = useWebSocket();
   const { updateBalance, itemsData, setItemsData, prices, refreshPrices } = useContext(GameContext)
@@ -125,13 +123,12 @@ function MarketScreen() {
           <CompOtherScreen />
         </div>
         <div className="mainMarketContainer">
-          <div className="ad-box-style">
+          {/* <div className="ad-box-style">
             {window.innerHeight > 655 && (
               <div style={{ width: "160px", height: "600px" }}>
-                <AdinPlayAd placementId="farmgame-live_160x600_3" />
               </div>
             )}
-          </div>
+          </div> */}
 
           <div id="CompMarket-container">
             <CompMarket

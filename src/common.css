@@ -23,6 +23,14 @@
         0 0 0 9px var(--black);
 }
 
+.orange-border-thin {
+    box-shadow:
+        0 0 0 1px var(--black),
+        0 0 0 3px var(--border_orange),
+        0 0 0 4px var(--border_shadow_orange),
+        0 0 0 6px var(--black);
+}
+
 .light-border-small {
     box-shadow:
         0 0 0 1px var(--black),

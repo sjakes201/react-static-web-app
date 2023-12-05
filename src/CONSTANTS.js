@@ -5,6 +5,7 @@ module.exports = {
     TimeFeritilizeDuration: 600000, //ms duration of time fertilizer
     SEASON_GROWTH_BUFF: 0.15, // 15% faster crop growth for current season crops
     SEASON_ANIMAL_BUFF: 0.10, // 10% faster animal production in season
+    SEED_LIMIT: 250
   },
   cropSeasons: {
     spring: ["bamboo_seeds", "parsnip_seeds", "hops_seeds", "melon_seeds", "carrot_seeds"],
@@ -19,9 +20,9 @@ module.exports = {
       winter: []
   },
   fertilizerInfo: {
-    YieldsFertilizer: "Next 10 harvests receive higher yields",
-    HarvestsFertilizer: "Next 5 seeds plants receive 1 extra harvest",
-    TimeFertilizer: "Double growth speed for next 10 minutes",
+    YieldsFertilizer: "Tile's next 10 harvests receive higher yields",
+    HarvestsFertilizer: "Tile's next 5 seeds plants receive 1 extra harvest",
+    TimeFertilizer: "Tile gets double growth speed for next 10 minutes",
   },
   yieldFertilizerBonuses: {
     carrot_seeds: 2,
@@ -309,6 +310,36 @@ module.exports = {
     40: ["grape_seeds", "quail"],
     45: ["ostrich"],
     50: ["strawberry_seeds", "kiwi"],
+  },
+  // The above is a poor implementation, re-doing for future use
+  levelToUnlock: {
+    carrot_seeds: 0,
+    oats_seeds: 0,
+    corn_seeds: 0,
+    cow: 0,
+    chicken: 0,
+    potato_seeds: 1,
+    parsnip_seeds: 2,
+    cauliflower_seeds: 4,
+    beet_seeds: 4,
+    pumpkin_seeds: 8,
+    hops_seeds: 10,
+    sheep: 10,
+    bamboo_seeds: 15,
+    melon_seeds: 20,
+    yam_seeds: 20,
+    multiharvest: 20,
+    multiplant: 20,
+    llama: 25,
+    goat: 25,
+    yak: 30,
+    duck: 30,
+    blueberry_seeds: 35,
+    grape_seeds: 40,
+    quail: 40,
+    ostrich: 45,
+    strawberry_seeds: 50,
+    kiwi: 50,
   },
   shopOrder: [
     "carrot_seeds",

@@ -1,0 +1,53 @@
+.shop-interface {
+    width: 100%;
+    height: calc(100% - 22px);
+    position: relative;
+    z-index: 100;
+}
+
+.shop-tabs {
+    width: 100%;
+    height: 7%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.shop-contents {
+    width: calc(100% - 22px);
+    height: 93%;
+    position: relative;
+    z-index: 150;
+    background-color: var(--menu_lighter);
+
+}
+
+.shop-grid {
+    height: 100%;
+    width: 100%;
+    overflow-x: auto;
+    display: grid;
+    grid-auto-flow: column dense;
+    grid-template-rows: repeat(2, 1fr);
+}
+
+.item-locked-message {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 280;
+}
+
+.black-out {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.gray-out {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.locked-text {
+    color: white;
+    font-size: 1.4vw;
+    text-align: center;
+}

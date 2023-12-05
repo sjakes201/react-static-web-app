@@ -57,7 +57,6 @@ function CompItem({
     if (itemName in CONSTANTS.Fixed_Prices) {
       if (items[itemName] >= SEED_LIMIT) {
         // over seed limit
-        // make item flash red and item quantity flash large?
         gifCopy[desired] = "fail";
         setGif(gifCopy);
         setGifKey((prevKey) => prevKey + 1);
@@ -65,7 +64,7 @@ function CompItem({
       }
       if (items[itemName] + num >= SEED_LIMIT) {
         // reduce num purchased to what is allowed
-        num = num - (items[itemName] + num - 250);
+        num = num - (items[itemName] + num - SEED_LIMIT);
         if (num < 1) return;
       }
       if (getBal() >= cost * num) {
