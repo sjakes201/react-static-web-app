@@ -7,6 +7,7 @@ import CompOtherScreens from "../Components/GUI/CompOtherScreens";
 import CompProfile from "../Components/GUI/CompProfile";
 import { useNavigate } from "react-router-dom";
 import { GameContext } from "../GameContainer";
+import { Ramp } from "@playwire/pw-react-component";
 
 function PlaywireTest() {
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ function PlaywireTest() {
   if (equippedFert !== "") {
     appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/${equippedFert}.png) 16 16, auto`;
   }
-  if(moreInfo) {
+  if (moreInfo) {
     appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/moreInfo32.png) 16 16, auto`;
   }
 
@@ -87,6 +88,10 @@ function PlaywireTest() {
 
   return (
     <div style={appStyle}>
+      <Ramp
+        publisherId="1025126"
+        id="74677"
+      />
       <div className="left-column">
         <div className="other-screensPl">
           <CompOtherScreens />
@@ -111,7 +116,7 @@ function PlaywireTest() {
               items={items}
             />
             <div className='bottom-rail-space'>
-  
+
             </div>
           </div>
         </div>
@@ -149,7 +154,7 @@ function PlaywireTest() {
           <div
             className='settingsBox2'
           >
-            
+
           </div>
         </div>
       </div>

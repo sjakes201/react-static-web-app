@@ -4,23 +4,14 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "./reset.css";
 import "./common.css"
 import { CreateGameContainer } from "./GameContainer";
-import { WebSocketProvider } from "./WebSocketContext"; // Make sure the path is correct
+import { WebSocketProvider } from "./WebSocketContext"; 
 import React from "react";
+import { Ramp } from "@playwire/pw-react-component";
 
-
-import ShopInterface from "./Components/Shop2/ShopInterface";
 
 ReactGA.initialize("G-SW9XV2PGLR");
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-
-// root.render(
-//   <div id="root" style={{ height: "100vh", width: "100vw" }} className='basic-center'>
-//     <div id='FAKE-PARENT_IGNORE' className='basic-center' style={{ width: "80%", height: "72%" }}>
-//       <ShopInterface />
-//     </div>
-//   </div>
-// )
 
 root.render(
   <WebSocketProvider>
