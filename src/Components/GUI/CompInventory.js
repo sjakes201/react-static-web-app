@@ -246,6 +246,7 @@ function CompInventory({
         >
           X
         </span>
+        Apply fertilizers to tiles for boosts:
         <div className="fertRow">
           <div className="fertilizerType" id="YieldsFertilizer">
             <img

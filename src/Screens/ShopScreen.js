@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import "./CSS/ShopScreen.css";
 import { GameContext } from "../GameContainer";
 import AdinPlayAd from "../AdinPlayAd";
+import ShopInterface from "../Components/Shop2/ShopInterface";
 
 function ShopScreen() {
   const navigate = useNavigate();
@@ -61,7 +62,7 @@ function ShopScreen() {
     <div>
       <div
         style={{
-          height: "12vh",
+          height: "calc(12vh + 1px)",
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-evenly",
@@ -82,17 +83,21 @@ function ShopScreen() {
           flexDirection: "row",
           width: "100%",
           height: "88vh",
+          backgroundColor: "var(--dirt)"
         }}
       >
-        <CompShop
-          updateInventory={updateInventory}
-          items={items}
-        />
-        <div className="shop-ad-box">
-          {window.innerHeight > 698 && (
-            <AdinPlayAd placementId="farmgame-live_160x600" />
-          )}
+        <div
+          className='basic-center main-shop-area'
+        >
+          <div className='shop-interface-container'>
+            <ShopInterface />
+          </div>
+          {/* <div className='rail-place-holder'> </div> */}
         </div>
+
+        {/* <div className="shop-ad-box">
+
+        </div> */}
       </div>
     </div>
   );

@@ -14,31 +14,13 @@ function AnimalsTopBar({ setManager }) {
         background: "var(--menu_light)",
         display: "flex",
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: "flex-start",
+        padding: '0.5vw 0.5vw 1vw 2vw',
         position: "relative",
+        backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/grass1.png), url(${process.env.PUBLIC_URL}/assets/images/grass2.png)`,
+        backgroundRepeat: "repeat, repeat",
       }}
     >
-      <div
-        style={{
-          width: "100%",
-          backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/grass1.png), url(${process.env.PUBLIC_URL}/assets/images/grass2.png)`,
-          backgroundRepeat: "repeat, repeat",
-          height: "100%",
-        }}
-      >
-        {window.innerWidth >= 1022 && (
-          <div
-            style={{
-              position: "relative",
-              width: "728px",
-              height: "90px",
-              zIndex: "20000",
-            }}
-          >
-            <AdinPlayAd placementId="farmgame-live_728x90" />
-          </div>
-        )}
-      </div>
       <div
         style={{
           maxWidth: "9%",
@@ -49,9 +31,6 @@ function AnimalsTopBar({ setManager }) {
             "0 0 0 1px var(--black), 0 0 0 3px var(--border_orange), 0 0 0 5px var(--border_shadow_orange), 0 0 0 7px var(--black)",
           zIndex: "3",
           background: "var(--menu_light)",
-          position: "absolute",
-          bottom: "9px",
-          right: "2%",
           display: "flex",
           flexDirection: "row",
           justifyContent: "flex-end",

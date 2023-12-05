@@ -243,6 +243,7 @@
     top: 1%;
     right: 2%;
     z-index: 8;
+    font-size: 0.8vw;
 
     padding: 5%;
     display: flex;

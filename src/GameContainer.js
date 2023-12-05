@@ -20,6 +20,8 @@ import NotFound from "./Screens/NotFound";
 import AnimationParent from "./Screens/ScreenEffects/AnimationParent";
 import SeasonsInfo from "./Components/GUI/SeasonsInfo";
 
+import PlaywireTest from "./Screens/PlaywireTest";
+
 import { useWebSocket } from "./WebSocketContext";
 
 import CONSTANTS from "./CONSTANTS";
@@ -628,6 +630,11 @@ function GameContainer() {
             path="/towns"
             element={
               <TownsScreen />}
+          />
+          <Route
+            path="/PlaywireTest"
+            element={
+              <PlaywireTest />}
           />
           <Route
             path="/towns/:townName"

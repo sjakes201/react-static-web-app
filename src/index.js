@@ -7,9 +7,20 @@ import { CreateGameContainer } from "./GameContainer";
 import { WebSocketProvider } from "./WebSocketContext"; // Make sure the path is correct
 import React from "react";
 
+
+import ShopInterface from "./Components/Shop2/ShopInterface";
+
 ReactGA.initialize("G-SW9XV2PGLR");
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
+// root.render(
+//   <div id="root" style={{ height: "100vh", width: "100vw" }} className='basic-center'>
+//     <div id='FAKE-PARENT_IGNORE' className='basic-center' style={{ width: "80%", height: "72%" }}>
+//       <ShopInterface />
+//     </div>
+//   </div>
+// )
 
 root.render(
   <WebSocketProvider>

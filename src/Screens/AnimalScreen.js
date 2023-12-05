@@ -97,7 +97,7 @@ function AnimalScreen() {
     position: "relative",
   };
 
-  if(moreInfo) {
+  if (moreInfo) {
     appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/moreInfo32.png) 16 16, auto`;
   } else if (equippedFeed !== "") {
     appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/${equippedFeed}32.png) 16 16, auto`;
@@ -122,10 +122,6 @@ function AnimalScreen() {
       <div className="left-column">
         <div className="other-screensAn">
           <CompOtherScreens />
-        </div>
-        <div className="pen-management">
-          {" "}
-          <AnimalsTopBar setManager={setManager} />{" "}
         </div>
         <div className="pens-wrapper">
           <div className="barn-container" ref={componentRef}>
@@ -161,6 +157,10 @@ function AnimalScreen() {
               />
             )}
           </div>
+        </div>
+        <div className="pen-management">
+          {" "}
+          <AnimalsTopBar setManager={setManager} />{" "}
         </div>
       </div>
       <div className="right-column">

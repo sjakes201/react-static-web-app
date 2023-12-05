@@ -1,6 +1,44 @@
+.main-shop-area {
+    height: 100%;;
+    width: calc(100% - 160px);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.shop-interface-container {
+    height: calc(100% - 90px);
+    flex: 1;
+    width: 100%;
+    padding: 2vw 2vw 2vw 2vw;
+    position: relative;
+
+}
+
+.shop-interface-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    /* The width of the widest shadow */
+    box-shadow:
+        inset 0 -3px 0 0 var(--black),
+        inset 0 -6px 0 0 var(--border_orange),
+        inset 0 -8px 0 0 var(--border_shadow_orange),
+        inset 0 -11px 0 0 var(--black);
+    pointer-events: none;
+}
+
+.rail-place-holder {
+    height: 90px;
+    width: 100%;
+}
+
 .shop-ad-box {
     position: relative;
-    background: var(--border_shadow_orange);
     width: 161px;
     min-height: 100%;
     z-index: 2000;
@@ -15,7 +53,8 @@
     top: 0;
     left: 0;
     bottom: 0;
-    width: 11px; /* The width of the widest shadow */
+    width: 11px;
+    /* The width of the widest shadow */
     box-shadow:
         inset -3px 0 0 0 var(--black),
         inset -6px 0 0 0 var(--border_orange),

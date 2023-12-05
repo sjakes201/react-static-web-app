@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import CONSTANTS from "../CONSTANTS";
-import "./CSS/PlantScreen.css";
+import "./CSS/PlaywireTest.css";
 import CompPlot from "../Components/Crops/CompPlot";
 import CompInventory from "../Components/GUI/CompInventory";
 import CompOtherScreens from "../Components/GUI/CompOtherScreens";
@@ -8,7 +8,7 @@ import CompProfile from "../Components/GUI/CompProfile";
 import { useNavigate } from "react-router-dom";
 import { GameContext } from "../GameContainer";
 
-function PlantScreen() {
+function PlaywireTest() {
   const navigate = useNavigate();
   if (localStorage.getItem("token") === null) {
     // no auth token present
@@ -99,7 +99,7 @@ function PlantScreen() {
             )}
           </div>
 
-          <div className="farmArea">
+          <div className="farmAreaTest">
             <CompPlot
               tool={tool}
               setFertilizers={setFertilizers}
@@ -110,6 +110,9 @@ function PlantScreen() {
               updateInventory={updateInventory}
               items={items}
             />
+            <div className='bottom-rail-space'>
+  
+            </div>
           </div>
         </div>
       </div>
@@ -146,21 +149,7 @@ function PlantScreen() {
           <div
             className='settingsBox2'
           >
-            <a
-              target="_black"
-              href="https://discord.gg/jrxWrgNCHw"
-              className='discordLink'
-            >
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/images/discord.png`}
-                style={{ height: "65%", marginRight: "2%" }}
-              ></img>
-              Game Discord
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/images/discord.png`}
-                style={{ height: "65%", marginLeft: "2%" }}
-              ></img>
-            </a>
+            
           </div>
         </div>
       </div>
@@ -168,4 +157,4 @@ function PlantScreen() {
   );
 }
 
-export default PlantScreen;
+export default PlaywireTest;
