@@ -77,7 +77,7 @@ function PlantScreen() {
   if (equippedFert !== "") {
     appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/${equippedFert}.png) 16 16, auto`;
   }
-  if(moreInfo) {
+  if (moreInfo) {
     appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/moreInfo32.png) 16 16, auto`;
   }
 
@@ -93,10 +93,8 @@ function PlantScreen() {
         </div>
         <div className="plot">
           <div className="ad-box-style">
-            {window.innerHeight > 655 && (
-              <div style={{ width: "160px", height: "600px" }}>
-              </div>
-            )}
+            <div className='inner-ad-test'>
+            </div>
           </div>
 
           <div className="farmArea">
