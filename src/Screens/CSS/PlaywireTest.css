@@ -135,7 +135,7 @@
 .ad-box-style {
     position: relative;
     /* Position context for the pseudo-element */
-    width: 160px;
+    width: 171px;
     height: 100%;
     display: flex;
     flex-direction: column;
