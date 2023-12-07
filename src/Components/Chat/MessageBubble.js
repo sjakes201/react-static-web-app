@@ -60,6 +60,7 @@ function MessageBubble({ text, userWhoSent, messageID, requestID, unixTimeStamp,
     return (
         <div
             className='msgBubble'
+            key={messageID}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
         >

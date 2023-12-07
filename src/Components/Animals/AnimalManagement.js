@@ -94,6 +94,7 @@ function AnimalManagement({ setManager }) {
             {barn.map((animal, index) => {
               return (
                 <AnimalCard
+                  key={index}
                   animal={animal}
                 />
               );

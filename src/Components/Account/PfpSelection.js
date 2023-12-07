@@ -13,7 +13,6 @@ function PfpSelection({ close, setPfpName }) {
         const fetchData = async () => {
             if (waitForServerResponse) {
                 let result = await waitForServerResponse('getUnlockedPfp');
-                console.log(result)
                 if (result?.body?.pfpInfos) {
                     result.body.pfpInfos.sort((a, b) => {
                         if (a.Type === 'xp_unlock' && b.Type === 'xp_unlock' && a.Description && b.Description) {
@@ -42,6 +41,7 @@ function PfpSelection({ close, setPfpName }) {
     const pfpInfoIcon = (unlockName, description, unlockID) => {
         return (
             <div
+                key={unlockID}
                 className={`pfp-item ${unlockName ? 'unlocked' : 'not-unlocked'}`}
                 onClick={() => {
                     if (unlockName) setNewPfp(unlockID, unlockName)

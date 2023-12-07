@@ -31,8 +31,6 @@ export const GameContext = React.createContext();
 
 function GameContainer() {
 
-  console.log("Playwire ad scripts are loaded: ", window?.loadedTestPageScripts ? true : false)
-
   const { waitForServerResponse } = useWebSocket();
   const { addListener, removeListener } = useWebSocket();
 
@@ -99,6 +97,8 @@ function GameContainer() {
 
   const toggleAnimations = () => setAnimationsEnabled((old) => !old)
 
+
+  /* fetch data from server calls */
   const getTownMessages = async () => {
     if (waitForServerResponse) {
       let chatHistory = await waitForServerResponse("getTownMessages");
@@ -136,22 +136,32 @@ function GameContainer() {
     }
   };
 
-  const getTiles = async () => {
-    if (waitForServerResponse) {
-      const response = await waitForServerResponse("tilesAll");
-      let dbTiles = response.body;
-      let updatedTiles = dbTiles.map((tile) => {
-        let hasTimeFertilizer = tile.TimeFertilizer !== -1;
-        let stage = getStage(tile.PlantTime, tile.CropID, hasTimeFertilizer);
-        return {
-          ...tile,
-          stage: stage,
-          hasTimeFertilizer: hasTimeFertilizer,
-          highlighted: false,
-        };
-      });
-      setTiles(updatedTiles);
+  const getTiles = async (numAttempts) => {
+    try {
+      if (waitForServerResponse) {
+        const response = await waitForServerResponse("tilesAll");
+        let dbTiles = response.body;
+        let updatedTiles = dbTiles.map((tile) => {
+          let hasTimeFertilizer = tile.TimeFertilizer !== -1;
+          let stage = getStage(tile.PlantTime, tile.CropID, hasTimeFertilizer);
+          return {
+            ...tile,
+            stage: stage,
+            hasTimeFertilizer: hasTimeFertilizer,
+            highlighted: false,
+          };
+        });
+        setTiles(updatedTiles)
+
+      }
+    } catch (error) {
+      console.log(error)
+      console.log(`called with numAttempts: ${numAttempts}, trying getTiles() again with numAtempts: ${numAttempts ? numAttempts + 1 : 1}`)
+      if(!Number.isInteger(numAttempts) || numAttempts < 3) {
+        getTiles(numAttempts ? numAttempts + 1 : 1)
+      }
     }
+
   }
 
   const refreshPrices = async () => {
@@ -161,119 +171,129 @@ function GameContainer() {
     }
   }
 
+  const getProfileInfo = async () => {
+    if (waitForServerResponse) {
+      const response = await waitForServerResponse("profileInfo", { oStamp: (new Date()).getTimezoneOffset() });
+      let data = response.body;
+      if (response.body.profilePic) {
+        setProfilePic(response.body.profilePic)
+      }
+      setBalance(data.Balance);
+      setXP(data.XP);
+      setUsername(data.Username);
+      setCapacities({
+        barnCapacity: data.BarnCapacity,
+        coopCapacity: data.CoopCapacity,
+      });
+      setDeluxePermit(data.deluxePermit);
+      setExoticPermit(data.exoticPermit);
+      setAnimalsInfo({
+        coopCount: data.CoopAnimals,
+        coopCapacity: data.CoopCapacity,
+        barnCount: data.BarnAnimals,
+        barnCapacity: data.BarnCapacity,
+      });
+      let upgrades = {};
+      let totals = {};
+      for (const column in data) {
+        if (column.includes("Upgrade") || column.includes("Permit")) {
+          upgrades[column] = data[column];
+        } else if (column in CONSTANTS.Init_Market_Prices) {
+          totals[column] = data[column];
+        }
+      }
+      setGoodTotals(totals);
+      setUpgrades(upgrades);
+    }
+  }
+
+  const fetchMachines = async () => {
+    if (waitForServerResponse) {
+      const response = await waitForServerResponse("getAllMachines");
+      let data = response.body;
+      setMachines(data.machinesData);
+      setParts(data.partsData);
+      setArtisanItems(data.artisanData);
+    }
+  }
+
+  const fetchInventory = async () => {
+    if (waitForServerResponse) {
+      const response = await waitForServerResponse("inventoryAll");
+      let data = response.body;
+      setItemsData(data);
+    }
+  }
+
+  const fetchAnimals = async () => {
+    if (waitForServerResponse) {
+      const response = await waitForServerResponse("allAnimals");
+      let data = response.body;
+      setBarn(data.barnResult);
+      setCoop(data.coopResult);
+    }
+  }
+  /* Listeners */
+  const handleNewMsg = (content, timestamp, Username, messageID, msgType, requestID) => {
+    setTownChatMsgs((old) => {
+      let newMsgs = [...old];
+      newMsgs.push({
+        content: content,
+        timestamp: timestamp,
+        Username: Username,
+        messageID: messageID,
+        requestID: requestID,
+        Type: msgType
+      });
+      newMsgs.sort((a, b) => b.timestamp - a.timestamp);
+      return newMsgs;
+    });
+    if (!townChatBox) {
+      setMsgNotification(true);
+    }
+  };
+
+  const handleTownJoinResolve = (requestID, isAccepted) => {
+    setTownChatMsgs((old) => old.filter((msg) => msg.requestID !== requestID))
+  }
+
+  const changeAnimalHappiness = (Animal_ID, Happiness) => {
+    setCoop((old) => old.map((animal) => {
+      if (animal.Animal_ID === Animal_ID) {
+        let newAnimal = { ...animal };
+        newAnimal.Happiness += Happiness;
+        return newAnimal
+      }
+      return animal;
+    }))
+    setBarn((old) => old.map((animal) => {
+      if (animal.Animal_ID === Animal_ID) {
+        let newAnimal = { ...animal };
+        newAnimal.Happiness += Happiness;
+        return newAnimal
+      }
+      return animal;
+    }))
+  }
+
+  const townChange = () => {
+    reloadTownPerks();
+  }
+
+  /* Init get data */
   useEffect(() => {
-    let fetchData = async () => {
 
-      if (waitForServerResponse) {
-        const response = await waitForServerResponse("profileInfo", { oStamp: (new Date()).getTimezoneOffset() });
-        let data = response.body;
-        if (response.body.profilePic) {
-          setProfilePic(response.body.profilePic)
-        }
-        setBalance(data.Balance);
-        setXP(data.XP);
-        setUsername(data.Username);
-        setCapacities({
-          barnCapacity: data.BarnCapacity,
-          coopCapacity: data.CoopCapacity,
-        });
-        setDeluxePermit(data.deluxePermit);
-        setExoticPermit(data.exoticPermit);
-        setAnimalsInfo({
-          coopCount: data.CoopAnimals,
-          coopCapacity: data.CoopCapacity,
-          barnCount: data.BarnAnimals,
-          barnCapacity: data.BarnCapacity,
-        });
-        let upgrades = {};
-        let totals = {};
-        for (const column in data) {
-          if (column.includes("Upgrade") || column.includes("Permit")) {
-            upgrades[column] = data[column];
-          } else if (column in CONSTANTS.Init_Market_Prices) {
-            totals[column] = data[column];
-          }
-        }
-        setGoodTotals(totals);
-        setUpgrades(upgrades);
-      }
-
-      if (waitForServerResponse) {
-        const response = await waitForServerResponse("inventoryAll");
-        let data = response.body;
-        setItemsData(data);
-      }
-
-      if (waitForServerResponse) {
-        const response = await waitForServerResponse("allAnimals");
-        let data = response.body;
-        setBarn(data.barnResult);
-        setCoop(data.coopResult);
-      }
-
-
-      if (waitForServerResponse) {
-        const response = await waitForServerResponse("getAllMachines");
-        let data = response.body;
-        setMachines(data.machinesData);
-        setParts(data.partsData);
-        setArtisanItems(data.artisanData);
-      }
-
-    };
+    fetchAnimals();
+    fetchMachines()
     refreshPrices();
-    fetchData();
     getTownMessages();
     refreshLeaderboard();
     reloadTownPerks();
     getTiles();
+
+    fetchInventory();
     refreshNotifications();
-
-    const handleNewMsg = (content, timestamp, Username, messageID, msgType, requestID) => {
-      setTownChatMsgs((old) => {
-        let newMsgs = [...old];
-        newMsgs.push({
-          content: content,
-          timestamp: timestamp,
-          Username: Username,
-          messageID: messageID,
-          requestID: requestID,
-          Type: msgType
-        });
-        newMsgs.sort((a, b) => b.timestamp - a.timestamp);
-        return newMsgs;
-      });
-      if (!townChatBox) {
-        setMsgNotification(true);
-      }
-    };
-
-    const handleTownJoinResolve = (requestID, isAccepted) => {
-      setTownChatMsgs((old) => old.filter((msg) => msg.requestID !== requestID))
-    }
-
-    const changeAnimalHappiness = (Animal_ID, Happiness) => {
-      setCoop((old) => old.map((animal) => {
-        if (animal.Animal_ID === Animal_ID) {
-          let newAnimal = { ...animal };
-          newAnimal.Happiness += Happiness;
-          return newAnimal
-        }
-        return animal;
-      }))
-      setBarn((old) => old.map((animal) => {
-        if (animal.Animal_ID === Animal_ID) {
-          let newAnimal = { ...animal };
-          newAnimal.Happiness += Happiness;
-          return newAnimal
-        }
-        return animal;
-      }))
-    }
-
-    const townChange = () => {
-      reloadTownPerks();
-    }
+    getProfileInfo();
 
     addListener(['town_message', handleNewMsg]);
     addListener(['animal_happiness', changeAnimalHappiness])
