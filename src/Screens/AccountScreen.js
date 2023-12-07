@@ -15,7 +15,7 @@ function AccountScreen() {
 
   const { subPage = '', subSection = '' } = location.state || {};
   const navigate = useNavigate();
-  console.log(subPage, subSection)
+
   const [accountTab, setAccountTab] = useState(subPage ? subPage : "profile")
 
   useEffect(() => {

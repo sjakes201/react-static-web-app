@@ -51,7 +51,6 @@ export function WebSocketProvider({ children }) {
         listenersRef.current.forEach((listener) => {
           if (listener[0] === 'town_message') {
             const func = listener[1];
-            console.log(msgInfo.requestID)
             func(
               msgInfo.content,
               msgInfo.timestamp,

@@ -196,7 +196,7 @@ function ShopInterface() {
                 let highestTier = UPGRADES.UpgradeCosts[upgradeName].length;
                 let currentTier = currentTiers[upgradeName];
                 if (typeof currentTier === "boolean") { currentTier = currentTier ? 1 : 0 }
-                let upgradeComponent = <ShopUpgrade upgradeName={upgradeName} currentTier={currentTier} buyUpgrade={buyUpgrade} maxTier={highestTier} />
+                let upgradeComponent = <ShopUpgrade key={upgradeName} upgradeName={upgradeName} currentTier={currentTier} buyUpgrade={buyUpgrade} maxTier={highestTier} />
                 if (currentTiers[upgradeName] < highestTier) {
                     firstItems.push(upgradeComponent)
                 } else {

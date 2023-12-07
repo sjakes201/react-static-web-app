@@ -22,7 +22,7 @@ function SeasonsInfo() {
                     className='closing-x'
                     onClick={() => setSeasonsInfoBox(false)}
                 >X</span>
-                <p className='seasons-explanation'>
+                <div className='seasons-explanation'>
                     <u>Seasons</u>
                     <p style={{ fontSize: '0.89vw', maxWidth: '50vw' }}>
                         Crops that are in-season grow <span className='boost-percent'>15% faster</span>, while 
@@ -31,7 +31,7 @@ function SeasonsInfo() {
                         Winter does not provide any bonuses, and instead gives a higher machines parts chance for all crop harvests. 
                         Each season lasts one real-life day, and changes at midnight UTC.
                         </p>
-                </p>
+                </div>
                 <div className='seasons-list'>
                     <div className='season-row'>
                         <img
