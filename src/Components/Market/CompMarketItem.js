@@ -35,7 +35,6 @@ function CompMarketItem({ imgURL, name, newPrice, oldPrice, multiplier }) {
 
   return (
     <div
-      id="market-item"
       className={`${borderType()} marketItem`}
     >
       <p
