@@ -100,7 +100,7 @@ function CompInventory({
   });
 
   const handleClick = (itemName) => {
-    if (items[itemName]) {
+    if (items[itemName] && selectedItem.name !== itemName) {
       if (isAnimalScreen && itemName in ANIMALINFO.FoodHappinessYields) {
         sessionStorage.setItem("equipped", itemName);
         setEquippedFeed(itemName);
@@ -311,7 +311,12 @@ function CompInventory({
       >
         <div className="selected-item-info">
           <div className='info-left-column'>
-            <img className='selected-item-img' src={selectedItem.image} alt={selectedItem.name} />
+            <img 
+            className='selected-item-img' 
+            src={selectedItem.image} 
+            alt={selectedItem.name} 
+            onClick={() => handleClick(selectedItem.name)}
+            />
           </div>
           <summary>
             <p>{selectedItem.description[0]}</p>
