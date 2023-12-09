@@ -26,7 +26,6 @@ function UserProfile({ username }) {
                     targetUser: username,
                 });
                 setProfileData(response.body);
-                // console.log(response.body)
                 if (response?.body?.profilePic) {
                     setPfpName(response.body.profilePic)
                 }
@@ -146,7 +145,7 @@ function UserProfile({ username }) {
                 </div>
 
                 <div className="acc-user-info">
-                    <h3 id="acc-username">{profileData?.username}</h3>
+                    <h3 id="acc-username">{profileData?.Username}</h3>
                     <p>XP: {profileData?.XP?.toLocaleString()}</p>
                     <p>Balance: ${profileData?.Balance?.toLocaleString()}</p>
                 </div>

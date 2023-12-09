@@ -101,7 +101,7 @@
     align-items: center;
 }
 
-.request-responses > button {
+.request-responses>button {
     width: 24%;
     height: 3vh;
     font-size: .9vw;
@@ -116,6 +116,16 @@
     flex-shrink: 0;
     white-space: nowrap;
     cursor: pointer;
+}
+
+.player-chat-tag {
+    color: rgb(54, 54, 251);
+}
+
+.tagging-me {
+    background-color: rgba(54, 54, 251, 0.14);
+    border-radius: 0.4vh;
+    
 }
 
 .broadcast-content {
