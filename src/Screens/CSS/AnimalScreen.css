@@ -56,6 +56,22 @@
     width: 100%;
 }
 
+.manage-button {
+    position: absolute;
+    top: 12vh;
+    left: 37.5vw;
+    width: 5vw;
+    object-fit: contain;
+    box-sizing: border-box;
+    box-Shadow:
+      0 0 0 1px var(--black), 0 0 0 3px var(--border_orange), 0 0 0 5px var(--border_shadow_orange), 0 0 0 7px var(--black);
+    z-index: 3;
+    background: var(--menu_light);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
 .pen-management {
     height: 90px;
 }

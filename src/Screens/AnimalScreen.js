@@ -103,6 +103,25 @@ function AnimalScreen() {
     appStyle.cursor = `url(${process.env.PUBLIC_URL}/assets/images/mouse/${equippedFeed}32.png) 16 16, auto`;
   }
 
+  const manageButton = () => {
+    return (
+      <div
+        className='manage-button'
+      >
+        <img
+          src={`${process.env.PUBLIC_URL}/assets/images/animal_manage.png`}
+          style={{
+            width: "100%",
+            maxHeight: "100%",
+            cursor: "pointer",
+            objectFit: "contain",
+          }}
+          onClick={() => setManager(true)}
+        />
+      </div>
+    )
+  }
+
   return (
     <div style={appStyle}>
       {manager && (
@@ -124,6 +143,7 @@ function AnimalScreen() {
           <CompOtherScreens />
         </div>
         <div className="pens-wrapper">
+          {manageButton()}
           <div className="barn-container" ref={componentRef}>
             {" "}
             {renderPens && (
@@ -138,6 +158,7 @@ function AnimalScreen() {
                 penWidth={componentWidth}
                 penHeight={componentHeight}
                 updateInventory={updateInventory}
+                setManager={setManager}
               />
             )}
           </div>
@@ -214,7 +235,7 @@ function AnimalScreen() {
               fontSize: "1vw",
             }}
           >
-            <a
+            {/* <a
               target="_black"
               href="https://discord.gg/jrxWrgNCHw"
               style={{
@@ -236,7 +257,7 @@ function AnimalScreen() {
                 src={`${process.env.PUBLIC_URL}/assets/images/discord.png`}
                 style={{ height: "65%", marginLeft: "2%" }}
               ></img>
-            </a>
+            </a> */}
           </div>
         </div>
       </div>

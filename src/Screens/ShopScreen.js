@@ -92,12 +92,12 @@ function ShopScreen() {
           <div className='shop-interface-container'>
             <ShopInterface />
           </div>
-          {/* <div className='rail-place-holder'> </div> */}
+          <div className='rail-place-holder'> </div>
         </div>
 
-        {/* <div className="shop-ad-box">
+        <div className="shop-ad-box">
 
-        </div> */}
+        </div>
       </div>
     </div>
   );

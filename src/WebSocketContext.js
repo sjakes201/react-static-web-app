@@ -104,7 +104,6 @@ export function WebSocketProvider({ children }) {
     wsInstance.addEventListener("close", (event) => {
       console.log(event);
       setIsConnected(false);
-      console.log('you')
       // Assuming 4001 is the close code for 'Banned IP'
       if (event.code === 4001) {
         setBanScreen(true)
@@ -112,9 +111,7 @@ export function WebSocketProvider({ children }) {
         localStorage.setItem("b", Date.now())
         // Optionally, disable the reconnect function or redirect the user
       } else {
-        alert("Connection to game server closed. Press OK or refresh to reconnect.");
-        // connectToWebSocketServer();
-        window.location.reload(false);
+        alert("Connection to game server closed. Refresh the page to reconnect.");
       }
     });
 

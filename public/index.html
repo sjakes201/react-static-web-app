@@ -24,26 +24,25 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
   <title>Farm Game</title>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3PPHZYFY40"></script>
+
   <script>
-    window._pwGA4PageviewId = ''.concat(Date.now());
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = window.gtag || function () {
-      dataLayer.push(arguments);
-    };
-    gtag('js', new Date());
-    gtag('config', 'G-3PPHZYFY40', { 'send_page_view': false });
-    gtag(
-      'event',
-      'ramp_js',
-      {
-        'send_to': 'G-3PPHZYFY40',
-        'pageview_id': window._pwGA4PageviewId
-      }
-    );
+
+    window.ramp = window.ramp || {};
+    window.ramp.que = window.ramp.que || [];
+    window.ramp.passiveMode = true;
+
   </script>
-  
+
+  <script async="true" src="//cdn.intergient.com/1025126/74677/ramp.js">
+  </script>
+
+  <script>
+
+  </script>
+
+
+
+
 </head>
 
 <body>

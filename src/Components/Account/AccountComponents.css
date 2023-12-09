@@ -159,6 +159,30 @@
     opacity: 0.7;
 }
 
+.discord-area {
+    position: absolute;
+    right: 4%;
+    height: 3vw;
+}
+
+.discord-link {
+    display: flex;
+    flex-direction: row;
+    text-wrap: nowrap;
+}
+
+#discord-link-text {
+    text-wrap: nowrap;
+    font-size: 0.9vw;
+    margin: 0 .2vw;
+    text-decoration: underline;
+}
+
+.discord-link > img {
+    width: 1vw;
+    object-fit: contain;
+}
+
 .discordAuthBox {
     position: absolute;
     right: 4%;

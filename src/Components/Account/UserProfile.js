@@ -203,40 +203,58 @@ function UserProfile({ username }) {
                     <p>{profileData?.receivedPokes?.toLocaleString()}</p>
                 </div>
 
-                {profileData.isMe &&
-                    (!localStorage.getItem("discordLinked") ? (
-                        <a href={DISCORD_REDIRECT}>
-                            <div
-                                className={`discordAuthBox ${localStorage.getItem("discordLinked") ? "syncedDiscord" : ""
-                                    }`}
-                                onClick={() => {
-                                    window.location.href = DISCORD_REDIRECT;
-                                    if (window.gtag) {
-                                        window.gtag('event', 'discord_link', {
-                                            'event_category': 'Social',
-                                            'event_label': 'Linked Discord'
-                                        })
-                                    }
-                                }}
-                            >
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/assets/images/discord.png`}
-                                    id="discordAccIcon"
-                                />
-                                Link Discord
-                            </div>
+                {profileData.isMe && (
+                    <div className='discord-area'>
+                        <a
+                            target="_black"
+                            href="https://discord.gg/jrxWrgNCHw"
+                            className='discord-link'
+                        >
+                            <img
+                                src={`${process.env.PUBLIC_URL}/assets/images/discord.png`}
+                            ></img>
+                            <p id='discord-link-text'>Game Discord</p>
+                            <img
+                                src={`${process.env.PUBLIC_URL}/assets/images/discord.png`}
+                            ></img>
                         </a>
-                    ) : (
+                    </div>
+                )}
+
+                {profileData.isMe && (!localStorage.getItem("discordLinked") ? (
+                    <a href={DISCORD_REDIRECT}>
                         <div
-                            className={`discordAuthBox ${localStorage.getItem("discordLinked") ? "syncedDiscord" : ""}`}
+                            className={`discordAuthBox ${localStorage.getItem("discordLinked") ? "syncedDiscord" : ""
+                                }`}
+                            onClick={() => {
+                                window.location.href = DISCORD_REDIRECT;
+                                if (window.gtag) {
+                                    window.gtag('event', 'discord_link', {
+                                        'event_category': 'Social',
+                                        'event_label': 'Linked Discord'
+                                    })
+                                }
+                            }}
                         >
                             <img
                                 src={`${process.env.PUBLIC_URL}/assets/images/discord.png`}
                                 id="discordAccIcon"
                             />
-                            Discord Linked!
+                            Link Discord
                         </div>
-                    ))}
+                    </a>
+                ) : (
+                    <div
+                        className={`discordAuthBox ${localStorage.getItem("discordLinked") ? "syncedDiscord" : ""}`}
+                    >
+                        <img
+                            src={`${process.env.PUBLIC_URL}/assets/images/discord.png`}
+                            id="discordAccIcon"
+                        />
+                        Discord Linked!
+                    </div>
+                ))
+                }
             </div>
 
             <div className='acc-row' id='profile-more-info'>
