@@ -8,7 +8,7 @@ import { GameContext } from "../../GameContainer";
 
 function ChatBox({ chatMessages, setTownChatMsgs }) {
   const { waitForServerResponse } = useWebSocket();
-  const { setMsgNotification, myTownName, setTownChatBox, townRoleID } = useContext(GameContext)
+  const { setMsgNotification, myTownName, setTownChatBox, townRoleID, getUser } = useContext(GameContext)
 
   const [newMessage, setNewMessage] = useState("");
 
@@ -63,7 +63,7 @@ function ChatBox({ chatMessages, setTownChatMsgs }) {
         requestID: requestID,
         isAccepted: isAccepted
       });
-      if(msgResult.body.message?.includes("EXPIRED")) {
+      if (msgResult.body.message?.includes("EXPIRED")) {
         setTownChatMsgs((old) => old.filter((msg => msg.requestID !== requestID)))
       }
     }
@@ -90,11 +90,30 @@ function ChatBox({ chatMessages, setTownChatMsgs }) {
   }
 
   const getMessages = () => {
+    const myUser = getUser();
     switch (chatType) {
       case "PLAYER_CHAT":
-        return chatMessages.filter(txt => (txt.Type === "PLAYER_CHAT" || txt.Type === "SERVER_NOTIFICATION" || txt.Type === "TOWN_JOIN_REQUEST")).map((txt) => <MessageBubble text={txt.content} userWhoSent={txt.Username} unixTimeStamp={txt.timestamp} requestID={txt.requestID} type={txt.Type} townRoleID={townRoleID} resolveJoinRequest={resolveJoinRequest} />)
+        return chatMessages.filter(txt =>
+          (txt.Type === "PLAYER_CHAT" || txt.Type === "SERVER_NOTIFICATION" || txt.Type === "TOWN_JOIN_REQUEST")).map((txt) =>
+            <MessageBubble
+              text={txt.content}
+              userWhoSent={txt.Username}
+              unixTimeStamp={txt.timestamp}
+              requestID={txt.requestID}
+              type={txt.Type}
+              townRoleID={townRoleID}
+              resolveJoinRequest={resolveJoinRequest}
+              myUser={myUser}
+            />)
       case "TOWN_BROADCAST":
-        return chatMessages.filter(txt => txt.Type === "TOWN_BROADCAST").map((txt) => <MessageBubble text={txt.content} userWhoSent={txt.Username} unixTimeStamp={txt.timestamp} type={txt.Type} />)
+        return chatMessages.filter(txt => txt.Type === "TOWN_BROADCAST").map((txt) =>
+          <MessageBubble
+            text={txt.content}
+            userWhoSent={txt.Username}
+            unixTimeStamp={txt.timestamp}
+            type={txt.Type}
+            myUser={myUser}
+          />)
     }
   }
 
@@ -137,8 +156,8 @@ function ChatBox({ chatMessages, setTownChatMsgs }) {
                 })
               }
             }}
-            className='basic-center'>
-              {chatType === "TOWN_BROADCAST" && (<img id='sendTownAnnouncement' src={`${process.env.PUBLIC_URL}/assets/images/GUI/sendTownAnnouncement.png`}/>)}
+              className='basic-center'>
+              {chatType === "TOWN_BROADCAST" && (<img id='sendTownAnnouncement' src={`${process.env.PUBLIC_URL}/assets/images/GUI/sendTownAnnouncement.png`} />)}
               {chatType === "PLAYER_CHAT" && ">"}
             </p>
           </div>
