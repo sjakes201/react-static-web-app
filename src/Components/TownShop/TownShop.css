@@ -1,5 +1,5 @@
 .townShopParent {
-    height: 100%;
+    height: calc(100% + 22px);
     width: 100%;
     padding: 2vw;
     display: flex;
