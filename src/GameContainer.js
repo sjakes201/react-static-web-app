@@ -29,12 +29,139 @@ import TOWNSINFO from "./TOWNSINFO";
 
 export const GameContext = React.createContext();
 
+/* Ad sets */
+//  /farm, /market, 
+const leftBottomRails = [
+  {
+    type: 'left_rail'
+  },
+  {
+    type: 'bottom_rail'
+  }
+]
+
+const bottomRightRails = [
+  {
+    type: 'right_rail'
+  },
+  {
+    type: 'bottom_rail'
+  }
+]
+
+const sideRails = [
+  {
+    type: 'left_rail'
+  },
+  {
+    type: 'right_rail'
+  }
+]
+
+const bottomOnly = [
+  {
+    type: 'bottom_rail'
+  }
+]
+
+const allRailUnits = [
+  {
+    type: 'left_rail'
+  },
+  {
+    type: 'right_rail'
+  },
+  {
+    type: 'bottom_rail'
+  }
+]
+
+const leaderboardTag = [
+  {
+    type: 'leaderboard_atf',
+    selectorId: 'machines_top_bar'
+  }
+]
+
 function GameContainer() {
 
   const { waitForServerResponse } = useWebSocket();
   const { addListener, removeListener } = useWebSocket();
 
   const location = useLocation();
+
+  /* Playwire dynamic ad destroy and display based on pages */
+  useEffect(() => {
+    if(!(window.PlaywireTestMode)) return;
+    console.log("PlaywireTestMode enabled")
+    let page = location?.pathname?.split("/")?.[1];
+
+    let adUnits = []
+    switch (page) {
+      case "plants":
+        adUnits.push(...leftBottomRails)
+        break;
+      case "animals":
+        adUnits.push(...bottomOnly)
+        break;
+      case "shop":
+        adUnits.push(...bottomRightRails)
+        break;
+      case "market":
+        adUnits.push(...leftBottomRails)
+        break;
+      case "leaderboard":
+        adUnits.push(...sideRails)
+        break;
+      case "towns":
+        adUnits.push(...allRailUnits)
+        break;
+      case "machines":
+        adUnits.push(...leaderboardTag);
+        break;
+    }
+
+    window?.ramp?.que.push(
+      () => {
+        // Only impacts the leaderboard tag ad in machines, check if they can display 970 width
+        if (window?.innerWidth < 1515) {
+          window?.ramp?.setPath('728x90-only')
+        } else {
+          window?.ramp?.setPath('')
+        }
+
+        // Regular ad destroy and recreate
+        window?.ramp?.destroyUnits('all').then(() => {
+          window?.ramp?.addUnits(adUnits).then(() => window?.ramp?.displayUnits())
+
+          // Register pageview
+          window._pwGA4PageviewId = ''.concat(Date.now());
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = window.gtag || function () {
+            window.dataLayer.push(arguments);
+          };
+          window.gtag('js', new Date());
+          window.gtag('config', 'G-3PPHZYFY40', { 'send_page_view': false });
+          window.gtag(
+            'event',
+            'ramp_js',
+            {
+              'send_to': 'G-3PPHZYFY40',
+              'pageview_id': window._pwGA4PageviewId
+            }
+          );
+
+        })
+      }
+    )
+  }, [location?.pathname])
+
+
+
+
+
+
+
 
   const { isConnected } = useWebSocket();
 
@@ -139,7 +266,7 @@ function GameContainer() {
   const getTiles = async (numAttempts) => {
     try {
       if (waitForServerResponse) {
-        const response = await waitForServerResponse("tilesAll");
+        const response = await waitForServerResponse("tilesAll", {}, 4000);
         let dbTiles = response.body;
         let updatedTiles = dbTiles.map((tile) => {
           let hasTimeFertilizer = tile.TimeFertilizer !== -1;
@@ -157,7 +284,7 @@ function GameContainer() {
     } catch (error) {
       console.log(error)
       console.log(`called with numAttempts: ${numAttempts}, trying getTiles() again with numAtempts: ${numAttempts ? numAttempts + 1 : 1}`)
-      if(!Number.isInteger(numAttempts) || numAttempts < 3) {
+      if (!Number.isInteger(numAttempts) || numAttempts < 3) {
         getTiles(numAttempts ? numAttempts + 1 : 1)
       }
     }
@@ -171,39 +298,47 @@ function GameContainer() {
     }
   }
 
-  const getProfileInfo = async () => {
-    if (waitForServerResponse) {
-      const response = await waitForServerResponse("profileInfo", { oStamp: (new Date()).getTimezoneOffset() });
-      let data = response.body;
-      if (response.body.profilePic) {
-        setProfilePic(response.body.profilePic)
-      }
-      setBalance(data.Balance);
-      setXP(data.XP);
-      setUsername(data.Username);
-      setCapacities({
-        barnCapacity: data.BarnCapacity,
-        coopCapacity: data.CoopCapacity,
-      });
-      setDeluxePermit(data.deluxePermit);
-      setExoticPermit(data.exoticPermit);
-      setAnimalsInfo({
-        coopCount: data.CoopAnimals,
-        coopCapacity: data.CoopCapacity,
-        barnCount: data.BarnAnimals,
-        barnCapacity: data.BarnCapacity,
-      });
-      let upgrades = {};
-      let totals = {};
-      for (const column in data) {
-        if (column.includes("Upgrade") || column.includes("Permit")) {
-          upgrades[column] = data[column];
-        } else if (column in CONSTANTS.Init_Market_Prices) {
-          totals[column] = data[column];
+  const getProfileInfo = async (numAttempts) => {
+    try {
+      if (waitForServerResponse) {
+        const response = await waitForServerResponse("profileInfo", { oStamp: (new Date()).getTimezoneOffset() }, 4000);
+        let data = response.body;
+        if (response.body.profilePic) {
+          setProfilePic(response.body.profilePic)
         }
+        setBalance(data.Balance);
+        setXP(data.XP);
+        setUsername(data.Username);
+        setCapacities({
+          barnCapacity: data.BarnCapacity,
+          coopCapacity: data.CoopCapacity,
+        });
+        setDeluxePermit(data.deluxePermit);
+        setExoticPermit(data.exoticPermit);
+        setAnimalsInfo({
+          coopCount: data.CoopAnimals,
+          coopCapacity: data.CoopCapacity,
+          barnCount: data.BarnAnimals,
+          barnCapacity: data.BarnCapacity,
+        });
+        let upgrades = {};
+        let totals = {};
+        for (const column in data) {
+          if (column.includes("Upgrade") || column.includes("Permit")) {
+            upgrades[column] = data[column];
+          } else if (column in CONSTANTS.Init_Market_Prices) {
+            totals[column] = data[column];
+          }
+        }
+        setGoodTotals(totals);
+        setUpgrades(upgrades);
       }
-      setGoodTotals(totals);
-      setUpgrades(upgrades);
+    } catch (error) {
+      console.log(error)
+      console.log(`called with numAttempts: ${numAttempts}, trying getProfileInfo() again with numAtempts: ${numAttempts ? numAttempts + 1 : 1}`)
+      if (!Number.isInteger(numAttempts) || numAttempts < 3) {
+        getProfileInfo(numAttempts ? numAttempts + 1 : 1)
+      }
     }
   }
 
@@ -217,11 +352,20 @@ function GameContainer() {
     }
   }
 
-  const fetchInventory = async () => {
-    if (waitForServerResponse) {
-      const response = await waitForServerResponse("inventoryAll");
-      let data = response.body;
-      setItemsData(data);
+  const fetchInventory = async (numAttempts) => {
+    try {
+      if (waitForServerResponse) {
+        const response = await waitForServerResponse("inventoryAll", {}, 4000);
+        let data = response.body;
+        setItemsData(data);
+      }
+    } catch (error) {
+      console.log(error)
+      console.log(`called with numAttempts: ${numAttempts}, trying fetchInventory() again with numAtempts: ${numAttempts ? numAttempts + 1 : 1}`)
+      if (!Number.isInteger(numAttempts) || numAttempts < 3) {
+        fetchInventory(numAttempts ? numAttempts + 1 : 1)
+      }
+
     }
   }
 

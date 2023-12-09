@@ -14,33 +14,17 @@ ReactGA.initialize("G-SW9XV2PGLR");
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 // Check if the current path is the Playwire test path
-if (window.location.pathname === '/playwiretest') {
-  window.loadedTestPageScripts = true;
-  window.history.pushState({}, '', '/');
-  root.render(
-    <WebSocketProvider>
-      <Ramp
-        publisherId="1025126"
-        id="74677"
-      />
-      <Router>
-        <div id="root" style={{ height: "100vh", width: "100vw" }}>
-          {CreateGameContainer()}
-        </div>
-      </Router>
-    </WebSocketProvider>
-  );
-} else {
-  root.render(
-    <WebSocketProvider>
-      <Router>
-        <div id="root" style={{ height: "100vh", width: "100vw" }}>
-          {CreateGameContainer()}
-        </div>
-      </Router>
-    </WebSocketProvider>
-  );
-}
+
+root.render(
+  <WebSocketProvider>
+    <Router>
+      <div id="root" style={{ height: "100vh", width: "100vw" }}>
+        {CreateGameContainer()}
+      </div>
+    </Router>
+  </WebSocketProvider>
+);
+
 
 
 

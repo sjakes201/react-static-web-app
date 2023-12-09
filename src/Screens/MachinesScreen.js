@@ -7,7 +7,6 @@ import MACHINESINFO from "../MACHINESINFO";
 import CompProfile from "../Components/GUI/CompProfile";
 import { useWebSocket } from "../WebSocketContext";
 import { GameContext } from "../GameContainer";
-import AdinPlayAd from "../AdinPlayAd";
 
 function MachinesScreen() {
   const { waitForServerResponse } = useWebSocket();
@@ -444,30 +443,16 @@ function MachinesScreen() {
       <div className="machineGrid">
         <div id="placeholderMachine">
           {backArrow()}
-          {window.innerWidth >= 1137 && window.innerWidth < 1515 && (
-            <div
-              style={{
-                position: "relative",
-                width: "728px",
-                height: "90px",
-                zIndex: "20000",
-              }}
-            >
-              <AdinPlayAd placementId="farmgame-live_728x90_2" />
-            </div>
-          )}
-          {window.innerWidth >= 1515 && (
-            <div
-              style={{
-                position: "relative",
-                width: "970px",
-                height: "90px",
-                zIndex: "20000",
-              }}
-            >
-              <AdinPlayAd placementId="farmgame-live_970x90" />
-            </div>
-          )}
+          <div
+            style={{
+              position: "relative",
+              width: "970px",
+              height: "90px",
+            }}
+            id='machines_top_bar'
+          >
+          </div>
+
           <img
             src={`${process.env.PUBLIC_URL}/assets/images/questionmark.png`}
             alt="info"

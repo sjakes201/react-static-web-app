@@ -376,8 +376,19 @@ function CompPen({
         invalid = newCoords.some(
           (c) => pos.toString() === c.coordinates.toString(),
         );
+        // The following check is so that they are not on top of the management button
+        if (isBarn) {
+          if (pos[0] >= (xSlots - 1) * animalWidth && pos[1] === 0) {
+            invalid = true;
+          }
+        } else {
+          if (pos[0] === 0 && pos[1] === 0) {
+            invalid = true;
+          }
+        }
       }
       a.coordinates = pos;
+
     });
     return newCoords;
   };
@@ -507,7 +518,17 @@ function CompPen({
       while (newOptions.length > 0) {
         let index = Math.floor(Math.random() * newOptions.length);
         let pos = newOptions[index];
-        if (!takenCoords.some((c) => c.toString() === pos.toString())) {
+        let validCoords = !takenCoords.some((c) => c.toString() === pos.toString())
+        if (isBarn) {
+          if (pos[0] >= (xSlots - 1) * animalWidth && pos[1] === 0) {
+            validCoords = false;
+          }
+        } else {
+          if (pos[0] === 0 && pos[1] === 0) {
+            validCoords = false;
+          }
+        }
+        if (validCoords) {
           if (pos[0] > x) graphicInfo.direction = "right";
           if (pos[0] < x) graphicInfo.direction = "left";
           if (pos[1] > y) graphicInfo.direction = "down";

@@ -21,7 +21,7 @@ function AnimalsTopBar({ setManager }) {
         backgroundRepeat: "repeat, repeat",
       }}
     >
-      <div
+      {/* <div
         style={{
           maxWidth: "9%",
           maxHeight: "100%",
@@ -46,7 +46,7 @@ function AnimalsTopBar({ setManager }) {
           }}
           onClick={() => setManager(true)}
         />
-      </div>
+      </div> */}
     </div>
   );
 }

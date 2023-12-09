@@ -96,10 +96,9 @@ function TownsScreen() {
       <div
         className='aipAd basicCenter'
       >
-        {window.innerHeight > 650 && (
-          <div className='innerSkyscraper'>
-          </div>
-        )}
+        <div className='innerSkyscraper'>
+        </div>
+
       </div>
 
       <div className="townsScreenCenter basicCenter">
@@ -173,15 +172,17 @@ function TownsScreen() {
             reloadTownPerks={reloadTownPerks}
           />
         )}
+        <div className='town-bottom-rail'>
+          
+        </div>
       </div>
 
       <div
         className='aipAd basicCenter'
       >
-        {window.innerHeight > 650 && (
-          <div className='innerSkyscraper'>
-          </div>
-        )}
+        <div className='innerSkyscraper'>
+        </div>
+
       </div>
     </div>
   );

@@ -1,8 +1,9 @@
 .townInterfaceContainer {
-    height: 100%;
+    min-height: 100%;
     width: 100%;
     font-size: 1vw;
     background-color: var(--menu_light);
+    position: relative;
     box-shadow:
         0 0 0 2px var(--black),
         0 0 0 5px var(--border_yellow),

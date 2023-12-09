@@ -123,18 +123,22 @@ function MarketScreen() {
           <CompOtherScreen />
         </div>
         <div className="mainMarketContainer">
-          {/* <div className="ad-box-style">
-            {window.innerHeight > 655 && (
-              <div style={{ width: "160px", height: "600px" }}>
-              </div>
-            )}
-          </div> */}
+          <div className="ad-box-style">
+            <div style={{ width: "160px", height: "600px" }}>
+            </div>
 
-          <div id="CompMarket-container">
-            <CompMarket
-              marketItems={marketItems ? marketItems : []}
-              setSelected={setSelected}
-            />
+          </div>
+
+          <div className='market-column'>
+            <div id="CompMarket-container">
+              <CompMarket
+                marketItems={marketItems ? marketItems : []}
+                setSelected={setSelected}
+              />
+            </div>
+            <div className='market-bottom-rail'>
+
+            </div>
           </div>
         </div>
       </div>

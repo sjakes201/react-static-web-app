@@ -108,6 +108,9 @@ function PlantScreen() {
               updateInventory={updateInventory}
               items={items}
             />
+            <div className='bottom-rail-space'>
+
+            </div>
           </div>
         </div>
       </div>
@@ -134,31 +137,12 @@ function PlantScreen() {
           <div
             className='settingsBox1'
           >
-            <div
-              className='adBoxMobile'
-            >
-              <div>
-              </div>
-            </div>
+
           </div>
           <div
             className='settingsBox2'
           >
-            <a
-              target="_black"
-              href="https://discord.gg/jrxWrgNCHw"
-              className='discordLink'
-            >
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/images/discord.png`}
-                style={{ height: "65%", marginRight: "2%" }}
-              ></img>
-              Game Discord
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/images/discord.png`}
-                style={{ height: "65%", marginLeft: "2%" }}
-              ></img>
-            </a>
+            
           </div>
         </div>
       </div>
