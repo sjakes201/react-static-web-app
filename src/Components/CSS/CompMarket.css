@@ -35,14 +35,13 @@
 }
 
 .market-shelf {
-    padding: 1.5% 1.5% 8% 1.5%;
+    padding: 1.5% 1.5% 1.5% 1.5%;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 1.2%;
     overflow-y: auto;
     background-color: var(--menu_lighter);
     width: 100%;
-    height: 90vh;
+    height: 100%;
     box-sizing: border-box;
-
 }
