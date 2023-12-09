@@ -32,11 +32,22 @@ function FriendsScreen() {
     }
 
     const getFriendsData = async () => {
+        let priorities = {
+            'Online': 0,
+            '< 1 hour ago': 1,
+            '< 1 day ago': 2,
+            '< 2 days ago': 3,
+            '< 3 days ago': 4,
+            '< 1 week ago': 5,
+        }
+
         if (waitForServerResponse) {
             let res = await waitForServerResponse('getFriendsData');
             if (res?.body?.friendsData) {
-                res.body.friendsData.sort((a, b) => a.acceptedFlag === 1 ? -1 : 1)
-                setFriendsData([...res.body.friendsData, ...res.body.outgoingRequests])
+                let friends = res.body.friendsData.filter((friend) => friend.acceptedFlag === 1)
+                friends.sort((a, b) => priorities[a.friendLastActive] > priorities[b.friendLastActive] ? 1 : -1)
+                let incoming = res.body.friendsData.filter((friend) => friend.acceptedFlag === 0)
+                setFriendsData([...friends, ...incoming, ...res.body.outgoingRequests])
             }
         }
     }
