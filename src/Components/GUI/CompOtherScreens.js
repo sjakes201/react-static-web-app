@@ -28,7 +28,7 @@ function CompOtherScreens() {
         key={altText}
         className="nav-button"
         onClick={() => {
-          if(whereTo !== "plants" && whereTo !== "animals") {
+          if (whereTo !== "plants" && whereTo !== "animals") {
             setMoreInfo(false)
           }
         }}
@@ -82,6 +82,20 @@ function CompOtherScreens() {
     createButtons();
   }, []);
 
+  const getBubbleImg = () => {
+    let type = 'textbubble'
+    console.log(msgNotification)
+    switch (msgNotification) {
+      case 'GOAL':
+        type += '_goal';
+        break;
+      case 'CHAT':
+        type += '_chat';
+        break;
+    }
+    return `${process.env.PUBLIC_URL}/assets/images/GUI/${type}.png`
+  }
+
   return (
     <div className="buttons-container bottom-bar">
       {otherScreens}
@@ -103,8 +117,7 @@ function CompOtherScreens() {
           />
           {setTownChatBox && (
             <img
-              src={`${process.env.PUBLIC_URL}/assets/images/GUI/textbubble${msgNotification ? "_notify" : ""
-                }.png`}
+              src={getBubbleImg()}
               className="townChatButton"
               onClick={() => setTownChatBox((old) => !old)}
             />
