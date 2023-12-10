@@ -23,13 +23,14 @@ function TownGoals({
 }) {
 
   const { waitForServerResponse } = useWebSocket();
-  const { getUser, profilePic, userNotifications, setUserNotifications } = useContext(GameContext)
+  const { getUser, profilePic, userNotifications, setUserNotifications, setMsgNotification } = useContext(GameContext)
 
   const [unclaimedIndiv, setUnclaimedIndiv] = useState([])
   const [individualGoals, setIndividualGoals] = useState([])
   const [pendingGoal, setPendingGoal] = useState(false)
 
   useEffect(() => {
+    setMsgNotification(null)
     const unclaimedIndivGoals = userNotifications
       .filter(
         (goal) => goal.Type === "INDIV_TOWN_GOAL_REWARD")

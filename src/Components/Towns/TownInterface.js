@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import "./TownInterface.css";
 import PlayerCard from "./PlayerCard";
 import { useWebSocket } from "../../WebSocketContext";
@@ -17,7 +18,7 @@ function TownInterface({
 }) {
   const { waitForServerResponse } = useWebSocket();
   const { updateBalance, updateXP, reloadTownPerks, msgNotification, myTownName, refreshNotifications } = useContext(GameContext)
-
+  const navigate = useNavigate();
   // Which screen to show ("MAIN" or "GOALS" or "SHOP" or "DNE")
   const [townScreen, setTownScreen] = useState("MAIN");
 
@@ -87,7 +88,7 @@ function TownInterface({
       }
     };
     fetchData();
-  }, [refreshData]);
+  }, [refreshData, townName]);
 
   // Interface action functions
 
@@ -183,9 +184,10 @@ function TownInterface({
         if (reloadTownPerks) reloadTownPerks();
         if (setTown) setTown(townInfo.townName);
         if (setScreen) setScreen("TownInterface");
+        navigate(`/towns/${townInfo.townName}`)
       } else {
         setTownInfo((old) => {
-          let newInfo = {...old};
+          let newInfo = { ...old };
           newInfo.sentJoinRequest = true;
           return newInfo;
         })
@@ -201,9 +203,23 @@ function TownInterface({
         if (setTown) setTown("");
         if (setScreen) setScreen("TownSearch");
         if (reloadTownPerks) reloadTownPerks();
+        navigate(`/towns`)
       }
     }
   };
+
+  const getBubbleImg = () => {
+    let type = 'textbubble'
+    switch (msgNotification) {
+      case 'GOAL':
+        type += '_goal';
+        break;
+      case 'CHAT':
+        type += '_chat';
+        break;
+    }
+    return `${process.env.PUBLIC_URL}/assets/images/GUI/${type}.png`
+  }
 
   const settings = () => {
     return (
@@ -386,9 +402,7 @@ function TownInterface({
                   )}
                   {(setTownChatBox && myTownName === townName) && (
                     <img
-                      src={`${process.env.PUBLIC_URL
-                        }/assets/images/GUI/textbubble${msgNotification ? "_notify" : ""
-                        }.png`}
+                      src={getBubbleImg()}
                       className="interfaceChatButton"
                       onClick={() => setTownChatBox((old) => !old)}
                     />

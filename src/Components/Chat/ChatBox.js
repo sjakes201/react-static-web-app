@@ -8,7 +8,7 @@ import { GameContext } from "../../GameContainer";
 
 function ChatBox({ chatMessages, setTownChatMsgs }) {
   const { waitForServerResponse } = useWebSocket();
-  const { setMsgNotification, myTownName, setTownChatBox, townRoleID, getUser } = useContext(GameContext)
+  const { msgNotification, setMsgNotification, myTownName, setTownChatBox, townRoleID, getUser } = useContext(GameContext)
 
   const [newMessage, setNewMessage] = useState("");
 
@@ -28,7 +28,8 @@ function ChatBox({ chatMessages, setTownChatMsgs }) {
         });
       }
     }
-    setMsgNotification(false);
+    // TODO: right now if there's chats, then a goal complete, then goal collect without reading chats, it doesn't display chat notification
+    if(msgNotification === "CHAT") setMsgNotification(null)
   }, [chatMessages]);
 
   const handleKeyDown = (e) => {

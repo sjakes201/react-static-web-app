@@ -92,7 +92,7 @@ function GameContainer() {
 
   /* Playwire dynamic ad destroy and display based on pages */
   useEffect(() => {
-    if(!(window.PlaywireTestMode)) return;
+    if (!(window.PlaywireTestMode)) return;
     console.log("PlaywireTestMode enabled")
     let page = location?.pathname?.split("/")?.[1];
 
@@ -157,12 +157,6 @@ function GameContainer() {
   }, [location?.pathname])
 
 
-
-
-
-
-
-
   const { isConnected } = useWebSocket();
 
   const [notificationBox, setNotificationBox] = useState(false);
@@ -212,7 +206,7 @@ function GameContainer() {
 
   const [townChatMsgs, setTownChatMsgs] = useState([]);
 
-  const [msgNotification, setMsgNotification] = useState(false);
+  const [msgNotification, setMsgNotification] = useState(null);
   const [orderBoard, setOrderBoard] = useState(false);
   const [seasonsInfoBox, setSeasonsInfoBox] = useState(false);
 
@@ -232,8 +226,13 @@ function GameContainer() {
       let pastMessages = chatHistory.body?.messageHistory;
       let lastSeenMsgID = chatHistory.body?.lastSeenMessage;
       if (Array.isArray(pastMessages)) {
-        if (pastMessages.some((msgObj) => msgObj.messageID > lastSeenMsgID)) {
-          setMsgNotification(true);
+        let newMsgs = pastMessages.filter((msgObj) => msgObj.messageID > lastSeenMsgID);
+        if (newMsgs.length > 0) {
+          if (newMsgs.some((msg => msg.Type === "GOAL_COMPLETE"))) {
+            setMsgNotification("GOAL")
+          } else {
+            setMsgNotification("CHAT");
+          }
         }
         pastMessages.sort((a, b) => b.timestamp - a.timestamp);
         setTownChatMsgs(pastMessages);
@@ -393,7 +392,11 @@ function GameContainer() {
       return newMsgs;
     });
     if (!townChatBox) {
-      setMsgNotification(true);
+      if (msgType === "GOAL_COMPLETE") {
+        setMsgNotification("GOAL")
+      } else {
+        setMsgNotification("CHAT");
+      }
     }
   };
 
