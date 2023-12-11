@@ -489,6 +489,7 @@ function CompPlot({
 
         if (!Array.isArray(tilesResult?.updatedTiles)) {
           console.log("ERROR: Did not receive array back");
+          console.log(tilesResult)
           getTiles()
           return;
         }
