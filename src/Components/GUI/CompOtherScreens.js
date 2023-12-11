@@ -48,12 +48,13 @@ function CompOtherScreens() {
       if(i === 6) {
         setMachineDone(false)
       }
-      if (!closestTime || timeRemaining < closestTime) {
+      if ((!closestTime || timeRemaining < closestTime) && isFinite(timeRemaining)) {
         closestTime = timeRemaining;
       }
     }
     let machineDoneTimer = null;
     if (closestTime && closestTime > 0) {
+      console.log(closestTime)
       machineDoneTimer = setTimeout(() => {
         setMachineDone(true);
       }, [closestTime * 1000])
