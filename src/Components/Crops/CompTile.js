@@ -216,7 +216,7 @@ function CompTile({
       )}
 
       <img
-        src={`${process.env.PUBLIC_URL}/assets/images/${partToAnimate === "" ? "EMPTY" : partToAnimate}.png`}
+        src={`${process.env.PUBLIC_URL}/assets/images/${(partToAnimate === "" || partToAnimate === undefined) ? "EMPTY" : partToAnimate}.png`}
         alt="machine part Animation"
         style={animatePart ? animatedStyle : defaultStyle}
       />
