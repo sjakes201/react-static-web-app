@@ -25,7 +25,7 @@ export function WebSocketProvider({ children }) {
   const [auth, setAuth] = useState(1);
 
   const connectToWebSocketServer = () => {
-    let useLocal = false;
+    let useLocal = true;
 
     const wsInstance = new WebSocket(
       useLocal

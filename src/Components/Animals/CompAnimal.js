@@ -206,7 +206,7 @@ function CompAnimal({
           />
         </div>
       )}
-      <img src={imgURL()} alt={type} style={imgStyle} draggable={false} onClick={() => console.log(walkingInfo.coordinates)} />
+      <img src={imgURL()} alt={type} style={imgStyle} draggable={false}/>
     </div>
   );
 }
