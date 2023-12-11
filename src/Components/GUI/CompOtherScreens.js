@@ -84,7 +84,6 @@ function CompOtherScreens() {
 
   const getBubbleImg = () => {
     let type = 'textbubble'
-    console.log(msgNotification)
     switch (msgNotification) {
       case 'GOAL':
         type += '_goal';
