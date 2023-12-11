@@ -214,10 +214,7 @@ function GameContainer() {
 
   const [userNotifications, setUserNotifications] = useState([])
 
-  const [animationsEnabled, setAnimationsEnabled] = useState(true)
-
-  const toggleAnimations = () => setAnimationsEnabled((old) => !old)
-
+  const [animationsEnabled, setAnimationsEnabled] = useState(localStorage.getItem("disableAnimations") !== "true")
 
   /* fetch data from server calls */
   const getTownMessages = async () => {
@@ -707,7 +704,6 @@ function GameContainer() {
     townRoleID,
     getCurrentSeason,
     getStage,
-    toggleAnimations,
     setSeasonsInfoBox
   }
 

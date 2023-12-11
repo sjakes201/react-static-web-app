@@ -96,6 +96,7 @@ function CompTile({
 
   useEffect(() => {
     if (partResult !== "") {
+      console.log(partResult)
       setPartToAnimate(partResult);
       setAnimatePart(true);
       setTimeout(() => {
@@ -215,8 +216,7 @@ function CompTile({
       )}
 
       <img
-        src={`${process.env.PUBLIC_URL}/assets/images/${partToAnimate === "" ? "EMPTY" : partToAnimate
-          }.png`}
+        src={`${process.env.PUBLIC_URL}/assets/images/${partToAnimate === "" ? "EMPTY" : partToAnimate}.png`}
         alt="machine part Animation"
         style={animatePart ? animatedStyle : defaultStyle}
       />
