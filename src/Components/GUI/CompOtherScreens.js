@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import MACHINESINFO from "../../MACHINESINFO";
 import "../CSS/CompOtherScreens.css";
 import { Link } from "react-router-dom";
 import { GameContext } from '../../GameContainer'
@@ -10,8 +11,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 function CompOtherScreens() {
 
   const location = useLocation();
-  const { setTownChatBox, msgNotification, myTownName, setMoreInfo } = useContext(GameContext)
+  const { setTownChatBox, msgNotification, myTownName, setMoreInfo, machines } = useContext(GameContext)
   const [otherScreens, setOtherScreens] = useState([]);
+
+  const [machineDone, setMachineDone] = useState(false);
+
   const current = location.pathname.substring(1, location.pathname.length);
 
   const navigate = useNavigate();
@@ -19,6 +23,46 @@ function CompOtherScreens() {
     // no auth token present
     navigate("/");
   }
+
+  const machineTimeRemaining = (machineTypeID, level, startTime) => {
+    if (!level || level === 0 || startTime === -1) return Infinity;
+    let totalInfo =
+      MACHINESINFO[
+      `${MACHINESINFO.machineTypeFromIDS[machineTypeID-1]}MachineInfo`
+      ];
+    let tierInfo = totalInfo?.[`tier${level}`];
+    let timeRemainingSecs = Math.ceil(
+      tierInfo?.timeInMs / 1000 - (Date.now() - startTime) / 1000,
+    );
+    return timeRemainingSecs
+  }
+
+  useEffect(() => {
+    let closestTime = 0;
+    for (let i = 1; i <= 6; ++i) {
+      let timeRemaining = machineTimeRemaining(machines[`Slot${i}`], machines[`Slot${i}Level`], machines[`Slot${i}StartTime`]);
+      if (timeRemaining <= 0) {
+        setMachineDone(true);
+        break;
+      }
+      if(i === 6) {
+        setMachineDone(false)
+      }
+      if (!closestTime || timeRemaining < closestTime) {
+        closestTime = timeRemaining;
+      }
+    }
+    let machineDoneTimer = null;
+    if (closestTime && closestTime > 0) {
+      machineDoneTimer = setTimeout(() => {
+        setMachineDone(true);
+      }, [closestTime * 1000])
+    }
+    
+    return () => {
+      clearTimeout(machineDoneTimer);
+    }
+  }, [machines])
 
   const renderScreenButton = (imageSrc, altText, whereTo) => {
     return (
@@ -33,7 +77,6 @@ function CompOtherScreens() {
           }
         }}
       >
-        {/* <p style={{ height: '50%' }}>{whereTo}</p> */}
         <img
           style={{ height: "100%" }}
           key={altText}
@@ -125,7 +168,7 @@ function CompOtherScreens() {
       )}
       {current !== "shop" && (
         <img
-          src={`${process.env.PUBLIC_URL}/assets/images/machines/deskClickable.png`}
+          src={`${process.env.PUBLIC_URL}/assets/images/machines/deskClickable${machineDone ? '_notify' : ''}.png`}
           style={{ height: "100%", objectFit: "contain", cursor: "pointer" }}
           onClick={() => navigate("/machines")}
         />
