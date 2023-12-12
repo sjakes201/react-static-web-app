@@ -1,5 +1,5 @@
 .main-board {
-    width: 80%;
+    width: calc(100% - 320px);
     height: 100%;
     background: var(--menu_light);
 

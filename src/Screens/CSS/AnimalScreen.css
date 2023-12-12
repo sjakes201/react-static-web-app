@@ -52,7 +52,7 @@
 .pens-wrapper {
     display: flex;
     flex-direction: row;
-    height: calc(90vh - 90px);
+    height: calc(90vh - 98px);
     width: 100%;
 }
 
@@ -73,7 +73,7 @@
 }
 
 .pen-management {
-    height: 90px;
+    height: 98px;
 }
 
 .barn-container {

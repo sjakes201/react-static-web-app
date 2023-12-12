@@ -220,7 +220,6 @@ function AnimalScreen() {
               }}
             >
               <div>
-                <AdinPlayAd placementId="farmgame-live_120x60_2" />
               </div>
             </div>
           </div>
