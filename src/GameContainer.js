@@ -119,7 +119,7 @@ function GameContainer() {
         adUnits.push(...leaderboardTag);
         break;
       case "":
-        console.log('landing page')
+        // Landing page
         adUnits.push(...leftBottomRails)
         break;
     }
