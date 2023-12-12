@@ -118,6 +118,10 @@ function GameContainer() {
       case "machines":
         adUnits.push(...leaderboardTag);
         break;
+      case "":
+        console.log('landing page')
+        adUnits.push(...leftBottomRails)
+        break;
     }
 
     window?.ramp?.que.push(
@@ -546,7 +550,7 @@ function GameContainer() {
 
     let totalDays = Math.floor((currentDateUTC - epochStart) / millisecondsPerDay);
     const currentSeasonIndex = totalDays % seasons.length;
-    
+
     return seasons[currentSeasonIndex];
   };
 
