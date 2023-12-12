@@ -93,7 +93,6 @@ function GameContainer() {
   /* Playwire dynamic ad destroy and display based on pages */
   useEffect(() => {
     if (!(window.PlaywireTestMode)) return;
-    console.log("PlaywireTestMode enabled")
     let page = location?.pathname?.split("/")?.[1];
 
     let adUnits = []
