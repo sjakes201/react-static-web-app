@@ -119,7 +119,7 @@ function GameContainer() {
         adUnits.push(...leaderboardTag);
         break;
       case "":
-        console.log('landing page')
+        // Landing page
         adUnits.push(...leftBottomRails)
         break;
     }
@@ -193,6 +193,8 @@ function GameContainer() {
   const [deluxePermit, setDeluxePermit] = useState(false);
   const [exoticPermit, setExoticPermit] = useState(false);
   const [animalsInfo, setAnimalsInfo] = useState({});
+
+  const [activeBoosts, setActiveBoosts] = useState([])
 
   const [tiles, setTiles] = useState([]);
 
@@ -331,6 +333,7 @@ function GameContainer() {
         }
         setGoodTotals(totals);
         setUpgrades(upgrades);
+        setActiveBoosts(data.activeBoosts)
       }
     } catch (error) {
       console.log(error)
@@ -465,6 +468,23 @@ function GameContainer() {
     }
   }, [level]);
 
+  useEffect(() => {
+    const boostTimers = [];
+    activeBoosts?.forEach((boost) => {
+      let timeRemaining = (Number(boost.StartTime) + Number(boost.Duration)) - Date.now();
+      let boostID = boost.BoostID;
+      boostTimers.push(setTimeout(() => {
+        setActiveBoosts((old) => old.filter((boost) => boost.BoostID !== boostID))
+      }, [timeRemaining]))
+    })
+
+    return () => {
+      boostTimers.forEach((timer) => {
+        clearTimeout(timer)
+      })
+    }
+  }, [activeBoosts])
+
   const reloadTownPerks = async () => {
     if (waitForServerResponse) {
       const response = await waitForServerResponse("getTownPerks");
@@ -542,17 +562,13 @@ function GameContainer() {
 
   const getCurrentSeason = () => {
     const seasons = ['spring', 'summer', 'fall', 'winter'];
-    const currentDateUTC = new Date(Date.now());
-    currentDateUTC.setMinutes(currentDateUTC.getMinutes() + currentDateUTC.getTimezoneOffset());
-
-    const epochStart = new Date(Date.UTC(1970, 0, 1));
-    const millisecondsPerDay = 24 * 60 * 60 * 1000;
-
-    let totalDays = Math.floor((currentDateUTC - epochStart) / millisecondsPerDay);
-    const currentSeasonIndex = totalDays % seasons.length;
-
-    return seasons[currentSeasonIndex];
+    const nowMS = Date.now();
+    let msPerDay = 24 * 60 * 60 * 1000;
+    let daysPassed = Math.floor(nowMS / msPerDay)
+    let seasonIndex = daysPassed % 4;
+    return seasons[seasonIndex];
   };
+
 
   const getXP = () => {
     return XP;
@@ -708,7 +724,8 @@ function GameContainer() {
     townRoleID,
     getCurrentSeason,
     getStage,
-    setSeasonsInfoBox
+    setSeasonsInfoBox,
+    activeBoosts
   }
 
   if (!isConnected) {
