@@ -35,7 +35,7 @@ function CompTile({
   const [animationRefresh, setAnimationRefresh] = useState(1)
   useEffect(() => {
     setOldCropID(tile.CropID);
-    if(tile.CropID !== oldCropID && tile.CropID !== -1) {
+    if (tile.CropID !== oldCropID && tile.CropID !== -1) {
       setOldCropID(tile.CropID);
       setAnimationRefresh((old) => old + 1)
     }
@@ -62,13 +62,7 @@ function CompTile({
       return;
     }
     let equipped = sessionStorage.getItem("equipped");
-    if (tile.CropID === -1 && CROPINFO.seedsFromID.includes(equipped)) {
-      // Something equipped attempt plant
-      tileAction(tile.TileID, "plant", equipped, tile.CropID);
-      // setAnimationRefresh((old) => old + 1)
-    } else {
-      // nothing equipped, harvest animation and attempt harvest
-
+    if (tool === "multiharvest") {
       let tileActionRes = await tileAction(
         tile.TileID,
         "harvest",
@@ -77,6 +71,26 @@ function CompTile({
       );
       if (tileActionRes) {
         createGif(e);
+      }
+    } else if (tool === "multiplant") {
+      tileAction(tile.TileID, "plant", equipped, tile.CropID);
+    } else {
+      // No tool equipped, figure out what they want to do
+      if (tile.CropID === -1 && CROPINFO.seedsFromID.includes(equipped)) {
+        // Something equipped attempt plant
+        tileAction(tile.TileID, "plant", equipped, tile.CropID);
+        // setAnimationRefresh((old) => old + 1)
+      } else {
+        // nothing equipped, harvest animation and attempt harvest
+        let tileActionRes = await tileAction(
+          tile.TileID,
+          "harvest",
+          null,
+          tile.CropID,
+        );
+        if (tileActionRes) {
+          createGif(e);
+        }
       }
     }
   };
@@ -140,9 +154,8 @@ function CompTile({
     imgStyle.cursor = "grab";
   }
 
-  if (highlighted) {
-    imgStyle.boxShadow = `0 0 3px 2px ${tool === "multiharvest" ? "gold" : "lightblue"
-      }`;
+  if (highlighted && tool !== "") {
+    imgStyle.boxShadow = `0 0 3px 2px ${tool === "multiharvest" ? "gold" : "lightblue"}`;
   }
 
   const moreInfoMenu = () => {

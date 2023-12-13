@@ -26,6 +26,7 @@ import CONSTANTS from "./CONSTANTS";
 import CROPINFO from "./CROPINFO";
 import UPGRADES from "./UPGRADES";
 import TOWNSINFO from "./TOWNSINFO";
+import BOOSTSINFO from "./BOOSTSINFO";
 
 export const GameContext = React.createContext();
 
@@ -469,6 +470,7 @@ function GameContainer() {
   }, [level]);
 
   useEffect(() => {
+    console.log(activeBoosts)
     const boostTimers = [];
     activeBoosts?.forEach((boost) => {
       let timeRemaining = (Number(boost.StartTime) + Number(boost.Duration)) - Date.now();
@@ -523,6 +525,12 @@ function GameContainer() {
         let boostPercent = CONSTANTS.VALUES.SEASON_GROWTH_BUFF;
         secsPassed *= 1 + boostPercent;
       }
+      activeBoosts?.forEach(boost => {
+        if (boost.Type === "TIME" && boost.BoostTarget === "CROPS") {
+          let boostPercent = BOOSTSINFO[boost.BoostName].boostPercent;
+          secsPassed *= 1 + boostPercent;
+        }
+      })
 
       // Use secs passed to find out what stage you are in by summing growth in constants
       let growth =
@@ -567,7 +575,7 @@ function GameContainer() {
     let daysPassed = Math.floor(nowMS / msPerDay)
     let seasonIndex = daysPassed % 4;
     return seasons[seasonIndex];
-  };
+};
 
 
   const getXP = () => {
