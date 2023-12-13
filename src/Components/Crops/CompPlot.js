@@ -2,11 +2,13 @@ import React, { useEffect, useState, useContext } from "react";
 import CompTile from "./CompTile";
 import CONSTANTS from "../../CONSTANTS";
 import CROPINFO from "../../CROPINFO";
+import BOOSTSINFO from "../../BOOSTSINFO";
 import UPGRADES from "../../UPGRADES";
 import { useNavigate } from "react-router-dom";
 import { useWebSocket } from "../../WebSocketContext";
 import TOWNSINFO from "../../TOWNSINFO";
 import { GameContext } from "../../GameContainer";
+import { getCropQty } from "../../Helpers/plantHelpers";
 
 function CompPlot({
   tool,
@@ -19,7 +21,7 @@ function CompPlot({
   items,
 }) {
   const { waitForServerResponse } = useWebSocket();
-  const { townPerks, tiles, setTiles, updateXP, getXP, getUpgrades, setParts, getTiles, moreInfo, getStage, getCurrentSeason } = useContext(GameContext)
+  const { townPerks, tiles, setTiles, updateXP, getXP, getUpgrades, setParts, getTiles, moreInfo, getStage, getCurrentSeason, activeBoosts } = useContext(GameContext)
 
   const [growthTable, setGrowthTable] = useState("");
   const [numHarvestTable, setNumHarvestTable] = useState("NumHarvests0");
@@ -41,8 +43,11 @@ function CompPlot({
   // Logic for multi action hovering
   const setHovering = (tileID) => {
     if (tool === "") {
+      // single tile
+      setHighlighted([tileID]);
       return;
     }
+    // multiharvest
     if (tileID % 10 === 0) {
       setHighlighted([
         tileID - 11,
@@ -165,18 +170,10 @@ function CompPlot({
     }
     targetTile = targetTile[0];
     if (action === "plant") {
-      if (tool === "multiplant") {
-        multiPlant(seedName);
-      } else {
-        plantTile(seedName, targetTile);
-      }
+      multiPlant(seedName)
     } else {
       // Default to harvest to enable harvesting while still having seed equipped
-      if (tool === "multiharvest") {
-        return await multiHarvest();
-      } else {
-        return await harvestTile(targetTile);
-      }
+      return await multiHarvest()
     }
   };
 
@@ -288,137 +285,6 @@ function CompPlot({
       } else {
         console.log(error);
       }
-    }
-  };
-
-  const plantTile = async (seedName, targetTile) => {
-    let tileID = targetTile.TileID;
-    let simRes = frontendPlant(seedName, targetTile);
-
-    if (simRes.message === "SUCCESS") {
-      // only put request through if frontend validates
-      try {
-        if (waitForServerResponse) {
-          // Ensure `waitForServerResponse` is defined
-          await waitForServerResponse("plant", {
-            seedName: seedName,
-            tileID: tileID,
-          });
-        }
-      } catch (error) {
-        if (error.message.includes("401")) {
-          console.log("AUTH EXPIRED");
-          localStorage.removeItem("token");
-          navigate("/");
-        } else {
-          console.log(error);
-        }
-      }
-    }
-  };
-
-  const harvestTile = async (targetTile) => {
-    let tileID = targetTile.TileID;
-    let simRes = frontendHarvest(targetTile);
-
-    setTiles((prevTiles) =>
-      prevTiles.map((tile) => {
-        if (tile.TileID === tileID) {
-          const newTile = {
-            ...simRes,
-            stage: getStage(
-              simRes.PlantTime,
-              simRes.CropID,
-              tile.hasTimeFertilizer,
-            ),
-          };
-          return newTile;
-        } else {
-          return {
-            ...tile,
-            stage: getStage(
-              tile.PlantTime,
-              tile.CropID,
-              tile.hasTimeFertilizer,
-            ),
-          };
-        }
-      }),
-    );
-
-    if (simRes.message === "SUCCESS") {
-      try {
-        if (waitForServerResponse) {
-          const response = await waitForServerResponse("harvest", {
-            tileID: tileID,
-          });
-
-          let data = response.body;
-
-          if (
-            data.TileID === undefined ||
-            data.hasTimeFertilizer === undefined
-          ) {
-            getTiles()
-            return false;
-          }
-          setTiles((prevTiles) =>
-            prevTiles.map((tile) => {
-              if (tile.TileID === data.TileID) {
-                const newTile = {
-                  ...tile,
-                  hasTimeFertilizer: data.hasTimeFertilizer,
-                  // stage: getStage(tile.PlantTime, tile.CropID, tile.hasTimeFertilizer)
-                };
-                return newTile;
-              } else {
-                return {
-                  ...tile,
-                  stage: getStage(
-                    tile.PlantTime,
-                    tile.CropID,
-                    tile.hasTimeFertilizer,
-                  ),
-                };
-              }
-            }),
-          );
-          let finished = data.finishedOrder;
-          if (finished) {
-            setOrderNotice(true);
-            if (orderTimer !== null) {
-              clearTimeout(orderTimer);
-            }
-            let id = setTimeout(() => {
-              setOrderNotice(false);
-            }, 500);
-            setOrderTimer(id);
-          }
-          if (data.randomPart !== null) {
-            setPartsGifs((oldArr) => {
-              let newpartsGifs = [...oldArr];
-              newpartsGifs[data.TileID - 1] = data.randomPart;
-              return newpartsGifs;
-            });
-            setParts((oldParts) => {
-              let newParts = { ...oldParts };
-              newParts[data.randomPart] += 1;
-              return newParts;
-            });
-          }
-          return true;
-        }
-      } catch (error) {
-        if (error.message.includes("401")) {
-          console.log("AUTH EXPIRED");
-          localStorage.removeItem("token");
-          navigate("/");
-        } else {
-          console.log(error);
-        }
-      }
-    } else {
-      return false;
     }
   };
 
@@ -603,6 +469,13 @@ function CompPlot({
         secsPassed *= boostChange;
       }
 
+      activeBoosts?.forEach(boost => {
+        if (boost.Type === "TIME" && boost.BoostTarget === "CROPS") {
+          let boostPercent = BOOSTSINFO[boost.BoostName].boostPercent;
+          secsPassed *= 1 + boostPercent;
+        }
+      })
+
       if (secsPassed >= secsNeeded) {
         if (targetTile.HarvestsRemaining === 1) {
           // last harvest
@@ -615,7 +488,7 @@ function CompPlot({
             message: "SUCCESS",
           };
         } else {
-          // multi harvest
+          // multiple harvests
           let timeSkip = 0;
           for (let i = 0; i < growthTimes.length - 1; ++i) {
             timeSkip += growthTimes[i];
@@ -637,6 +510,13 @@ function CompPlot({
             timeSkip /= (1 + boostPercent);
           }
 
+          activeBoosts?.forEach(boost => {
+            if (boost.Type === "TIME" && boost.BoostTarget === "CROPS") {
+              let boostPercent = BOOSTSINFO[boost.BoostName].boostPercent;
+              timeSkip /= 1 + boostPercent;
+            }
+          })
+
           // ms since epoch
           let newPlantTime = Date.now();
           newPlantTime = newPlantTime - timeSkip;
@@ -650,16 +530,15 @@ function CompPlot({
             message: "SUCCESS",
           };
         }
-        let seed_name = seedIDS[targetTile.CropID];
-        let cropName = seedCropMap[seed_name];
+        let seedName = seedIDS[targetTile.CropID];
+        let cropName = seedCropMap[seedName];
+        let cropQty = getCropQty(seedName, quantityYieldTable, simRes.YieldsFertilizer, activeBoosts)
 
-        let quantity = UPGRADES[quantityYieldTable][seed_name];
         if (simRes.YieldsFertilizer > 0) {
           simRes.YieldsFertilizer -= 1;
-          let bonus = CONSTANTS.yieldFertilizerBonuses[seed_name];
-          quantity += bonus;
         }
-        updateInventory(cropName, quantity);
+
+        updateInventory(cropName, cropQty);
         updateXP(CROPINFO.XP[cropName]);
       } else {
         // not ready for harvest
@@ -701,6 +580,15 @@ function CompPlot({
         totalSpeedMultiple *= boostChange;
       }
 
+      activeBoosts?.forEach(boost => {
+        if (boost.Type === "TIME" && boost.BoostTarget === "CROPS") {
+          let boostPercent = BOOSTSINFO[boost.BoostName].boostPercent;
+          console.log(secsPassed)
+          secsPassed *= 1 + boostPercent;
+          console.log(secsPassed, boostPercent)
+        }
+      })
+
       if (CONSTANTS.cropSeasons[getCurrentSeason()]?.includes(CROPINFO.seedsFromID[CropID])) {
         let boostChange = 1 + CONSTANTS.VALUES.SEASON_GROWTH_BUFF;
         totalSpeedMultiple *= boostChange;
@@ -711,7 +599,6 @@ function CompPlot({
        it is a real value the player sees, so it should be not accelerating or not 1 second per second
        */
       let adjustedSecondsNeeded = Math.ceil((totalTimeNeeded / totalSpeedMultiple))
-      console.log(`totalTimeNeeded: ${totalTimeNeeded}, totalSpeedMultiple: ${totalSpeedMultiple}, adjustedSecondsNeeded: ${adjustedSecondsNeeded}`)
 
       return adjustedSecondsNeeded - secsPassed > 0 ? adjustedSecondsNeeded - secsPassed : 0;
     } else {

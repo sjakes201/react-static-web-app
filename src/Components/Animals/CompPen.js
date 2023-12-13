@@ -5,21 +5,11 @@ import UPGRADES from "../../UPGRADES";
 import { useNavigate } from "react-router-dom";
 import ANIMALINFO from "../../ANIMALINFO";
 import TOWNSINFO from "../../TOWNSINFO";
+import BOOSTSINFO from "../../BOOSTSINFO";
 import { useWebSocket } from "../../WebSocketContext";
 import { GameContext } from "../../GameContainer";
+import { getCollectQty } from "../../Helpers/animalHelpers";
 
-const getCurrentSeason = () => {
-  const seasons = ['spring', 'summer', 'fall', 'winter'];
-  const currentDate = new Date();
-  const epochStart = new Date(1970, 0, 1);
-  const millisecondsPerDay = 24 * 60 * 60 * 1000;
-
-  let totalDays = Math.floor((currentDate - epochStart) / millisecondsPerDay);
-
-  const currentSeasonIndex = totalDays % seasons.length;
-
-  return seasons[currentSeasonIndex];
-}
 
 function CompPen({
   animalsParent,
@@ -32,7 +22,7 @@ function CompPen({
   setEquippedFeed,
 }) {
   const { waitForServerResponse } = useWebSocket();
-  const { townPerks, updateXP, getXP, getUpgrades, moreInfo } = useContext(GameContext)
+  const { townPerks, updateXP, getXP, getUpgrades, moreInfo, getCurrentSeason, activeBoosts } = useContext(GameContext)
   // 10 per border
   penWidth -= 20;
   penHeight -= 20;
@@ -211,22 +201,13 @@ function CompPen({
           break;
       }
       // FORCE REFRESH HERE
-      if (getUpgrades().barnCollectQuantityUpgrade === undefined)
-        quantTableName = "AnimalProduceMap0";
+      if (getUpgrades().barnCollectQuantityUpgrade === undefined) quantTableName = "AnimalProduceMap0";
 
-      let qty = UPGRADES[quantTableName][type][1];
-      // Check random probability of extra
-      let happiness = animal.Happiness,
-        nextRandom = animal.Next_random;
-      let probOfExtra = happiness > 1 ? 0.67 : happiness / 1.5;
-      let inSeason = CONSTANTS.animalSeasons[getCurrentSeason()].includes(type);
-      if (inSeason) {
-        probOfExtra += 0.1
-      }
-      if (nextRandom < probOfExtra) {
-        // extra produce bc of happiness
-        qty += 1;
-      }
+
+      let happiness = animal.Happiness;
+      let nextRandom = animal.Next_random;
+
+      let qty = getCollectQty(type, quantTableName, happiness, nextRandom, activeBoosts);
 
       updateInventory(UPGRADES[quantTableName][type][0], qty);
       updateXP(CONSTANTS.XP[UPGRADES[quantTableName][type][0]]);
@@ -354,6 +335,13 @@ function CompPen({
       let boostChange = 1 + boostPercent;
       secsPassed *= boostChange;
     }
+
+    activeBoosts?.forEach(boost => {
+      if (boost.Type === "TIME" && boost.BoostTarget === "ANIMALS") {
+        let boostPercent = BOOSTSINFO[boost.BoostName].boostPercent;
+        secsPassed *= 1 + boostPercent;
+      }
+    })
 
     return secsNeeded - secsPassed;
   }
