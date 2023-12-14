@@ -205,7 +205,7 @@ function UserProfile({ username }) {
                 {profileData.isMe && (
                     <div className='discord-area'>
                         <a
-                            target="_black"
+                            target="_blank"
                             href="https://discord.gg/jrxWrgNCHw"
                             className='discord-link'
                         >

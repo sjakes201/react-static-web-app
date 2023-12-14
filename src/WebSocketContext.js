@@ -26,6 +26,10 @@ export function WebSocketProvider({ children }) {
 
   const connectToWebSocketServer = () => {
     let useLocal = false;
+    console.log(process.env.NODE_ENV)
+    if(process.env.NODE_ENV !== 'development') {
+      useLocal = false;
+    }
 
     const wsInstance = new WebSocket(
       useLocal
@@ -90,6 +94,14 @@ export function WebSocketProvider({ children }) {
           case 'TOWN_CHANGE':
             listenersRef.current.forEach((listener) => {
               if (listener[0] === 'TOWN_CHANGE') {
+                const func = listener[1];
+                func();
+              }
+            })
+            break;
+          case 'NEW_BOOST':
+            listenersRef.current.forEach((listener) => {
+              if (listener[0] === 'NEW_BOOST') {
                 const func = listener[1];
                 func();
               }

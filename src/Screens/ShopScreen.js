@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import CompShop from "../Components/Shop/CompShop";
 import CompProfile from "../Components/GUI/CompProfile";
 import CompOtherScreens from "../Components/GUI/CompOtherScreens";
 import { useNavigate } from "react-router-dom";
 import "./CSS/ShopScreen.css";
 import { GameContext } from "../GameContainer";
-import AdinPlayAd from "../AdinPlayAd";
 import ShopInterface from "../Components/Shop2/ShopInterface";
 
 function ShopScreen() {

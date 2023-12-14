@@ -38,7 +38,7 @@ const leftBottomRails = [
   },
   {
     type: 'bottom_rail'
-  }
+  },
 ]
 
 const bottomRightRails = [
@@ -93,7 +93,6 @@ function GameContainer() {
 
   /* Playwire dynamic ad destroy and display based on pages */
   useEffect(() => {
-    // if (!(window.PlaywireTestMode)) return;
     let page = location?.pathname?.split("/")?.[1];
 
     let adUnits = []
@@ -118,6 +117,9 @@ function GameContainer() {
         break;
       case "machines":
         adUnits.push(...leaderboardTag);
+        break;
+      case "profile":
+        adUnits.push(...allRailUnits)
         break;
       case "":
         // Landing page
@@ -380,6 +382,27 @@ function GameContainer() {
       setCoop(data.coopResult);
     }
   }
+
+  const fetchBoosts = async (numAttempts) => {
+    try {
+      if (waitForServerResponse) {
+        const response = await waitForServerResponse("getActiveBoosts");
+        let boosts = response.body?.activeBoosts;
+        console.log(boosts)
+        if (boosts) {
+          setActiveBoosts(boosts);
+        }
+      }
+    } catch (error) {
+      console.log(error)
+      console.log(`called with numAttempts: ${numAttempts}, trying fetchBoosts() again with numAtempts: ${numAttempts ? numAttempts + 1 : 1}`)
+      if (!Number.isInteger(numAttempts) || numAttempts < 3) {
+        fetchBoosts(numAttempts ? numAttempts + 1 : 1)
+      }
+
+    }
+  }
+
   /* Listeners */
   const handleNewMsg = (content, timestamp, Username, messageID, msgType, requestID) => {
     setTownChatMsgs((old) => {
@@ -431,6 +454,10 @@ function GameContainer() {
     reloadTownPerks();
   }
 
+  const newBoost = () => {
+    fetchBoosts();
+  }
+
   /* Init get data */
   useEffect(() => {
 
@@ -450,11 +477,13 @@ function GameContainer() {
     addListener(['animal_happiness', changeAnimalHappiness])
     addListener(['TOWN_JOIN_RESOLVE', handleTownJoinResolve])
     addListener(['TOWN_CHANGE', townChange])
+    addListener(['NEW_BOOST', newBoost])
     return () => {
       removeListener('town_message');
       removeListener('animal_happiness');
       removeListener('TOWN_JOIN_RESOLVE');
       removeListener('TOWN_CHANGE');
+      removeListener('NEW_BOOST')
     };
   }, []);
 
@@ -575,7 +604,7 @@ function GameContainer() {
     let daysPassed = Math.floor(nowMS / msPerDay)
     let seasonIndex = daysPassed % 4;
     return seasons[seasonIndex];
-};
+  };
 
 
   const getXP = () => {

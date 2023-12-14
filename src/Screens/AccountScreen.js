@@ -47,7 +47,7 @@ function AccountScreen() {
   };
 
   return (
-    <div className="acc-screen basic-center">
+    <div className="acc-screen">
       {backArrow()}
       {
         <div className="acc-container">
@@ -81,6 +81,9 @@ function AccountScreen() {
 
         </div>
       }
+      <div className='profile-bottom-rail-space'>
+
+      </div>
     </div >
   );
 }

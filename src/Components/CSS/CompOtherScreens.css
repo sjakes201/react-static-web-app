@@ -73,6 +73,7 @@
     padding-right: 5%;
     background-color: var(--menu_dark);
     box-sizing: border-box;
+    position: relative;
 
 }
 
@@ -83,4 +84,19 @@
         0 0 0 4px var(--border_orange),
         0 0 0 6px var(--border_shadow_orange),
         0 0 0 8px var(--black);
+}
+
+.discord-in-nav {
+    border: 2px solid pink;
+    min-width: 2vw;
+    width: 2vw;
+}
+
+.discord-in-nav > a {
+    width: 2vw;
+}
+
+.discord-in-nav > a > img {
+    width: 100%;
+    object-fit: contain;
 }

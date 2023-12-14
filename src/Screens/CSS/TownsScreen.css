@@ -12,6 +12,7 @@
 
 .townsScreenCenter {
     width: 70%;
+    max-width: calc(100% - 338px);
     height: calc(85% - 90px);
     position: relative;
     display: flex;
@@ -28,9 +29,9 @@
 
 .townsScreenBackArrow {
     position: absolute;
-    height: 10vh;
-    top: 2vh;
-    left: 2vh;
+    height: 8vh;
+    top: 1.5vh;
+    left: calc(1.4vw + 160px);
     cursor: pointer;
     z-index: 2147483645;
 }
@@ -106,7 +107,7 @@
 
 .aipAd {
     z-index: 20000;
-    width: calc(15% - 12px);
+    width: 160px;
     height: calc(100% - 12vh);
     align-self: flex-end;
 }

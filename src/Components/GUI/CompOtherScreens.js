@@ -28,7 +28,7 @@ function CompOtherScreens() {
     if (!level || level === 0 || startTime === -1) return Infinity;
     let totalInfo =
       MACHINESINFO[
-      `${MACHINESINFO.machineTypeFromIDS[machineTypeID-1]}MachineInfo`
+      `${MACHINESINFO.machineTypeFromIDS[machineTypeID - 1]}MachineInfo`
       ];
     let tierInfo = totalInfo?.[`tier${level}`];
     let timeRemainingSecs = Math.ceil(
@@ -45,7 +45,7 @@ function CompOtherScreens() {
         setMachineDone(true);
         break;
       }
-      if(i === 6) {
+      if (i === 6) {
         setMachineDone(false)
       }
       if ((!closestTime || timeRemaining < closestTime) && isFinite(timeRemaining)) {
@@ -59,7 +59,7 @@ function CompOtherScreens() {
         setMachineDone(true);
       }, [closestTime * 1000])
     }
-    
+
     return () => {
       clearTimeout(machineDoneTimer);
     }
