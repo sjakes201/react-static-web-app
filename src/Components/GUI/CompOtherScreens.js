@@ -38,9 +38,10 @@ function CompOtherScreens() {
   }
 
   useEffect(() => {
+    if(!machines || Object.keys(machines).length === 0) return;
     let closestTime = 0;
     for (let i = 1; i <= 6; ++i) {
-      let timeRemaining = machineTimeRemaining(machines[`Slot${i}`], machines[`Slot${i}Level`], machines[`Slot${i}StartTime`]);
+      let timeRemaining = machineTimeRemaining(machines?.[`Slot${i}`], machines?.[`Slot${i}Level`], machines?.[`Slot${i}StartTime`]);
       if (timeRemaining <= 0) {
         setMachineDone(true);
         break;
