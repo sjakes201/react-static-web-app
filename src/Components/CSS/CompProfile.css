@@ -40,6 +40,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+    position: relative;
 }
 
 .login-prompt {
@@ -47,6 +49,21 @@
     width: 20%;
     flex: 1;
     position: relative;
+}
+
+.profile-dc-button {
+    position: absolute;
+    height: 20%;
+    bottom: 30%;
+    right: 15%;
+    background-color: transparent;
+    border: none;
+}
+
+.profile-dc-button img {
+    height: 100%;
+    object-fit: contain;
+    max-width: 100%;;
 }
 
 .login-button {
@@ -76,6 +93,13 @@
     object-fit: contain;
     background-color: transparent;
     border: none;
+}
+
+#seasons-button-img {
+    max-height: 90%;
+    border-bottom-left-radius: 30%;
+    border-bottom-right-radius: 30%;
+    border-bottom: 2px solid black;
 }
 
 .seasons-button>img {
@@ -185,6 +209,7 @@
     font-size: 1.5vh;
     z-index: 5;
     margin-bottom: 2px;
+    margin-right: .7vw;
 }
 
 .orderNotice {
