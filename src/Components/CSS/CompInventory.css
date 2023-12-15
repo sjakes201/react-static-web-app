@@ -116,6 +116,7 @@
     justify-content: center;
     height: 77%;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 5px;
     background-color: var(--menu_dark);
 }

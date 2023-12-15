@@ -85,22 +85,22 @@ function MachinesScreen() {
     // Check inputs
     if (![1, 2, 3, 4, 5, 6].includes(slot)) {
       console.log(`Invalid slot: ${slot}`);
-      return;
+      return false;
     }
     if (![1, 2, 3].includes(tier)) {
       console.log(`Invalid tier: ${tier}`);
-      return;
+      return false;
     }
     if (!["cheese", "cloth", "mayonnaise"].includes(type)) {
       console.log(`Invalid type: ${type}`);
-      return;
+      return false;
     }
 
     // check if they have the parts and the balance
     let costs = MACHINESINFO[`${type}MachineCost`][`tier${tier}`];
     if (costs.Money > getBal()) {
       console.log("Insufficient funds");
-      return;
+      return false;
     }
     if (
       costs.Gears > parts.Gears ||
@@ -108,7 +108,7 @@ function MachinesScreen() {
       costs.Bolts > parts.Bolts
     ) {
       console.log("Insufficient parts");
-      return;
+      return false;
     }
     updateBalance(-1 * costs.Money);
     setParts((old) => {
@@ -134,7 +134,6 @@ function MachinesScreen() {
           slot: slot,
           tier: tier,
         });
-        console.log(res)
       }
     } catch (error) {
       if (error.message.includes("401")) {
@@ -144,7 +143,9 @@ function MachinesScreen() {
       } else {
         console.log(error);
       }
+      return false;
     }
+    return true
   };
 
   const startMachine = async (slot, machineTypeID, ingredients) => {

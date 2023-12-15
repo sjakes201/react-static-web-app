@@ -28,6 +28,19 @@ function MachineUnit({
   // Running means there's produce in it, done means the timer is done
   const [machineRunning, setRunning] = useState(machineInfo.startTime !== -1);
   const [machineDone, setDone] = useState(timeRemainingSecs <= 0);
+  const [buildingAnimation, setBuildingAnimation] = useState(false)
+
+  useEffect(() => {
+    let timerID = null;
+    if (buildingAnimation) {
+      timerID = setTimeout(() => {
+        setBuildingAnimation(false)
+      }, 1400)
+    }
+    return () => {
+      clearTimeout(timerID)
+    }
+  }, [buildingAnimation])
 
   const [buildGUI, setBuildGUI] = useState(false);
   const [mainGUI, setMainGUI] = useState(false);
@@ -258,8 +271,9 @@ function MachineUnit({
           >
             <button
               className="machineButtonB"
-              onClick={() => {
-                buyMachine(selectedBuild, machineNum, 1);
+              onClick={async () => {
+                let res = await buyMachine(selectedBuild, machineNum, 1);
+                if (res) setBuildingAnimation(true)
                 setBuildGUI(false);
               }}
             >
@@ -578,10 +592,11 @@ function MachineUnit({
         </div>
         <div
           style={{ width: "100%", textAlign: "center" }}
-          onClick={() => {
+          onClick={async () => {
             let typeName = MACHINESINFO.machineTypeFromIDS[machineInfo.ID];
             let nextTier = machineInfo.level + 1;
-            buyMachine(typeName, machineNum, nextTier);
+            let res = buyMachine(typeName, machineNum, nextTier);
+            if (res) setBuildingAnimation(true)
             setMainGUI(false);
           }}
         >
@@ -626,6 +641,10 @@ function MachineUnit({
         alignItems: "center",
       }}
     >
+      {buildingAnimation && <img
+        className='construction-animation'
+        src={`${process.env.PUBLIC_URL}/assets/images/machines/construction.gif`}
+      />}
       {sellConfirmGUI && (
         <div className="sellConfirmGUI">
           <div
