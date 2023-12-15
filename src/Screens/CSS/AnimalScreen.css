@@ -1,7 +1,7 @@
 .app3 {
     height: 100vh;
     display: grid;
-    grid-template-columns: 80vw 20vw;
+    grid-template-columns: auto minmax(300px, 20vw);
     position: relative;
 }
 
@@ -94,11 +94,13 @@
 }
 
 .inventory {
-    height: 55vh;
+    height: calc(75vh - 90px - 170px);
+    background-color: rgb(158, 92, 45);
 }
 
 .settings {
-    height: 20vh;
+    min-height: calc(90px + 170px);
+    height: calc(90px + 170px);
     
     display: flex;
     flex-direction: column;

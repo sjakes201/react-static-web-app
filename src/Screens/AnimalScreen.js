@@ -10,7 +10,6 @@ import { GameContext } from "../GameContainer";
 
 import { useNavigate } from "react-router-dom";
 
-import AdinPlayAd from "../AdinPlayAd";
 
 function AnimalScreen() {
   const navigate = useNavigate();
@@ -200,64 +199,7 @@ function AnimalScreen() {
           />
         </div>
         <div className="settings">
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              width: "100%",
-              height: "60px",
-              justifyContent: "space-evenly",
-              position: "absolute",
-              top: "0",
-            }}
-          >
-            <div
-              style={{
-                position: "relative",
-                width: "120px",
-                height: "60px",
-                zIndex: "2000",
-              }}
-            >
-              <div>
-              </div>
-            </div>
-          </div>
-          {/* <a target='_blank' href="/updateNotes.html" style={{ fontSize: '.7vw', marginRight: '1%' }}>update notes </a> */}
-          <div
-            style={{
-              width: "70%",
-              height: "3vh",
-              position: "absolute",
-              bottom: "1vh",
-              left: "30%",
-              fontSize: "1vw",
-            }}
-          >
-            {/* <a
-              target="_black"
-              href="https://discord.gg/jrxWrgNCHw"
-              style={{
-                fontSize: ".9vw",
-                textDecoration: "underline",
-                height: "100%",
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/images/discord.png`}
-                style={{ height: "65%", marginRight: "2%" }}
-              ></img>
-              Game Discord
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/images/discord.png`}
-                style={{ height: "65%", marginLeft: "2%" }}
-              ></img>
-            </a> */}
-          </div>
+          
         </div>
       </div>
     </div>

@@ -77,6 +77,11 @@ const allRailUnits = [
   }
 ]
 
+const trendiUnit = [
+  {
+    type: 'trendi_video'
+  }
+]
 const leaderboardTag = [
   {
     type: 'leaderboard_atf',
@@ -98,10 +103,10 @@ function GameContainer() {
     let adUnits = []
     switch (page) {
       case "plants":
-        adUnits.push(...leftBottomRails)
+        adUnits.push(...leftBottomRails, ...trendiUnit)
         break;
       case "animals":
-        adUnits.push(...bottomOnly)
+        adUnits.push(...bottomOnly, ...trendiUnit)
         break;
       case "shop":
         adUnits.push(...bottomRightRails)
