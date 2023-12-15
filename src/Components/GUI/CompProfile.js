@@ -27,11 +27,13 @@ function CompProfile({
   const [tool2, setTool2] = useState(false);
   const [tool3, setTool3] = useState(false);
   const [tool4, setTool4] = useState(false);
+  const [tool5, setTool5] = useState(false);
 
   const ref1 = useRef();
   const ref2 = useRef();
   const ref3 = useRef();
   const ref4 = useRef();
+  const ref5 = useRef();
 
   const handleMouseOver = (buttonNum) => {
     switch (buttonNum) {
@@ -55,6 +57,11 @@ function CompProfile({
           setTool4(true);
         }, 500);
         break;
+      case 5:
+        ref5.current = setTimeout(() => {
+          setTool5(true);
+        }, 500);
+        break;
     }
   };
 
@@ -76,6 +83,10 @@ function CompProfile({
       case 4:
         clearTimeout(ref4.current);
         setTool4(false);
+        break;
+      case 5:
+        clearTimeout(ref5.current);
+        setTool5(false);
         break;
     }
   };
@@ -162,15 +173,43 @@ function CompProfile({
   return (
     <div className={`user-profile ${disableBorder ? "" : "orangeBorder"}`}>
       <div className="user-info">
-        {noPFP !== true && (
-          <div className="pfp">
+
+        {!noPFP && (
+          <div
+            className="pfp"
+            onClick={() =>
+              navigate("/profile", {
+                state: {
+                  from: location.pathname.substring(
+                    1,
+                    location.pathname.length,
+                  ),
+                },
+              })
+            }
+          >
             <img
               src={`${process.env.PUBLIC_URL}/assets/images/profilePics/${profilePic}.png`}
-              alt="homie"
+              alt="profile pic"
             />
+            {tool1 && <div className="toolTip">Profile info</div>}
+
           </div>
         )}
-        <div className="profile-stats">
+
+        <div
+          className="profile-stats clickable"
+          onClick={() =>
+            navigate("/profile", {
+              state: {
+                from: location.pathname.substring(
+                  1,
+                  location.pathname.length,
+                ),
+              },
+            })
+          }
+        >
           <div>{user && user.includes("Farmer-") ? "Farmer" : user}</div>
           {xpProgressBar(xp)}
           <MoneyDisplay amount={bal} />
@@ -200,15 +239,18 @@ function CompProfile({
           )}
           {type === "tall" &&
             <button className='seasons-button basic-center'>
-              <img
-                className='clickable'
-                onClick={() => {
-                  setSeasonsInfoBox(true)
-                }}
-                src={`${process.env.PUBLIC_URL}/assets/images/${getCurrentSeason()}Icon.png`}
-              />
+
             </button>
           }
+
+          <button className='profile-dc-button clickable'>
+            <a
+              target="_blank"
+              href="https://discord.gg/jrxWrgNCHw"
+            >
+              <img src={`${process.env.PUBLIC_URL}/assets/images/discord.png`} />
+            </a>
+          </button>
 
         </div>
       </div>
@@ -221,27 +263,7 @@ function CompProfile({
 
       {type === "tall" && (
         <div className="profileButtons">
-          <div
-            className="profileLink"
-            onMouseOver={() => handleMouseOver(1)}
-            onMouseOut={() => handleMouseOut(1)}
-            onClick={() =>
-              navigate("/profile", {
-                state: {
-                  from: location.pathname.substring(
-                    1,
-                    location.pathname.length,
-                  ),
-                },
-              })
-            }
-          >
-            {tool1 && <div className="toolTip">Profile info</div>}
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/images/accounticon.png`}
-              alt="profile/stats"
-            />
-          </div>
+
           <div
             className={orderNotice ? "profileLink orderNotice" : "profileLink"}
             id="orderboard-button"
@@ -255,6 +277,7 @@ function CompProfile({
               alt="orders"
             />
           </div>
+
           <div
             className="profileLink"
             onMouseOver={() => handleMouseOver(3)}
@@ -276,6 +299,23 @@ function CompProfile({
               alt="leaderboard"
             />
           </div>
+
+          <div
+            className="profileLink"
+            onMouseOver={() => handleMouseOver(5)}
+            onMouseOut={() => handleMouseOut(5)}
+            onClick={() => {
+              setSeasonsInfoBox(true)
+            }}
+          >
+            {tool5 && <div className="toolTip">Season Info</div>}
+            <img
+              alt='seasons info button'
+              id='seasons-button-img'
+              src={`${process.env.PUBLIC_URL}/assets/images/${getCurrentSeason()}Icon.png`}
+            />
+          </div>
+
           <div
             className="profileLink"
             onMouseOver={() => handleMouseOver(4)}
