@@ -69,7 +69,7 @@ function PlantScreen() {
   let appStyle = {
     height: "100vh",
     display: "grid",
-    gridTemplateColumns: "80% 20%",
+    gridTemplateColumns: "auto minmax(300px, 20vw)",
     position: "relative",
     overflow: "hidden",
   };
@@ -134,16 +134,9 @@ function PlantScreen() {
           />
         </div>
         <div className="settings">
-          <div
-            className='settingsBox1'
-          >
-
-          </div>
-          <div
-            className='settingsBox2'
-          >
+         
             
-          </div>
+          
         </div>
       </div>
     </div>

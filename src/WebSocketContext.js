@@ -26,7 +26,6 @@ export function WebSocketProvider({ children }) {
 
   const connectToWebSocketServer = () => {
     let useLocal = false;
-    console.log(process.env.NODE_ENV)
     if(process.env.NODE_ENV !== 'development') {
       useLocal = false;
     }
