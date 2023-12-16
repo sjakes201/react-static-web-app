@@ -31,6 +31,30 @@
         0 0 0 6px var(--black);
 }
 
+.blue-border-medium {
+    box-shadow:
+        0 0 0 1px var(--black),
+        0 0 0 4px var(--blue_light),
+        0 0 0 6px var(--blue_dark),
+        0 0 0 9px var(--black);
+}
+
+.blue-border-thin {
+    box-shadow:
+        0 0 0 1px var(--black),
+        0 0 0 3px var(--blue_light),
+        0 0 0 4px var(--blue_dark),
+        0 0 0 6px var(--black);
+}
+
+.light-blue-border-thin {
+    box-shadow:
+        0 0 0 1px var(--black),
+        0 0 0 3px var(--blue_lighter),
+        0 0 0 4px var(--blue_light),
+        0 0 0 6px var(--black);
+}
+
 .light-border-small {
     box-shadow:
         0 0 0 1px var(--black),

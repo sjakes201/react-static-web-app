@@ -315,11 +315,13 @@ function CompPen({
     let curTime = Date.now();
     let secsPassed = (curTime - Last_produce) / 1000 - 0.1;
 
+    let totalSpeedMultiple = 1;
+
     let inSeason = CONSTANTS.animalSeasons[getCurrentSeason()].includes(Animal_type);
     if (inSeason) {
       let boostPercent = CONSTANTS.VALUES.SEASON_ANIMAL_BUFF;
       let boostChange = 1 + boostPercent;
-      secsPassed *= boostChange;
+      totalSpeedMultiple *= boostChange;
     }
 
     let level = isBarn
@@ -333,17 +335,22 @@ function CompPen({
       let boostPercent =
         TOWNSINFO.perkBoosts.animalTimeLevel[townPerks.animalTimeLevel - 1];
       let boostChange = 1 + boostPercent;
-      secsPassed *= boostChange;
+      totalSpeedMultiple *= boostChange;
     }
 
     activeBoosts?.forEach(boost => {
       if (boost.Type === "TIME" && boost.BoostTarget === "ANIMALS") {
         let boostPercent = BOOSTSINFO[boost.BoostName].boostPercent;
-        secsPassed *= 1 + boostPercent;
+        totalSpeedMultiple *= 1 + boostPercent;
+      } else if (boost.Type === "TIME" && boost.BoostTarget === Animal_type) {
+        let boostName = boost.BoostName;
+        let level = boostName[boostName.length - 1];
+        let boostPercent = BOOSTSINFO?.[`ANIMAL_INDIV_TIME_${level}`]?.boostPercents[Animal_type];
+        totalSpeedMultiple *= 1 + boostPercent;
       }
     })
-
-    return secsNeeded - secsPassed;
+    let adjustedSecondsNeeded = Math.ceil((secsNeeded / totalSpeedMultiple))
+    return adjustedSecondsNeeded - secsPassed;
   }
 
   // Generate random starting coords, takes array of animal objects

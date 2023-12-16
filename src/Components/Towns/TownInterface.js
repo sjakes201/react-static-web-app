@@ -25,8 +25,6 @@ function TownInterface({
   /* The townInfo query will return data based on who requested it */
   const [townInfo, setTownInfo] = useState({});
   const [townShopInfo, setTownShopInfo] = useState({})
-  // GUI useStates
-  const [perksPopup, setPerksPopup] = useState(false);
 
   // Settings GUI useStates and data for submit
   const [settingsGUI, setSettingsGUI] = useState(false);
@@ -516,6 +514,9 @@ function TownInterface({
               setTownShopInfo={setTownShopInfo}
               menuBack={() => setTownScreen("MAIN")}
               myRoleID={townInfo.myRoleID}
+              townInfo={townInfo}
+              setTownInfo={setTownInfo}
+              setRefreshData={setRefreshData}
             />
           )}
         </>
