@@ -81,33 +81,5 @@ module.exports = {
   townLevels: [
     0, 3000, 4000, 5000, 5000, 7000, 8500, 10000, 11000, 12000, 13000, 14500,
     16000, 17000, 18000, 19000, 20000, 22000, 24000, 25000, 28000,
-  ],
-  boostCosts: {
-    CARROT_1: 200,
-    CAULIFLOWER_1: 200,
-    MELON_1: 200,
-    PUMPKIN_1: 200,
-    YAM_1: 200,
-    BEET_1: 200,
-    PARSNIP_1: 200,
-    BAMBOO_1: 200,
-    HOPS_1: 1500,
-    CORN_1: 2000,
-    POTATO_1: 200,
-    BLUEBERRY_1: 2000,
-    GRAPE_1: 200,
-    OATS_1: 200,
-    STRAWBERRY_1: 200,
-    COW_1: 200,
-    CHICKEN_1: 200,
-    DUCK_1: 200,
-    QUAIL_1: 200,
-    YAK_1: 200,
-    SHEEP_1: 200,
-    GOAT_1: 200,
-    OSTRICH_1: 200,
-    LLAMA_1: 200,
-    KIWI_1: 200,
-
-  }
+  ]
 };

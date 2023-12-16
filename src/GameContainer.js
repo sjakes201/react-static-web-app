@@ -564,6 +564,11 @@ function GameContainer() {
         if (boost.Type === "TIME" && boost.BoostTarget === "CROPS") {
           let boostPercent = BOOSTSINFO[boost.BoostName].boostPercent;
           secsPassed *= 1 + boostPercent;
+        } else if (boost.Type === "TIME" && boost.BoostTarget === CONSTANTS.ProduceNameFromID[CropID]) {
+          let boostName = boost.BoostName;
+          let level = boostName[boostName.length - 1];
+          let boostPercent = BOOSTSINFO?.[`CROP_INDIV_TIME_${level}`]?.boostPercents[CONSTANTS.ProduceNameFromID[CropID]];
+          secsPassed *= 1 + boostPercent;
         }
       })
 

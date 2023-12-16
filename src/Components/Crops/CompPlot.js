@@ -473,6 +473,11 @@ function CompPlot({
         if (boost.Type === "TIME" && boost.BoostTarget === "CROPS") {
           let boostPercent = BOOSTSINFO[boost.BoostName].boostPercent;
           secsPassed *= 1 + boostPercent;
+        } else if (boost.Type === "TIME" && boost.BoostTarget === CONSTANTS.ProduceNameFromID[targetTile.CropID]) {
+          let boostName = boost.BoostName;
+          let level = boostName[boostName.length - 1];
+          let boostPercent = BOOSTSINFO?.[`CROP_INDIV_TIME_${level}`]?.boostPercents[CONSTANTS.ProduceNameFromID[targetTile.CropID]];
+          secsPassed *= 1 + boostPercent;
         }
       })
 
@@ -513,6 +518,11 @@ function CompPlot({
           activeBoosts?.forEach(boost => {
             if (boost.Type === "TIME" && boost.BoostTarget === "CROPS") {
               let boostPercent = BOOSTSINFO[boost.BoostName].boostPercent;
+              timeSkip /= 1 + boostPercent;
+            } else if (boost.Type === "TIME" && boost.BoostTarget === CONSTANTS.ProduceNameFromID[targetTile.CropID]) {
+              let boostName = boost.BoostName;
+              let level = boostName[boostName.length - 1];
+              let boostPercent = BOOSTSINFO?.[`CROP_INDIV_TIME_${level}`]?.boostPercents[CONSTANTS.ProduceNameFromID[targetTile.CropID]];
               timeSkip /= 1 + boostPercent;
             }
           })
@@ -583,9 +593,12 @@ function CompPlot({
       activeBoosts?.forEach(boost => {
         if (boost.Type === "TIME" && boost.BoostTarget === "CROPS") {
           let boostPercent = BOOSTSINFO[boost.BoostName].boostPercent;
-          console.log(secsPassed)
-          secsPassed *= 1 + boostPercent;
-          console.log(secsPassed, boostPercent)
+          totalSpeedMultiple *= 1 + boostPercent;
+        } else if (boost.Type === "TIME" && boost.BoostTarget === CONSTANTS.ProduceNameFromID[CropID]) {
+          let boostName = boost.BoostName;
+          let level = boostName[boostName.length - 1];
+          let boostPercent = BOOSTSINFO?.[`CROP_INDIV_TIME_${level}`]?.boostPercents[CONSTANTS.ProduceNameFromID[CropID]];
+          totalSpeedMultiple *= 1 + boostPercent;
         }
       })
 

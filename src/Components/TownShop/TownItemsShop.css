@@ -251,7 +251,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    text-wrap: nowrap;
+}
+
+.t-boost-description {
+    font-size: 0.8vw;
 }
 
 .selected-boost-explain>button {
@@ -259,10 +262,15 @@
     padding: .1vw;
 }
 
-.boost-qty {
+.green-boost {
     color: rgb(69, 251, 69);
 }
 
 .active-boost-status {
     font-weight: bold;
+}
+
+.no-town-permission {
+    opacity: 0.8;
+    filter: brightness(0.9);
 }

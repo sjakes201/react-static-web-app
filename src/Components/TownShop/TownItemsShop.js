@@ -6,12 +6,16 @@ import React, { useState, useEffect, useRef } from "react";
 import TownBoostSlot from "./TownBoostSlot";
 import { useWebSocket } from "../../WebSocketContext";
 
-const purchasableBoosts = ["CARROT_1", "MELON_1", "CAULIFLOWER_1", "PUMPKIN_1", "YAM_1", "BEET_1",
-    "PARSNIP_1", "BAMBOO_1", "HOPS_1", "CORN_1", "POTATO_1", "BLUEBERRY_1", "GRAPE_1", "OATS_1",
-    "STRAWBERRY_1", "COW_1", "CHICKEN_1", "DUCK_1", "QUAIL_1", "YAK_1", "SHEEP_1", "GOAT_1",
-    "OSTRICH_1", "LLAMA_1", "KIWI_1"];
+const purchasableBoosts = [
+    "CARROT_1", "CARROT_TIME_1", "MELON_1", "MELON_TIME_1", "CAULIFLOWER_1", "CAULIFLOWER_TIME_1", "PUMPKIN_1", "PUMPKIN_TIME_1", "YAM_1", "YAM_TIME_1",
+    "BEET_1", "BEET_TIME_1", "PARSNIP_1", "PARSNIP_TIME_1", "BAMBOO_1", "BAMBOO_TIME_1", "HOPS_1", "HOPS_TIME_1", "CORN_1", "CORN_TIME_1",
+    "POTATO_1", "POTATO_TIME_1", "BLUEBERRY_1", "BLUEBERRY_TIME_1", "GRAPE_1", "GRAPE_TIME_1", "OATS_1", "OATS_TIME_1", "STRAWBERRY_1", "STRAWBERRY_TIME_1",
+    "COW_1", "COW_TIME_1", "CHICKEN_1", "CHICKEN_TIME_1", "DUCK_1", "DUCK_TIME_1", "QUAIL_1", "QUAIL_TIME_1", "YAK_1", "YAK_TIME_1", "SHEEP_1",
+    "SHEEP_TIME_1", "GOAT_1", "GOAT_TIME_1", "OSTRICH_1", "OSTRICH_TIME_1", "LLAMA_1", "LLAMA_TIME_1", "KIWI_1", "KIWI_TIME_1"
+];
 
-function TownItemsShop({ townShopInfo, townInfo, setRefreshData }) {
+
+function TownItemsShop({ myRoleID, townShopInfo, townInfo, setRefreshData }) {
     const { waitForServerResponse } = useWebSocket();
 
     const [selectedBoost, setSelectedBoost] = useState(null)
@@ -65,10 +69,9 @@ function TownItemsShop({ townShopInfo, townInfo, setRefreshData }) {
     }
 
     const getAllBoosts = () => {
-        if(!townInfo.activeBoosts) return
-        const activeBoosts = townInfo.activeTownBoosts.map(b => b.BoostName);
+        const activeBoosts = townInfo.activeTownBoosts?.map(b => b.BoostName);
         let boostsArr = purchasableBoosts.map((boost, index) => {
-            return <TownBoostSlot getImageSrc={getImageSrc} key={index} boostName={boost} active={activeBoosts.includes(boost)} setSelected={setSelected} />
+            return <TownBoostSlot getImageSrc={getImageSrc} key={index} boostName={boost} active={activeBoosts?.includes(boost)} setSelected={setSelected} />
         })
         boostsArr.sort((a, b) => {
             if (a.props.active && !b.props.active) {
@@ -76,23 +79,21 @@ function TownItemsShop({ townShopInfo, townInfo, setRefreshData }) {
             } else if (!a.props.active && b.props.active) {
                 return -1;
             } else {
-                return 0;
+                return purchasableBoosts.indexOf(a) - purchasableBoosts.indexOf(b);
             }
         })
 
         return (boostsArr)
 
     }
-
     const getSelectedBoostInfo = () => {
         const target = selectedBoost.split("_")[0]?.toLowerCase();
         const boostInfo = BOOSTSINFO.townBoostsInfo?.[selectedBoost];
         const type = boostInfo.type;
         const cost = boostInfo.cost;
         const duration = boostInfo.duration;
-        const boostQty = boostInfo.qty;
         const isAnimal = target in UPGRADES.AnimalProduceMap0;
-        const product = isAnimal ? CONSTANTS[`InventoryDescriptions${boostQty > 1 ? 'Plural' : ''}`][UPGRADES.AnimalProduceMap0[target][0]][0] : target;
+        const product = isAnimal ? CONSTANTS[`InventoryDescriptions`][UPGRADES.AnimalProduceMap0[target][0]][0] : target;
 
         const alreadyActive = townInfo.activeTownBoosts.filter(b => b.BoostName === selectedBoost).length !== 0;
 
@@ -113,15 +114,34 @@ function TownItemsShop({ townShopInfo, townInfo, setRefreshData }) {
                 <div className='selected-boost-explain'>
                     {type === "QTY" &&
                         <>
-                            <p>Gives higher yields to {CONSTANTS.InventoryDescriptionsPlural[target][0]}.</p>
-                            <p className='boost-qty'>
-                                +{boostQty} {product} /{isAnimal ? "collect" : "harvest"}
+                            <p className='t-boost-description'>Gives higher yields to {CONSTANTS.InventoryDescriptionsPlural[target][0]}.</p>
+                            <p className='green-boost'>
+                                +{boostInfo.qty} {product} /{isAnimal ? "collect" : "harvest"}
                             </p>
                             {alreadyActive ? (
                                 <p className='active-boost-status'>Active</p>
                             ) : (
                                 <button
-                                    className={`clickable`}
+                                    disabled={myRoleID < 3}
+                                    className={`${myRoleID >= 3 ? 'clickable' : ''}`}
+                                    onClick={() => buyTownBoost(selectedBoost)}
+                                >BUY</button>
+                            )
+                            }
+                        </>
+                    }
+                    {type === "TIME" &&
+                        <>
+                            <p className='t-boost-description'>Gives faster {isAnimal ? 'produce' : 'growth'} times to {CONSTANTS.InventoryDescriptionsPlural[target][0]}.</p>
+                            <p className='green-boost'>
+                                +{boostInfo.boostPercent * 100}% faster {isAnimal ? 'produce' : 'growth'} time
+                            </p>
+                            {alreadyActive ? (
+                                <p className='active-boost-status'>Active</p>
+                            ) : (
+                                <button
+                                    disabled={myRoleID < 3}
+                                    className={`${myRoleID >= 3 ? 'clickable' : ''}`}
                                     onClick={() => buyTownBoost(selectedBoost)}
                                 >BUY</button>
                             )
@@ -148,6 +168,7 @@ function TownItemsShop({ townShopInfo, townInfo, setRefreshData }) {
 
         if (waitForServerResponse) {
             let res = await waitForServerResponse("buyTownBoost", { boostName: boostName })
+            console.log(res)
             setRefreshData((old) => old + 1)
         }
     }
@@ -171,7 +192,7 @@ function TownItemsShop({ townShopInfo, townInfo, setRefreshData }) {
                 key={key}
                 onClick={() => setSelected(boost.BoostName)}
             >
-                <img className='sna-timer' src={`${process.env.PUBLIC_URL}/assets/images/towns/timer.gif`}/>
+                <img className='sna-timer' src={`${process.env.PUBLIC_URL}/assets/images/towns/timer.gif`} />
                 <img className='sna-img' src={getImageSrc(boost.BoostName)} />
                 <div>
                     <p className='bold'>{boost.Type}</p>
