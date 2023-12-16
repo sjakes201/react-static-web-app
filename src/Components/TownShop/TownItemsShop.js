@@ -125,7 +125,7 @@ function TownItemsShop({ myRoleID, townShopInfo, townInfo, setRefreshData }) {
                                     disabled={myRoleID < 3}
                                     className={`${myRoleID >= 3 ? 'clickable' : ''}`}
                                     onClick={() => buyTownBoost(selectedBoost)}
-                                >BUY</button>
+                                >ACTIVATE</button>
                             )
                             }
                         </>
@@ -143,7 +143,7 @@ function TownItemsShop({ myRoleID, townShopInfo, townInfo, setRefreshData }) {
                                     disabled={myRoleID < 3}
                                     className={`${myRoleID >= 3 ? 'clickable' : ''}`}
                                     onClick={() => buyTownBoost(selectedBoost)}
-                                >BUY</button>
+                                >ACTIVATE</button>
                             )
                             }
                         </>
