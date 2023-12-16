@@ -75,11 +75,11 @@ function ScrollingText() {
             );
           } else if (position === 2) {
             newSplashes.push(
-              `2nd richest player in the game. So close, yet so far.`,
+              `You are the 2nd richest player in the game. So close, yet so far.`,
             );
           } else if (position === 3) {
             newSplashes.push(
-              `3rd richest player in the game. Finally getting seen for your work.`,
+              `You are the 3rd richest player in the game. Finally getting seen for your work.`,
             );
           } else if (position > 3 && position <= 50) {
             newSplashes.push(

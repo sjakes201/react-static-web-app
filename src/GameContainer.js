@@ -532,6 +532,7 @@ function GameContainer() {
       setTownRoleID(data.roleID)
     }
     getTownMessages();
+    fetchBoosts();
   };
 
   const getStage = (PlantTime, CropID, hasTimeFertilizer) => {

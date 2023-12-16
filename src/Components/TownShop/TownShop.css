@@ -22,11 +22,37 @@
     width: 100%;
 }
 
+.town-shop-top-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.town-shop-top-bar > button {
+    margin: -0.5vh 1vw 0 1vw;
+    cursor: pointer;
+    font-size: 1.1vw;
+    padding: 0.2vh 0.3vw;
+    background-color: var(--menu_light);
+    border: 2px solid var(--menu_dark);
+    border-radius: 0.3vw;
+    text-decoration: underline;
+    filter: brightness(0.8);
+}
+
+.active-shop-tab {
+    transform: scale(1.15);
+    filter: brightness(1) !important;
+}
+
 .townFunds {
     font-size: 1vw;
     margin-top: -.6vw;
     background-color: var(--menu_light);
     padding: .5vh 1vh;
+    margin-bottom: .5vh;
+    flex-shrink: 1;
+    margin-right: 2vw;
 }
 
 .townPerkRows {
@@ -36,8 +62,8 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 2vw;
-    gap: 3vh;
+    padding: 2vw 2vw 1vw 2vw;
+    gap: 2vh;
 }
 
 .woodBackground {

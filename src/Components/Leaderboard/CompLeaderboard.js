@@ -66,7 +66,7 @@ function CompLeaderboard({
               id='leaderboard-scroll-box'
             >
               <p>
-                These are the farming leaderboards! Positions refresh every 5
+                These are the farming leaderboards! Positions refresh every couple
                 minutes.
               </p>
               <hr
