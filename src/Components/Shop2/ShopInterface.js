@@ -253,8 +253,8 @@ function ShopInterface() {
             <div className='shop-tabs'>
                 <ShopTab title='Seeds' setCurrentTab={setCurrentTab} currentTab={currentTab} position="leftmost" />
                 <ShopTab title='Animals' setCurrentTab={setCurrentTab} currentTab={currentTab} />
-                <ShopTab title='Upgrades' setCurrentTab={setCurrentTab} currentTab={currentTab} />
-                <ShopTab title='Boosts' setCurrentTab={setCurrentTab} currentTab={currentTab} position="rightmost" />
+                <ShopTab title='Upgrades' setCurrentTab={setCurrentTab} currentTab={currentTab} position="rightmost"/>
+                {/* <ShopTab title='Boosts' setCurrentTab={setCurrentTab} currentTab={currentTab}  /> */}
             </div>
             <div className='shop-contents orange-border'>
                 <div className='shop-grid' ref={shopRef}>
