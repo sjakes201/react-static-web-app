@@ -204,7 +204,7 @@ function ShopInterface() {
                 }
             })
             return firstItems.concat(lastItems);
-        } else if (tab === 'Parts') {
+        } else if (tab === 'Boosts') {
             return <div
                 className='basic-center'
                 style={{
@@ -214,7 +214,7 @@ function ShopInterface() {
                 }}>
                 <i>Coming soon</i>
                 <img
-                    style={{width: '4vw'}}
+                    style={{ width: '4vw' }}
                     src={`${process.env.PUBLIC_URL}/assets/images/chicken_collectible_walking_right.gif`}
                 />
             </div>
@@ -253,8 +253,8 @@ function ShopInterface() {
             <div className='shop-tabs'>
                 <ShopTab title='Seeds' setCurrentTab={setCurrentTab} currentTab={currentTab} position="leftmost" />
                 <ShopTab title='Animals' setCurrentTab={setCurrentTab} currentTab={currentTab} />
-                <ShopTab title='Upgrades' setCurrentTab={setCurrentTab} currentTab={currentTab} position="rightmost"/>
-                {/* <ShopTab title='Parts' setCurrentTab={setCurrentTab} currentTab={currentTab}  /> */}
+                <ShopTab title='Upgrades' setCurrentTab={setCurrentTab} currentTab={currentTab} />
+                <ShopTab title='Boosts' setCurrentTab={setCurrentTab} currentTab={currentTab} position="rightmost" />
             </div>
             <div className='shop-contents orange-border'>
                 <div className='shop-grid' ref={shopRef}>
