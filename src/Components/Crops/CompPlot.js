@@ -100,8 +100,17 @@ function CompPlot({
   };
 
   const fertilize = () => {
+    let desiredFertilizer = equippedFert;
+    let total = fertilizers[desiredFertilizer];
     highlightedTiles.forEach((tileID) => {
-      fertilizeTile(tileID);
+      if (total > 0) {
+        total -= 1;
+        fertilizeTile(tileID);
+      } else {
+        if (aoeFertilizer) {
+          setAoeFertilizer(false)
+        }
+      }
     })
   }
 

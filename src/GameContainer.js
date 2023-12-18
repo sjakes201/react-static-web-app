@@ -19,6 +19,7 @@ import OrderBoard from "./Components/Orders/OrderBoard";
 import NotFound from "./Screens/NotFound";
 import AnimationParent from "./Screens/ScreenEffects/AnimationParent";
 import SeasonsInfo from "./Components/GUI/SeasonsInfo";
+import StatsPage from "./Screens/StatsPage";
 
 import { useWebSocket } from "./WebSocketContext";
 
@@ -867,6 +868,12 @@ function GameContainer() {
             path="/towns/:townName"
             element={
               <TownsScreen />
+            }
+          />
+          <Route
+            path="/stats"
+            element={
+              <StatsPage />
             }
           />
           <Route path='*' element={<NotFound />} />
