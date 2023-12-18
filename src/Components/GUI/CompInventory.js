@@ -21,6 +21,8 @@ function CompInventory({
   showFertilizer,
   setEquippedFert,
   equippedFert,
+  setAoeFertilizer,
+  aoeFertilizer
 }) {
   //Tooltip code
   const { level, setMoreInfo, moreInfo } = useContext(GameContext)
@@ -294,6 +296,16 @@ function CompInventory({
             <p>x{fertilizers.TimeFertilizer}</p>
           </div>
         </div>
+        <div className='aoe-fert-checkbox'>
+          <input
+            type="checkbox"
+            id="aoe-fert-checkbox"
+            name="aoe-fert-checkbox"
+            checked={aoeFertilizer}
+            onChange={() => setAoeFertilizer((old) => !old)}
+          />
+          <label htmlFor="aoe-fert-checkbox"> Multi-Fertilize {"("}3x3{")"}</label>
+        </div>
         {fertInfo !== "" && (
           <p className="fertTextDescription">
             {CONSTANTS.fertilizerInfo[fertInfo]}
@@ -311,11 +323,11 @@ function CompInventory({
       >
         <div className="selected-item-info">
           <div className='info-left-column'>
-            <img 
-            className='selected-item-img' 
-            src={selectedItem.image} 
-            alt={selectedItem.name} 
-            onClick={() => handleClick(selectedItem.name)}
+            <img
+              className='selected-item-img'
+              src={selectedItem.image}
+              alt={selectedItem.name}
+              onClick={() => handleClick(selectedItem.name)}
             />
           </div>
           <summary>
@@ -354,7 +366,10 @@ function CompInventory({
                 <img
                   src={`${process.env.PUBLIC_URL}/assets/images/GUI/cancel.png`}
                   className="toolIcon"
-                  onClick={() => setTool("")}
+                  onClick={() => {
+                    setTool("");
+
+                  }}
                 />
               )}
               {tool !== "multiplant" && (
@@ -392,7 +407,10 @@ function CompInventory({
           {showFertilizer && equippedFert !== "" && (
             <div className="dequipFertilizer">
               <img
-                onClick={() => setEquippedFert("")}
+                onClick={() => {
+                  setEquippedFert("");
+                  setAoeFertilizer(false);
+                }}
                 src={`${process.env.PUBLIC_URL}/assets/images/cancel.png`}
               />
             </div>

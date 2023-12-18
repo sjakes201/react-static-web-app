@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useWebSocket } from "../../WebSocketContext";
 import TOWNSINFO from "../../TOWNSINFO";
 import { GameContext } from "../../GameContainer";
-import { getCropQty } from "../../Helpers/plantHelpers";
+import { calcCropYield } from "../../Helpers/farmHelpers";
 
 function CompPlot({
   tool,
@@ -19,6 +19,8 @@ function CompPlot({
   updateInventory,
   setOrderNotice,
   items,
+  aoeFertilizer,
+  setAoeFertilizer
 }) {
   const { waitForServerResponse } = useWebSocket();
   const { townPerks, tiles, setTiles, updateXP, getXP, getUpgrades, setParts, getTiles, moreInfo, getStage, getCurrentSeason, activeBoosts } = useContext(GameContext)
@@ -42,12 +44,12 @@ function CompPlot({
 
   // Logic for multi action hovering
   const setHovering = (tileID) => {
-    if (tool === "") {
+    if (tool === "" && !aoeFertilizer) {
       // single tile
       setHighlighted([tileID]);
       return;
     }
-    // multiharvest
+    // multitool
     if (tileID % 10 === 0) {
       setHighlighted([
         tileID - 11,
@@ -96,6 +98,12 @@ function CompPlot({
     }
     return true;
   };
+
+  const fertilize = () => {
+    highlightedTiles.forEach((tileID) => {
+      fertilizeTile(tileID);
+    })
+  }
 
   const fertilizeTile = async (tileID) => {
     let desiredFertilizer = equippedFert;
@@ -156,6 +164,8 @@ function CompPlot({
           console.log(error);
         }
       }
+    } else {
+      setAoeFertilizer(false)
     }
   };
 
@@ -247,6 +257,7 @@ function CompPlot({
 
   // Tiles is array of objects {tileID: int, seedName: string}
   const multiPlant = async (seedName) => {
+    if (!(CROPINFO.seedsFromID.includes(seedName))) { console.log("Invalid seed ", seedName); return; }
     // This needs a semaphore lock because update inventory is async for multiple multiplant calls
     let seedCount = items[seedName];
     let allSimRes = [];
@@ -371,6 +382,7 @@ function CompPlot({
                 ...tile,
                 // stage: stage,
                 hasTimeFertilizer: thisTile.hasTimeFertilizer,
+                nextRandom: thisTile.nextRandom
               };
               return newTile;
             } else {
@@ -380,7 +392,7 @@ function CompPlot({
                   tile.PlantTime,
                   tile.CropID,
                   tile.hasTimeFertilizer,
-                ),
+                )
               };
             }
           }),
@@ -407,11 +419,9 @@ function CompPlot({
           });
           tilesResult.updatedTiles.forEach((tile) => {
             if (tile.randomPart) {
-              console.log(`got ${tile.randomPart}`);
               setParts((oldParts) => {
                 let newParts = { ...oldParts };
                 newParts[tile.randomPart] += 1;
-                console.log(newParts);
                 return newParts;
               });
             }
@@ -542,8 +552,7 @@ function CompPlot({
         }
         let seedName = seedIDS[targetTile.CropID];
         let cropName = seedCropMap[seedName];
-        let cropQty = getCropQty(seedName, quantityYieldTable, simRes.YieldsFertilizer, activeBoosts)
-
+        let cropQty = calcCropYield(targetTile.nextRandom, seedName, parseInt(quantityYieldTable[quantityYieldTable.length - 1]), simRes.YieldsFertilizer > 0, activeBoosts)
         if (simRes.YieldsFertilizer > 0) {
           simRes.YieldsFertilizer -= 1;
         }
@@ -686,7 +695,6 @@ function CompPlot({
             partResult={partsGifs[tile.TileID - 1]}
             setHovering={setHovering}
             highlighted={highlightedTiles.includes(tile.TileID)}
-            fertilizeTile={fertilizeTile}
             equippedFert={equippedFert}
             key={index}
             tile={tile}
@@ -694,6 +702,8 @@ function CompPlot({
             tileAction={tileAction}
             moreInfo={moreInfo}
             timeUntilHarvest={timeUntilHarvest}
+            aoeFertilizer={aoeFertilizer}
+            fertilize={fertilize}
           />
         );
       })}
