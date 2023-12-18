@@ -20,7 +20,7 @@ module.exports = {
       winter: []
   },
   fertilizerInfo: {
-    YieldsFertilizer: "Tile's next 10 harvests receive higher yields",
+    YieldsFertilizer: "Tile's next 10 harvests receive a higher chance of higher yields",
     HarvestsFertilizer: "Tile's next 5 seeds plants receive 1 extra harvest",
     TimeFertilizer: "Tile gets double growth speed for next 10 minutes",
   },

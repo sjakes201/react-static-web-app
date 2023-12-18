@@ -16,9 +16,10 @@ function CompTile({
   stage,
   tileAction,
   equippedFert,
-  fertilizeTile,
   moreInfo,
-  timeUntilHarvest
+  timeUntilHarvest,
+  aoeFertilizer,
+  fertilize
 }) {
   const [imgURL, setImgURL] = useState(
     `${process.env.PUBLIC_URL}/assets/images/dirt.png`,
@@ -57,8 +58,8 @@ function CompTile({
   }, [gif]);
 
   const onTileClick = async (e) => {
-    if (equippedFert !== "") {
-      fertilizeTile(tile.TileID);
+    if (equippedFert !== "" || aoeFertilizer) {
+      fertilize();
       return;
     }
     let equipped = sessionStorage.getItem("equipped");
@@ -110,7 +111,6 @@ function CompTile({
 
   useEffect(() => {
     if (partResult !== "") {
-      console.log(partResult)
       setPartToAnimate(partResult);
       setAnimatePart(true);
       setTimeout(() => {
@@ -154,7 +154,9 @@ function CompTile({
     imgStyle.cursor = "grab";
   }
 
-  if (highlighted && tool !== "") {
+  if(highlighted && aoeFertilizer) {
+    imgStyle.boxShadow = `0 0 3px 2px darkgray`;
+  } else if (highlighted && tool !== "") {
     imgStyle.boxShadow = `0 0 3px 2px ${tool === "multiharvest" ? "gold" : "lightblue"}`;
   }
 

@@ -249,7 +249,15 @@
     padding: 5%;
     display: flex;
     flex-direction: column;
+}
 
+.aoe-fert-checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.aoe-fert-checkbox > label {
+    margin-left: 0.2vw;
 }
 
 .fertRow {

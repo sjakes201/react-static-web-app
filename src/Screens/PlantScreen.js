@@ -27,6 +27,7 @@ function PlantScreen() {
   // The rest is for the level up notification system, create notification box only when the change in level is not from init mount (hence the ref)
 
   const [equippedFert, setEquippedFert] = useState("");
+  const [aoeFertilizer, setAoeFertilizer] = useState(false)
 
   useEffect(() => {
     let data = { ...itemsData };
@@ -107,6 +108,8 @@ function PlantScreen() {
               setOrderNotice={setOrderNotice}
               updateInventory={updateInventory}
               items={items}
+              aoeFertilizer={aoeFertilizer}
+              setAoeFertilizer={setAoeFertilizer}
             />
             <div className='bottom-rail-space'>
 
@@ -131,6 +134,8 @@ function PlantScreen() {
             updateInventory={updateInventory}
             showFertilizer={true}
             setEquippedFert={setEquippedFert}
+            setAoeFertilizer={setAoeFertilizer}
+            aoeFertilizer={aoeFertilizer}
           />
         </div>
         <div className="settings">

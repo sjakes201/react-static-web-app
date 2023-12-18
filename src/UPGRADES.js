@@ -26,7 +26,7 @@ module.exports = {
     ],
     barnCollectQuantityUpgrade: [
       "Barn Yields",
-      "Increases the yield of barn animals",
+      "Increases the chance of higher yields for barn animals",
     ],
     barnCapacityUpgrade: ["Barn Capacity", "Increases the total barn capacity"],
     coopCollectTimeUpgrade: [
@@ -35,7 +35,7 @@ module.exports = {
     ],
     coopCollectQuantityUpgrade: [
       "Coop Yields",
-      "Increases the yield of coop animals",
+      "Increases the chance of higher yields for coop animals",
     ],
     coopCapacityUpgrade: ["Coop Capacity", "Increases the total coop capacity"],
     plantGrowthTimeUpgrade: [
@@ -44,7 +44,7 @@ module.exports = {
     ],
     plantHarvestQuantityUpgrade: [
       "Crop Yields",
-      "Increases per harvest crop yields",
+      "Increases the chance of higher yields from crops",
     ],
     plantNumHarvestsUpgrade: [
       "Crop Harvests",

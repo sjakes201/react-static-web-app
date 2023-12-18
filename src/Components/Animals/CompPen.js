@@ -8,7 +8,7 @@ import TOWNSINFO from "../../TOWNSINFO";
 import BOOSTSINFO from "../../BOOSTSINFO";
 import { useWebSocket } from "../../WebSocketContext";
 import { GameContext } from "../../GameContainer";
-import { getCollectQty } from "../../Helpers/animalHelpers";
+import { calcProduceYield } from "../../Helpers/farmHelpers";
 
 
 function CompPen({
@@ -207,7 +207,7 @@ function CompPen({
       let happiness = animal.Happiness;
       let nextRandom = animal.Next_random;
 
-      let qty = getCollectQty(type, quantTableName, happiness, nextRandom, activeBoosts);
+      let qty = calcProduceYield(type, parseInt(quantTableName[quantTableName.length - 1]), happiness, nextRandom, activeBoosts)
 
       updateInventory(UPGRADES[quantTableName][type][0], qty);
       updateXP(CONSTANTS.XP[UPGRADES[quantTableName][type][0]]);
