@@ -8,7 +8,6 @@ function StatsPage({ }) {
 
     const pages = ["Main", "Game stats", "Crops info", "Animals info", "Machines info"]
 
-
     const cropsPage = () => {
         return (<div>
             <p>This page contains information about all crops. Below you can find each crop's growth times and yields, for each upgrade level. You can also
