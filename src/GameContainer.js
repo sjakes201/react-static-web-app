@@ -20,6 +20,7 @@ import NotFound from "./Screens/NotFound";
 import AnimationParent from "./Screens/ScreenEffects/AnimationParent";
 import SeasonsInfo from "./Components/GUI/SeasonsInfo";
 import StatsPage from "./Screens/StatsPage";
+import LoginStreak from "./Components/LoginStreak/LoginStreak";
 
 import { useWebSocket } from "./WebSocketContext";
 
@@ -230,6 +231,9 @@ function GameContainer() {
 
   const [animationsEnabled, setAnimationsEnabled] = useState(localStorage.getItem("disableAnimations") !== "true")
 
+  const [loginStreakInfo, setLoginStreakInfo] = useState({});
+  const [showLoginRewards, setShowLoginRewards] = useState(true);
+
   /* fetch data from server calls */
   const getTownMessages = async () => {
     if (waitForServerResponse) {
@@ -272,6 +276,17 @@ function GameContainer() {
       }
     }
   };
+
+  const refreshLoginStreakInfo = async() => {
+    if (waitForServerResponse) {
+      const response = await waitForServerResponse("getLoginStreakInfo");
+      let data = response.body;
+      if(data.success) {
+        delete data.success
+        setLoginStreakInfo(data)
+      }
+    }
+  }
 
   const getTiles = async (numAttempts) => {
     try {
@@ -478,6 +493,7 @@ function GameContainer() {
     fetchInventory();
     refreshNotifications();
     getProfileInfo();
+    refreshLoginStreakInfo();
 
     addListener(['town_message', handleNewMsg]);
     addListener(['animal_happiness', changeAnimalHappiness])
@@ -505,7 +521,6 @@ function GameContainer() {
   }, [level]);
 
   useEffect(() => {
-    console.log(activeBoosts)
     const boostTimers = [];
     activeBoosts?.forEach((boost) => {
       let timeRemaining = (Number(boost.StartTime) + Number(boost.Duration)) - Date.now();
@@ -774,7 +789,9 @@ function GameContainer() {
     getCurrentSeason,
     getStage,
     setSeasonsInfoBox,
-    activeBoosts
+    activeBoosts,
+    loginStreakInfo,
+    setShowLoginRewards
   }
 
   if (!isConnected) {
@@ -807,6 +824,7 @@ function GameContainer() {
           <ChatBox chatMessages={townChatMsgs} setTownChatMsgs={setTownChatMsgs} />
         )}
         {orderBoard && <OrderBoard />}
+        {showLoginRewards && <LoginStreak />}
         <GoogleAnalyticsReporter />
         <Routes>
           <Route

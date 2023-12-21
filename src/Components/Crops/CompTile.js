@@ -154,7 +154,7 @@ function CompTile({
     imgStyle.cursor = "grab";
   }
 
-  if(highlighted && aoeFertilizer) {
+  if (highlighted && aoeFertilizer) {
     imgStyle.boxShadow = `0 0 3px 2px darkgray`;
   } else if (highlighted && tool !== "") {
     imgStyle.boxShadow = `0 0 3px 2px ${tool === "multiharvest" ? "gold" : "lightblue"}`;
@@ -177,16 +177,45 @@ function CompTile({
       return minString + secString;
     }
 
+    const timeFertString = (fertMS) => {
+      let expiration = fertMS + 10 * 60 * 1000;
+      let timeRemaining = expiration - Date.now();
+      let secsRemaining = Math.floor(timeRemaining / 1000)
+
+      if (secsRemaining <= 0) return "Expired"
+
+      let minString = '';
+      if (secsRemaining > 60) {
+        minString = `${Math.floor(secsRemaining / 60)}m `;
+        secsRemaining = secsRemaining % 60;
+      }
+      let secString = '';
+      if (secsRemaining > 0) {
+        secString = `${secsRemaining}s`;
+      }
+      return minString + secString;
+    }
+
     return (<SmallInfoTile>
       {tile.CropID !== -1 ? (<>
         <p>Crop: {CONSTANTS.InventoryDescriptions[CROPINFO.seedCropMap[CROPINFO.seedsFromID[tile.CropID]]][0]}</p>
         <p>Harvests: {tile.HarvestsRemaining}</p>
         <p>Time: {getTimeString()}</p>
+        {tile.YieldsFertilizer !== 0 && (
+          <p>Yields Fertilizer: {tile.YieldsFertilizer}</p>
+        )}
+        {tile.HarvestsFertilizer !== 0 && (
+          <p>Harvests Fertilizer: {tile.HarvestsFertilizer}</p>
+        )}
+        {tile.TimeFertilizer !== -1 && (
+          <p>Harvests Fertilizer: {timeFertString(tile.TimeFertilizer)}</p>
+        )}
       </>) : (
         <p className='nothing-planted'>Nothing planted</p>
       )}
     </SmallInfoTile>)
   }
+  // console.log(tile)
 
   return (
     <div

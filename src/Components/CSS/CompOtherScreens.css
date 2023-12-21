@@ -23,7 +23,7 @@
         0 0 0 6px var(--border_shadow_yellow),
         0 0 0 8px var(--black);
     position: relative;
-    z-index: 2147483645;
+    z-index: 5000;
 }
 
 .townsButtonContainer {
