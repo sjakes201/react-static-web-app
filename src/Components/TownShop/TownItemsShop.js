@@ -71,7 +71,15 @@ function TownItemsShop({ myRoleID, townShopInfo, townInfo, setRefreshData }) {
     const getAllBoosts = () => {
         const activeBoosts = townInfo.activeTownBoosts?.map(b => b.BoostName);
         let boostsArr = purchasableBoosts.map((boost, index) => {
-            return <TownBoostSlot getImageSrc={getImageSrc} key={index} boostName={boost} active={activeBoosts?.includes(boost)} setSelected={setSelected} />
+            return <TownBoostSlot key={index} 
+            boostName={boost} 
+            active={activeBoosts?.includes(boost)} 
+            setSelected={setSelected} 
+            boostContext='town' 
+            height="calc(100% - 6px)"
+            width="8vw"
+            fontSize='0.9vw'
+            />
         })
         boostsArr.sort((a, b) => {
             if (a.props.active && !b.props.active) {

@@ -5,6 +5,7 @@ import "./LoginStreak.css"
 
 function LoginStreak({ }) {
     const { loginStreakInfo, userNotifications, setShowLoginRewards } = useContext(GameContext)
+    const lastClaimedDay = loginStreakInfo.playerStreak?.[0]?.streakCount;
 
     const pendingRewards = userNotifications.filter(n => n.Type === "LOGIN_STREAK_REWARD").map(r => {
         let parsedReward = JSON.parse(r.Message)
@@ -39,6 +40,7 @@ function LoginStreak({ }) {
                             dayNum={dayInfo.RewardID}
                             reward={dayInfo.Reward}
                             pendingReward={pendingRewards.filter((r => r.streakCount === dayInfo.RewardID))?.[0]}
+                            playerLastClaimed={lastClaimedDay}
                         />)
                     })}
                 </div>

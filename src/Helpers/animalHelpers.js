@@ -14,7 +14,6 @@ const getCurrentSeason = () => {
 const getCollectQty = (animalType, quantityTableName, happiness, nextRandom, activeBoosts) => {
     let qty = UPGRADES[quantityTableName][animalType][1]
     let inSeason = CONSTANTS.animalSeasons[getCurrentSeason()].includes(animalType);
-    console.log(activeBoosts)
     let probOfExtra = happiness > 1 ? 0.67 : happiness / 1.5;
     if (inSeason) {
         probOfExtra += 0.1

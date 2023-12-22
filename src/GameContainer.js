@@ -232,7 +232,7 @@ function GameContainer() {
   const [animationsEnabled, setAnimationsEnabled] = useState(localStorage.getItem("disableAnimations") !== "true")
 
   const [loginStreakInfo, setLoginStreakInfo] = useState({});
-  const [showLoginRewards, setShowLoginRewards] = useState(true);
+  const [showLoginRewards, setShowLoginRewards] = useState(false);
 
   /* fetch data from server calls */
   const getTownMessages = async () => {

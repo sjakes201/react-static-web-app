@@ -35,6 +35,22 @@
     margin: 0.5vw;
     border: 1px solid black;
     border-radius: 0.3vw;
+    background-color: var(--menu_lightest);
+    box-shadow:
+        -3px 3px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+}
+
+.past-login-day {
+    filter: grayscale(0.3) brightness(0.9);
+}
+
+.future-login-day:hover {
+    filter: brightness(1.05);
+    box-shadow:
+        -4px 4px 0 rgba(0, 0, 0, 0.5);
+    /* transform: translate(1px, -1px); */
 }
 
 .login-day-num {
@@ -130,4 +146,30 @@
     width: 70%;
     max-height: 100%;
     object-fit: contain;
+}
+
+.boost-reward-container {
+    width: 100%;
+    height: 80%;
+    position: relative;
+}
+
+.pending-login-reward {
+    background-color: lightskyblue;
+    transform: scale(1.1);
+}
+
+.login-reward-today {
+    position: absolute;
+    font-size: 0.9vw;
+    bottom: -1vw;
+    width: 100%;
+}
+
+.login-reward-today>p {
+    background-color: var(--menu_lightest);
+    border: 1px solid black;
+    border-radius: 0.3vw;
+    padding: 0.1vw 0.2vw;
+    z-index: 1000;
 }
