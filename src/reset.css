@@ -22,6 +22,35 @@
   --soft_black: rgb(18, 18, 18);
   --soft_white: rgb(237, 237, 237); 
   --shop_brown: #ad7b4ad8;
+
+  --purple_3: rgb(152, 11, 152);
+  --purple_3_dark: rgb(131, 17, 131);
+  --purple_3_shadow: rgb(131, 6, 131);
+
+  --purple_2: rgb(215, 40, 215);
+  --purple_2_dark: rgb(194, 45, 194);
+  --purple_2_shadow: rgb(205, 29, 205);
+  
+  --purple_1: rgb(255, 73, 255);
+  --purple_1_dark: rgb(230, 79, 230);
+  --purple_1_shadow: rgb(226, 50, 226);
+
+
+
+  --blue_1: rgb(73, 197, 255);
+  --blue_1_dark: rgb(65, 177, 230);
+  --blue_1_shadow: rgb(54, 180, 239);
+
+  
+  --blue_2: rgb(51, 174, 231);
+  --blue_2_dark: rgb(52, 156, 205);
+  --blue_2_shadow: rgb(33, 151, 206);
+
+  
+  --blue_3: rgb(40, 118, 220);
+  --blue_3_dark: rgb(34, 102, 190);
+  --blue_3_shadow: rgb(22, 100, 203);
+
 }
 
 /* Box sizing */

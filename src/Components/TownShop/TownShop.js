@@ -45,7 +45,6 @@ function TownShop({ townShopInfo, setTownShopInfo, menuBack, myRoleID, townInfo,
     }
 
     const getItemShop = () => {
-
         return (
             <TownItemsShop myRoleID={myRoleID} townShopInfo={townShopInfo} setTownShopInfo={setTownShopInfo} townInfo={townInfo} setTownInfo={setTownInfo} setRefreshData={setRefreshData} />
         )

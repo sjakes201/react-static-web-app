@@ -55,7 +55,6 @@ function CompOtherScreens() {
     }
     let machineDoneTimer = null;
     if (closestTime && closestTime > 0) {
-      console.log(closestTime)
       machineDoneTimer = setTimeout(() => {
         setMachineDone(true);
       }, [closestTime * 1000])

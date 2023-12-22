@@ -98,25 +98,30 @@
 }
 
 .town-shop-boost-slot {
-    height: calc(100% - 6px);
     margin: 6px;
-    width: 8vw;
     position: relative;
-    background-color: var(--border_yellow);
     border-radius: 1vw;
     border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.town-shop-boost-slot:hover {
+    filter: brightness(1.05);
+    transform: translate(3px, -3px);
+}
+
+.boost-gold {
+    background-color: var(--border_yellow);
     box-shadow:
         inset 0 0 0 2px var(--border_yellow),
         inset 0 0 0 4px var(--border_shadow_yellow),
         inset 0 0 0 5px var(--black),
         -4px 4px 0 goldenrod,
         -8px 8px 0 rgba(0, 0, 0, 0.5);
+
 }
 
-.town-shop-boost-slot:hover {
-    filter: brightness(1.05);
-    transform: translate(3px, -3px);
-    transition: transform 0.2s ease;
+.boost-gold:hover {
     box-shadow:
         inset 0 0 0 2px var(--border_yellow),
         inset 0 0 0 4px var(--border_shadow_yellow),
@@ -124,6 +129,124 @@
         -4px 4px 0 goldenrod,
         -10px 10px 0 rgba(0, 0, 0, 0.4);
 }
+
+.boost-purple-1 {
+    background-color: var(--purple_1);
+    box-shadow:
+        inset 0 0 0 2px var(--purple_1),
+        inset 0 0 0 4px var(--purple_1_dark),
+        inset 0 0 0 5px black,
+        -4px 4px 0 var(--purple_1_shadow),
+        -8px 8px 0 rgba(0, 0, 0, 0.5);
+}
+
+.boost-purple-1:hover {
+    box-shadow:
+        inset 0 0 0 2px var(--purple_1),
+        inset 0 0 0 4px var(--purple_1_dark),
+        inset 0 0 0 5px black,
+        -4px 4px 0 var(--purple_1_shadow),
+        -10px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.boost-purple-2 {
+    background-color: var(--purple_2);
+    box-shadow:
+        inset 0 0 0 2px var(--purple_2),
+        inset 0 0 0 4px var(--purple_2_dark),
+        inset 0 0 0 5px black,
+        -4px 4px 0 var(--purple_2_shadow),
+        -8px 8px 0 rgba(0, 0, 0, 0.5);
+}
+
+.boost-purple-2:hover {
+    box-shadow:
+        inset 0 0 0 2px var(--purple_2),
+        inset 0 0 0 4px var(--purple_2_dark),
+        inset 0 0 0 5px black,
+        -4px 4px 0 var(--purple_2_shadow),
+        -10px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.boost-purple-3 {
+    background-color: var(--purple_3);
+    box-shadow:
+        inset 0 0 0 2px var(--purple_3),
+        inset 0 0 0 4px var(--purple_3_dark),
+        inset 0 0 0 5px black,
+        -4px 4px 0 var(--purple_3_shadow),
+        -8px 8px 0 rgba(0, 0, 0, 0.5);
+}
+
+.boost-purple-3:hover {
+    box-shadow:
+        inset 0 0 0 2px var(--purple_3),
+        inset 0 0 0 4px var(--purple_3_dark),
+        inset 0 0 0 5px black,
+        -4px 4px 0 var(--purple_3_shadow),
+        -10px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.boost-blue-1 {
+    background-color: var(--blue_1);
+    box-shadow:
+        inset 0 0 0 2px var(--blue_1),
+        inset 0 0 0 4px var(--blue_1_dark),
+        inset 0 0 0 5px black,
+        -4px 4px 0 var(--blue_1_shadow),
+        -8px 8px 0 rgba(0, 0, 0, 0.5);
+}
+
+.boost-blue-1:hover {
+    box-shadow:
+        inset 0 0 0 2px var(--blue_1),
+        inset 0 0 0 4px var(--blue_1_dark),
+        inset 0 0 0 5px black,
+        -4px 4px 0 var(--blue_1_shadow),
+        -10px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.boost-blue-2 {
+    background-color: var(--blue_2);
+    box-shadow:
+        inset 0 0 0 2px var(--blue_2),
+        inset 0 0 0 4px var(--blue_2_dark),
+        inset 0 0 0 5px black,
+        -4px 4px 0 var(--blue_2_shadow),
+        -8px 8px 0 rgba(0, 0, 0, 0.5);
+}
+
+.boost-blue-2:hover {
+    box-shadow:
+        inset 0 0 0 2px var(--blue_2),
+        inset 0 0 0 4px var(--blue_2_dark),
+        inset 0 0 0 5px black,
+        -4px 4px 0 var(--blue_2_shadow),
+        -10px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+.boost-blue-3 {
+    background-color: var(--blue_3);
+    box-shadow:
+        inset 0 0 0 2px var(--blue_3),
+        inset 0 0 0 4px var(--blue_3_dark),
+        inset 0 0 0 5px black,
+        -4px 4px 0 var(--blue_3_shadow),
+        -8px 8px 0 rgba(0, 0, 0, 0.5);
+}
+
+.boost-blue-3:hover {
+    box-shadow:
+        inset 0 0 0 2px var(--blue_3),
+        inset 0 0 0 4px var(--blue_3_dark),
+        inset 0 0 0 5px black,
+        -4px 4px 0 var(--blue_3_shadow),
+        -10px 10px 0 rgba(0, 0, 0, 0.4);
+}
+
+
+
+
 
 .slot-not-animated {
     height: calc(90% - 10px);
@@ -171,11 +294,10 @@
 }
 
 .town-boost-info {
-    width: 50%;
+    width: 40%;
     height: 100%;
-    font-size: 0.9vw;
     position: absolute;
-    right: 0;
+    left: 45%;
     top: 0;
     display: flex;
     flex-direction: column;

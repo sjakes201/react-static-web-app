@@ -1,0 +1,175 @@
+.login-rewards-container {
+    width: 45vw;
+    height: 65vh;
+    background-color: var(--menu_lighter);
+    border-radius: 1vw;
+}
+
+.login-rewards-header {
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 1vw;
+    font-size: 1.2vw;
+    position: relative;
+}
+
+.login-rewards-header .closing-x {
+    margin-right: .3vw;
+}
+
+.login-calendar-container {
+    width: 100%;
+    height: 90%;
+    border-top: 1px solid black;
+    display: grid;
+    grid-template-columns: repeat(7, 14.28%);
+    grid-template-rows: repeat(4, 25%);
+}
+
+.login-day-slot {
+    width: calc(100% - 1vw);
+    height: calc(100% - 1vw);
+    margin: 0.5vw;
+    border: 1px solid black;
+    border-radius: 0.3vw;
+    background-color: var(--menu_lightest);
+    box-shadow:
+        -3px 3px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+}
+
+.past-login-day {
+    filter: grayscale(0.3) brightness(0.9);
+}
+
+.future-login-day:hover {
+    filter: brightness(1.05);
+    box-shadow:
+        -4px 4px 0 rgba(0, 0, 0, 0.5);
+    /* transform: translate(1px, -1px); */
+}
+
+.login-day-num {
+    height: 20%;
+    width: 100%;
+    text-align: left;
+    padding-left: .3vw;
+    font-size: 0.85vw;
+}
+
+.fertilizer-icon-container {
+    width: 100%;
+    height: 80%;
+    position: relative;
+}
+
+.fert-core {
+    position: relative;
+}
+
+.fertilizer-icon {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 2vw;
+    width: 2vw;
+    position: absolute;
+}
+
+.fert-reward-count {
+    position: absolute;
+    font-size: 1vw;
+    top: 1vw;
+    left: 1vw;
+    font-weight: bold;
+    color: black;
+}
+
+.big-fert-count {
+    left: 0.8vw;
+}
+
+.fert-icon-t {
+    left: 0vw;
+    top: -1vw;
+    z-index: 1010;
+}
+
+.fert-icon-y {
+    top: -2vw;
+    left: -1vw;
+    z-index: 1005;
+}
+
+.fert-icon-h {
+    left: -2vw;
+    top: -1vw;
+    z-index: 1015;
+}
+
+.fertilizer-icon>img {
+    height: 100%;
+    object-fit: contain;
+}
+
+.premium-currency-container {
+    width: 100%;
+    height: 80%;
+    position: relative;
+}
+
+.prem-reward-icon {
+    width: 60%;
+    max-height: 100%;
+}
+
+.premium-currency-count {
+    position: absolute;
+    font-size: 1vw;
+    right: 1vw;
+    bottom: 0.5vw;
+    font-weight: bold;
+}
+
+.pfp-reward-container {
+    height: 80%;
+    width: 100%;
+    position: relative;
+}
+
+.unlocked-pfp {
+    width: 70%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.boost-reward-container {
+    width: 100%;
+    height: 80%;
+    position: relative;
+}
+
+.pending-login-reward {
+    background-color: lightskyblue;
+    transform: scale(1.1);
+}
+
+.login-reward-today {
+    position: absolute;
+    font-size: 0.9vw;
+    bottom: -1vw;
+    width: 100%;
+}
+
+.login-reward-today>p {
+    background-color: var(--menu_lightest);
+    border: 1px solid black;
+    border-radius: 0.3vw;
+    padding: 0.1vw 0.2vw;
+    z-index: 1000;
+}

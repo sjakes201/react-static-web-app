@@ -141,7 +141,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 2500;
+    z-index: 5001;
     background-color: rgba(255, 245, 245, 0.5);
 }
 
@@ -151,7 +151,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 2500;
+    z-index: 5001;
     background-color: rgba(22, 22, 22, 0.692);
 }
 
@@ -191,23 +191,39 @@
 @keyframes throbbing {
     0% {
         transform: scale(1.5);
-        /* Start big at 150% */
     }
 
     50% {
         transform: scale(1);
-        /* Shrink back to original size */
     }
 
     100% {
         transform: scale(1.5);
-        /* Go back big to 150% */
     }
 }
 
 .throbbing {
     animation: throbbing 2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    /* Adjust the duration and other properties as needed */
+    transform-origin: center;
+    /* Make sure it scales from the center of the element */
+}
+
+@keyframes light-throbbing {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.light-throbbing {
+    animation: light-throbbing 1.5s ease-in-out infinite;
     transform-origin: center;
     /* Make sure it scales from the center of the element */
 }
