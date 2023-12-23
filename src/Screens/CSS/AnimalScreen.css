@@ -94,13 +94,13 @@
 }
 
 .inventory {
-    height: calc(75vh - 90px - 170px);
+    height: calc(75vh - 90px - 30px);
     background-color: rgb(158, 92, 45);
 }
 
 .settings {
-    min-height: calc(90px + 170px);
-    height: calc(90px + 170px);
+    min-height: calc(90px + 30px);
+    height: calc(90px + 30px);
     
     display: flex;
     flex-direction: column;
