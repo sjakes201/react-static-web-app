@@ -74,7 +74,7 @@ function DaySlot({ dayNum, reward, pendingReward, playerLastClaimed, lastRewardT
 
     const premiumCurrency = (count) => {
         return <div className='premium-currency-container basic-center'>
-            <img className='prem-reward-icon' src={`${process.env.PUBLIC_URL}/assets/images/PremiumCurrency.png`} />
+            <img className='prem-reward-icon' src={`${process.env.PUBLIC_URL}/assets/images/premiumCurrency.png`} />
             <p className={`premium-currency-count`}>{count}</p>
 
         </div>
