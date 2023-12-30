@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import CompLeaderboardSlot from "./CompLeaderboardSlot";
 import { GameContext } from "../../GameContainer";
@@ -11,6 +11,8 @@ function CompLeaderboard({
   const { getUser, getUserAlltimeTotals } = useContext(GameContext)
   const userAlltimeTotals = getUserAlltimeTotals()
   const location = useLocation();
+
+  const [showRewards, setShowRewards] = useState(false)
 
   useEffect(() => {
     const subSection = location.state?.subSection;
@@ -26,6 +28,14 @@ function CompLeaderboard({
     }
   }, [location.state]);
 
+  const rewardTierText = (positionStr, amount) => {
+    return <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center',
+     textWrap: 'nowrap', borderBottom: '1px solid var(--menu_lighter)' }}>
+      {positionStr}:
+      <img style={{ height: '2vh', margin: '0 0.1vw 0 0.2vw' }} src={`${process.env.PUBLIC_URL}/assets/images/premiumCurrency.png`} />
+      {amount}
+    </div>
+  }
 
   if (
     Object.keys(leadersAll).length === 0 ||
@@ -51,7 +61,7 @@ function CompLeaderboard({
           >
             <img
               src={`${process.env.PUBLIC_URL}/assets/images/HIGHRESHOMIE.png`}
-              style={{ height: "20vh" }}
+              style={{ height: "15vh" }}
             />
             <div
               style={{
@@ -67,14 +77,13 @@ function CompLeaderboard({
             >
               <p>
                 These are the farming leaderboards! Positions refresh every couple
-                minutes.
+                minutes. They contain the total crop and animal produce farmed over the
+                past week and all time.
               </p>
               <hr
                 style={{ width: "50%", marginTop: "2px", marginBottom: "2px" }}
               ></hr>
               <p>
-                They contain the total crop and animal produce farmed over the
-                past week and all time.
               </p>
               <p>
                 Weekly leaderboard resets 11:59PM Sunday (UTC), and all time
@@ -84,15 +93,42 @@ function CompLeaderboard({
                 style={{ width: "50%", marginTop: "2px", marginBottom: "2px" }}
               ></hr>
               <p>
-                The all time leaderboard contains the current richest players'
-                live balances, which decrease as money is spent. Everything else
-                are all time totals: even if you sell your goods.
+                You can earn 
+                gold <img src={`${process.env.PUBLIC_URL}/assets/images/premiumCurrency.png`} style={{ width: '2vw', marginBottom: '-1vh' }} /> from
+                 standings in both leaderboards at each weekly reset period!
+                The top 50 positions in each category earn gold, with higher positions earnings more.
               </p>
             </div>
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/images/HIGHRESHOMIE.png`}
-              style={{ height: "20vh" }}
-            />
+            {!showRewards && <img
+              onMouseEnter={() => setShowRewards(true)}
+              src={`${process.env.PUBLIC_URL}/assets/images/premiumCurrency.png`}
+              style={{ width: "15vh", marginLeft: '1vw' }}
+            />}
+            {showRewards && <div style={{ width: '15vh', height: '15vh', position: 'relative', marginLeft: '1vw' }}>
+              <div style={{
+                display: 'grid',
+                gridTemplateRows: '1fr 1fr 1fr 1fr',
+                gridTemplateColumns: '1fr 1fr',
+                padding: '1vw',
+                gap: '1vh',
+                height: '15vh',
+                top: '-1.5vh',
+                left: '0',
+                position: 'absolute'
+              }}
+                onMouseLeave={() => setShowRewards(false)}
+              >
+                {rewardTierText("1st", 50)}
+                {rewardTierText("2nd", 35)}
+                {rewardTierText("3rd", 25)}
+                {rewardTierText("4-5th", 15)}
+                {rewardTierText("6th-7th", 10)}
+                {rewardTierText("14-8th", 5)}
+                {rewardTierText("24-15th", 4)}
+                {rewardTierText("50-25th", 3)}
+              </div>
+            </div>}
+
           </div>
           <div
             style={{

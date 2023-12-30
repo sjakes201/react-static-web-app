@@ -21,6 +21,8 @@ import AnimationParent from "./Screens/ScreenEffects/AnimationParent";
 import SeasonsInfo from "./Components/GUI/SeasonsInfo";
 import StatsPage from "./Screens/StatsPage";
 import LoginStreak from "./Components/LoginStreak/LoginStreak";
+import GeneralSettings from "./Components/GUI/GeneralSettings";
+import NotificationBoard from "./Components/GUI/NotificationBoard";
 
 import { useWebSocket } from "./WebSocketContext";
 
@@ -216,6 +218,7 @@ function GameContainer() {
   let newXP = useRef(false);
 
   const [prices, setPrices] = useState(null);
+  const [premiumCurrency, setPremiumCurrency] = useState(0)
 
   const [itemsData, setItemsData] = useState({});
 
@@ -229,10 +232,37 @@ function GameContainer() {
 
   const [userNotifications, setUserNotifications] = useState([])
 
-  const [animationsEnabled, setAnimationsEnabled] = useState(localStorage.getItem("disableAnimations") !== "true")
-
   const [loginStreakInfo, setLoginStreakInfo] = useState({});
+  const loginGUITimer = useRef(null)
   const [showLoginRewards, setShowLoginRewards] = useState(false);
+
+  const [showSettingsGUI, setShowSettinsGUI] = useState(false)
+  const [showNotifBoard, setShowNotifBoard] = useState(false)
+
+  // All available player boosts to acticate
+  const [pBInventory, setPBInventory] = useState([])
+
+  const [generalConfig, setGeneralConfig] = useState({
+    disableAnimations: false,
+    stackInventory: true,
+  });
+
+  const grabbedConfig = useRef(false)
+
+  useEffect(() => {
+    let oldConfig = localStorage.getItem("generalConfig");
+    if (oldConfig) {
+      setGeneralConfig(JSON.parse(oldConfig))
+    }
+    grabbedConfig.current = true;
+  }, [])
+
+  useEffect(() => {
+    if (grabbedConfig.current) {
+      let configString = JSON.stringify(generalConfig);
+      localStorage.setItem("generalConfig", configString)
+    }
+  }, [generalConfig])
 
   /* fetch data from server calls */
   const getTownMessages = async () => {
@@ -264,6 +294,43 @@ function GameContainer() {
     }
   }
 
+  const pingedForLoginRewards = useRef(false)
+  const viewedLoginRewards = useRef(false)
+  const [alertNotifications, setAlertNotifications] = useState(false)
+  const [alertProfile, setAlertProfile] = useState(false)
+  useEffect(() => {
+    // Check lb rewards
+    if(userNotifications.some(n => n.Type === "LEADERBOARD_PREMIUM_REWARD")) {
+      setAlertNotifications(true)
+      setAlertProfile(true)
+    } else {
+      setAlertNotifications(false)
+      setAlertProfile(false)
+    }
+    // Check login rewards
+    if (!pingedForLoginRewards.current) {
+      pingedForLoginRewards.current = setTimeout(() => {
+        refreshNotifications()
+        refreshLoginStreakInfo()
+      }, 4000)
+    }
+    if (!loginGUITimer.current && userNotifications?.filter(n => n.Type === "LOGIN_STREAK_REWARD").length > 0) {
+      loginGUITimer.current = setTimeout(() => {
+        if (!viewedLoginRewards.current) {
+          setShowLoginRewards(true)
+        } 
+      }, 10000)
+    }
+    console.log(userNotifications)
+  }, [userNotifications])
+
+  useEffect(() => {
+    if (!viewedLoginRewards.current && showLoginRewards) {
+      viewedLoginRewards.current = true;
+    }
+  }, [showLoginRewards])
+
+
   const refreshLeaderboard = async () => {
     if (waitForServerResponse) {
       const response = await waitForServerResponse("leaderboard");
@@ -277,11 +344,11 @@ function GameContainer() {
     }
   };
 
-  const refreshLoginStreakInfo = async() => {
+  const refreshLoginStreakInfo = async () => {
     if (waitForServerResponse) {
       const response = await waitForServerResponse("getLoginStreakInfo");
       let data = response.body;
-      if(data.success) {
+      if (data.success) {
         delete data.success
         setLoginStreakInfo(data)
       }
@@ -331,6 +398,7 @@ function GameContainer() {
         if (response.body.profilePic) {
           setProfilePic(response.body.profilePic)
         }
+        setPremiumCurrency(data.premiumCurrency)
         setBalance(data.Balance);
         setXP(data.XP);
         setUsername(data.Username);
@@ -409,7 +477,6 @@ function GameContainer() {
       if (waitForServerResponse) {
         const response = await waitForServerResponse("getActiveBoosts");
         let boosts = response.body?.activeBoosts;
-        console.log(boosts)
         if (boosts) {
           setActiveBoosts(boosts);
         }
@@ -419,6 +486,25 @@ function GameContainer() {
       console.log(`called with numAttempts: ${numAttempts}, trying fetchBoosts() again with numAtempts: ${numAttempts ? numAttempts + 1 : 1}`)
       if (!Number.isInteger(numAttempts) || numAttempts < 3) {
         fetchBoosts(numAttempts ? numAttempts + 1 : 1)
+      }
+
+    }
+  }
+
+  const fetchBoostsInventory = async (numAttempts) => {
+    try {
+      if (waitForServerResponse) {
+        const response = await waitForServerResponse("getPlayerBoostsInventory");
+        let boosts = response.body?.boosts;
+        if (boosts) {
+          setPBInventory(boosts);
+        }
+      }
+    } catch (error) {
+      console.log(error)
+      console.log(`called with numAttempts: ${numAttempts}, trying fetchBoostsInventory() again with numAtempts: ${numAttempts ? numAttempts + 1 : 1}`)
+      if (!Number.isInteger(numAttempts) || numAttempts < 3) {
+        fetchBoostsInventory(numAttempts ? numAttempts + 1 : 1)
       }
 
     }
@@ -489,6 +575,7 @@ function GameContainer() {
     refreshLeaderboard();
     reloadTownPerks();
     getTiles();
+    fetchBoostsInventory();
 
     fetchInventory();
     refreshNotifications();
@@ -632,7 +719,6 @@ function GameContainer() {
     let seasonIndex = daysPassed % 4;
     return seasons[seasonIndex];
   };
-
 
   const getXP = () => {
     return XP;
@@ -790,8 +876,23 @@ function GameContainer() {
     getStage,
     setSeasonsInfoBox,
     activeBoosts,
+    setActiveBoosts,
     loginStreakInfo,
-    setShowLoginRewards
+    setShowLoginRewards,
+    premiumCurrency,
+    setPremiumCurrency,
+    setShowSettinsGUI,
+    generalConfig,
+    setGeneralConfig,
+    setShowNotifBoard,
+    showNotifBoard,
+    pBInventory,
+    setPBInventory,
+    fetchBoostsInventory,
+    alertNotifications,
+    setAlertNotifications,
+    alertProfile,
+    setAlertProfile
   }
 
   if (!isConnected) {
@@ -811,11 +912,12 @@ function GameContainer() {
         <div style={{
           opacity: (location.pathname === "/plants" || location.pathname === "/animals" || location.pathname === "/") ? 1 : 0,
         }}>
-          {animationsEnabled && <AnimationParent currentSeason={getCurrentSeason()} />}
+          {!generalConfig.disableAnimations && <AnimationParent currentSeason={getCurrentSeason()} />}
         </div>
         {notificationBox && (
           <NotificationBox />
         )}
+        {showSettingsGUI && <GeneralSettings close={() => setShowSettinsGUI(false)} />}
         {seasonsInfoBox && (
           <SeasonsInfo />
         )}
@@ -825,6 +927,7 @@ function GameContainer() {
         )}
         {orderBoard && <OrderBoard />}
         {showLoginRewards && <LoginStreak />}
+        {showNotifBoard && <NotificationBoard />}
         <GoogleAnalyticsReporter />
         <Routes>
           <Route

@@ -16,12 +16,17 @@ const getImageSrc = (boostName, boostContext) => {
             return `${process.env.PUBLIC_URL}/assets/images/${name}.png`
         }
     } else {
-        return `${process.env.PUBLIC_URL}/assets/images/homie.png`
+        if (boostName.includes("CROPS")) {
+            return `${process.env.PUBLIC_URL}/assets/images/cropsPB.png`
+        } else if (boostName.includes("ANIMALS")) {
+
+            return `${process.env.PUBLIC_URL}/assets/images/animalsPB.png`
+        }
 
     }
 }
-// boostContext is either "town" or "player"
-function TownBoostSlot({ boostName, active, setSelected, boostContext, width, height, fontSize, display }) {
+// boostContext is either "town" or "player", display is boolean for removing cost, width and height are CSS, menuIcon is to have no text and both icons
+function TownBoostSlot({ boostName, active, setSelected, boostContext, width, height, fontSize, display, menuIcon }) {
 
     const [tip, setTip] = useState(false)
     const tipTimer = useRef(null)
@@ -30,7 +35,7 @@ function TownBoostSlot({ boostName, active, setSelected, boostContext, width, he
     let color = boostContext === "town" ? "gold" : BOOSTSINFO[boostName]?.color;
 
     let tier = null;
-    if(boostContext === "player") {
+    if (boostContext === "player") {
         tier = boostName[boostName.length - 1]
     }
 
@@ -39,21 +44,22 @@ function TownBoostSlot({ boostName, active, setSelected, boostContext, width, he
             onMouseDown={() => {
                 clearTimeout(tipTimer.current);
                 setTip(false);
-                if(setSelected) setSelected(boostName);
+                if (setSelected) setSelected(boostName);
             }}
-            className={`town-shop-boost-slot boost-${color} ${active ? 'active-town-slot' : 'clickable'}`}
+            className={`town-shop-boost-slot boost-${color} ${active ? 'active-town-slot' : 'clickable'} ${menuIcon ? 'basic-center' : ''}`}
             style={{
                 width: width,
                 height: height,
                 fontSize: fontSize
             }}
         >
+            {menuIcon && <img id='pb-menu-icon' src={`${process.env.PUBLIC_URL}/assets/images/blankPB.png`}/>}
             {(tip && CONSTANTS.InventoryDescriptions[name]?.[0]) &&
                 <div className='boost-tip-container basic-center'>
                     <p className='boost-tip'>{CONSTANTS.InventoryDescriptions[name]?.[0]}</p>
                 </div>
             }
-            <img
+            {!menuIcon && <img
                 onMouseEnter={() => {
                     tipTimer.current = setTimeout(() => {
                         setTip(true);
@@ -65,7 +71,8 @@ function TownBoostSlot({ boostName, active, setSelected, boostContext, width, he
                 }}
                 className='slot-child town-boost-image'
                 src={getImageSrc(boostName, boostContext)}
-            />
+            />}
+            
             <div className='slot-child town-boost-info'>
                 {boostContext === "town" &&
                     <>
@@ -74,10 +81,10 @@ function TownBoostSlot({ boostName, active, setSelected, boostContext, width, he
                         <p>{BOOSTSINFO.townBoostsInfo?.[boostName]?.duration}</p>
                     </>
                 }
-                {boostContext === "player" &&
+                {!menuIcon && boostContext === "player" &&
                     <>
                         <p>{BOOSTSINFO[boostName]?.type}</p>
-                        {!display && <p>${BOOSTSINFO[boostName]?.cost?.toLocaleString()}</p>}
+                        {!display && <p className='premCurBoostCost' ><img src={`${process.env.PUBLIC_URL}/assets/images/premiumCurrency.png`} />{BOOSTSINFO[boostName]?.cost?.toLocaleString()}</p>}
                         <p>{BOOSTSINFO[boostName]?.duration}</p>
                         <p>T{tier}</p>
                     </>

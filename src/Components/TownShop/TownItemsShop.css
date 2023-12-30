@@ -396,3 +396,20 @@
     opacity: 0.8;
     filter: brightness(0.9);
 }
+
+.premCurBoostCost {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.premCurBoostCost > img {
+    width: 20%;
+    object-fit: contain;
+}
+
+#pb-menu-icon {
+    max-width: 70%;
+    max-height: 70%;
+    object-fit: contain;
+}

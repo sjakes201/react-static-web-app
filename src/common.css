@@ -96,6 +96,15 @@
     margin: 11px;
 }
 
+
+.yellow-border-marginless {
+    box-shadow:
+        0 0 0 3px var(--black),
+        0 0 0 6px var(--border_yellow),
+        0 0 0 8px var(--border_shadow_yellow),
+        0 0 0 11px var(--black);
+
+    }
 .yellow-border-thin {
     box-shadow:
         0 0 0 1px var(--black),
@@ -221,6 +230,39 @@
         transform: scale(1);
     }
 }
+
+@keyframes grow-box {
+    0% {
+        transform: scaleX(0) scaleY(0)
+    }
+
+    100% {
+        transform: scaleX(1) scaleY(1)
+    }
+}
+
+@keyframes expand-down {
+    0% {
+        transform: scaleX(1) scaleY(0);
+        transform-origin: top center;
+    }
+
+    100% {
+        transform: scaleX(1) scaleY(1);
+        transform-origin: top center;
+    }
+}
+
+@keyframes grow-vertical {
+    0% {
+        transform: scaleX(1) scaleY(0)
+    }
+
+    100% {
+        transform: scaleX(1) scaleY(1)
+    }
+}
+
 
 .light-throbbing {
     animation: light-throbbing 1.5s ease-in-out infinite;

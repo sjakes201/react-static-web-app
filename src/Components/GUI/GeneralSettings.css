@@ -1,0 +1,33 @@
+.general-settings-container {
+    background-color: var(--menu_lighter);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    font-size: 1vw;
+    padding: 1vw;
+    position: relative;
+    animation: grow-box 0.3s ease-in-out forwards;
+}
+
+.general-settings-x {
+    position: absolute;
+    top: 0.5vw;
+    right: 0.8vw;
+    cursor: pointer;
+}
+
+.general-settings-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.settings-checkbox {
+    margin-right: 0.4vw;
+}
+.general-settings-header {
+    text-align: left;
+    width: 100%;
+    margin-bottom: 0.4vh;
+}

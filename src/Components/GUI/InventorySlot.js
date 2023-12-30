@@ -38,7 +38,7 @@ function InventorySlot({
                     src={`${process.env.PUBLIC_URL}/assets/images/${item}.png`}
                     alt={item}
                 />
-                <ins className="count">{itemCount}</ins>
+                <ins className="count">{itemCount?.toLocaleString()}</ins>
             </>
         ) : (
             <img
