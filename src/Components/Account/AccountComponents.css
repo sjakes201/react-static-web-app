@@ -373,3 +373,15 @@
 .bronzePos {
     color: #cd7f32;
 }
+
+.acc-screen-p-cur {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.acc-screen-p-cur > img {
+    width: 1.8vw;
+    object-fit: contain;
+    margin-right: 0.3vw;
+}

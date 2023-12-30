@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import ScrollingText from "./ScrollingText";
 import { GameContext } from "../../GameContainer";
 import MoneyDisplay from "./MoneyDisplay";
+import AccountDropdown from "./AccountDropdown";
 
 function CompProfile({
   type,
@@ -14,13 +15,15 @@ function CompProfile({
 }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { getBal, getXP, getUser, setLoginBox, setOrderBoard, profilePic, getCurrentSeason, setSeasonsInfoBox } = useContext(GameContext)
+  const { getBal, getXP, getUser, setLoginBox, setOrderBoard, profilePic,
+    getCurrentSeason, setSeasonsInfoBox, premiumCurrency, alertProfile, setAlertProfile } = useContext(GameContext)
 
   const [bal, setBal] = useState(0);
   const [user, setUser] = useState("");
   const [xp, setXP] = useState(0);
 
   const [loggedIn, setLoggedIn] = useState(false);
+  const [dropDown, setDropDown] = useState(false)
 
   // Tooltips for buttons management
   const [tool1, setTool1] = useState(false);
@@ -212,7 +215,13 @@ function CompProfile({
         >
           <div>{user && user.includes("Farmer-") ? "Farmer" : user}</div>
           {xpProgressBar(xp)}
-          <MoneyDisplay amount={bal} />
+          <div className='currencies-area'>
+            <MoneyDisplay amount={bal} />
+            <p className='premium-currency'>
+              <img src={`${process.env.PUBLIC_URL}/assets/images/premiumCurrency.png`} />
+              <MoneyDisplay amount={premiumCurrency} isPremiumCurrency={true} />
+            </p>
+          </div>
 
         </div>
 
@@ -225,18 +234,20 @@ function CompProfile({
               Login
             </button>
           )}
-          {loggedIn && (
-            <button
+          {loggedIn &&
+            <p
+              className={`dropdown-button light-border-small basic-center ${dropDown ? 'dropdown-is-open' : ''}`}
               onClick={() => {
-                localStorage.removeItem("token");
-                navigate("/");
-                window.location.reload(false);
+                setDropDown(true);
+                setAlertProfile(false);
               }}
-              className="login-button clickable"
             >
-              Log out
-            </button>
-          )}
+              {(alertProfile && !dropDown) &&
+                <img className='in-profile-notice' src={`${process.env.PUBLIC_URL}/assets/animations/notice.gif`} />
+              }
+              ▿
+            </p>}
+          {dropDown && <AccountDropdown closeDropDown={() => setDropDown(false)} />}
           {type === "tall" &&
             <button className='seasons-button basic-center'>
 

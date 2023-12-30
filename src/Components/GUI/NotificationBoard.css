@@ -1,0 +1,197 @@
+.notif-board-container {
+    width: 50vw;
+    height: 80vh;
+    background-color: var(--menu_lighter);
+}
+
+.notif-board-header {
+    height: calc(10% - 8px);
+    margin-bottom: 8px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1vw 1.6vw;
+    box-shadow:
+        0 2px 0 0 var(--black),
+        0 4px 0 0 var(--border_yellow),
+        0 6px 0 0 var(--border_shadow_yellow),
+        0 8px 0 0 var(--black);
+    font-size: 1.3vw;
+    position: relative;
+}
+
+.notif-board-header>p {
+    color: var(--menu_dark);
+    margin-right: 0.13vw;
+}
+
+.notif-board-body {
+    height: 90%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.notif-board-scroll {
+    height: 100%;
+    width: 50%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1vh;
+    padding: 1vw;
+}
+
+.notif-board-info {
+    height: 100%;
+    width: 50%;
+    border-left: 1px solid black;
+}
+
+.notif-board-msg-row {
+    height: 10vh;
+    min-height: 10vh;
+    border: 1px solid var(--menu_dark);
+    border-radius: 1vw;
+    width: 100%;
+    position: relative;
+}
+
+.no-notifications {
+    color: gray;
+    font-style: italic;
+    border: none;
+}
+
+.leaderboard-reward-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 1vw;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+}
+
+.leaderboard-icon-suffix {
+    width: 20%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.lb-reward-header {
+    font-size: 1vw;
+}
+
+.notif-date {
+    position: absolute;
+    right: 0.6vw;
+    bottom: 0.5vh;
+    color: gray;
+    font-size: 0.8vw;
+    font-style: italic;
+    cursor: pointer;
+}
+
+.row-info-area {
+    width: 100%;
+    height: 100%;
+}
+
+.row-info-default {
+    height: 100%;
+    width: 100%;
+}
+
+.lb-reward-info-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1vw;
+}
+
+.lb-reward-header-1 {
+    font-size: 1.2vw;
+    border-bottom: 2px solid var(--menu_dark);
+    margin-bottom: 0.5vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.lb-header-icon {
+    width: 20%;
+}
+
+.lb-reward-header-2 {
+    font-size: 1vw;
+    margin-bottom: 1vh;
+}
+
+.lb-reward-header-3 {
+    font-size: 0.8vw;
+    font-style: italic;
+    color: var(--menu_dark);
+}
+
+.unclaimed-lb-rewards {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-y: scroll;
+    height: 60%;
+    /* width: 60%; */
+    padding: 1vw 0;
+    gap: 0.8vh;
+    border: 1px solid var(--menu_light)
+}
+
+.lb-reward-claim {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    padding-right: 1vw;
+}
+
+.lb-reward-claim>button {
+    background-color: var(--menu_lightest);
+    margin-left: 0.5vw;
+    padding: 0.2vw;
+    cursor: pointer;
+}
+
+.lb-reward-pc-count {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    max-width: 20%;
+    height: 100%;
+}
+
+.lb-reward-pc-count > img {
+    width: 40%;
+    object-fit: contain;
+    margin-left: 0.3vw;
+}
+
+.selected-notif-bundle {
+    filter: brightness(1.1);
+    border: 2px solid black;
+    transform: scale(1.02)
+}
+
+.not-selected-bundle {
+    filter: brightness(0.9) grayscale(0.5);
+}

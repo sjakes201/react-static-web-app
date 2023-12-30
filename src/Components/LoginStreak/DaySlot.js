@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import "./LoginStreak.css"
 import TownBoostSlot from '../TownShop/TownBoostSlot'
 
-function DaySlot({ dayNum, reward, pendingReward, playerLastClaimed }) {
-    // console.log(pendingReward)
+function DaySlot({ dayNum, reward, pendingReward, playerLastClaimed, lastRewardTime, claimReward }) {
+
     const rewardObj = JSON.parse(reward)
-    // console.log(rewardObj)
+
+    const [rewardTip, setRewardTip] = useState(false)
+    const tipTimer = useRef(null)
 
     const getPfpNameByID = (pfpID) => {
         switch (pfpID) {
@@ -163,15 +165,60 @@ function DaySlot({ dayNum, reward, pendingReward, playerLastClaimed }) {
         </div>
     }
 
+    const getTimeUntilNext = () => {
+        const oneDayMS = 24 * 60 * 60 * 1000
+        const nextRewardTime = parseInt(lastRewardTime) + oneDayMS;
+        const remainingMS = nextRewardTime - Date.now();
+        const remainingMins = Math.ceil(remainingMS * (1 / 1000) * (1 / 60));
+
+        return `${Math.floor(remainingMins / 60)}h ${remainingMins % 60 > 0 ? `${remainingMins % 60}m` : ``}`
+    }
+
+    const getRewardTipText = () => {
+        if (rewardObj.hasOwnProperty("TimeFertilizer")) {
+            return 'Fertilizers'
+        }
+        if (rewardObj.hasOwnProperty("PremiumCurrency")) {
+            return 'Premium Currency'
+        }
+        if (rewardObj.hasOwnProperty("pfpUnlockID")) {
+            return 'Profile Picture'
+        }
+        if (rewardObj.hasOwnProperty("Gears")) {
+            return 'Artisan Machine Parts'
+        }
+        if (rewardObj.hasOwnProperty("Boost")) {
+            return 'Player Boosts'
+        }
+    }
+
     return (
-        <div className={`login-day-slot ${pendingReward ? 'pending-login-reward light-throbbing clickable' : dayNum > playerLastClaimed ? 'future-login-day' : 'past-login-day'}`}>
+        <div
+            onMouseEnter={() => {
+                tipTimer.current = setTimeout(() => {
+                    setRewardTip(true)
+                }, 800)
+            }}
+            onMouseLeave={() => {
+                clearTimeout(tipTimer.current)
+                setRewardTip(false)
+            }}
+            onClick={() => {
+                if(pendingReward) claimReward(pendingReward.notificationID)
+            }}
+            className={`login-day-slot ${pendingReward ? 'pending-login-reward light-throbbing clickable' : dayNum > playerLastClaimed ? 'future-login-day' : 'past-login-day'}`}>
             <p className='login-day-num'>Day {dayNum}</p>
+            {rewardTip && <div className='basic-center reward-tip-container'>
+                <p className='toolTipText'>
+                    {getRewardTipText()}
+                </p>
+            </div>}
             {rewardObj.hasOwnProperty("TimeFertilizer") && fertilizerIcon(rewardObj.TimeFertilizer, rewardObj.YieldsFertilizer, rewardObj.HarvestsFertilizer)}
             {rewardObj.hasOwnProperty("PremiumCurrency") && premiumCurrency(rewardObj.PremiumCurrency)}
             {rewardObj.hasOwnProperty("pfpUnlockID") && pfpUnlock(rewardObj.pfpUnlockID)}
             {rewardObj.hasOwnProperty("Gears") && partsUnlock(rewardObj.Gears, rewardObj.Bolts, rewardObj.MetalSheets)}
             {rewardObj.hasOwnProperty("Boost") && boostUnlock(rewardObj.Boost)}
-            {(dayNum === playerLastClaimed + 1) && <div className='login-reward-today basic-center'><p>TODAY</p></div>}
+            {(dayNum === playerLastClaimed + 1) && <div className='login-reward-today basic-center'><p>{getTimeUntilNext()}</p></div>}
         </div>
     )
 }

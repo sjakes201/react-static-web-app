@@ -14,7 +14,7 @@ const DISCORD_REDIRECT =
     "https://discord.com/api/oauth2/authorize?client_id=1143367795682320434&redirect_uri=https%3A%2F%2Ffarmgame.live%2FdiscordAuth&response_type=code&scope=identify"
 
 function UserProfile({ username }) {
-    const { getUser } = useContext(GameContext);
+    const { getUser, premiumCurrency } = useContext(GameContext);
     const { waitForServerResponse } = useWebSocket();
     const location = useLocation();
     const navigate = useNavigate();
@@ -148,6 +148,11 @@ function UserProfile({ username }) {
                     <h3 id="acc-username">{profileData?.Username}</h3>
                     <p>XP: {profileData?.XP?.toLocaleString()}</p>
                     <p>Balance: ${profileData?.Balance?.toLocaleString()}</p>
+                    {getUser() === username &&
+                        <p className='acc-screen-p-cur'>
+                            <img src={`${process.env.PUBLIC_URL}/assets/images/premiumCurrency.png`}/>
+                             {premiumCurrency?.toLocaleString()}</p>
+                    }
                 </div>
 
                 <img

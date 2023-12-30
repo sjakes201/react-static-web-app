@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './MoneyDisplay.css'; // Import the CSS file for styling
 
-const MoneyDisplay = ({ amount }) => {
+const MoneyDisplay = ({ amount, isPremiumCurrency }) => {
   const [currentAmount, setCurrentAmount] = useState(amount);
   const [isShaking, setIsShaking] = useState(false);
 
@@ -64,10 +64,12 @@ const MoneyDisplay = ({ amount }) => {
 
   }, [amount]);
 
+  const fractionDigits = isPremiumCurrency ? 0 : 2;
+
   return (
     <div className='money-container'>
       <div className={`${isShaking ? shakeClass : ''}`}>
-        ${currentAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || amount}
+        {isPremiumCurrency ? '' : '$'}{currentAmount.toLocaleString('en-US', { minimumFractionDigits: fractionDigits, maximumFractionDigits: fractionDigits }) || amount}
       </div>
     </div>
 

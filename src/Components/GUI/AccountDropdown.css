@@ -1,0 +1,48 @@
+.dropdown-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: absolute;
+    background-color: rgba(94, 70, 40, 0.85);
+    border: 1px solid var(--menu_dark);
+    z-index: 6000;
+    right: 0.6vw;
+    top: 0.5vw;
+    padding: 0.5vh 1vh;
+    text-wrap: nowrap;
+    animation: expand-down 0.1s ease-in-out forwards;
+
+}
+
+.dropdown-item {
+    font-size: 0.9vw;
+    text-align: center;
+    padding: 0.5vh 0;
+    color: blanchedalmond;
+    border-top: 1px solid var(--menu_light);
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+}
+
+#close-dropdown {
+    text-align: right;
+    width: 100%;
+    font-size: 0.7vw;
+    cursor: pointer;
+    height: 1.4vw;
+    border-top: none;
+}
+
+.dropdown-discord {
+    color: rgb(125, 159, 240);
+    text-decoration: underline;
+}
+
+.in-dropdown-notice {
+    position: absolute;
+    width: 2vw;
+    left: -1.4vw;
+    top: -0.4vw;
+}

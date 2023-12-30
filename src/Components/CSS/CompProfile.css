@@ -207,9 +207,9 @@
     overflow: visible;
     width: 50%;
     height: 100%;
-    font-size: 1.5vh;
+    font-size: 0.9vw;
     z-index: 5;
-    margin-bottom: 2px;
+    text-wrap: nowrap;
     margin-right: .7vw;
 }
 
@@ -250,3 +250,53 @@
         opacity: 0;
     }
 }
+
+.dropdown-button {
+    background-color: var(--menu_lighter);
+    position: absolute;
+    font-size: 0.9vw;
+    width: 1.2vw;
+    height: 1.2vw;
+    right: calc(0.6vw + 4px);
+    top: calc(0.6vw + 4px);
+    opacity: 0.8;
+}
+
+.dropdown-button:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.dropdown-is-open {
+    opacity: 0.3;
+}
+
+.currencies-area {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.9vw;
+}
+
+.premium-currency {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 0.2vw;
+    margin-right: -0.5vw;
+}
+
+.premium-currency > img {
+    height: 1.2vw;
+    object-fit: contain;
+}
+
+.in-profile-notice {
+    position: absolute;
+    width: 2vw;
+    left: -1.45vw;
+    top: -1vw;
+    z-index: 10;
+} 

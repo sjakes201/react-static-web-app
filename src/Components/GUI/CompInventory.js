@@ -4,6 +4,8 @@ import CONSTANTS from "../../CONSTANTS";
 import ANIMALINFO from "../../ANIMALINFO";
 import { GameContext } from "../../GameContainer";
 import InventorySlot from "./InventorySlot";
+import TownBoostSlot from "../TownShop/TownBoostSlot";
+import PbMenu from "./PbMenu";
 
 const MULTIPLANTLEVEL = 20;
 const MULTIHARVESTLEVEL = 20;
@@ -25,7 +27,7 @@ function CompInventory({
   aoeFertilizer
 }) {
   //Tooltip code
-  const { level, setMoreInfo, moreInfo } = useContext(GameContext)
+  const { level, setMoreInfo, moreInfo, generalConfig } = useContext(GameContext)
   const [tip1, setTip1] = useState(false);
   const [tip2, setTip2] = useState(false);
 
@@ -86,6 +88,7 @@ function CompInventory({
 
   // for equipped, from parent
   const [fertilizerMenu, setFerilizerMenu] = useState(false);
+  const [boostsMenu, setBoostsMenu] = useState(false)
   // for which one to display info (not equal to parent, in case they re-open menu and have one equipped)
   const [fertInfo, setFertInfo] = useState("");
 
@@ -184,21 +187,23 @@ function CompInventory({
     return Object.keys(sortedObject).flatMap((item, index) => {
       let totalSlots = [];
       let itemCount = sortedObject[item];
-      while (itemCount > 1000) {
-        totalSlots.push(
-          <InventorySlot
-            key={`${item}+${itemCount}`}
-            handleClick={handleClick}
-            itemCount={1000}
-            item={item}
-            isAnimalScreen={isAnimalScreen}
-            passedID={item.concat(itemCount)}
-            tooltipHandleMouseEnter={tooltipHandleMouseEnter}
-            tooltipHandleMouseLeave={tooltipHandleMouseLeave}
-            activeTooltip={activeTooltip}
-          />
-        );
-        itemCount -= 1000;
+      if (generalConfig.stackInventory) {
+        while (itemCount > 1000) {
+          totalSlots.push(
+            <InventorySlot
+              key={`${item}+${itemCount}`}
+              handleClick={handleClick}
+              itemCount={1000}
+              item={item}
+              isAnimalScreen={isAnimalScreen}
+              passedID={item.concat(itemCount)}
+              tooltipHandleMouseEnter={tooltipHandleMouseEnter}
+              tooltipHandleMouseLeave={tooltipHandleMouseLeave}
+              activeTooltip={activeTooltip}
+            />
+          );
+          itemCount -= 1000;
+        }
       }
       totalSlots.push(
         <InventorySlot
@@ -422,9 +427,16 @@ function CompInventory({
                 src={`${process.env.PUBLIC_URL}/assets/images/fertilizerBlank.png`}
                 onClick={() => setFerilizerMenu(true)}
               />
+              <div onClick={(e) => {setBoostsMenu(true);}} className='boosts-button'>
+                <TownBoostSlot
+                  boostName={"ALL_CROPS_QTY_1"} active={false} display={true} menuIcon={true}
+                  boostContext='player' width='80%' height='4vh' fontSize='0vw' />
+
+                {boostsMenu && <PbMenu closeMenu={(e) => {e.stopPropagation(); setBoostsMenu(false)} }/>}
+              </div>
+
             </div>
           )}
-
           {fertilizerMenu && fertilizerGUI()}
         </div>
         {items && <div className="items-grid">{toLoad()}</div>}

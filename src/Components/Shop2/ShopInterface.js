@@ -8,12 +8,15 @@ import { useWebSocket } from "../../WebSocketContext";
 import ShopItem from './ShopItem'
 import ShopUpgrade from './ShopUpgrade'
 import ShopAnimal from './ShopAnimal'
+import TownBoostSlot from '../TownShop/TownBoostSlot'
 import UPGRADES from '../../UPGRADES'
+import BOOSTSINFO from '../../BOOSTSINFO'
 
 
 
 function ShopInterface() {
-    const { getBal, updateBalance, itemsData, setItemsData, level, getUpgrades, animalsInfo, updateAnimalsInfo, addAnimal, updateUpgrades } = useContext(GameContext);
+    const { getBal, updateBalance, itemsData, setItemsData, level, getUpgrades,
+        animalsInfo, updateAnimalsInfo, addAnimal, updateUpgrades, premiumCurrency, setPremiumCurrency, fetchBoostsInventory } = useContext(GameContext);
     const { waitForServerResponse } = useWebSocket();
 
     /* Shop pin management */
@@ -134,6 +137,45 @@ function ShopInterface() {
         return true
     }
 
+    const [selectedPB, setSelectedPB] = useState(null)
+
+    // Gifs for player boosts buy button
+    const [gif, setGif] = useState(null);
+    const [gifKey, setGifKey] = useState(0);
+
+    useEffect(() => {
+        let resetGiftTimer = null;
+        if (gif !== null) {
+            resetGiftTimer = setTimeout(() => {
+                setGif(null);
+            }, 447)
+        }
+        return () => clearTimeout(resetGiftTimer); // Clean up on unmount
+    }, [gif, gifKey]);
+
+    const buyPB = async (boostName) => {
+        let cost = BOOSTSINFO[boostName]?.cost;
+        if (premiumCurrency < cost) {
+            setGif("fail");
+            setGifKey((prevKey) => prevKey + 1);
+            return false;
+        };
+        setPremiumCurrency((old) => old - cost);
+        if (waitForServerResponse) {
+            let res = await waitForServerResponse("buyPlayerBoost", {
+                boostName: boostName
+            })
+            if (res.body?.success) {
+                fetchBoostsInventory()
+                setGif("success");
+                setGifKey((prevKey) => prevKey + 1);
+            } else {
+                setGif("fail");
+                setGifKey((prevKey) => prevKey + 1);
+            }
+        }
+    }
+
     /* Component building functions */
     const [currentTab, setCurrentTab] = useState("Seeds");
 
@@ -206,20 +248,110 @@ function ShopInterface() {
             return firstItems.concat(lastItems);
         } else if (tab === 'Boosts') {
             return <div
-                className='basic-center'
-                style={{
-                    gridRow: '1/3',
-                    fontSize: '1.1vw',
-                    color: '#222021'
-                }}>
-                <i>Coming soon</i>
-                <img
-                    style={{ width: '4vw' }}
-                    src={`${process.env.PUBLIC_URL}/assets/images/chicken_collectible_walking_right.gif`}
-                />
+                className='basic-center player-boosts-interface'
+            >
+                <div className='player-boosts-shop'>
+                    <div className='pb-shop-grid orange-border-marginless'>
+                        {getBuyablePlayerBoosts()}
+                    </div>
+                    <div className='pb-select-parent basic-center'>
+                        <div className='pb-shop-select-info orange-border-marginless'>
+                            {!selectedPB && <p id='no-selected-pb' className='basic-center'>
+                                Select a boost for more details
+                            </p>}
+                            {selectedPB && <>
+                                <div className='pb-shop-select-boost basic-center'>
+                                    <TownBoostSlot
+                                        boostName={selectedPB} active={false} display={true}
+                                        boostContext='player' width='60%' height='10vh' fontSize='1vw' />
+
+                                </div>
+                                <div className='pb-shop-select-details'>
+                                    <p>
+                                        <u>{BOOSTSINFO[selectedPB]?.name}</u>
+                                    </p>
+                                    <p>
+                                        Type: {BOOSTSINFO[selectedPB]?.type}
+                                    </p>
+                                    <p className='pb-boost-cost'>
+                                        Cost:
+                                        <img src={`${process.env.PUBLIC_URL}/assets/images/premiumCurrency.png`} />
+                                        {BOOSTSINFO[selectedPB]?.cost}
+                                    </p>
+                                    <button onClick={() => {
+                                        buyPB(selectedPB)
+                                    }}
+                                        className={premiumCurrency >= BOOSTSINFO[selectedPB]?.cost ? 'clickable' : ''}
+                                    >
+                                        Buy
+                                        {gif && (
+                                            <img
+                                                key={gifKey}
+                                                src={`${process.env.PUBLIC_URL}/assets/images/${gif}.gif`}
+                                                className="pb-buy-gif"
+                                            />
+                                        )}
+                                    </button>
+                                </div>
+                                <div className='pb-shop-select-paragraph'>
+                                    <p>{BOOSTSINFO[selectedPB]?.info}</p>
+                                    <p>
+                                        {BOOSTSINFO[selectedPB]?.type === 'QTY' &&
+                                            <div className='pb-boost-qtys-list'>
+                                                {boostQtyLists(selectedPB)}
+                                            </div>}
+                                        {BOOSTSINFO[selectedPB]?.type === 'TIME' &&
+                                            <div className='pb-boost-green'>
+                                                {BOOSTSINFO[selectedPB]?.boostPercent * 100}% faster growth times
+                                            </div>}
+                                    </p>
+                                </div>
+                            </>}
+
+                        </div>
+                    </div>
+
+                </div>
             </div>
         }
+    }
 
+    const boostQtyLists = (boostName) => {
+        const getIcon = (boostName) => {
+            let name = boostName.split("_")[0]?.toLowerCase();
+            if (name in UPGRADES.AnimalProduceMap0) {
+                //is animal
+                return `${process.env.PUBLIC_URL}/assets/images/${name}_standing_right.png`
+            } else {
+                // is crop
+                return `${process.env.PUBLIC_URL}/assets/images/${name}.png`
+            }
+        }
+
+        const boosts = BOOSTSINFO[boostName].boostQtys;
+        return <>
+            {Object.keys(boosts).map((item, index) => {
+                return <div className='pb-boost-qty-item' key={index}>
+                    <img src={getIcon(item)} />
+                    <p className='pb-boost-green'>+{boosts[item]}</p>
+                </div>
+            })}
+        </>
+    }
+
+    const getBuyablePlayerBoosts = () => {
+        const buyablePB = [
+            "ALL_CROPS_QTY_1", "ALL_CROPS_QTY_2", "ALL_CROPS_QTY_3", "ALL_ANIMALS_QTY_1", "ALL_ANIMALS_QTY_2", "ALL_ANIMALS_QTY_3",
+            "ALL_CROPS_TIME_1", "ALL_CROPS_TIME_2", "ALL_CROPS_TIME_3", "ALL_ANIMALS_TIME_1", "ALL_ANIMALS_TIME_2", "ALL_ANIMALS_TIME_3"
+        ]
+
+        return (<>
+            {buyablePB.map((boostName, index) => {
+                return <TownBoostSlot
+                    boostName={boostName} active={false} setSelected={(boostName) => { setSelectedPB(boostName) }}
+                    boostContext='player' width='90%' height='10vh' fontSize='1vw' />
+            })}
+        </>)
     }
 
     const animalCapacityViolation = (name) => {
@@ -253,8 +385,8 @@ function ShopInterface() {
             <div className='shop-tabs'>
                 <ShopTab title='Seeds' setCurrentTab={setCurrentTab} currentTab={currentTab} position="leftmost" />
                 <ShopTab title='Animals' setCurrentTab={setCurrentTab} currentTab={currentTab} />
-                <ShopTab title='Upgrades' setCurrentTab={setCurrentTab} currentTab={currentTab} position="rightmost"/>
-                {/* <ShopTab title='Boosts' setCurrentTab={setCurrentTab} currentTab={currentTab}  /> */}
+                <ShopTab title='Upgrades' setCurrentTab={setCurrentTab} currentTab={currentTab} />
+                <ShopTab title='Boosts' setCurrentTab={setCurrentTab} currentTab={currentTab} position="rightmost" />
             </div>
             <div className='shop-contents orange-border'>
                 <div className='shop-grid' ref={shopRef}>

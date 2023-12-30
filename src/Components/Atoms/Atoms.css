@@ -37,6 +37,7 @@
     left: 0;
     pointer-events: none;
     z-index: 8;
+    animation: grow-vertical 0.05s ease-in-out forwards;
 }
 
 .more-info {

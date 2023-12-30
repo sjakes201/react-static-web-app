@@ -72,7 +72,6 @@ function calcProduceYield(animalType, yieldsUpgradeTier, happiness, nextRandom, 
 
     let inSeason = CONSTANTS.animalSeasons[getCurrentSeason()].includes(animalType);
     if(inSeason) roll += 0.1;
-    console.log(inSeason)
 
     // Add to yields based on QTY boosts (final yields factor)
     activeBoosts?.forEach(boost => {

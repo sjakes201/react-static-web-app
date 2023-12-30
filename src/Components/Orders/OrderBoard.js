@@ -162,6 +162,8 @@ function OrderBoard() {
             "0 0 0 3px var(--black), 0 0 0 6px var(--border_orange), 0 0 0 8px var(--border_shadow_orange), 0 0 0 11px var(--black)",
           backgroundColor: "var(--menu_dark)",
           position: "relative",
+          animation: "grow-box 0.2s ease-in-out forwards"
+
         }}
       >
         <div
