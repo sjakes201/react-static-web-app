@@ -123,9 +123,9 @@ function CompLeaderboard({
                 {rewardTierText("3rd", 25)}
                 {rewardTierText("4-5th", 15)}
                 {rewardTierText("6th-7th", 10)}
-                {rewardTierText("14-8th", 5)}
-                {rewardTierText("24-15th", 4)}
-                {rewardTierText("50-25th", 3)}
+                {rewardTierText("8-14th", 5)}
+                {rewardTierText("15-24th", 4)}
+                {rewardTierText("25-50th", 3)}
               </div>
             </div>}
 

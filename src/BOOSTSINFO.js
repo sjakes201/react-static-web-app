@@ -153,7 +153,7 @@ module.exports = {
         boostPercent: 0.2
     },
     ALL_ANIMALS_TIME_1: {
-        info: "Boosts all animals to produce times for 10 min.",
+        info: "Boosts all animals produce times for 10 min.",
         name: "Animals Time Tier 1",
         cost: 25,
         type: "TIME",
@@ -161,7 +161,7 @@ module.exports = {
         boostPercent: 0.2
     },
     ALL_ANIMALS_TIME_2: {
-        info: "Boosts all animals to produce times for 30 min.",
+        info: "Boosts all animals produce times for 30 min.",
         name: "Animals Time Tier 2",
         cost: 50,
         type: "TIME",
@@ -169,7 +169,7 @@ module.exports = {
         boostPercent: 0.2
     },
     ALL_ANIMALS_TIME_3: {
-        info: "Boosts all animals to produce times for 1 hour.",
+        info: "Boosts all animals produce times for 1 hour.",
         name: "Animals Time Tier 3",
         cost: 75,
         type: "TIME",

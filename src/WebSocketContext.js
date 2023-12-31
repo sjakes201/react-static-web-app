@@ -25,7 +25,7 @@ export function WebSocketProvider({ children }) {
   const [auth, setAuth] = useState(1);
 
   const connectToWebSocketServer = () => {
-    let useLocal = true;
+    let useLocal = false;
     if(process.env.NODE_ENV !== 'development') {
       useLocal = false;
     }

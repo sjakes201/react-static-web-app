@@ -302,7 +302,7 @@ function ShopInterface() {
                                             </div>}
                                         {BOOSTSINFO[selectedPB]?.type === 'TIME' &&
                                             <div className='pb-boost-green'>
-                                                {BOOSTSINFO[selectedPB]?.boostPercent * 100}% faster growth times
+                                                {BOOSTSINFO[selectedPB]?.boostPercent * 100}% faster {selectedPB.includes("ANIMAL") ? "produce" : "growth"} times
                                             </div>}
                                     </p>
                                 </div>
