@@ -137,7 +137,7 @@ function NotificationBoard({ }) {
                     <img className='lb-header-icon' src={`${process.env.PUBLIC_URL}/assets/images/leaderboard.png`} />
 
                 </p>
-                <p className='lb-reward-header-2'>You have earned premium currency for each top 50 leaderboard position.</p>
+                <p className='lb-reward-header-2'>You have earned gold for each top 50 leaderboard position.</p>
                 <p className='lb-reward-header-3'>You have the following unclaimed rewards:</p>
                 <div className='unclaimed-lb-rewards'>
                     {positions.map((pos) => {
