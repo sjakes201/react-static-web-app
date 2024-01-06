@@ -970,6 +970,10 @@ function GameContainer() {
             path="/profile"
             element={<Navigate to={`/profile/${Username?.replace(/#/g, "-")}`} />}
           />
+          <Route
+            path="/account"
+            element={<Navigate to={`/`} />}
+          />
           <Route path="/profile/:username" element={<AccountScreen />} />
           <Route path="/discordAuth" element={<DiscordAuthReturn />} />
           <Route path="/passwordReset" element={<PasswordReset />} />
