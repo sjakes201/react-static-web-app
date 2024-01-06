@@ -5,7 +5,7 @@ module.exports = {
     TimeFeritilizeDuration: 600000, //ms duration of time fertilizer
     SEASON_GROWTH_BUFF: 0.15, // 15% faster crop growth for current season crops
     SEASON_ANIMAL_BUFF: 0.10, // 10% faster animal production in season
-    SEED_LIMIT: 250
+    SEED_LIMIT: 300
   },
   cropSeasons: {
     spring: ["bamboo_seeds", "parsnip_seeds", "hops_seeds", "melon_seeds", "carrot_seeds"],

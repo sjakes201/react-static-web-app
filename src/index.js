@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "./reset.css";
 import "./common.css"
 import { CreateGameContainer } from "./GameContainer";
-import { WebSocketProvider } from "./WebSocketContext"; // Make sure the path is correct
+import { WebSocketProvider } from "./WebSocketContext"; 
 import React from "react";
 import { Ramp } from "@playwire/pw-react-component";
 
@@ -12,8 +12,6 @@ import { Ramp } from "@playwire/pw-react-component";
 ReactGA.initialize("G-SW9XV2PGLR");
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-
-// Check if the current path is the Playwire test path
 
 root.render(
   <WebSocketProvider>
