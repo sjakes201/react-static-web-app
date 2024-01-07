@@ -364,7 +364,7 @@ function TownInterface({
               myRoleID={townInfo.myRoleID}
               managementAction={managementAction}
               contributedTownXP={player.contributedTownXP}
-              pfpName={player.pfpName}
+              profilePic={player.profilePic}
               seenString={player.seenString}
             />
           </div>
