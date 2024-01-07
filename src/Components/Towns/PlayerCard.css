@@ -23,6 +23,11 @@
         0 0 0 6px var(--black);
 }
 
+.playerCardPfp {
+    height: 70%;
+    object-fit: contain;
+}
+
 .playerLevel {
     height: 100%;
     width: 10%;
@@ -34,7 +39,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding-left: 3%;
+    padding-left: 1.5%;
 }
 
 .playerUser>span {

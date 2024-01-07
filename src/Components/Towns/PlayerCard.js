@@ -11,13 +11,13 @@ function PlayerCard({
   myRoleID,
   managementAction,
   seenString,
-  contributedTownXP
+  contributedTownXP,
+  profilePic
 }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [demoteConfirm, setDemoteConfirm] = useState(false);
   const demoteTimer = useRef(null);
-
   const [promoteConfirm, setPromoteConfirm] = useState(false);
   const promoteTimer = useRef(null);
 
@@ -147,6 +147,7 @@ function PlayerCard({
           <p className="levelNum">{calcLevel(xp)}</p>
         </div>
       </div>
+      {profilePic && <img className="playerCardPfp" src={`${process.env.PUBLIC_URL}/assets/images/profilePics/${profilePic}.png`}/>}
       <div className="playerUser">
 
         <span
