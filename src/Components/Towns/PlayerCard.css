@@ -24,7 +24,7 @@
 }
 
 .playerCardPfp {
-    height: 70%;
+    height: 5vh;
     object-fit: contain;
 }
 
