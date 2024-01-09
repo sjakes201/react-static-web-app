@@ -83,7 +83,7 @@ const allRailUnits = [
 
 const trendiUnit = [
   {
-    type: 'trendi_video'
+    type: 'corner_ad_video'
   }
 ]
 const leaderboardTag = [

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
+import { useLocation } from 'react-router-dom'
 import { GameContext } from '../../GameContainer'
 import './ShopInterface.css'
 import ShopTab from './ShopTab'
@@ -18,7 +19,7 @@ function ShopInterface() {
     const { getBal, updateBalance, itemsData, setItemsData, level, getUpgrades,
         animalsInfo, updateAnimalsInfo, addAnimal, updateUpgrades, premiumCurrency, setPremiumCurrency, fetchBoostsInventory } = useContext(GameContext);
     const { waitForServerResponse } = useWebSocket();
-
+    const pageLocation = useLocation();
     /* Shop pin management */
     const [pinnedItems, setPinnedItems] = useState([]);
 
@@ -79,6 +80,9 @@ function ShopInterface() {
             const response = await waitForServerResponse("buy", {
                 count: qty,
                 item: seed,
+                usi: {
+                    p: pageLocation.pathname
+                }
             });
 
             if (response.body?.message === "SUCCESS") {
@@ -104,7 +108,10 @@ function ShopInterface() {
 
         if (waitForServerResponse) {
             const response = await waitForServerResponse("buyAnimal", {
-                type: animalType
+                type: animalType,
+                usi: {
+                    p: pageLocation.pathname
+                }
             });
             if (response.body?.message === "SUCCESS") {
                 delete response.body.message;
@@ -131,6 +138,9 @@ function ShopInterface() {
             waitForServerResponse("buyUpgrade", {
                 upgrade: upgradeName,
                 tier: tier,
+                usi: {
+                    p: pageLocation.pathname
+                }
             });
 
         }
@@ -163,7 +173,10 @@ function ShopInterface() {
         setPremiumCurrency((old) => old - cost);
         if (waitForServerResponse) {
             let res = await waitForServerResponse("buyPlayerBoost", {
-                boostName: boostName
+                boostName: boostName,
+                usi: {
+                    p: pageLocation.pathname
+                }
             })
             if (res.body?.success) {
                 fetchBoostsInventory()

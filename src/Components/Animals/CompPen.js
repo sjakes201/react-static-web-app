@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
+import { useLocation } from "react-router-dom";
 import CompAnimal from "./CompAnimal";
 import CONSTANTS from "../../CONSTANTS";
 import UPGRADES from "../../UPGRADES";
@@ -23,6 +24,7 @@ function CompPen({
 }) {
   const { waitForServerResponse } = useWebSocket();
   const { townPerks, updateXP, getXP, getUpgrades, moreInfo, getCurrentSeason, activeBoosts } = useContext(GameContext)
+  const pageLocation = useLocation();
   // 10 per border
   penWidth -= 20;
   penHeight -= 20;
@@ -140,6 +142,9 @@ function CompPen({
           const response = await waitForServerResponse("feedAnimal", {
             animalID: targetAnimal.Animal_ID,
             foodType: feed,
+            usi: {
+              p: pageLocation.pathname
+            }
           });
         }
       } catch (error) {
@@ -216,6 +221,9 @@ function CompPen({
         if (waitForServerResponse) {
           const response = await waitForServerResponse("collect", {
             AnimalID: animal.Animal_ID,
+            usi: {
+              p: pageLocation.pathname
+            }
           });
           let data = response.body;
           let finished = data.finishedOrder;
