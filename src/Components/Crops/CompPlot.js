@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useLocation } from "react-router-dom";
 import CompTile from "./CompTile";
 import CONSTANTS from "../../CONSTANTS";
 import CROPINFO from "../../CROPINFO";
@@ -41,6 +42,7 @@ function CompPlot({
   );
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Logic for multi action hovering
   const setHovering = (tileID) => {
@@ -295,6 +297,9 @@ function CompPlot({
         await waitForServerResponse("multiPlant", {
           tiles: queryTiles,
           seedName: seedName,
+          usi: {
+            p: location.pathname
+          }
         });
       }
     } catch (error) {
@@ -370,6 +375,9 @@ function CompPlot({
         // Ensure `waitForServerResponse` is defined
         const response = await waitForServerResponse("multiHarvest", {
           tiles: idObjects,
+          usi: {
+            p: location.pathname
+          }
         });
         let tilesResult = response.body;
 

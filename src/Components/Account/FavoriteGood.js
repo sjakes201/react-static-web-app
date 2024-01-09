@@ -42,7 +42,7 @@ function FavoriteGood({ profileData, type }) {
                 <div className='fav-good-right-column'>
                     <p>{CONSTANTS.InventoryDescriptionsPlural[favGood]?.[0]}</p>
                     <p>Qty: {profileData[favGood]?.toLocaleString()}</p>
-                    <p>Total XP: {(profileData[favGood] * CONSTANTS.XP[favGood])?.toLocaleString()}</p>
+                    {/* <p>Total XP: {(profileData[favGood] * CONSTANTS.XP[favGood])?.toLocaleString()}</p> */}
                 </div>
             </div>
         </div>)
