@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useRef,
 } from "react";
+import { useLocation } from 'react-router-dom'
 import InitLoading from "./Screens/InitLoading";
 
 const WebSocketContext = createContext(null);
@@ -25,8 +26,8 @@ export function WebSocketProvider({ children }) {
   const [auth, setAuth] = useState(1);
 
   const connectToWebSocketServer = () => {
-    let useLocal = false;
-    if(process.env.NODE_ENV !== 'development') {
+    let useLocal = true;
+    if (process.env.NODE_ENV !== 'development') {
       useLocal = false;
     }
 
@@ -123,6 +124,7 @@ export function WebSocketProvider({ children }) {
         // Optionally, disable the reconnect function or redirect the user
       } else {
         alert("Connection to game server closed. Refresh the page to reconnect.");
+        window.location.reload();
       }
     });
 
@@ -179,6 +181,7 @@ export function WebSocketProvider({ children }) {
     waitForServerResponse,
     addListener,
     removeListener,
+
   };
 
   if (banScreen) { return (<InitLoading banScreen={true} />) }

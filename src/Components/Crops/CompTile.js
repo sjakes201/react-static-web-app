@@ -58,7 +58,7 @@ function CompTile({
   }, [gif]);
 
   const onTileClick = async (e) => {
-    if (equippedFert !== "" || aoeFertilizer) {
+    if (equippedFert !== "") {
       fertilize();
       return;
     }
@@ -154,7 +154,7 @@ function CompTile({
     imgStyle.cursor = "grab";
   }
 
-  if (highlighted && aoeFertilizer) {
+  if (highlighted && aoeFertilizer && equippedFert !== '') {
     imgStyle.boxShadow = `0 0 3px 2px darkgray`;
   } else if (highlighted && tool !== "") {
     imgStyle.boxShadow = `0 0 3px 2px ${tool === "multiharvest" ? "gold" : "lightblue"}`;

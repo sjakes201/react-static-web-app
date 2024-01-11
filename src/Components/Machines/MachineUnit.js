@@ -603,6 +603,7 @@ function MachineUnit({
           <button
             className={`machineButtonD ${machineRunning ? "isRunningUpgrade" : ""
               }`}
+              disabled={machineInfo.startTime != -1}
           >
             UPGRADE
           </button>

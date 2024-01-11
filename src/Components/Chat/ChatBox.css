@@ -60,6 +60,7 @@
     padding: 3% 3%;
     font-size: .9vw;
     overflow-y: auto;
+    overflow-x: hidden;
     gap: 2%;
     position: relative;
     display: flex;
@@ -151,6 +152,9 @@
 
 .msgContent {
     color: rgb(47, 47, 47);
+    text-wrap: wrap;
+    overflow-x: hidden;
+    max-width: 100%;
 }
 
 .msgTimestamp {

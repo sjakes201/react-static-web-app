@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import AnimalScreen from "./Screens/AnimalScreen";
 import PlantScreen from "./Screens/PlantScreen";
 import ShopScreen from "./Screens/ShopScreen";
@@ -99,6 +99,7 @@ function GameContainer() {
   const { addListener, removeListener } = useWebSocket();
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   /* Playwire dynamic ad destroy and display based on pages */
   useEffect(() => {
@@ -139,10 +140,11 @@ function GameContainer() {
     window?.ramp?.que.push(
       () => {
         // Only impacts the leaderboard tag ad in machines, check if they can display 970 width
+
         if (window?.innerWidth < 1515) {
-          window?.ramp?.setPath('728x90-only')
+          window?.ramp?.changePath('728x90-only')
         } else {
-          window?.ramp?.setPath('')
+          window?.ramp?.changePath('')
         }
 
         // Regular ad destroy and recreate
@@ -209,6 +211,7 @@ function GameContainer() {
   const [activeBoosts, setActiveBoosts] = useState([])
 
   const [tiles, setTiles] = useState([]);
+  const [passedMultiTool, setPassedMultiTool] = useState('')
 
   const [townPerks, setTownPerks] = useState({});
   const [townRoleID, setTownRoleID] = useState(-1);
@@ -239,6 +242,8 @@ function GameContainer() {
   const [showSettingsGUI, setShowSettinsGUI] = useState(false)
   const [showNotifBoard, setShowNotifBoard] = useState(false)
 
+  const [disableKeybinds, setDisableKeyBinds] = useState(false)
+
   // All available player boosts to acticate
   const [pBInventory, setPBInventory] = useState([])
 
@@ -263,6 +268,129 @@ function GameContainer() {
       localStorage.setItem("generalConfig", configString)
     }
   }, [generalConfig])
+
+  /* keybinds for navigation */
+  const navShop = () => navigate("/shop", { state: { from: location.pathname?.split("/")?.[1] } })
+  const navPlants = () => navigate("/plants", { state: { from: location.pathname?.split("/")?.[1] } })
+  const navAnimals = () => navigate("/animals", { state: { from: location.pathname?.split("/")?.[1] } })
+  const navMarket = () => navigate("/market", { state: { from: location.pathname?.split("/")?.[1] } })
+  const navTowns = () => navigate("/towns", { state: { from: location.pathname?.split("/")?.[1] } })
+  const navMachines = () => navigate("/machines", { state: { from: location.pathname?.split("/")?.[1] } })
+  const navProfile = () => navigate("/profile", { state: { from: location.pathname?.split("/")?.[1] } })
+
+  useEffect(() => {
+    setDisableKeyBinds(townChatBox)
+  }, [townChatBox])
+
+  useEffect(() => {
+    setDisableKeyBinds(loginBox)
+  }, [loginBox])
+
+  // Function to handle keydown events
+  const handleKeyDown = (event) => {
+    // never disabled
+    if (event.key === 'Escape') {
+      setOrderBoard(false)
+      setTownChatBox(false);
+      setOrderBoard(false);
+      setShowLoginRewards(false);
+      setSeasonsInfoBox(false);
+      setShowSettinsGUI(false);
+      setShowSettinsGUI(false);
+      setShowNotifBoard(false);
+      setLoginBox(false);
+      return
+    }
+
+    if (document.activeElement.tagName === 'INPUT' ||
+      document.activeElement.tagName === 'TEXTAREA' ||
+      document.activeElement.tagName === 'SELECT') {
+      return; // Do nothing if focused on an input, textarea, or select
+    }
+
+    if (disableKeybinds) {
+      return;
+    }
+    if (event.shiftKey) {
+      switch (event.key) {
+        case 'H':
+          if (level < 20) return;
+          setPassedMultiTool((old) => old === 'multiharvest' ? '' : "multiharvest"); break;
+        case 'P':
+          if (level < 20) return;
+          setPassedMultiTool((old) => old === 'multiplant' ? '' : "multiplant"); break;
+        // Add more cases for other combinations if needed
+        default:
+          break;
+      }
+    } else {
+      switch (event.key) {
+        case '1':
+          navShop(); break;
+        case 's':
+          navShop(); break;
+        case 'S':
+          navShop(); break;
+        case '2':
+          navPlants(); break;
+        case 'f':
+          navPlants(); break;
+        case 'F':
+          navPlants(); break;
+        case '3':
+          navAnimals(); break;
+        case 'a':
+          navAnimals(); break;
+        case 'A':
+          navAnimals(); break;
+        case '4':
+          navMarket(); break;
+        case 'm':
+          navMarket(); break;
+        case 'M':
+          navMarket(); break;
+        case '5':
+          navTowns(); break;
+        case 't':
+          navTowns(); break;
+        case 'T':
+          navTowns(); break;
+        case '6':
+          navMachines(); break;
+        case 'p':
+          navProfile(); break;
+        case 'P':
+          navProfile(); break;
+        case 'o':
+          setOrderBoard((old) => !old);
+          break;
+        case 'O':
+          setOrderBoard((old) => !old);
+          break;
+        case 'c':
+          setTownChatBox((old) => !old);
+          break;
+        case 'C':
+          setTownChatBox((old) => !old);
+          break;
+
+        default:
+          break;
+      }
+    }
+
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Clean up the event listener
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [level, disableKeybinds]);
+
+
 
   /* fetch data from server calls */
   const getTownMessages = async () => {
@@ -300,7 +428,7 @@ function GameContainer() {
   const [alertProfile, setAlertProfile] = useState(false)
   useEffect(() => {
     // Check lb rewards
-    if(userNotifications.some(n => n.Type === "LEADERBOARD_PREMIUM_REWARD")) {
+    if (userNotifications.some(n => n.Type === "LEADERBOARD_PREMIUM_REWARD")) {
       setAlertNotifications(true)
       setAlertProfile(true)
     } else {
@@ -318,7 +446,7 @@ function GameContainer() {
       loginGUITimer.current = setTimeout(() => {
         if (!viewedLoginRewards.current) {
           setShowLoginRewards(true)
-        } 
+        }
       }, 10000)
     }
     console.log(userNotifications)
@@ -892,7 +1020,8 @@ function GameContainer() {
     alertNotifications,
     setAlertNotifications,
     alertProfile,
-    setAlertProfile
+    setAlertProfile,
+    setDisableKeyBinds
   }
 
   if (!isConnected) {
@@ -933,13 +1062,13 @@ function GameContainer() {
           <Route
             path="/"
             element={
-              <PlantScreen />
+              <PlantScreen passedTool={passedMultiTool} />
             }
           />
           <Route
             path="/plants"
             element={
-              <PlantScreen />
+              <PlantScreen passedTool={passedMultiTool} />
             }
           />
           <Route
