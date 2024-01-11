@@ -5,7 +5,6 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-import { useLocation } from 'react-router-dom'
 import InitLoading from "./Screens/InitLoading";
 
 const WebSocketContext = createContext(null);
@@ -26,7 +25,7 @@ export function WebSocketProvider({ children }) {
   const [auth, setAuth] = useState(1);
 
   const connectToWebSocketServer = () => {
-    let useLocal = true;
+    let useLocal = false;
     if (process.env.NODE_ENV !== 'development') {
       useLocal = false;
     }
@@ -131,6 +130,14 @@ export function WebSocketProvider({ children }) {
 
   };
 
+  const closeWebSocket = () => {
+    if (ws) {
+      ws.close();
+      setWs(null);
+      setIsConnected(false)
+    }
+  };
+
   useEffect(() => {
     connectToWebSocketServer();
   }, []);
@@ -149,6 +156,10 @@ export function WebSocketProvider({ children }) {
       const timer = setTimeout(() => {
         ws.removeEventListener("message", listener);
         reject(new Error(`Timed out ${action}`));
+        console.log("TIMED OUT. CLOSING")
+        closeWebSocket();
+        console.log("TIMED OUT. CONNECTING")
+        setTimeout(() => connectToWebSocketServer(), 1000)
       }, timeout);
 
       ws.send(JSON.stringify({ action, MESSAGE_ID, ...params }));
