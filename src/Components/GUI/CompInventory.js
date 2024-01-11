@@ -261,7 +261,6 @@ function CompInventory({
               onClick={() => {
                 if (fertilizers.YieldsFertilizer > 0) {
                   setEquippedFert("YieldsFertilizer");
-                  setFerilizerMenu(false);
                 }
               }}
               onMouseEnter={() => setFertInfo("YieldsFertilizer")}
@@ -276,7 +275,6 @@ function CompInventory({
               onClick={() => {
                 if (fertilizers.HarvestsFertilizer > 0) {
                   setEquippedFert("HarvestsFertilizer");
-                  setFerilizerMenu(false);
                 }
               }}
               onMouseEnter={() => setFertInfo("HarvestsFertilizer")}
@@ -291,7 +289,6 @@ function CompInventory({
               onClick={() => {
                 if (fertilizers.TimeFertilizer > 0) {
                   setEquippedFert("TimeFertilizer");
-                  setFerilizerMenu(false);
                 }
               }}
               onMouseEnter={() => setFertInfo("TimeFertilizer")}
@@ -341,102 +338,100 @@ function CompInventory({
               <img src={`${process.env.PUBLIC_URL}/assets/images/GUI/moreInfo.png`} />
             </button>
           </summary>
-          {showFertilizer && (
-            <div className="toolSelect">
-              {tool !== "multiharvest" && (
-                <div
-                  className={`toolIcon${level < MULTIHARVESTLEVEL ? "Disabled" : ""
-                    }`}
-                >
-                  <img
-                    src={`${process.env.PUBLIC_URL}/assets/images/multiharvest.png`}
-                    onClick={() => {
-                      if (level < MULTIHARVESTLEVEL) return;
-                      setTool("multiharvest");
-                      handleMouseOut(1);
-                    }}
-                    onMouseOver={() => handleMouseOver(1)}
-                    onMouseOut={() => handleMouseOut(1)}
-                  />
-                  {tip1 && (
-                    <div className="toolTipInv">
-                      Multiharvest{" "}
-                      {level < MULTIHARVESTLEVEL &&
-                        `(Lvl ${MULTIHARVESTLEVEL})`}
-                    </div>
-                  )}
-                </div>
-              )}
-              {tool === "multiharvest" && (
+          <div className="toolSelect">
+            {showFertilizer && tool !== "multiharvest" && (
+              <div
+                className={`toolIcon${level < MULTIHARVESTLEVEL ? "Disabled" : ""
+                  }`}
+              >
                 <img
-                  src={`${process.env.PUBLIC_URL}/assets/images/GUI/cancel.png`}
-                  className="toolIcon"
+                  src={`${process.env.PUBLIC_URL}/assets/images/multiharvest.png`}
                   onClick={() => {
-                    setTool("");
-
+                    if (level < MULTIHARVESTLEVEL) return;
+                    setTool("multiharvest");
+                    handleMouseOut(1);
                   }}
+                  onMouseOver={() => handleMouseOver(1)}
+                  onMouseOut={() => handleMouseOut(1)}
                 />
-              )}
-              {tool !== "multiplant" && (
-                <div
-                  className={`toolIcon${level < MULTIHARVESTLEVEL ? "Disabled" : ""
-                    }`}
-                >
-                  <img
-                    src={`${process.env.PUBLIC_URL}/assets/images/multiplant.png`}
-                    onClick={() => {
-                      if (level < MULTIPLANTLEVEL) return;
-                      setTool("multiplant");
-                      handleMouseOut(2);
-                    }}
-                    onMouseOver={() => handleMouseOver(2)}
-                    onMouseOut={() => handleMouseOut(2)}
-                  />
-                  {tip2 && (
-                    <div className="toolTipInv">
-                      Multiplant{" "}
-                      {level < MULTIPLANTLEVEL && `(Lvl ${MULTIPLANTLEVEL})`}
-                    </div>
-                  )}
-                </div>
-              )}
-              {tool === "multiplant" && (
+                {tip1 && (
+                  <div className="toolTipInv">
+                    Multiharvest{" "}
+                    {level < MULTIHARVESTLEVEL &&
+                      `(Lvl ${MULTIHARVESTLEVEL})`}
+                  </div>
+                )}
+              </div>
+            )}
+            {showFertilizer && tool === "multiharvest" && (
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/images/GUI/cancel.png`}
+                className="toolIcon"
+                onClick={() => {
+                  setTool("");
+
+                }}
+              />
+            )}
+            {showFertilizer && tool !== "multiplant" && (
+              <div
+                className={`toolIcon${level < MULTIHARVESTLEVEL ? "Disabled" : ""
+                  }`}
+              >
                 <img
-                  src={`${process.env.PUBLIC_URL}/assets/images/GUI/cancel.png`}
-                  className="toolIcon"
-                  onClick={() => setTool("")}
+                  src={`${process.env.PUBLIC_URL}/assets/images/multiplant.png`}
+                  onClick={() => {
+                    if (level < MULTIPLANTLEVEL) return;
+                    setTool("multiplant");
+                    handleMouseOut(2);
+                  }}
+                  onMouseOver={() => handleMouseOver(2)}
+                  onMouseOut={() => handleMouseOut(2)}
                 />
-              )}
-            </div>
-          )}
+                {tip2 && (
+                  <div className="toolTipInv">
+                    Multiplant{" "}
+                    {level < MULTIPLANTLEVEL && `(Lvl ${MULTIPLANTLEVEL})`}
+                  </div>
+                )}
+              </div>
+            )}
+            {showFertilizer && tool === "multiplant" && (
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/images/GUI/cancel.png`}
+                className="toolIcon"
+                onClick={() => setTool("")}
+              />
+            )}
+          </div>
           {showFertilizer && equippedFert !== "" && (
             <div className="dequipFertilizer">
               <img
                 onClick={() => {
                   setEquippedFert("");
-                  setAoeFertilizer(false);
                 }}
                 src={`${process.env.PUBLIC_URL}/assets/images/cancel.png`}
               />
             </div>
           )}
-          {showFertilizer && equippedFert === "" && (
-            <div className="fertilizerButtonArea">
+          <div className="fertilizerButtonArea">
+            {showFertilizer && equippedFert === "" && (
               <img
                 className="fertilizerButton"
                 src={`${process.env.PUBLIC_URL}/assets/images/fertilizerBlank.png`}
                 onClick={() => setFerilizerMenu(true)}
               />
-              <div onClick={(e) => {setBoostsMenu(true);}} className='boosts-button'>
-                <TownBoostSlot
-                  boostName={"ALL_CROPS_QTY_1"} active={false} display={true} menuIcon={true}
-                  boostContext='player' width='80%' height='4vh' fontSize='0vw' />
+            )}
 
-                {boostsMenu && <PbMenu closeMenu={(e) => {e.stopPropagation(); setBoostsMenu(false)} }/>}
-              </div>
+            <div onClick={(e) => { setBoostsMenu(true); }} className='boosts-button'>
+              <TownBoostSlot
+                boostName={"ALL_CROPS_QTY_1"} active={false} display={true} menuIcon={true}
+                boostContext='player' width='80%' height='4vh' fontSize='0vw' />
 
+              {boostsMenu && <PbMenu closeMenu={(e) => { e.stopPropagation(); setBoostsMenu(false) }} />}
             </div>
-          )}
+
+          </div>
           {fertilizerMenu && fertilizerGUI()}
         </div>
         {items && <div className="items-grid">{toLoad()}</div>}

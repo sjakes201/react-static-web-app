@@ -1,11 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ANIMALINFO from "../../ANIMALINFO";
 import { useWebSocket } from "../../WebSocketContext";
 import { GameContext } from "../../GameContainer";
 
 function AnimalCard({ animal }) {
   const { waitForServerResponse } = useWebSocket();
-  const { setBarn, setCoop, coop, setAnimalsInfo } = useContext(GameContext)
+  const { setBarn, setCoop, coop, setAnimalsInfo, setDisableKeyBinds } = useContext(GameContext)
 
   const type = animal.Animal_type;
   const Animal_ID = animal.Animal_ID;
@@ -30,6 +30,12 @@ function AnimalCard({ animal }) {
 
   const [newName, setNewName] = useState("");
   const [renameAppear, setRenameAppear] = useState(false);
+
+  useEffect(() => {
+    setDisableKeyBinds(renameAppear)
+
+    return () => setDisableKeyBinds(false)
+  }, [renameAppear])
 
   const handleRename = async (e) => {
     console.log("rename call");

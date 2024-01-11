@@ -8,7 +8,7 @@ import CompProfile from "../Components/GUI/CompProfile";
 import { useNavigate } from "react-router-dom";
 import { GameContext } from "../GameContainer";
 
-function PlantScreen() {
+function PlantScreen({ passedTool }) {
   const navigate = useNavigate();
   if (localStorage.getItem("token") === null) {
     // no auth token present
@@ -20,6 +20,10 @@ function PlantScreen() {
   const [items, setItems] = useState({});
   const [fertilizers, setFertilizers] = useState({});
   const [tool, setTool] = useState("");
+
+  useEffect(() => {
+    setTool(passedTool)
+  }, [passedTool])
 
   const [orderNotice, setOrderNotice] = useState(false);
 
@@ -139,9 +143,9 @@ function PlantScreen() {
           />
         </div>
         <div className="settings">
-         
-            
-          
+
+
+
         </div>
       </div>
     </div>
