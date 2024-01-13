@@ -156,10 +156,10 @@ export function WebSocketProvider({ children }) {
       const timer = setTimeout(() => {
         ws.removeEventListener("message", listener);
         reject(new Error(`Timed out ${action}`));
-        console.log("TIMED OUT. CLOSING")
-        closeWebSocket();
-        console.log("TIMED OUT. CONNECTING")
-        setTimeout(() => connectToWebSocketServer(), 1000)
+        // console.log("TIMED OUT. CLOSING")
+        // closeWebSocket();
+        // console.log("TIMED OUT. CONNECTING")
+        // setTimeout(() => connectToWebSocketServer(), 1000)
       }, timeout);
 
       ws.send(JSON.stringify({ action, MESSAGE_ID, ...params }));

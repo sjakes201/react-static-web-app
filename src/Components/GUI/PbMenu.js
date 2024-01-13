@@ -156,7 +156,7 @@ function PbMenu({ closeMenu }) {
         alignItems: 'center',
         padding: '1vw',
         fontSize: '0.9vw',
-        gap: '2vh'
+        gap: '2vh',
     }}>
         <span
             style={{
