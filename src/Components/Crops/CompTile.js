@@ -215,7 +215,6 @@ function CompTile({
       )}
     </SmallInfoTile>)
   }
-  // console.log(tile)
 
   return (
     <div
@@ -279,7 +278,7 @@ function CompTile({
           width: "100%",
           display: "flex",
           justifyContent: "center",
-          zIndex: "5",
+          // zIndex: "-5",
           opacity: "0.75",
           pointerEvents: "none",
         }}
