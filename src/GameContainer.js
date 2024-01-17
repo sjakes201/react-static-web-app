@@ -158,12 +158,12 @@ function GameContainer() {
             window.dataLayer.push(arguments);
           };
           window.gtag('js', new Date());
-          window.gtag('config', 'G-3PPHZYFY40', { 'send_page_view': false });
+          window.gtag('config', 'G-QTMENL32K5', { 'send_page_view': false });
           window.gtag(
             'event',
             'ramp_js',
             {
-              'send_to': 'G-3PPHZYFY40',
+              'send_to': 'G-QTMENL32K5',
               'pageview_id': window._pwGA4PageviewId
             }
           );
