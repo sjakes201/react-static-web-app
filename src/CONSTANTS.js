@@ -396,7 +396,7 @@ module.exports = {
     grape: 2,
     oats: 3,
     strawberry: 5,
-    special1: 0,
+    special1: 1,
 
     cow_milk: 8,
     chicken_egg: 6,

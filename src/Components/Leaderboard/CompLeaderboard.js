@@ -14,6 +14,13 @@ function CompLeaderboard({
 
   const [showRewards, setShowRewards] = useState(false)
 
+  if(window.enableSpecialSeeds) {
+
+  } else {
+    delete leadersWeekly.special1
+    delete leadersAll.special1
+  }
+
   useEffect(() => {
     const subSection = location.state?.subSection;
     const subPage = location.state?.subPage;
