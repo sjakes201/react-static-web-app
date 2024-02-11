@@ -20,7 +20,8 @@ module.exports = {
             blueberry_seeds: 4,
             grape_seeds: 4,
             oats_seeds: 3,
-            strawberry_seeds: 4
+            strawberry_seeds: 4,
+            special1_seeds: 3
         }
     },
     ALL_CROPS_QTY_2: {
@@ -44,7 +45,8 @@ module.exports = {
             blueberry_seeds: 4,
             grape_seeds: 4,
             oats_seeds: 3,
-            strawberry_seeds: 4
+            strawberry_seeds: 4,
+            special1_seeds: 3
         }
     },
     ALL_CROPS_QTY_3: {
@@ -68,7 +70,8 @@ module.exports = {
             blueberry_seeds: 4,
             grape_seeds: 4,
             oats_seeds: 3,
-            strawberry_seeds: 4
+            strawberry_seeds: 4,
+            special1_seeds: 3
         }
     },
     ALL_ANIMALS_QTY_1: {
@@ -193,7 +196,8 @@ module.exports = {
             blueberry_seeds: 4,
             grape_seeds: 4,
             oats_seeds: 3,
-            strawberry_seeds: 4
+            strawberry_seeds: 4,
+            special1_seeds: 3
         }
     },
     ANIMAL_INDIV_1: {
@@ -228,7 +232,8 @@ module.exports = {
             blueberry_seeds: 0.2,
             grape_seeds: 0.2,
             oats_seeds: 0.2,
-            strawberry_seeds: 0.2
+            strawberry_seeds: 0.2,
+            special1_seeds: 3
         }
     },
     ANIMAL_INDIV_TIME_1: {

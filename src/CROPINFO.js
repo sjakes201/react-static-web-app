@@ -16,6 +16,7 @@ module.exports = {
     "grape_seeds",
     "oats_seeds",
     "strawberry_seeds",
+    "special1_seeds"
   ],
   seedCropMap: {
     carrot_seeds: "carrot",
@@ -33,6 +34,7 @@ module.exports = {
     grape_seeds: "grape",
     oats_seeds: "oats",
     strawberry_seeds: "strawberry",
+    special1_seeds: "special1"
   },
   XP: {
     carrot: 4,
@@ -50,6 +52,7 @@ module.exports = {
     grape: 2,
     oats: 3,
     strawberry: 5,
+    special1: 0,
 
     cow_milk: 8,
     chicken_egg: 6,

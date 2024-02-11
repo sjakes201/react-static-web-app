@@ -68,6 +68,7 @@ module.exports = {
     grape_seeds: [35, 35, 15],
     oats_seeds: [11, 11, 8],
     strawberry_seeds: [20, 20, 20],
+    special1_seeds: [20,20,20],
   },
   // 1st upgrade
   GrowthTimes1: {
@@ -86,6 +87,7 @@ module.exports = {
     grape_seeds: [22, 23, 15],
     oats_seeds: [8, 8, 6],
     strawberry_seeds: [17, 18, 16],
+    special1_seeds: [18, 18, 15],
   },
   // 2nd upgrade
   GrowthTimes2: {
@@ -104,6 +106,7 @@ module.exports = {
     grape_seeds: [18, 17, 8],
     oats_seeds: [5, 5, 4],
     strawberry_seeds: [17, 18, 15],
+    special1_seeds: [17, 15, 10],
   },
   //
   NumHarvests0: {
@@ -122,6 +125,7 @@ module.exports = {
     grape_seeds: 3,
     oats_seeds: 3,
     strawberry_seeds: 2,
+    special1_seeds: 2,
   },
   //
   NumHarvests1: {
@@ -140,6 +144,7 @@ module.exports = {
     grape_seeds: 4,
     oats_seeds: 3,
     strawberry_seeds: 3,
+    special1_seeds: 3,
   },
   //
   NumHarvests2: {
@@ -158,6 +163,7 @@ module.exports = {
     grape_seeds: 5,
     oats_seeds: 4,
     strawberry_seeds: 3,
+    special1_seeds: 4,
   },
   //
   PlantQuantityYields0: {
