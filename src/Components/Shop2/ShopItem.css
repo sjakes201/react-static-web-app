@@ -53,6 +53,12 @@
     text-align: center;
 }
 
+.special-label {
+    color: rgb(205, 40, 166);
+    font-weight: bold;
+    text-align: center;
+}
+
 .item-more-info {
     grid-column: 2 / 3;
     grid-row: 4 / 5;

@@ -48,6 +48,10 @@
     font-size: 1.3vw;
 }
 
+.center-button {
+    margin: 0 11px;
+}
+
 .type-button:hover {
     background: rgba(249, 241, 182, 0.133);
 }

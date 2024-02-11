@@ -60,11 +60,21 @@ function LeaderboardScreen() {
           <div
             id="alltime-title"
             className={
-              type === "ALLTIME" ? "type-button active" : "type-button inactive"
+              type === "ALLTIME" ? "type-button active center-button" : "type-button inactive center-button"
             }
             onClick={() => setType("ALLTIME")}
           >
             <h3>ALL TIME</h3>
+          </div>
+
+          <div
+            id="event-title"
+            className={
+              type === "EVENT" ? "type-button active" : "type-button inactive"
+            }
+            onClick={() => setType("EVENT")}
+          >
+            <h3>EVENT</h3>
           </div>
         </div>
         <div className="leaderboard-container">

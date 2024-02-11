@@ -72,6 +72,8 @@ function ShopItem({ seedName, buySeeds, lockedInfoComponents, isPinned, changePi
                     <p className='produce_name'>{produceName}</p>
                     <p className='slot-item-price'>${itemCost}<small>/each</small></p>
                     {CONSTANTS.Permits.deluxeCrops.includes(seedName) && <p className='deluxe-label'>DELUXE</p>}
+                    {seedName.includes('special') && <p className='special-label'>EVENT</p>}
+
                 </div>
 
 

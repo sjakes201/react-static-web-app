@@ -1,7 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CompLeaderboardSlot from "./CompLeaderboardSlot";
 import { GameContext } from "../../GameContainer";
+import { useWebSocket } from "../../WebSocketContext";
+import CONSTANTS from "../../CONSTANTS";
+
+const EVENT_END = 1708300799000;
 
 function CompLeaderboard({
   type,
@@ -9,17 +13,15 @@ function CompLeaderboard({
   leadersAll,
 }) {
   const { getUser, getUserAlltimeTotals } = useContext(GameContext)
+  const { waitForServerResponse } = useWebSocket();
+
   const userAlltimeTotals = getUserAlltimeTotals()
   const location = useLocation();
-
+  const navigate = useNavigate();
   const [showRewards, setShowRewards] = useState(false)
 
-  if(window.enableSpecialSeeds) {
-
-  } else {
-    delete leadersWeekly.special1
-    delete leadersAll.special1
-  }
+  // for event crops
+  const [specialData, setSpecialData] = useState([])
 
   useEffect(() => {
     const subSection = location.state?.subSection;
@@ -36,13 +38,72 @@ function CompLeaderboard({
   }, [location.state]);
 
   const rewardTierText = (positionStr, amount) => {
-    return <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center',
-     textWrap: 'nowrap', borderBottom: '1px solid var(--menu_lighter)' }}>
+    return <div style={{
+      display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center',
+      textWrap: 'nowrap', borderBottom: '1px solid var(--menu_lighter)'
+    }}>
       {positionStr}:
       <img style={{ height: '2vh', margin: '0 0.1vw 0 0.2vw' }} src={`${process.env.PUBLIC_URL}/assets/images/premiumCurrency.png`} />
       {amount}
     </div>
   }
+
+  const getSpecialLeaderboard = async () => {
+    try {
+      if (waitForServerResponse) {
+        let res = await waitForServerResponse('getSpecialLeaderboard')
+        if (res.body?.success) {
+          setSpecialData(res.body.data)
+
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  function convertMsToTime(milliseconds) {
+    if (milliseconds < 0) return 'Event has ended!'
+    let days, hours, minutes;
+
+    minutes = Math.floor(milliseconds / (1000 * 60));
+
+    hours = Math.floor(minutes / 60);
+    minutes = minutes % 60;
+
+    days = Math.floor(hours / 24);
+    hours = hours % 24;
+
+    return `${days} days, ${hours} hours, ${minutes} minutes remaining`;
+  }
+
+  function ordinalSuffix(number) {
+    const lastDigit = number % 10;
+    const lastTwoDigits = number % 100;
+
+    if (lastTwoDigits > 10 && lastTwoDigits < 20) {
+      return "th";
+    }
+
+    switch (lastDigit) {
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
+    }
+  }
+
+  useEffect(() => {
+    if(window.enableSpecialEvent) {
+      getSpecialLeaderboard()
+    }
+  }, [])
+
+  console.log(specialData)
 
   if (
     Object.keys(leadersAll).length === 0 ||
@@ -100,9 +161,9 @@ function CompLeaderboard({
                 style={{ width: "50%", marginTop: "2px", marginBottom: "2px" }}
               ></hr>
               <p>
-                You can earn 
+                You can earn
                 gold <img src={`${process.env.PUBLIC_URL}/assets/images/premiumCurrency.png`} style={{ width: '2vw', marginBottom: '-1vh' }} /> from
-                 standings in both leaderboards at each weekly reset period!
+                standings in both leaderboards at each weekly reset period!
                 The top 50 positions in each category earn gold, with higher positions earnings more.
               </p>
             </div>
@@ -173,7 +234,7 @@ function CompLeaderboard({
         </div>
       );
     }
-  } else {
+  } else if (type === "ALLTIME") {
     if (Object.keys(leadersAll).length) {
       return (
         <div
@@ -237,6 +298,124 @@ function CompLeaderboard({
           </div>
         </div>
       );
+    }
+  } else if (type === "EVENT") {
+    if (specialData.length > 0) {
+      return <div
+        className='basic-center'
+        style={{
+          width: '100%',
+          height: '100%',
+          flexDirection: 'column',
+          padding: '1vh 10%',
+          position: 'relative',
+        }}>
+        <img style={{position: 'absolute', height: '9vh', left: '3%', bottom: '2%'}} src={`${process.env.PUBLIC_URL}/assets/images/special1Deco2.png`} />
+        <img style={{position: 'absolute', height: '9vh', left: '2%', bottom: '40%'}} src={`${process.env.PUBLIC_URL}/assets/images/special1Deco2.png`} />
+        <img style={{position: 'absolute', height: '9vh', left: '3%', bottom: '70%'}} src={`${process.env.PUBLIC_URL}/assets/images/special1Deco1.png`} />
+        <img style={{position: 'absolute', height: '9vh', right: '3%', bottom: '2%'}} src={`${process.env.PUBLIC_URL}/assets/images/special1Deco1.png`} />
+        <img style={{position: 'absolute', height: '9vh', right: '2%', bottom: '40%'}} src={`${process.env.PUBLIC_URL}/assets/images/special1Deco1.png`} />
+        <img style={{position: 'absolute', height: '9vh', right: '3%', bottom: '70%'}} src={`${process.env.PUBLIC_URL}/assets/images/special1Deco2.png`} />
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          width: '100%',
+          position: 'relative'
+        }}>
+          <img
+            style={{
+              height: '10vh',
+            }}
+            src={`${process.env.PUBLIC_URL}/assets/images/special1.png`}
+          />
+          <p
+            style={{
+              fontSize: '2.5vw',
+            }}
+          >
+            {CONSTANTS.InventoryDescriptions.special1[0]} Event!
+          </p>
+          <p
+            style={{
+              fontSize: '0.9vw',
+              marginBottom: '-1.5vh',
+              marginLeft: '1vw',
+              fontStyle: 'italic',
+            }}
+          >{convertMsToTime(EVENT_END - Date.now())}</p>
+          
+         <img style={{position: 'absolute', height: '9vh', right: '-2%', bottom: '-10%'}} src={`${process.env.PUBLIC_URL}/assets/images/special1Deco1.png`} />
+         <img style={{position: 'absolute', height: '9vh', right: '2%', bottom: '-10%'}} src={`${process.env.PUBLIC_URL}/assets/images/special1Deco2.png`} />
+         <img style={{position: 'absolute', height: '9vh', right: '7%', bottom: '-10%'}} src={`${process.env.PUBLIC_URL}/assets/images/special1Deco3.png`} />
+         <img style={{position: 'absolute', height: '9vh', right: '12%', bottom: '-10%'}} src={`${process.env.PUBLIC_URL}/assets/images/special1Deco1.png`} />
+        </div>
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            padding: '0 0 2vh 0',
+            border: '2px solid black',
+            overflowY: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            alignItems: 'center'
+          }}>
+          <p style={{
+            fontSize: '1vw',
+            padding: '1.5vw 1vw 1vw 1vw',
+            width: '95%',
+            borderBottom: '2px solid black'
+          }}><i>
+              This is an event category! This event will only last a certain amount of time, and will have special prizes for all who participate, such as rare profile pictures.
+            </i>
+          </p>
+
+          {specialData.map((data, index) => {
+            return <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'flex-start',
+                width: '80%',
+                borderBottom: '1px solid var(--menu_dark)'
+              }}>
+              <span
+                style={{
+                  cursor: 'pointer',
+                  margin: '1vh'
+                }}
+                onClick={() => {
+                  navigate(`/profile/${data.Username}`, {
+                    state: { from: "leaderboard", subPage: 'EVENT' },
+                  });
+                }}
+              >
+                {data.position}{ordinalSuffix(data.position)}: {data.Username}: {data.count.toLocaleString()}
+                <img
+                  style={{
+                    height: '2.5vh',
+                    marginBottom: '-0.5vh',
+                    display: 'inline'
+                  }}
+                  src={`${process.env.PUBLIC_URL}/assets/images/special1.png`}
+                />
+              </span>
+            </div>
+
+          })
+          }
+
+        </div>
+
+      </div>
+    } else {
+      return <div className='basic-center' style={{ width: '100%', height: '100%' }}>
+        <p><i>No special event currently! Check back later for a chance to win rare prizes.</i></p>
+      </div>
     }
   }
 

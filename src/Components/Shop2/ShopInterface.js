@@ -197,7 +197,7 @@ function ShopInterface() {
         const lastItems = [];
         if (tab === 'Seeds') {
             let allSeeds = Object.keys(CONSTANTS.Fixed_Prices);
-            if (window.enableSpecialSeeds) {
+            if (window.enableSpecialEvent) {
             } else {
                 allSeeds = allSeeds.filter(s => s != 'special1_seeds')
             }
