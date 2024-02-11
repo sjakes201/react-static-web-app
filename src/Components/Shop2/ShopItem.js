@@ -5,6 +5,7 @@ import CONSTANTS from '../../CONSTANTS'
 function ShopItem({ seedName, buySeeds, lockedInfoComponents, isPinned, changePin }) {
 
     const produceName = CONSTANTS.InventoryDescriptions[CONSTANTS.SeedCropMap[seedName]?.[0]]?.[0]
+    if(seedName === 'special1_seeds') console.log(CONSTANTS.InventoryDescriptions[CONSTANTS.SeedCropMap[seedName]?.[0]]?.[0])
     const itemCost = CONSTANTS.Fixed_Prices[seedName]
 
     const [itemInfo, setItemInfo] = useState(false);
@@ -30,7 +31,7 @@ function ShopItem({ seedName, buySeeds, lockedInfoComponents, isPinned, changePi
     /* Component functions */
     const buyItem = async (qty) => {
         let buySuccess = await buySeeds(seedName, qty);
-        console.log(buySuccess)
+        if(!buySuccess) console.log(`failed to buy ${qty} ${seedName} seeds`)
         let gifCopy = { ...gif };
         gifCopy[qty] = buySuccess ? "success" : "fail";
 

@@ -13,7 +13,6 @@ function InventorySlot({
     tooltipHandleMouseLeave,
     activeTooltip
 }) {
-
     return (<button
         className={
             isAnimalScreen

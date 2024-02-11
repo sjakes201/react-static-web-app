@@ -40,6 +40,7 @@ module.exports = {
     grape_seeds: 2,
     oats_seeds: 2,
     strawberry_seeds: 2,
+    special1_seeds: 3,
   },
   // CropIDS are for the integer ID's for different crops in SQL tile table
   ProduceIDs: {
@@ -58,6 +59,7 @@ module.exports = {
     grape_seeds: 13,
     oats_seeds: 14,
     strawberry_seeds: 15,
+    special1_seeds: 16
   },
   // CropNames is the exact inverse of above, to easily get names from id's, first index is null for indexing
   ProduceNameFromID: [
@@ -77,6 +79,7 @@ module.exports = {
     "grape_seeds",
     "oats_seeds",
     "strawberry_seeds",
+    "special1_seeds"
   ],
   // Maps seeds to what crop they make, key is seed name, value is array of [crop_name, qty per harvest, total_harvests] produced
   SeedCropMap: {
@@ -95,6 +98,7 @@ module.exports = {
     grape_seeds: ["grape", 6, 5],
     oats_seeds: ["oats", 4, 4],
     strawberry_seeds: ["strawberry", 3, 4],
+    special1_seeds: ["special1", 1, 3]
   },
   // Fixed prices is for prices of things you buy from the game (seeds, animals)
   //
@@ -114,6 +118,7 @@ module.exports = {
     grape_seeds: 40,
     oats_seeds: 15,
     strawberry_seeds: 22,
+    special1_seeds: 15
   },
   //
   Init_Market_Prices: {
@@ -181,6 +186,7 @@ module.exports = {
     ],
     oats_seeds: ["Oat Seeds", "High yield, short growth time"],
     strawberry_seeds: ["Strawberry Seeds", "Medium yield, long growth time"],
+    special1_seeds: ["Coconut Seeds", "Special event seed, around for 1 week!"],
     cow: ["Cow", "Produces milk"],
     chicken: ["Chicken", "Produces eggs"],
     duck: ["Duck", "Produces duck eggs"],
@@ -216,6 +222,7 @@ module.exports = {
     ostrich_egg: ["Ostrich Egg", "Produce"],
     llama_wool: ["Llama Wool", "Produce"],
     kiwi_egg: ["Kiwi Egg", "Produce"],
+    special1: ["Coconut", "Event Produce"],
     Balance: ["Money", "Currency"],
     XP: ["XP", "Experience points"],
   },
@@ -241,6 +248,7 @@ module.exports = {
     ],
     oats_seeds: ["Oats Seeds", "High yield, short growth time"],
     strawberry_seeds: ["Strawberry Seeds", "Medium yield, long growth time"],
+    special1_seeds: ["Coconut Seeds", "Special event seed, around for 1 week!"],
     cow: ["Cows", "Produces milk"],
     chicken: ["Chickens", "Produces eggs"],
     duck: ["Ducks", "Produces duck eggs"],
@@ -276,6 +284,7 @@ module.exports = {
     ostrich_egg: ["Ostrich Eggs", "Produce"],
     llama_wool: ["Llama Wool", "Produce"],
     kiwi_egg: ["Kiwi Eggs", "Produce"],
+    special1: ["Coconuts", "Event Produce"],
     Balance: ["Money", "Currency"],
     multiharvest: ["Multiharvest tool", "Tool"],
     multiplant: ["Multiplant tool", "Tool"],
@@ -296,7 +305,7 @@ module.exports = {
   ],
   // what is unlocked at every unlock level
   levelUnlocks: {
-    0: ["carrot_seeds", "oats_seeds", "corn_seeds", "cow", "chicken"],
+    0: ["carrot_seeds", "oats_seeds", "corn_seeds", "cow", "chicken", "special1_seeds"],
     1: ["potato_seeds"],
     2: ["parsnip_seeds"],
     4: ["cauliflower_seeds", "beet_seeds"],
@@ -318,6 +327,7 @@ module.exports = {
     corn_seeds: 0,
     cow: 0,
     chicken: 0,
+    special1_seeds: 0,
     potato_seeds: 1,
     parsnip_seeds: 2,
     cauliflower_seeds: 4,
@@ -342,6 +352,7 @@ module.exports = {
     kiwi: 50,
   },
   shopOrder: [
+    "special1_seeds",
     "carrot_seeds",
     "oats_seeds",
     "corn_seeds",
@@ -385,6 +396,7 @@ module.exports = {
     grape: 2,
     oats: 3,
     strawberry: 5,
+    special1: 0,
 
     cow_milk: 8,
     chicken_egg: 6,
