@@ -20,8 +20,6 @@ function CompLeaderboard({
     delete leadersWeekly.special1
     delete leadersAll.special1
   }
-  console.log(leadersWeekly)
-  console.log(leadersAll)
 
   useEffect(() => {
     const subSection = location.state?.subSection;
