@@ -696,6 +696,9 @@ function GameContainer() {
   /* Init get data */
   useEffect(() => {
 
+    // SET TRUE WHEN READY TO DEPLOY EVENT
+    window.enableSpecialEvent = false;
+
     fetchAnimals();
     fetchMachines()
     refreshPrices();
