@@ -53,7 +53,9 @@ function CompLeaderboard({
       if (waitForServerResponse) {
         let res = await waitForServerResponse('getSpecialLeaderboard')
         if (res.body?.success) {
-          setSpecialData(res.body.data)
+          console.log(res.body.data)
+          let sorted = res.body.data?.sort((a, b) => a.position - b.position)
+          setSpecialData(sorted)
 
         }
       }
@@ -101,7 +103,7 @@ function CompLeaderboard({
     if(window.enableSpecialEvent) {
       getSpecialLeaderboard()
     }
-  }, [])
+  }, [type])
 
   console.log(specialData)
 
