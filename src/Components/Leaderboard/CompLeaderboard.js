@@ -5,7 +5,7 @@ import { GameContext } from "../../GameContainer";
 import { useWebSocket } from "../../WebSocketContext";
 import CONSTANTS from "../../CONSTANTS";
 
-const EVENT_END = 1708482327612;
+const EVENT_END = 1708810712785;
 
 function CompLeaderboard({
   type,
