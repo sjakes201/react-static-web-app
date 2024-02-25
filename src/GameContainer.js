@@ -697,7 +697,7 @@ function GameContainer() {
   useEffect(() => {
 
     // SET TRUE WHEN READY TO DEPLOY EVENT
-    window.enableSpecialEvent = true;
+    window.enableSpecialEvent = false;
 
     fetchAnimals();
     fetchMachines()

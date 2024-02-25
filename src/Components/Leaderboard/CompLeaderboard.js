@@ -100,7 +100,7 @@ function CompLeaderboard({
   }
 
   useEffect(() => {
-    if(window.enableSpecialEvent) {
+    if(window.enableSpecialEvent || true) {
       getSpecialLeaderboard()
     }
   }, [type])
