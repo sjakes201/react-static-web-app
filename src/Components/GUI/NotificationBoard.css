@@ -180,7 +180,7 @@
     height: 100%;
 }
 
-.lb-reward-pc-count > img {
+.lb-reward-pc-count>img {
     width: 40%;
     object-fit: contain;
     margin-left: 0.3vw;
@@ -194,4 +194,41 @@
 
 .not-selected-bundle {
     filter: brightness(0.9) grayscale(0.5);
+}
+
+.special1-reward-area {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2vw;
+    font-size: 1vw;
+    text-align: center;
+}
+
+.special1-reward-area button {
+    background-color: white;
+    padding: 0.3vw;
+    padding-top: 0.4vw;
+    cursor: pointer;
+}
+
+.special1-reward-row-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 1vh 0;
+}
+
+.event-pfp-reward {
+    width: 35%;
+    margin-left: 5%;
+
+}
+
+.gold-reward-suffix {
+    width: 10%;
+    margin-left: 5%;
 }
