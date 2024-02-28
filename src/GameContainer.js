@@ -428,7 +428,7 @@ function GameContainer() {
   const [alertProfile, setAlertProfile] = useState(false)
   useEffect(() => {
     // Check lb rewards
-    if (userNotifications.some(n => n.Type === "LEADERBOARD_PREMIUM_REWARD")) {
+    if (userNotifications.some(n => n.Type === "LEADERBOARD_PREMIUM_REWARD" || n.Type === 'EVENT_REWARD')) {
       setAlertNotifications(true)
       setAlertProfile(true)
     } else {

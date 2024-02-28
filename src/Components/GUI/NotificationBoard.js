@@ -35,18 +35,38 @@ function NotificationBoard({ }) {
     const claimNotif = async (notifID) => {
         if (waitForServerResponse) {
             let targetNotif = userNotifications.find((n) => n.NotificationID === notifID)
-            let reward = JSON.parse(targetNotif.Message)?.reward
-            setPremiumCurrency((prev) => prev + reward);
-            setUserNotifications((old) => old.filter((n) => n.NotificationID !== notifID))
-            let res = await waitForServerResponse('acceptNotification', {
-                processAction: "CLAIM",
-                notificationID: notifID
-            })
-            if (res.body?.success) {
-            } else {
-                // Something wrong, undo
-                setPremiumCurrency((prev) => prev - reward);
+            // console.log(targetNotif)
+            let message = JSON.parse(targetNotif.Message)
+            console.log(message)
+            
+            if (message?.type?.includes('leaderboard')) {
+                let reward = JSON.parse(targetNotif.Message)?.reward
+                setPremiumCurrency((prev) => prev + reward);
+                setUserNotifications((old) => old.filter((n) => n.NotificationID !== notifID))
+                let res = await waitForServerResponse('acceptNotification', {
+                    processAction: "CLAIM",
+                    notificationID: notifID
+                })
+                if (res.body?.success) {
+                } else {
+                    // Something wrong, undo
+                    setPremiumCurrency((prev) => prev - reward);
+                }
+            } else if (message?.eventName) {
+                let reward = JSON.parse(targetNotif.Message)?.PremiumCurrency
+                setPremiumCurrency((prev) => prev + reward);
+                setUserNotifications((old) => old.filter((n) => n.NotificationID !== notifID))
+                let res = await waitForServerResponse('acceptNotification', {
+                    processAction: "CLAIM",
+                    notificationID: notifID
+                })
+                if (res.body?.success) {
+                } else {
+                    // Something wrong, undo
+                    setPremiumCurrency((prev) => prev - reward);
+                }
             }
+            
         }
     }
 
@@ -79,7 +99,23 @@ function NotificationBoard({ }) {
         })
         allNotifs.push(...allLeaderboardMsgs)
 
-        // Add other types of notifications as needed...
+        // Create notification for each pending event reward
+
+        const eventRewards = userNotifications.filter((notif) => notif.Type === 'EVENT_REWARD')
+        let rewardObjs = eventRewards.map((n) => { return { ...n, Message: JSON.parse(n.Message) } })
+        rewardObjs.forEach((obj) => {
+            const eventName = obj.Message.eventName;
+            allNotifs.push({
+                notificationIDs: [obj.NotificationID],
+                timestamp: obj.Timestamp,
+                type: 'EVENT_REWARD',
+                bundleID: curBundleID++,
+                details: {
+                    message: obj.Message
+                }
+            })
+
+        })
 
         // Set array
         allNotifs.sort((a, b) => a.timestamp - b.timestamp)
@@ -98,8 +134,24 @@ function NotificationBoard({ }) {
             )
         }
 
+        const eventRewardRow = (notif) => {
+            const eventName = notif.details?.message?.eventName;
+            let iconName = "EMPTY"
+            switch (eventName) {
+                case 'coconut':
+                    iconName = "coconutTreeIcon"
+                    break;
+            }
+            return (
+                <div className='leaderboard-reward-row'>
+                    <img className='leaderboard-icon-suffix' src={`${process.env.PUBLIC_URL}/assets/images/${iconName}.png`} />
+                    <p className='lb-reward-header'>Your event rewards</p>
+                </div>
+            )
+        }
+
         function formatDate(milliseconds) {
-            const date = new Date(milliseconds);
+            const date = new Date(Number(milliseconds));
             const monthNames = ["January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"];
 
@@ -110,7 +162,7 @@ function NotificationBoard({ }) {
         }
 
         if (notifications.length === 0) return (<div className='notif-board-msg-row no-notifications basic-center'>All caught up!</div>)
-
+        
         return (<>
             {notifications.map((notif) =>
                 <div className={`notif-board-msg-row ${currentViewing === notif.bundleID ? 'selected-notif-bundle' : 'not-selected-bundle'}`}
@@ -119,8 +171,10 @@ function NotificationBoard({ }) {
                     {
                         notif.type === 'LEADERBOARD_PREMIUM_REWARD' ?
                             leaderboardRewardRow(notif)
-                            :
-                            <div></div>
+                            : notif.type === 'EVENT_REWARD' ?
+                                eventRewardRow(notif)
+                                :
+                                <div></div>
                     }
                     <p className='notif-date'>{formatDate(notif.timestamp)}</p>
                 </div>)}
@@ -153,10 +207,31 @@ function NotificationBoard({ }) {
                 </div>
             </div>)
         }
+
+        const eventRewardInfo = (rowInfo) => {
+            // console.log(rowInfo)
+            if (rowInfo.details?.message?.eventName === 'coconut') {
+                return <div className='special1-reward-area'>
+                    <div>
+                        <p>Thanks for participating in the coconut event! You have earned rewards for your farming accomplishment and as a token of your event participation.</p>
+                        <p className='special1-reward-row-info'>Profile picture: <img className='event-pfp-reward' src={`${process.env.PUBLIC_URL}/assets/images/profilePics/coconut_event.png`}/></p>
+                        <p className='special1-reward-row-info'>Gold: {rowInfo.details?.message?.PremiumCurrency} <img className='gold-reward-suffix' src={`${process.env.PUBLIC_URL}/assets/images/premiumCurrency.png`} /></p>
+                        <button onClick={() => claimNotif(rowInfo.notificationIDs[0])}>CLAIM</button>
+                    </div>
+                </div>
+            } else {
+                return (<div>
+                    Event Reward Info error :{"("} !
+                </div>)
+            }
+        }
+
         return (<div className='row-info-area'>
             {row?.type === 'LEADERBOARD_PREMIUM_REWARD' ? (
                 leaderboardRewardInfo(row)
-            ) : <div className='row-info-default basic-center'>Click a notification for more details</div>}
+            ) : row?.type === 'EVENT_REWARD' ? (
+                eventRewardInfo(row)
+            ) : (<div className='row-info-default basic-center'>Click a notification for more details</div>)}
         </div>)
     }
 
