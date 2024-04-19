@@ -14,10 +14,10 @@ module.exports = {
     winter: []
   },
   animalSeasons: {
-      spring: ["chicken", "duck", "quail", "ostrich", "kiwi"],
-      summer: [],
-      fall: ["cow", "yak", "sheep", "goat", "llama"],
-      winter: []
+    spring: ["chicken", "duck", "quail", "ostrich", "kiwi"],
+    summer: [],
+    fall: ["cow", "yak", "sheep", "goat", "llama"],
+    winter: []
   },
   fertilizerInfo: {
     YieldsFertilizer: "Tile's next 10 harvests receive a higher chance of higher yields",
@@ -409,4 +409,21 @@ module.exports = {
     llama_wool: 12,
     kiwi_egg: 12,
   },
+  pfpInfo: {
+    zeus: { name: "Zeus", cost: 1500 },
+    dragon_man: { name: "Dragon Man", cost: 1500 },
+    wizard: { name: "Wizard", cost: 1500 },
+    spanish_dueler: { name: "Dueler", cost: 750 },
+    ninja: { name: "Ninja", cost: 750 },
+    helmet_warrior: { name: "Warrior", cost: 750 },
+    doctor_stethoscope: { name: "Doctor", cost: 600 },
+    market_analyst: { name: "Market Analyst", cost: 500 },
+    chef: { name: "Chef", cost: 450 },
+    baseball_player: { name: "Baseball Player", cost: 300 },
+    soccer_player: { name: "Soccer Player", cost: 300 },
+    football_player: { name: "Football Player", cost: 300 },
+    fighter_red: { name: "Red Fighter", cost: 400 },
+    fighter_blue: { name: "Blue Fighter", cost: 400 },
+    fighter_purple: { name: "Purple Fighter", cost: 400 },
+  }
 };

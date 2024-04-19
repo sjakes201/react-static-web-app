@@ -190,6 +190,8 @@ function GameContainer() {
   const [level, setLevel] = useState(0);
   const [profilePic, setProfilePic] = useState("reg_maroon");
 
+  const [unlockedPfps, setUnlockedPfps] = useState([])
+  
   const [capacities, setCapacities] = useState({
     barnCapacity: 0,
     coopCapacity: 0,
@@ -564,6 +566,16 @@ function GameContainer() {
     }
   }
 
+  const fetchUnlockedPfps = async () => {
+    if (waitForServerResponse) {
+      const response = await waitForServerResponse("getUnlockedPfp");
+      if(response.body?.message === "SUCCESS") {
+        let pfpArray = response.body.pfpInfos;
+        setUnlockedPfps(pfpArray)
+      }
+    }
+  }
+
   const fetchMachines = async () => {
     if (waitForServerResponse) {
       const response = await waitForServerResponse("getAllMachines");
@@ -711,6 +723,7 @@ function GameContainer() {
     fetchInventory();
     refreshNotifications();
     getProfileInfo();
+    fetchUnlockedPfps();
     refreshLoginStreakInfo();
 
     addListener(['town_message', handleNewMsg]);
@@ -1024,7 +1037,9 @@ function GameContainer() {
     setAlertNotifications,
     alertProfile,
     setAlertProfile,
-    setDisableKeyBinds
+    setDisableKeyBinds,
+    unlockedPfps,
+    fetchUnlockedPfps
   }
 
   if (!isConnected) {
