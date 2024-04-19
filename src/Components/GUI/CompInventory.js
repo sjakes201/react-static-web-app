@@ -184,6 +184,9 @@ function CompInventory({
       sortedObject[key] = invItems[key];
     });
 
+    delete sortedObject.special1;
+    delete sortedObject.special1_seeds;
+
     return Object.keys(sortedObject).flatMap((item, index) => {
       let totalSlots = [];
       let itemCount = sortedObject[item];
