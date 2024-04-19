@@ -12,14 +12,16 @@ import ShopAnimal from './ShopAnimal'
 import TownBoostSlot from '../TownShop/TownBoostSlot'
 import UPGRADES from '../../UPGRADES'
 import BOOSTSINFO from '../../BOOSTSINFO'
+import ShopProfilePic from './ShopProfilePic'
 
 
 
 function ShopInterface() {
     const { getBal, updateBalance, itemsData, setItemsData, level, getUpgrades,
-        animalsInfo, updateAnimalsInfo, addAnimal, updateUpgrades, premiumCurrency, setPremiumCurrency, fetchBoostsInventory } = useContext(GameContext);
+        animalsInfo, updateAnimalsInfo, addAnimal, updateUpgrades, premiumCurrency, setPremiumCurrency, fetchBoostsInventory, unlockedPfps, fetchUnlockedPfps } = useContext(GameContext);
     const { waitForServerResponse } = useWebSocket();
     const pageLocation = useLocation();
+
     /* Shop pin management */
     const [pinnedItems, setPinnedItems] = useState([]);
 
@@ -189,6 +191,21 @@ function ShopInterface() {
         }
     }
 
+    const buyPfp = async (pfpName) => {
+        let cost = CONSTANTS.pfpInfo[pfpName]?.cost;
+        if (premiumCurrency < cost) return false;
+        setPremiumCurrency((old) => old - cost);
+        if (waitForServerResponse) {
+            let res = await waitForServerResponse("buyProfilePic", {
+                pfpName: pfpName,
+                usi: {
+                    p: pageLocation.pathname
+                }
+            })
+            fetchUnlockedPfps()
+        }
+    }
+
     /* Component building functions */
     const [currentTab, setCurrentTab] = useState("Seeds");
 
@@ -330,6 +347,18 @@ function ShopInterface() {
 
                 </div>
             </div>
+        } else if (tab === 'Profile Pics') {
+            const pfpNames = ['spanish_dueler', 'ninja', 'helmet_warrior', 'doctor_stethoscope', 'market_analyst', 'chef', 'baseball_player', 'zeus', 'dragon_man', 'wizard',
+                'soccer_player', 'football_player', 'fighter_red', 'fighter_blue', 'fighter_purple'];
+            const unlockedNames = unlockedPfps.map((pfp) => pfp.UnlockName)
+
+            const ownedPfps = pfpNames.filter((pfpName) => unlockedNames.includes(pfpName))
+            const unowned = pfpNames.filter((pfpName) => !unlockedNames.includes(pfpName))
+
+            const ownedShopTiles = ownedPfps.map((pfpName) => <ShopProfilePic pfpName={pfpName} buyPfp={buyPfp} owned={true} />)
+            const unownedShopTiles = unowned.map((pfpName) => <ShopProfilePic pfpName={pfpName} buyPfp={buyPfp} owned={false} />)
+
+            return [...unownedShopTiles, ...ownedShopTiles]
         }
     }
 
@@ -403,7 +432,8 @@ function ShopInterface() {
                 <ShopTab title='Seeds' setCurrentTab={setCurrentTab} currentTab={currentTab} position="leftmost" />
                 <ShopTab title='Animals' setCurrentTab={setCurrentTab} currentTab={currentTab} />
                 <ShopTab title='Upgrades' setCurrentTab={setCurrentTab} currentTab={currentTab} />
-                <ShopTab title='Boosts' setCurrentTab={setCurrentTab} currentTab={currentTab} position="rightmost" />
+                <ShopTab title='Boosts' setCurrentTab={setCurrentTab} currentTab={currentTab} />
+                <ShopTab title='Profile Pics' setCurrentTab={setCurrentTab} currentTab={currentTab} position="rightmost" />
             </div>
             <div className='shop-contents orange-border'>
                 <div className='shop-grid' ref={shopRef}>
