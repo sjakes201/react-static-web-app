@@ -11,8 +11,20 @@ function InventorySlot({
     passedID,
     tooltipHandleMouseEnter,
     tooltipHandleMouseLeave,
-    activeTooltip
+    activeTooltip,
+    setMouseCoords,
+    setContextMenuItem
 }) {
+
+    const handleContextMenu = (event) => {
+        event.preventDefault();
+        if (itemCount > 0) {
+            const coords = { x: event.pageX, y: event.pageY };
+            setMouseCoords(coords); // Pass coordinates up to the parent
+            setContextMenuItem(item)
+        }
+    };
+
     return (<button
         className={
             isAnimalScreen
@@ -23,9 +35,10 @@ function InventorySlot({
         }
         id={passedID}
         onClick={() => handleClick(item)}
-        style={{ backgroundColor: 'transparent'}}
+        style={{ backgroundColor: 'transparent' }}
         onMouseEnter={() => tooltipHandleMouseEnter(passedID)}
         onMouseLeave={() => tooltipHandleMouseLeave()}
+        onContextMenu={handleContextMenu}
     >
         {((activeTooltip === passedID) && itemCount > 0) && <div className='toolTipText'>
             {CONSTANTS.InventoryDescriptions[item]?.[0]}

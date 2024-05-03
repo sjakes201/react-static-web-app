@@ -6,6 +6,7 @@ import { GameContext } from "../../GameContainer";
 import InventorySlot from "./InventorySlot";
 import TownBoostSlot from "../TownShop/TownBoostSlot";
 import PbMenu from "./PbMenu";
+import { useWebSocket } from "../../WebSocketContext";
 
 const MULTIPLANTLEVEL = 20;
 const MULTIHARVESTLEVEL = 20;
@@ -24,10 +25,11 @@ function CompInventory({
   setEquippedFert,
   equippedFert,
   setAoeFertilizer,
-  aoeFertilizer
+  aoeFertilizer,
 }) {
   //Tooltip code
-  const { level, setMoreInfo, moreInfo, generalConfig } = useContext(GameContext)
+  const { level, setMoreInfo, moreInfo, generalConfig, setItemsData } = useContext(GameContext)
+  const { waitForServerResponse } = useWebSocket();
   const [tip1, setTip1] = useState(false);
   const [tip2, setTip2] = useState(false);
 
@@ -36,14 +38,14 @@ function CompInventory({
   const tooltipTimer = useRef(null);
 
   const tooltipHandleMouseEnter = (tooltipId) => {
-    tooltipTimer.current = setTimeout(() => {
-      setActiveTooltip(tooltipId);
-    }, 1000);
+    // tooltipTimer.current = setTimeout(() => {
+    //   setActiveTooltip(tooltipId);
+    // }, 1000);
   };
 
   const tooltipHandleMouseLeave = () => {
-    clearTimeout(tooltipTimer.current);
-    setActiveTooltip(null);
+    // clearTimeout(tooltipTimer.current);
+    // setActiveTooltip(null);
   };
 
 
@@ -142,6 +144,53 @@ function CompInventory({
     }
   };
 
+  const discardItem = async (itemName) => {
+    if (waitForServerResponse) {
+      let res = await waitForServerResponse("discardItem", {
+        itemName: itemName
+      })
+      if (res.body.success) {
+        setItemsData((old) => {
+          let newItems = { ...old };
+          newItems[itemName] = 0;
+          return newItems;
+        })
+      }
+    }
+  }
+
+  // context menu stuff
+  const [mouseCoords, setMouseCoords] = useState({ x: 0, y: 0 });
+  const [contextMenuItem, setContextMenuItem] = useState(null);
+
+  const ContextMenu = () => {
+    const contextRef = useRef(null)
+    const [style, setStyle] = useState({
+      top: mouseCoords.y,
+      left: `calc(${mouseCoords.x}px - 6vw)`,
+    })
+    let formattedName = CONSTANTS.InventoryDescriptionsPlural[contextMenuItem]?.[0];
+    let formattedCount = items[contextMenuItem];
+    if (formattedCount >= 1000) {
+      formattedCount = (formattedCount / 1000).toFixed(1) + "k";
+    }
+
+    let isSeed = contextMenuItem.includes("_seed");
+
+    return (<div ref={contextRef} className='context-inv-menu' style={style}>
+      <u>{formattedName} x {formattedCount}</u>
+      {isSeed &&
+        <label
+          onClick={() => discardItem(contextMenuItem)}
+          className="context-menu-row"
+        >
+          <img className="context-menu-icon" src={`${process.env.PUBLIC_URL}/assets/images/machines/trashCan.png`} />
+          <button className="context-menu-button">Discard</button>
+        </label>
+      }
+    </div>)
+  }
+
   const toLoad = () => {
     let invItems = { ...items };
     if (displayOnly) {
@@ -187,7 +236,7 @@ function CompInventory({
     delete sortedObject.special1;
     delete sortedObject.special1_seeds;
 
-    return Object.keys(sortedObject).flatMap((item, index) => {
+    const invSlotComponents = Object.keys(sortedObject).flatMap((item, index) => {
       let totalSlots = [];
       let itemCount = sortedObject[item];
       if (generalConfig.stackInventory) {
@@ -203,6 +252,8 @@ function CompInventory({
               tooltipHandleMouseEnter={tooltipHandleMouseEnter}
               tooltipHandleMouseLeave={tooltipHandleMouseLeave}
               activeTooltip={activeTooltip}
+              setMouseCoords={setMouseCoords}
+              setContextMenuItem={setContextMenuItem}
             />
           );
           itemCount -= 1000;
@@ -219,12 +270,19 @@ function CompInventory({
           tooltipHandleMouseEnter={tooltipHandleMouseEnter}
           tooltipHandleMouseLeave={tooltipHandleMouseLeave}
           activeTooltip={activeTooltip}
+          setMouseCoords={setMouseCoords}
+          setContextMenuItem={setContextMenuItem}
         />
       );
 
 
-      return totalSlots;
-    });
+      return <>
+        {contextMenuItem && <ContextMenu />}
+        {totalSlots}
+      </>;
+    })
+
+    return invSlotComponents;
   };
 
   if (displayOnly) {
@@ -321,7 +379,11 @@ function CompInventory({
   };
 
   return (
-    <div className={`inventory-container`}>
+    <div
+      className={`inventory-container`}
+      onMouseLeave={() => setContextMenuItem(null)}
+      onClick={() => setContextMenuItem(null)}
+    >
       <div
         className={`inventorySlots ${showBottomBar ? "showBottomBar" : "noBottomBar"
           }`}
